@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+  <Transactions>
+    <Transaction>2018.09.25 15:46:24.975,=C:\Users\PO-PROGER1\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2018.09.25 15:46:53.240,C:\Own\YOT Manager\YOTM.Main.dfm=C:\Users\PO-PROGER1\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2018.09.25 15:46:53.240,C:\Own\YOT Manager\YOTM.Main.pas=C:\Users\PO-PROGER1\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2018.09.25 15:47:06.105,C:\Own\YOT Manager\Yotm.dproj=C:\Users\PO-PROGER1\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+  </Transactions>
+</BorlandProject>
