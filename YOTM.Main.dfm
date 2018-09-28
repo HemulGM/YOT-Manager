@@ -2,8 +2,8 @@ object Form1: TForm1
   Left = 0
   Top = 0
   Caption = 'Form1'
-  ClientHeight = 315
-  ClientWidth = 747
+  ClientHeight = 246
+  ClientWidth = 527
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -11,11 +11,12 @@ object Form1: TForm1
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object DrawPanel: TDrawPanel
-    Left = 8
-    Top = 16
+    Left = 40
+    Top = 80
     Width = 425
     Height = 137
     Caption = 'DrawPanel'
@@ -24,6 +25,30 @@ object Form1: TForm1
     ParentBackground = False
     TabOrder = 0
     OnMouseMove = DrawPanelMouseMove
+  end
+  object dtpTimeStart: TDateTimePicker
+    Left = 8
+    Top = 8
+    Width = 49
+    Height = 21
+    Date = 43371.375000000000000000
+    Format = 'HH:mm'
+    Time = 43371.375000000000000000
+    Kind = dtkTime
+    TabOrder = 1
+    OnChange = dtpTimeEndChange
+  end
+  object dtpTimeEnd: TDateTimePicker
+    Left = 63
+    Top = 8
+    Width = 50
+    Height = 21
+    Date = 43371.750000000000000000
+    Format = 'HH:mm'
+    Time = 43371.750000000000000000
+    Kind = dtkTime
+    TabOrder = 2
+    OnChange = dtpTimeEndChange
   end
   object Timer1: TTimer
     Interval = 20
