@@ -1,7 +1,7 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
         <ProjectGuid>{D67D129E-3A2B-45F4-88A5-77E7597FE928}</ProjectGuid>
-        <ProjectVersion>18.1</ProjectVersion>
+        <ProjectVersion>18.2</ProjectVersion>
         <FrameworkType>VCL</FrameworkType>
         <MainSource>Yotm.dpr</MainSource>
         <Base>True</Base>
@@ -58,14 +58,18 @@
         <DCC_K>false</DCC_K>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
+        <UWP_DelphiLogo150>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png</UWP_DelphiLogo150>
+        <UWP_DelphiLogo44>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_44.png</UWP_DelphiLogo44>
         <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
         <DCC_UsePackage>DBXSqliteDriver;DBXDb2Driver;dxCoreRS23;vclactnband;frxe23;vclFireDAC;dxPSLnksRS23;dxPSdxLCLnkRS23;tethering;cxDataRS23;dxPSdxOCLnkRS23;dxTabbedMDIRS23;FireDACADSDriver;fsTee23;dxSkinBlackRS23;dxSkinLondonLiquidSkyRS23;JvPluginSystem;dxDBXServerModeRS23;dxHttpIndyRequestRS23;dxPScxGridLnkRS23;cxSchedulerRS23;FireDACMSSQLDriver;vcltouch;JvBands;vcldb;Intraweb;svn;frxcs23;Rave110VCL;FlexCel_Report;JvJans;dxWizardControlRS23;dxPScxCommonRS23;dxSkinMcSkinRS23;dxSkinOffice2007BlueRS23;dxBarRS23;cxSchedulerRibbonStyleEventEditorRS23;dxSkinOffice2013WhiteRS23;JvDotNetCtrls;crcontrols230;dxPSTeeChartRS23;VCL_FlexCel_Components;cxLibraryRS23;dxSkinVisualStudio2013LightRS23;vclib;cxPivotGridChartRS23;dxSkinSummer2008RS23;dxPSdxDBOCLnkRS23;fsDB23;dxGDIPlusRS23;dxSkinDarkSideRS23;FireDACDBXDriver;dxSkinFoggyRS23;dxSkinSevenRS23;vclx;dxSkinOffice2010SilverRS23;dxdborRS23;RESTBackendComponents;dxLayoutControlRS23;dxPSPrVwRibbonRS23;VCLRESTComponents;dxSkinDevExpressStyleRS23;dxSkinWhiteprintRS23;vclie;bindengine;CloudService;JvHMI;FireDACMySQLDriver;dxSkinOffice2013DarkGrayRS23;DataSnapClient;dxPScxPCProdRS23;fsADO23;bindcompdbx;DBXSybaseASEDriver;IndyIPServer;dxSkinPumpkinRS23;PngComponents;IndySystem;dsnapcon;cxTreeListdxBarPopupMenuRS23;odac230;FireDACMSAccDriver;fmxFireDAC;FireDACInfxDriver;vclimg;dxSkinLilianRS23;Jcl;FlexCel_XlsAdapter;frxADO23;dxBarDBNavRS23;TMSDiagram;dxFlowChartRS23;dxSkinOffice2016ColorfulRS23;DBXOdbcDriver;FireDACTDataDriver;FMXTee;fs23;soaprtl;DbxCommonDriver;dxSpreadSheetRS23;JvManagedThreads;dxSkinOffice2007PinkRS23;dxPSdxSpreadSheetLnkRS23;xmlrtl;soapmidas;DataSnapNativeClient;fmxobj;JvTimeFramework;dxSkinHighContrastRS23;rtl;dxSkinSevenClassicRS23;DbxClientDriver;dxSkinDevExpressDarkStyleRS23;DBXSybaseASADriver;dxNavBarRS23;dxSkinMetropolisDarkRS23;dxSkinTheAsphaltWorldRS23;JvSystem;JvStdCtrls;dxRichEditControlRS23;appanalytics;cxPivotGridRS23;dxSkinsdxDLPainterRS23;IndyIPClient;dxRibbonRS23;dxPScxVGridLnkRS23;bindcompvcl;frxDB23;dxSkinOffice2007SilverRS23;advchartdxe9;dxPScxTLLnkRS23;dxMapControlRS23;TeeUI;FMX_FlexCel_Components;JvDocking;JvPascalInterpreter;VclSmp;dxPScxSchedulerLnkRS23;cxTreeListRS23;FireDACODBCDriver;JclVcl;DataSnapIndy10ServerTransport;acntDX10_R;dxRibbonCustomizationFormRS23;dxPSRichEditControlLnkRS23;dxBarExtDBItemsRS23;DataSnapProviderClient;FireDACMongoDBDriver;dxSkiniMaginaryRS23;frx23;JvControls;JvPrintPreview;dxSpellCheckerRS23;dxSkinsdxBarPainterRS23;dxSkinCoffeeRS23;DataSnapServerMidas;RESTComponents;DBXInterBaseDriver;FlexCel_Pdf;FMX_FlexCel_Core;dxADOServerModeRS23;advchartdedxe9;emsclientfiredac;DataSnapFireDAC;svnui;JvGlobus;dxmdsRS23;dxdbtrRS23;dxPSDBTeeChartRS23;dxSkinLiquidSkyRS23;dxSkinSpringTimeRS23;dxPSCoreRS23;dxSkinscxPCPainterRS23;DBXMSSQLDriver;JvMM;dxSkinXmas2008BlueRS23;DatasnapConnectorsFreePascal;bindcompfmx;JvNet;DBXOracleDriver;dxSkinSilverRS23;dxSkinValentineRS23;inetdb;JvAppFrm;CEF4Delphi;dac230;FmxTeeUI;dxBarExtItemsRS23;FireDACIBDriver;fmx;fmxdae;frxDBX23;dxServerModeRS23;dxPsPrVwAdvRS23;dxSkinOffice2010BlackRS23;JvWizards;cxPageControlRS23;dxSkinStardustRS23;cxSchedulerGridRS23;dbexpress;IndyCore;dxSkinSharpPlusRS23;JvPageComps;dsnap;DataSnapCommon;emsclient;FireDACCommon;dxSkinOffice2010BlueRS23;JvDB;dxSkinVS2010RS23;dxSkinMetropolisRS23;DataSnapConnectors;cxVerticalGridRS23;odacvcl230;soapserver;dxSkinCaramelRS23;frxTee23;dxTileControlRS23;JclDeveloperTools;cxGridRS23;CPortLibDXE;FireDACOracleDriver;DBXMySQLDriver;odacfmx230;JvCmp;FixInsight_10;DBXFirebirdDriver;FireDACCommonDriver;inet;IndyIPCommon;JvCustom;dxSkinDarkRoomRS23;dxDockingRS23;vcl;dxSkinOffice2007GreenRS23;JvXPCtrls;dxPScxExtCommonRS23;dxSkinsCoreRS23;FireDACDb2Driver;dxThemeRS23;dxSkinsdxRibbonPainterRS23;dxSkinVisualStudio2013BlueRS23;dacfmx230;madExcept_;dxSkinMoneyTwinsRS23;dxPSdxFCLnkRS23;madBasic_;dxtrmdRS23;TeeDB;FireDAC;AlphaDBDX10;dacvcl230;JvCore;cxSchedulerTreeBrowserRS23;dxFireDACServerModeRS23;dxSkinBlueRS23;JvCrypt;FireDACSqliteDriver;FireDACPgDriver;ibmonitor;FireDACASADriver;oraprov230;cxEditorsRS23;dxSkinGlassOceansRS23;FlexCel_Core;JvDlgs;JvRuntimeDesign;dxGaugeControlRS23;ibxpress;Tee;cxPivotGridOLAPRS23;DataSnapServer;ibxbindings;dxSkinsdxNavBarPainterRS23;dxSkinSharpRS23;vclwinx;FireDACDSDriver;dxSkinBlueprintRS23;madDisAsm_;dxSkinOffice2007BlackRS23;CustomIPTransport;vcldsnap;dxSkinOffice2013LightGrayRS23;bindcomp;DBXInformixDriver;dxPSdxGaugeControlLnkRS23;fsIBX23;dclusr;dxPScxPivotGridLnkRS23;dxorgcRS23;dxPSdxDBTVLnkRS23;vclribbon;dbxcds;frxIBX23;VCL_FlexCel_Core;adortl;FlexCel_Render;dxComnRS23;dsnapxml;dbrtl;inetdbxpress;IndyProtocols;cxExportRS23;LKDUPackage;dxSkinOffice2016DarkRS23;JclContainers;dxSkinVisualStudio2013DarkRS23;dxSkinscxSchedulerPainterRS23;fmxase;$(DCC_UsePackage)</DCC_UsePackage>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(ModuleName);FileDescription=$(ModuleName);ProductName=$(ModuleName)</VerInfo_Keys>
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win64)'!=''">
+        <UWP_DelphiLogo150>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png</UWP_DelphiLogo150>
+        <UWP_DelphiLogo44>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_44.png</UWP_DelphiLogo44>
         <DCC_UsePackage>DBXSqliteDriver;DBXDb2Driver;dxCoreRS23;vclactnband;vclFireDAC;dxPSLnksRS23;dxPSdxLCLnkRS23;tethering;cxDataRS23;dxPSdxOCLnkRS23;dxTabbedMDIRS23;FireDACADSDriver;dxSkinBlackRS23;dxSkinLondonLiquidSkyRS23;dxDBXServerModeRS23;dxHttpIndyRequestRS23;dxPScxGridLnkRS23;cxSchedulerRS23;FireDACMSSQLDriver;vcltouch;vcldb;Intraweb;FlexCel_Report;dxWizardControlRS23;dxPScxCommonRS23;dxSkinMcSkinRS23;dxSkinOffice2007BlueRS23;dxBarRS23;cxSchedulerRibbonStyleEventEditorRS23;dxSkinOffice2013WhiteRS23;dxPSTeeChartRS23;VCL_FlexCel_Components;cxLibraryRS23;dxSkinVisualStudio2013LightRS23;vclib;cxPivotGridChartRS23;dxSkinSummer2008RS23;dxPSdxDBOCLnkRS23;dxGDIPlusRS23;dxSkinDarkSideRS23;FireDACDBXDriver;dxSkinFoggyRS23;dxSkinSevenRS23;vclx;dxSkinOffice2010SilverRS23;dxdborRS23;RESTBackendComponents;dxLayoutControlRS23;dxPSPrVwRibbonRS23;VCLRESTComponents;dxSkinDevExpressStyleRS23;dxSkinWhiteprintRS23;vclie;bindengine;CloudService;FireDACMySQLDriver;dxSkinOffice2013DarkGrayRS23;DataSnapClient;dxPScxPCProdRS23;bindcompdbx;DBXSybaseASEDriver;IndyIPServer;dxSkinPumpkinRS23;PngComponents;IndySystem;dsnapcon;cxTreeListdxBarPopupMenuRS23;FireDACMSAccDriver;fmxFireDAC;FireDACInfxDriver;vclimg;dxSkinLilianRS23;FlexCel_XlsAdapter;dxBarDBNavRS23;TMSDiagram;dxFlowChartRS23;dxSkinOffice2016ColorfulRS23;DBXOdbcDriver;FireDACTDataDriver;FMXTee;soaprtl;DbxCommonDriver;dxSpreadSheetRS23;dxSkinOffice2007PinkRS23;dxPSdxSpreadSheetLnkRS23;xmlrtl;soapmidas;DataSnapNativeClient;fmxobj;dxSkinHighContrastRS23;rtl;dxSkinSevenClassicRS23;DbxClientDriver;dxSkinDevExpressDarkStyleRS23;DBXSybaseASADriver;dxNavBarRS23;dxSkinMetropolisDarkRS23;dxSkinTheAsphaltWorldRS23;dxRichEditControlRS23;appanalytics;cxPivotGridRS23;dxSkinsdxDLPainterRS23;IndyIPClient;dxRibbonRS23;dxPScxVGridLnkRS23;bindcompvcl;dxSkinOffice2007SilverRS23;dxPScxTLLnkRS23;dxMapControlRS23;TeeUI;FMX_FlexCel_Components;VclSmp;dxPScxSchedulerLnkRS23;cxTreeListRS23;FireDACODBCDriver;DataSnapIndy10ServerTransport;dxRibbonCustomizationFormRS23;dxPSRichEditControlLnkRS23;dxBarExtDBItemsRS23;DataSnapProviderClient;FireDACMongoDBDriver;dxSkiniMaginaryRS23;dxSpellCheckerRS23;dxSkinsdxBarPainterRS23;dxSkinCoffeeRS23;DataSnapServerMidas;RESTComponents;DBXInterBaseDriver;FlexCel_Pdf;FMX_FlexCel_Core;dxADOServerModeRS23;emsclientfiredac;DataSnapFireDAC;dxmdsRS23;dxdbtrRS23;dxPSDBTeeChartRS23;dxSkinLiquidSkyRS23;dxSkinSpringTimeRS23;dxPSCoreRS23;dxSkinscxPCPainterRS23;DBXMSSQLDriver;dxSkinXmas2008BlueRS23;DatasnapConnectorsFreePascal;bindcompfmx;DBXOracleDriver;dxSkinSilverRS23;dxSkinValentineRS23;inetdb;FmxTeeUI;dxBarExtItemsRS23;FireDACIBDriver;fmx;fmxdae;dxServerModeRS23;dxPsPrVwAdvRS23;dxSkinOffice2010BlackRS23;cxPageControlRS23;dxSkinStardustRS23;cxSchedulerGridRS23;dbexpress;IndyCore;dxSkinSharpPlusRS23;dsnap;DataSnapCommon;emsclient;FireDACCommon;dxSkinOffice2010BlueRS23;dxSkinVS2010RS23;dxSkinMetropolisRS23;DataSnapConnectors;cxVerticalGridRS23;soapserver;dxSkinCaramelRS23;dxTileControlRS23;cxGridRS23;FireDACOracleDriver;DBXMySQLDriver;DBXFirebirdDriver;FireDACCommonDriver;inet;IndyIPCommon;dxSkinDarkRoomRS23;dxDockingRS23;vcl;dxSkinOffice2007GreenRS23;dxPScxExtCommonRS23;dxSkinsCoreRS23;FireDACDb2Driver;dxThemeRS23;dxSkinsdxRibbonPainterRS23;dxSkinVisualStudio2013BlueRS23;dxSkinMoneyTwinsRS23;dxPSdxFCLnkRS23;dxtrmdRS23;TeeDB;FireDAC;cxSchedulerTreeBrowserRS23;dxFireDACServerModeRS23;dxSkinBlueRS23;FireDACSqliteDriver;FireDACPgDriver;ibmonitor;FireDACASADriver;cxEditorsRS23;dxSkinGlassOceansRS23;FlexCel_Core;dxGaugeControlRS23;ibxpress;Tee;cxPivotGridOLAPRS23;DataSnapServer;ibxbindings;dxSkinsdxNavBarPainterRS23;dxSkinSharpRS23;vclwinx;FireDACDSDriver;dxSkinBlueprintRS23;dxSkinOffice2007BlackRS23;CustomIPTransport;vcldsnap;dxSkinOffice2013LightGrayRS23;bindcomp;DBXInformixDriver;dxPSdxGaugeControlLnkRS23;dxPScxPivotGridLnkRS23;dxorgcRS23;dxPSdxDBTVLnkRS23;vclribbon;dbxcds;VCL_FlexCel_Core;adortl;FlexCel_Render;dxComnRS23;dsnapxml;dbrtl;inetdbxpress;IndyProtocols;cxExportRS23;LKDUPackage;dxSkinOffice2016DarkRS23;dxSkinVisualStudio2013DarkRS23;dxSkinscxSchedulerPainterRS23;fmxase;$(DCC_UsePackage)</DCC_UsePackage>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1)'!=''">
@@ -77,6 +81,7 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+        <BT_BuildType>Debug</BT_BuildType>
         <AppEnableHighDPI>true</AppEnableHighDPI>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
@@ -120,34 +125,19 @@
                     <Source Name="MainSource">Yotm.dpr</Source>
                 </Source>
             </Delphi.Personality>
-            <Deployment Version="2">
+            <Deployment Version="3">
                 <DeployFile LocalName="Win32\Debug\Yotm.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>Yotm.exe</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployClass Name="DependencyModule">
-                    <Platform Name="Win32">
-                        <Operation>0</Operation>
-                        <Extensions>.dll;.bpl</Extensions>
-                    </Platform>
+                <DeployClass Name="ProjectiOSDeviceResourceRules">
                     <Platform Name="iOSDevice64">
                         <Operation>1</Operation>
-                        <Extensions>.dylib</Extensions>
-                    </Platform>
-                    <Platform Name="OSX32">
-                        <RemoteDir>Contents\MacOS</RemoteDir>
-                        <Operation>1</Operation>
-                        <Extensions>.dylib</Extensions>
                     </Platform>
                     <Platform Name="iOSDevice32">
                         <Operation>1</Operation>
-                        <Extensions>.dylib</Extensions>
-                    </Platform>
-                    <Platform Name="iOSSimulator">
-                        <Operation>1</Operation>
-                        <Extensions>.dylib</Extensions>
                     </Platform>
                 </DeployClass>
                 <DeployClass Name="ProjectOSXResource">
@@ -199,17 +189,20 @@
                     </Platform>
                 </DeployClass>
                 <DeployClass Required="true" Name="ProjectOutput">
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
                     <Platform Name="Win32">
                         <Operation>0</Operation>
                     </Platform>
-                    <Platform Name="iOSDevice64">
+                    <Platform Name="Linux64">
                         <Operation>1</Operation>
                     </Platform>
                     <Platform Name="OSX32">
                         <RemoteDir>Contents\MacOS</RemoteDir>
-                        <Operation>1</Operation>
-                    </Platform>
-                    <Platform Name="iOSDevice32">
                         <Operation>1</Operation>
                     </Platform>
                     <Platform Name="Android">
@@ -228,6 +221,14 @@
                         <RemoteDir>Contents\MacOS</RemoteDir>
                         <Operation>1</Operation>
                         <Extensions>.framework</Extensions>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="ProjectUWPManifest">
+                    <Platform Name="Win32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Win64">
+                        <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
                 <DeployClass Name="iPhone_Launch640">
@@ -262,12 +263,7 @@
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
-                <DeployClass Name="AndroidLibnativeX86File">
-                    <Platform Name="Android">
-                        <RemoteDir>library\lib\x86</RemoteDir>
-                        <Operation>1</Operation>
-                    </Platform>
-                </DeployClass>
+                <DeployClass Name="AndroidLibnativeX86File"/>
                 <DeployClass Name="iPhone_Launch320">
                     <Platform Name="iOSSimulator">
                         <Operation>1</Operation>
@@ -348,13 +344,23 @@
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
+                <DeployClass Name="UWP_DelphiLogo44">
+                    <Platform Name="Win32">
+                        <RemoteDir>Assets</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Win64">
+                        <RemoteDir>Assets</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
                 <DeployClass Name="ProjectiOSEntitlements">
                     <Platform Name="iOSDevice64">
-                        <RemoteDir>../</RemoteDir>
+                        <RemoteDir>..\</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
                     <Platform Name="iOSDevice32">
-                        <RemoteDir>../</RemoteDir>
+                        <RemoteDir>..\</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
@@ -378,7 +384,17 @@
                 </DeployClass>
                 <DeployClass Name="ProjectOSXEntitlements">
                     <Platform Name="OSX32">
-                        <RemoteDir>../</RemoteDir>
+                        <RemoteDir>..\</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="UWP_DelphiLogo150">
+                    <Platform Name="Win32">
+                        <RemoteDir>Assets</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Win64">
+                        <RemoteDir>Assets</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
@@ -501,18 +517,34 @@
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
-                <DeployClass Name="ProjectiOSDeviceResourceRules">
+                <DeployClass Name="DependencyModule">
+                    <Platform Name="Win32">
+                        <Operation>0</Operation>
+                        <Extensions>.dll;.bpl</Extensions>
+                    </Platform>
                     <Platform Name="iOSDevice64">
                         <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                    <Platform Name="OSX32">
+                        <RemoteDir>Contents\MacOS</RemoteDir>
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
                     </Platform>
                     <Platform Name="iOSDevice32">
                         <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
                     </Platform>
                 </DeployClass>
                 <ProjectRoot Platform="iOSDevice64" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="Win64" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="iOSDevice32" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="Win32" Name="$(PROJECTNAME)"/>
+                <ProjectRoot Platform="Linux64" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="OSX32" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="Android" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="iOSSimulator" Name="$(PROJECTNAME).app"/>

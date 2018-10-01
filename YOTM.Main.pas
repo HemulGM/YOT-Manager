@@ -5,7 +5,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Direct2D, D2D1, System.Generics.Collections,
-  HGM.Controls.PanelExt, Vcl.ComCtrls;
+  HGM.Controls.PanelExt, Vcl.ComCtrls, System.Types, Vcl.StdCtrls,
+  HGM.Controls.SpinEdit;
 
 type
   TDrawManager = class;
@@ -39,17 +40,24 @@ type
   TForm1 = class(TForm)
     DrawPanel: TDrawPanel;
     Timer1: TTimer;
-    dtpTimeStart: TDateTimePicker;
-    dtpTimeEnd: TDateTimePicker;
+    DateTimePickerStart: TDateTimePicker;
+    DateTimePickerEnd: TDateTimePicker;
+    DateTimePickerCur: TDateTimePicker;
+    Timer2: TTimer;
+    SpinEdit1: TlkSpinEdit;
+    SpinEdit2: TlkSpinEdit;
     procedure Timer1Timer(Sender: TObject);
     procedure DrawPanelPaint(Sender: TObject);
     procedure DrawPanelMouseMove(Sender: TObject; Shift: TShiftState; X,
       Y: Integer);
     procedure FormCreate(Sender: TObject);
-    procedure dtpTimeEndChange(Sender: TObject);
+    procedure DateTimePickerEndChange(Sender: TObject);
+    procedure DateTimePickerCurChange(Sender: TObject);
+    procedure Timer2Timer(Sender: TObject);
   private
     FPanelMouse:TPoint;
     FWorkTimeMin:Integer;
+    FNowTimeMin:Integer;
     ScaleRect:TRect;
   public
     { Public declarations }
@@ -63,6 +71,21 @@ implementation
 
 {$R *.dfm}
 
+function GetMins(Time:TTime):Integer;
+var H, M, S, MSec:Word;
+begin
+ DecodeTime(Time, H, M, S, MSec);
+ Result:=H*60 + M;
+end;
+
+function GetTime(Mins:Integer):TTime;
+var H, M:Word;
+begin
+ H:=Mins div 60;
+ M:=Mins mod 60;
+ Result:=EncodeTime(H, M, 0, 0);
+end;
+
 procedure TForm1.DrawPanelMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
 begin
  FPanelMouse:=Point(X, Y);
@@ -73,7 +96,8 @@ end;
 
 procedure TForm1.DrawPanelPaint(Sender: TObject);
 var CRect, tmpRect:TRect;
-    MPos, MProc, H, M:Integer;
+    MPos, H, M:Integer;
+    MProc:Double;
 begin
  CRect:=DrawPanel.ClientRect;
  with TDirect2DCanvas.Create(DrawPanel.Canvas, DrawPanel.ClientRect) do
@@ -93,8 +117,17 @@ begin
     RoundRect(ScaleRect, ScaleRect.Height, ScaleRect.Height);
 
     Brush.Style:=bsClear;
-    TextOut(ScaleRect.Left - 30, ScaleRect.Top - 20, FormatDateTime('HH:mm', dtpTimeStart.Time));
-    TextOut(ScaleRect.Right, ScaleRect.Top - 20, FormatDateTime('HH:mm', dtpTimeEnd.Time));
+    TextOut(ScaleRect.Left - 30, ScaleRect.Top - 20, FormatDateTime('HH:mm', DateTimePickerStart.Time));
+    TextOut(ScaleRect.Right, ScaleRect.Top - 20, FormatDateTime('HH:mm', DateTimePickerEnd.Time));
+
+    tmpRect:=ScaleRect;
+    tmpRect.Right:=tmpRect.Left +  Round(ScaleRect.Width / 100 * ((FNowTimeMin - GetMins(DateTimePickerStart.Time)) /  (FWorkTimeMin / 100)));
+    Brush.Style:=bsSolid;
+    Brush.Color:=$003C86AB;
+    tmpRect.Width:=Max(tmpRect.Width, tmpRect.Height);
+    RoundRect(tmpRect, tmpRect.Height, tmpRect.Height);
+    Brush.Style:=bsClear;
+    TextOut(tmpRect.Right - 15, tmpRect.Top - 40, FormatDateTime('HH:mm', DateTimePickerCur.Time));
 
     tmpRect:=ScaleRect;
     tmpRect.Inflate(5, 5);
@@ -104,21 +137,28 @@ begin
       MoveTo(MPos, ScaleRect.Top);
       LineTo(MPos, ScaleRect.Top - 20);
 
-      MProc:=MPos - ScaleRect.Left;
-      MProc:= Round(MProc / (ScaleRect.Width / 100));
       Brush.Color:=$0019A0E3;
       tmpRect:=ScaleRect;
       tmpRect.Right:=MPos;
       Brush.Style:=bsSolid;
+      tmpRect.Width:=Max(tmpRect.Width, tmpRect.Height);
       RoundRect(tmpRect, tmpRect.Height, tmpRect.Height);
 
-      H:=Round(MProc * (FWorkTimeMin / 100)) div 60;
-      M:=Trunc(Round(MProc * (FWorkTimeMin / 100)) mod 60 / 10) * 10;
-      Brush.Style:=bsClear;
-      TextOut(MPos - 20, ScaleRect.Top - 40, Format('%d:%d', [H, M]));
-     end;
+      MProc:=MPos - ScaleRect.Left;
+      MProc:=MProc / (ScaleRect.Width / 100);
+      MProc:=MProc * (FWorkTimeMin / 100); //Минуты
 
-    TextOut(0, 0, Format('%d:%d', [FPanelMouse.X, FPanelMouse.Y]));
+      H:=Ceil(MProc) div 60;
+      M:=Trunc(Ceil(MProc) mod 60 / 5) * 5;
+      Brush.Style:=bsClear;
+      TextOut(MPos - 15, ScaleRect.Top - 40, Format('%.2d:%.2d', [H, M]));
+      TextOut(MPos - 15, ScaleRect.Top - 60, FormatDateTime('HH:mm', GetTime(GetMins(DateTimePickerStart.Time) + (H * 60 + M))));
+      TextOut(MPos - 15, ScaleRect.Top - 80, FormatDateTime('HH:mm', GetTime(Abs(GetMins(DateTimePickerCur.Time) - (H * 60 + M) - GetMins(DateTimePickerStart.Time)))));
+     end;
+    tmpRect:=Rect(40, 40, 120, 120);
+    RoundRect(tmpRect, SpinEdit1.Value, SpinEdit2.Value);
+
+    TextOut(10, 0, Format('%d:%d', [FPanelMouse.X, FPanelMouse.Y]));
     //--------------------------------------
    finally
     EndDraw;
@@ -127,25 +167,46 @@ begin
   end;
 end;
 
-procedure TForm1.dtpTimeEndChange(Sender: TObject);
-var H1, H2, M1, M2, S, MSec:Word;
+procedure TForm1.DateTimePickerCurChange(Sender: TObject);
 begin
- DecodeTime(dtpTimeStart.Time, H1, M1, S, MSec);
- DecodeTime(dtpTimeEnd.Time, H2, M2, S, MSec);
- H1:=H1*60 + M1;
- H2:=H2*60 + M2;
- FWorkTimeMin:= H2 - H1;
+ if Frac(DateTimePickerCur.Time) < Frac(DateTimePickerStart.Time) then
+  DateTimePickerCur.Time:=DateTimePickerStart.Time;
+ if Frac(DateTimePickerCur.Time) > Frac(DateTimePickerEnd.Time) then
+  DateTimePickerCur.Time:=DateTimePickerEnd.Time;
+ FNowTimeMin:=GetMins(DateTimePickerCur.Time);
+end;
+
+procedure TForm1.DateTimePickerEndChange(Sender: TObject);
+begin
+ if Frac(DateTimePickerEnd.Time) < Frac(DateTimePickerStart.Time) then
+  DateTimePickerEnd.Time:=DateTimePickerStart.Time
+ else
+  if Frac(DateTimePickerStart.Time) > Frac(DateTimePickerEnd.Time) then
+   DateTimePickerStart.Time:=DateTimePickerEnd.Time;
+ if Frac(DateTimePickerEnd.Time) <= Frac(DateTimePickerStart.Time) then
+  DateTimePickerEnd.Time:=DateTimePickerStart.Time+1/24/60;
+
+ FWorkTimeMin:= Max(1, GetMins(DateTimePickerEnd.Time) - GetMins(DateTimePickerStart.Time));
  Caption:=IntToStr(FWorkTimeMin);
+ DateTimePickerCur.MinDate:=DateTimePickerStart.Time;
+ DateTimePickerCur.MaxDate:=DateTimePickerEnd.Time;
+ DateTimePickerCurChange(nil);
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
- dtpTimeEndChange(nil);
+ DateTimePickerEndChange(nil);
 end;
 
 procedure TForm1.Timer1Timer(Sender: TObject);
 begin
  DrawPanel.Repaint;
+end;
+
+procedure TForm1.Timer2Timer(Sender: TObject);
+begin
+ DateTimePickerCur.Time:=Now;
+ DateTimePickerCurChange(nil);
 end;
 
 { TDrawControl }

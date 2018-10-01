@@ -15,45 +15,83 @@ object Form1: TForm1
   PixelsPerInch = 96
   TextHeight = 13
   object DrawPanel: TDrawPanel
-    Left = 40
-    Top = 80
-    Width = 425
-    Height = 137
+    Left = 0
+    Top = 35
+    Width = 527
+    Height = 211
     Caption = 'DrawPanel'
     DefaultPaint = False
     OnPaint = DrawPanelPaint
+    Align = alBottom
     ParentBackground = False
     TabOrder = 0
     OnMouseMove = DrawPanelMouseMove
   end
-  object dtpTimeStart: TDateTimePicker
+  object DateTimePickerStart: TDateTimePicker
     Left = 8
-    Top = 8
-    Width = 49
-    Height = 21
-    Date = 43371.375000000000000000
-    Format = 'HH:mm'
-    Time = 43371.375000000000000000
-    Kind = dtkTime
-    TabOrder = 1
-    OnChange = dtpTimeEndChange
-  end
-  object dtpTimeEnd: TDateTimePicker
-    Left = 63
     Top = 8
     Width = 50
     Height = 21
-    Date = 43371.750000000000000000
+    Date = 43371.000000000000000000
     Format = 'HH:mm'
-    Time = 43371.750000000000000000
+    Time = 43371.000000000000000000
+    Kind = dtkTime
+    TabOrder = 1
+    OnChange = DateTimePickerEndChange
+  end
+  object DateTimePickerEnd: TDateTimePicker
+    Left = 120
+    Top = 8
+    Width = 50
+    Height = 21
+    Date = 43371.999305555550000000
+    Format = 'HH:mm'
+    Time = 43371.999305555550000000
     Kind = dtkTime
     TabOrder = 2
-    OnChange = dtpTimeEndChange
+    OnChange = DateTimePickerEndChange
+  end
+  object DateTimePickerCur: TDateTimePicker
+    Left = 64
+    Top = 8
+    Width = 50
+    Height = 21
+    Date = 43371.472916666670000000
+    Format = 'HH:mm'
+    Time = 43371.472916666670000000
+    Kind = dtkTime
+    TabOrder = 3
+    OnChange = DateTimePickerCurChange
+  end
+  object SpinEdit1: TlkSpinEdit
+    Left = 192
+    Top = 8
+    Width = 57
+    Height = 21
+    MaxValue = 0
+    MinValue = 0
+    TabOrder = 4
+    Value = 2
+  end
+  object SpinEdit2: TlkSpinEdit
+    Left = 255
+    Top = 8
+    Width = 57
+    Height = 21
+    MaxValue = 0
+    MinValue = 0
+    TabOrder = 5
+    Value = 2
   end
   object Timer1: TTimer
     Interval = 20
     OnTimer = Timer1Timer
     Left = 384
-    Top = 104
+    Top = 56
+  end
+  object Timer2: TTimer
+    OnTimer = Timer2Timer
+    Left = 328
+    Top = 56
   end
 end
