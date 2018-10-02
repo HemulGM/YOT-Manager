@@ -16,25 +16,27 @@ object Form1: TForm1
   TextHeight = 13
   object DrawPanel: TDrawPanel
     Left = 0
-    Top = 35
+    Top = 72
     Width = 527
-    Height = 211
+    Height = 174
     Caption = 'DrawPanel'
     DefaultPaint = False
     OnPaint = DrawPanelPaint
     Align = alBottom
     ParentBackground = False
     TabOrder = 0
+    OnMouseDown = DrawPanelMouseDown
     OnMouseMove = DrawPanelMouseMove
+    OnMouseUp = DrawPanelMouseUp
   end
   object DateTimePickerStart: TDateTimePicker
     Left = 8
     Top = 8
     Width = 50
     Height = 21
-    Date = 43371.000000000000000000
+    Date = 43371.375000000000000000
     Format = 'HH:mm'
-    Time = 43371.000000000000000000
+    Time = 43371.375000000000000000
     Kind = dtkTime
     TabOrder = 1
     OnChange = DateTimePickerEndChange
@@ -44,9 +46,9 @@ object Form1: TForm1
     Top = 8
     Width = 50
     Height = 21
-    Date = 43371.999305555550000000
+    Date = 43371.750000000000000000
     Format = 'HH:mm'
-    Time = 43371.999305555550000000
+    Time = 43371.750000000000000000
     Kind = dtkTime
     TabOrder = 2
     OnChange = DateTimePickerEndChange
@@ -56,9 +58,9 @@ object Form1: TForm1
     Top = 8
     Width = 50
     Height = 21
-    Date = 43371.472916666670000000
+    Date = 43371.472916666680000000
     Format = 'HH:mm'
-    Time = 43371.472916666670000000
+    Time = 43371.472916666680000000
     Kind = dtkTime
     TabOrder = 3
     OnChange = DateTimePickerCurChange
