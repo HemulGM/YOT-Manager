@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Direct2D, D2D1, System.Generics.Collections,
   HGM.Controls.PanelExt, Vcl.ComCtrls, System.Types, Vcl.StdCtrls,
-  HGM.Controls.SpinEdit;
+  HGM.Controls.SpinEdit, Vcl.Grids, HGM.Controls.VirtualTable;
 
 type
   TDrawManager = class;
@@ -38,14 +38,14 @@ type
   end;
 
   TForm1 = class(TForm)
-    DrawPanel: TDrawPanel;
     Timer1: TTimer;
     DateTimePickerStart: TDateTimePicker;
     DateTimePickerEnd: TDateTimePicker;
     DateTimePickerCur: TDateTimePicker;
     Timer2: TTimer;
-    SpinEdit1: TlkSpinEdit;
-    SpinEdit2: TlkSpinEdit;
+    Panel1: TPanel;
+    DrawPanel: TDrawPanel;
+    TableEx1: TTableEx;
     procedure Timer1Timer(Sender: TObject);
     procedure DrawPanelPaint(Sender: TObject);
     procedure DrawPanelMouseMove(Sender: TObject; Shift: TShiftState; X,
@@ -148,7 +148,7 @@ begin
     tmpRect.Width:=Max(tmpRect.Width, tmpRect.Height);
     RoundRect(tmpRect, tmpRect.Height, tmpRect.Height);
     Brush.Style:=bsClear;
-    TextOut(tmpRect.Right - 15, tmpRect.Top - 20, FormatDateTime('HH:mm', DateTimePickerCur.Time));
+    TextOut(tmpRect.Right - 15, tmpRect.Bottom + 5, FormatDateTime('HH:mm', DateTimePickerCur.Time));
 
     tmpRect:=ScaleRect;
     tmpRect.Inflate(5, 5);
