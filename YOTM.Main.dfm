@@ -1,9 +1,10 @@
 object Form1: TForm1
   Left = 0
   Top = 0
+  BorderStyle = bsDialog
   Caption = 'Form1'
-  ClientHeight = 554
-  ClientWidth = 683
+  ClientHeight = 564
+  ClientWidth = 693
   Color = clBtnFace
   DoubleBuffered = True
   Font.Charset = DEFAULT_CHARSET
@@ -12,11 +13,12 @@ object Form1: TForm1
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  Position = poMainFormCenter
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object DateTimePickerStart: TDateTimePicker
-    Left = 8
+    Left = 132
     Top = 8
     Width = 50
     Height = 21
@@ -28,7 +30,7 @@ object Form1: TForm1
     OnChange = DateTimePickerEndChange
   end
   object DateTimePickerEnd: TDateTimePicker
-    Left = 8
+    Left = 132
     Top = 62
     Width = 50
     Height = 21
@@ -40,7 +42,7 @@ object Form1: TForm1
     OnChange = DateTimePickerEndChange
   end
   object DateTimePickerCur: TDateTimePicker
-    Left = 8
+    Left = 132
     Top = 35
     Width = 50
     Height = 21
@@ -52,17 +54,18 @@ object Form1: TForm1
     OnChange = DateTimePickerCurChange
   end
   object Panel1: TPanel
-    Left = 178
+    Left = 188
     Top = 0
     Width = 505
-    Height = 554
+    Height = 564
     Align = alRight
     BevelOuter = bvNone
     TabOrder = 3
-    ExplicitLeft = 208
+    ExplicitLeft = 178
+    ExplicitHeight = 554
     object DrawPanel: TDrawPanel
       Left = 0
-      Top = 374
+      Top = 384
       Width = 505
       Height = 180
       Caption = 'DrawPanel'
@@ -74,17 +77,35 @@ object Form1: TForm1
       OnMouseDown = DrawPanelMouseDown
       OnMouseMove = DrawPanelMouseMove
       OnMouseUp = DrawPanelMouseUp
-      ExplicitTop = 304
+      ExplicitTop = 374
     end
     object TableEx1: TTableEx
       Left = 0
       Top = 0
       Width = 505
-      Height = 374
+      Height = 384
       Align = alClient
       DefaultRowHeight = 25
       TabOrder = 1
       ItemIndex = -1
+      GetData = TableEx1GetData
+      Columns = <
+        item
+          Width = 32
+          MinWidth = 32
+        end
+        item
+          Caption = #1054#1087#1080#1089#1072#1085#1080#1077
+          Width = 150
+          MinWidth = 150
+        end
+        item
+          Caption = #1042#1088#1077#1084#1103
+          Width = 150
+        end
+        item
+          Width = 168
+        end>
       CanNoSelect = False
       ItemCount = 1
       FontHotLine.Charset = DEFAULT_CHARSET
@@ -107,26 +128,17 @@ object Form1: TForm1
       ColumnsFont.Height = -11
       ColumnsFont.Name = 'Tahoma'
       ColumnsFont.Style = []
-      ExplicitLeft = 24
-      ExplicitTop = 56
-      ExplicitWidth = 400
-      ExplicitHeight = 120
-      ColWidths = (
-        512)
-      RowHeights = (
-        30
-        25)
     end
   end
   object Timer1: TTimer
     Interval = 20
     OnTimer = Timer1Timer
-    Left = 104
-    Top = 88
+    Left = 312
+    Top = 456
   end
   object Timer2: TTimer
     OnTimer = Timer2Timer
-    Left = 104
-    Top = 16
+    Left = 400
+    Top = 456
   end
 end

@@ -6,37 +6,9 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Direct2D, D2D1, System.Generics.Collections,
   HGM.Controls.PanelExt, Vcl.ComCtrls, System.Types, Vcl.StdCtrls,
-  HGM.Controls.SpinEdit, Vcl.Grids, HGM.Controls.VirtualTable;
+  HGM.Controls.SpinEdit, Vcl.Grids, HGM.Controls.VirtualTable, YOTM.DB;
 
 type
-  TDrawManager = class;
-
-  TDrawControl = class
-    FSize:TSize;
-    FPos:TPoint;
-    FZ:Integer;
-    FColor:TColor;
-    FOwner:TDrawManager;
-  private
-    function GetRect: TRect;
-   public
-    procedure Paint; virtual;
-    procedure SetData(ASize:TSize; APos:TPoint; AColor:TColor; AZ:Integer); virtual;
-    constructor Create(AOwner:TDrawManager); virtual;
-    property Owner:TDrawManager read FOwner;
-    property FormRect:TRect read GetRect;
-    property Z:Integer read FZ write FZ;
-  end;
-
-  TDrawManager = class(TList<TDrawControl>)
-   private
-    FCanvas:TDirect2DCanvas;
-   public
-    procedure Paint;
-    procedure Sort;
-    property Canvas:TDirect2DCanvas read FCanvas;
-  end;
-
   TForm1 = class(TForm)
     Timer1: TTimer;
     DateTimePickerStart: TDateTimePicker;
@@ -48,16 +20,14 @@ type
     TableEx1: TTableEx;
     procedure Timer1Timer(Sender: TObject);
     procedure DrawPanelPaint(Sender: TObject);
-    procedure DrawPanelMouseMove(Sender: TObject; Shift: TShiftState; X,
-      Y: Integer);
+    procedure DrawPanelMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
     procedure FormCreate(Sender: TObject);
     procedure DateTimePickerEndChange(Sender: TObject);
     procedure DateTimePickerCurChange(Sender: TObject);
     procedure Timer2Timer(Sender: TObject);
-    procedure DrawPanelMouseDown(Sender: TObject; Button: TMouseButton;
-      Shift: TShiftState; X, Y: Integer);
-    procedure DrawPanelMouseUp(Sender: TObject; Button: TMouseButton;
-      Shift: TShiftState; X, Y: Integer);
+    procedure DrawPanelMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure DrawPanelMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure TableEx1GetData(FCol, FRow: Integer; var Value: string);
   private
     FPanelMouse:TPoint;
     FWorkTimeMin:Integer;
@@ -65,6 +35,10 @@ type
     ScaleRect:TRect;
     FPanelMouseDown:Boolean;
     FPanelMouseDownPos:TPoint;
+    FRangeFrom:TTime;
+    FRangeTo:TTime;
+    FDB:TDB;
+    FTimeItems:TTimeItems;
   public
     { Public declarations }
   end;
@@ -106,11 +80,22 @@ begin
  Timer1Timer(nil);
 end;
 
-procedure TForm1.DrawPanelMouseUp(Sender: TObject; Button: TMouseButton;
-  Shift: TShiftState; X, Y: Integer);
+procedure TForm1.DrawPanelMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var Item:TTimeItem;
 begin
- FPanelMouseDown:=False;
- FPanelMouseDownPos:=Point(-1, -1);
+ if FPanelMouseDown then
+  begin
+   FPanelMouseDown:=False;
+   FPanelMouseDownPos:=Point(-1, -1);
+   Item:=TTimeItem.Create(FTimeItems);
+   with Item do
+    begin
+     Description:='';
+     TimeFrom:=FRangeFrom;
+     TimeTo:=FRangeTo;
+    end;
+   FTimeItems.Insert(0, Item);
+  end;
 end;
 
 procedure TForm1.DrawPanelPaint(Sender: TObject);
@@ -197,6 +182,8 @@ begin
        H:=Ceil(MProc) div 60;
        M:=Trunc(Ceil(MProc) mod 60 / 5) * 5;
        KeepTime:=GetTime(GetMins(DateTimePickerStart.Time) + (H * 60 + M));
+       FRangeFrom:=KeepTime;
+       FRangeTo:=SelTime;
        TextOut(MPos - 15, ScaleRect.Top - 100, FormatDateTime('HH:mm - ', KeepTime)+FormatDateTime('HH:mm - выбрано', SelTime));
       end;
      end;
@@ -237,7 +224,19 @@ end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
+ FDB:=TDB.Create(ExtractFilePath(ParamStr(0))+'\data.db');
+ FTimeItems:=TTimeItems.Create(FDB, TableEx1);
  DateTimePickerEndChange(nil);
+end;
+
+procedure TForm1.TableEx1GetData(FCol, FRow: Integer; var Value: string);
+begin
+ if not IndexInList(FRow, FTimeItems.Count) then Exit;
+ Value:='';
+ case FCol of
+  1:Value:=FTimeItems[FRow].Description;
+  2:Value:=FormatDateTime('HH:mm', FTimeItems[FRow].TimeFrom)+' - '+FormatDateTime('HH:mm', FTimeItems[FRow].TimeTo);
+ end;
 end;
 
 procedure TForm1.Timer1Timer(Sender: TObject);
@@ -249,59 +248,6 @@ procedure TForm1.Timer2Timer(Sender: TObject);
 begin
  DateTimePickerCur.Time:=Now;
  DateTimePickerCurChange(nil);
-end;
-
-{ TDrawControl }
-
-constructor TDrawControl.Create(AOwner: TDrawManager);
-begin
- FOwner:=AOwner;
-end;
-
-function TDrawControl.GetRect: TRect;
-begin
- Result:=Rect(0, 0, FSize.Width, FSize.Height);
- Result.Offset(FPos);
-end;
-
-procedure TDrawControl.Paint;
-begin
- with Owner.Canvas do
-  begin
-   Brush.Color:=FColor;
-   Pen.Color:=Brush.Color;
-   FillRect(FormRect);
-  end;
-end;
-
-procedure TDrawControl.SetData(ASize:TSize; APos:TPoint; AColor:TColor; AZ:Integer);
-begin
- FSize:=ASize;
- FPos:=APos;
- FColor:=AColor;
- FZ:=AZ;
-end;
-
-{ TDrawManager }
-
-procedure TDrawManager.Paint;
-var i:Integer;
-begin
- for i:= 0 to Count-1 do Items[i].Paint;
-end;
-
-procedure TDrawManager.Sort;
-var i, j:Integer;
-    tmp:TDrawControl;
-begin
- for i:= 0 to Count-2 do
-  for j := i+1 to Count-1 do
-   if Items[i].Z > Items[j].Z then
-    begin
-     tmp:=Items[i];
-     Items[i]:=Items[j];
-     Items[j]:=tmp;
-    end;
 end;
 
 end.
