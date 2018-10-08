@@ -6,7 +6,8 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Direct2D, D2D1, System.Generics.Collections,
   HGM.Controls.PanelExt, Vcl.ComCtrls, System.Types, Vcl.StdCtrls,
-  HGM.Controls.SpinEdit, Vcl.Grids, HGM.Controls.VirtualTable, YOTM.DB;
+  HGM.Controls.SpinEdit, Vcl.Grids, HGM.Controls.VirtualTable, YOTM.DB,
+  System.ImageList, Vcl.ImgList, HGM.Button, sPanel;
 
 type
   TForm1 = class(TForm)
@@ -18,6 +19,9 @@ type
     Panel1: TPanel;
     DrawPanel: TDrawPanel;
     TableEx1: TTableEx;
+    ImageList1: TImageList;
+    sDragBar1: TsDragBar;
+    ButtonFlat1: TButtonFlat;
     procedure Timer1Timer(Sender: TObject);
     procedure DrawPanelPaint(Sender: TObject);
     procedure DrawPanelMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
@@ -28,6 +32,8 @@ type
     procedure DrawPanelMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure DrawPanelMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure TableEx1GetData(FCol, FRow: Integer; var Value: string);
+    procedure ButtonFlat1Click(Sender: TObject);
+    procedure FormPaint(Sender: TObject);
   private
     FPanelMouse:TPoint;
     FWorkTimeMin:Integer;
@@ -47,7 +53,7 @@ var
   Form1: TForm1;
 
 implementation
- uses Math;
+ uses Math, YOTM.InputItem;
 
 {$R *.dfm}
 
@@ -90,11 +96,16 @@ begin
    Item:=TTimeItem.Create(FTimeItems);
    with Item do
     begin
-     Description:='';
      TimeFrom:=FRangeFrom;
      TimeTo:=FRangeTo;
+     Description:='';
     end;
-   FTimeItems.Insert(0, Item);
+   if FormInputText.ShowModal = mrOK then
+    begin
+     Item.Description:=FormInputText.EditText.Text;
+     FTimeItems.Insert(0, Item);
+    end
+   else Item.Free;
   end;
 end;
 
@@ -196,6 +207,11 @@ begin
   end;
 end;
 
+procedure TForm1.ButtonFlat1Click(Sender: TObject);
+begin
+ Close;
+end;
+
 procedure TForm1.DateTimePickerCurChange(Sender: TObject);
 begin
  if Frac(DateTimePickerCur.Time) < Frac(DateTimePickerStart.Time) then
@@ -227,6 +243,13 @@ begin
  FDB:=TDB.Create(ExtractFilePath(ParamStr(0))+'\data.db');
  FTimeItems:=TTimeItems.Create(FDB, TableEx1);
  DateTimePickerEndChange(nil);
+end;
+
+procedure TForm1.FormPaint(Sender: TObject);
+begin
+ Canvas.Pen.Color:=$00DBDBDB;
+ Canvas.Pen.Width:=3;
+ Canvas.Rectangle(ClientRect);
 end;
 
 procedure TForm1.TableEx1GetData(FCol, FRow: Integer; var Value: string);
