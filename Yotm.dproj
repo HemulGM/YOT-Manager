@@ -111,7 +111,6 @@
         <DCCReference Include="..\SQLite\SQLiteHGM.pas"/>
         <DCCReference Include="YOTM.InputItem.pas">
             <Form>FormInputText</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>

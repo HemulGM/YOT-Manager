@@ -58,6 +58,7 @@ interface
      constructor Create(ADataBase:TDB; ATableEx:TTableEx);
      procedure Reload(Date:TDate);
      procedure Update(Index: Integer);
+     procedure Delete(Index: Integer); override;
      procedure Save;
      property DataBase:TDB read FDataBase write SetDataBase;
    end;
@@ -135,6 +136,17 @@ begin
    end;
 end;
 
+procedure TTimeItems.Delete(Index: Integer);
+begin
+ with SQL.Delete(tnTable) do
+  begin
+   WhereFieldEqual(fnID, Items[Index].ID);
+   DataBase.DB.ExecSQL(GetSQL);
+   EndCreate;
+  end;
+ inherited;
+end;
+
 procedure TTimeItems.Reload;
 var Table:TSQLiteTable;
     Item:TTimeItem;
@@ -150,6 +162,7 @@ begin
     AddField(fnTimeTo);
     AddField(fnDate);
     WhereFieldEqual(fnDate, Trunc(Date));
+    OrderBy(fnTimeFrom, True);
     Table:=FDataBase.DB.GetTable(GetSQL);
     Table.MoveFirst;
     while not Table.EOF do

@@ -4,7 +4,7 @@ object Form1: TForm1
   BorderStyle = bsNone
   Caption = 'Form1'
   ClientHeight = 592
-  ClientWidth = 514
+  ClientWidth = 432
   Color = clWhite
   DoubleBuffered = True
   Font.Charset = DEFAULT_CHARSET
@@ -25,19 +25,16 @@ object Form1: TForm1
   object Panel1: TPanel
     Left = 2
     Top = 41
-    Width = 510
+    Width = 428
     Height = 549
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitLeft = 192
-    ExplicitTop = 29
-    ExplicitWidth = 505
-    ExplicitHeight = 561
+    ExplicitWidth = 510
     object DrawPanel: TDrawPanel
       Left = 0
       Top = 369
-      Width = 510
+      Width = 428
       Height = 180
       Caption = 'DrawPanel'
       DefaultPaint = False
@@ -48,9 +45,7 @@ object Form1: TForm1
       OnMouseDown = DrawPanelMouseDown
       OnMouseMove = DrawPanelMouseMove
       OnMouseUp = DrawPanelMouseUp
-      ExplicitLeft = -112
-      ExplicitTop = 173
-      ExplicitWidth = 505
+      ExplicitWidth = 510
       object DateTimePickerCur: TDateTimePicker
         Left = 62
         Top = 6
@@ -91,18 +86,20 @@ object Form1: TForm1
     object TableEx1: TTableEx
       Left = 0
       Top = 0
-      Width = 510
+      Width = 428
       Height = 369
       Align = alClient
       BorderStyle = bsNone
       DefaultRowHeight = 25
       TabOrder = 1
       ItemIndex = -1
+      OnItemColClick = TableEx1ItemColClick
       GetData = TableEx1GetData
       Columns = <
         item
           Width = 32
           MinWidth = 32
+          AsButton = True
         end
         item
           Caption = #1042#1088#1077#1084#1103
@@ -110,9 +107,10 @@ object Form1: TForm1
         end
         item
           Caption = #1054#1087#1080#1089#1072#1085#1080#1077
-          Width = 150
+          Width = 296
           MinWidth = 150
         end>
+      CanNoSelect = False
       ItemCount = 1
       ColumnsColor = clWhite
       FontHotLine.Charset = DEFAULT_CHARSET
@@ -141,7 +139,7 @@ object Form1: TForm1
   object sDragBar1: TsDragBar
     Left = 2
     Top = 2
-    Width = 510
+    Width = 428
     Height = 39
     Cursor = crHandPoint
     SkinData.SkinSection = 'DRAGBAR'
@@ -152,10 +150,10 @@ object Form1: TForm1
     ParentBackground = False
     TabOrder = 1
     DraggedControl = Owner
-    ExplicitWidth = 675
+    ExplicitWidth = 510
     object ButtonFlat1: TButtonFlat
       AlignWithMargins = True
-      Left = 476
+      Left = 394
       Top = 3
       Width = 31
       Height = 31
@@ -188,11 +186,11 @@ object Form1: TForm1
       TabOrder = 0
       TabStop = True
       TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-      ExplicitLeft = 647
+      ExplicitLeft = 476
     end
     object Calendar: TCalendarPicker
       AlignWithMargins = True
-      Left = 330
+      Left = 248
       Top = 3
       Height = 31
       Align = alRight
@@ -216,8 +214,7 @@ object Form1: TForm1
       ParentFont = False
       TabOrder = 1
       TextHint = 'select a date'
-      ExplicitLeft = 532
-      ExplicitTop = 2
+      ExplicitLeft = 330
     end
     object ButtonFlat2: TButtonFlat
       AlignWithMargins = True
@@ -253,8 +250,6 @@ object Form1: TForm1
       TabOrder = 2
       TabStop = True
       TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-      ExplicitLeft = 6
-      ExplicitHeight = 30
     end
     object ButtonFlat3: TButtonFlat
       AlignWithMargins = True
@@ -289,29 +284,27 @@ object Form1: TForm1
       TabOrder = 3
       TabStop = True
       TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-      ExplicitLeft = 6
-      ExplicitHeight = 30
     end
   end
   object Timer1: TTimer
     Interval = 20
     OnTimer = Timer1Timer
-    Left = 608
-    Top = 208
+    Left = 80
+    Top = 200
   end
   object Timer2: TTimer
     OnTimer = Timer2Timer
-    Left = 608
-    Top = 280
+    Left = 80
+    Top = 272
   end
   object ImageList1: TImageList
     ColorDepth = cd32Bit
     Height = 24
     Width = 24
-    Left = 604
-    Top = 136
+    Left = 76
+    Top = 128
     Bitmap = {
-      494C010102000800280018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C0101020008002C0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000001800000001002000000000000024
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

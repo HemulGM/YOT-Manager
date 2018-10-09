@@ -46,6 +46,8 @@ type
     procedure CalendarChange(Sender: TObject);
     procedure ButtonFlat3Click(Sender: TObject);
     procedure ButtonFlat2Click(Sender: TObject);
+    procedure TableEx1ItemColClick(Sender: TObject; MouseButton: TMouseButton;
+      const Index: Integer);
   private
     FPanelMouse:TPoint;
     FWorkTimeMin:Integer;
@@ -312,6 +314,7 @@ end;
 
 procedure TForm1.ButtonFlat3Click(Sender: TObject);
 begin
+ if FDoTimeSection then Exit;
  CurrentDate:=Now;
  FNewTStart:=Frac(Now);
  FNewTEnd:=FNewTStart;
@@ -384,6 +387,15 @@ begin
  end;
 end;
 
+procedure TForm1.TableEx1ItemColClick(Sender: TObject; MouseButton: TMouseButton; const Index: Integer);
+begin
+ if not IndexInList(TableEx1.ItemIndex, FTimeItems.Count) then Exit;
+ if not IndexInList(Index, TableEx1.Columns.Count) then Exit;
+ case Index of
+  0: FTimeItems.Delete(TableEx1.ItemIndex);
+ end;
+end;
+
 procedure TForm1.Timer1Timer(Sender: TObject);
 begin
  DrawPanel.Repaint;
@@ -395,6 +407,7 @@ begin
  DateTimePickerCurChange(nil);
  if FDoTimeSection then
   begin
+   ButtonFlat3.Caption:=FormatDateTime('HH:mm:ss', FNewTEnd-FNewTStart);
    FNewTEnd:=Frac(Now);
   end;
 end;
