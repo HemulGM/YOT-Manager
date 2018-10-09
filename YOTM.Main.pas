@@ -48,6 +48,8 @@ type
     procedure ButtonFlat2Click(Sender: TObject);
     procedure TableEx1ItemColClick(Sender: TObject; MouseButton: TMouseButton;
       const Index: Integer);
+    procedure TableEx1DrawCellData(Sender: TObject; ACol, ARow: Integer;
+      Rect: TRect; State: TGridDrawState);
   private
     FPanelMouse:TPoint;
     FWorkTimeMin:Integer;
@@ -290,6 +292,7 @@ var Item:TTimeItem;
 begin
  if FDoTimeSection then
   begin
+   ButtonFlat3.Caption:='Начать';
    FDoTimeSection:=False;
    FNewTEnd:=Frac(Now);
    FPanelMouseDown:=False;
@@ -375,6 +378,15 @@ begin
  FCurrentDate:=Value;
  Calendar.Date:=FCurrentDate;
  FTimeItems.Reload(FCurrentDate);
+end;
+
+procedure TForm1.TableEx1DrawCellData(Sender: TObject; ACol, ARow: Integer;
+  Rect: TRect; State: TGridDrawState);
+begin
+ if not IndexInList(ARow, FTimeItems.Count) then Exit;
+ if ACol <> 0 then Exit;
+ if (not (gdHotTrack in State)) and (ARow <> TableEx1.ItemIndex) then Exit;
+ ImageList1.Draw(TableEx1.Canvas, Rect.Left + (Rect.Width div 2 - 24 div 2), Rect.Top, 2, True);
 end;
 
 procedure TForm1.TableEx1GetData(FCol, FRow: Integer; var Value: string);
