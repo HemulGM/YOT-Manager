@@ -7,14 +7,17 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Direct2D, D2D1, System.Generics.Collections,
   HGM.Controls.PanelExt, Vcl.ComCtrls, System.Types, Vcl.StdCtrls,
   HGM.Controls.SpinEdit, Vcl.Grids, HGM.Controls.VirtualTable, YOTM.DB,
-  System.ImageList, Vcl.ImgList, HGM.Button, sPanel;
+  System.ImageList, Vcl.ImgList, HGM.Button, sPanel, Vcl.WinXCalendars;
 
 type
+  TTimeSection = record
+   TimeS, TimeE:TTime;
+  end;
+
+  TTimeSections = TList<TTimeSection>;
+
   TForm1 = class(TForm)
     Timer1: TTimer;
-    DateTimePickerStart: TDateTimePicker;
-    DateTimePickerEnd: TDateTimePicker;
-    DateTimePickerCur: TDateTimePicker;
     Timer2: TTimer;
     Panel1: TPanel;
     DrawPanel: TDrawPanel;
@@ -22,6 +25,12 @@ type
     ImageList1: TImageList;
     sDragBar1: TsDragBar;
     ButtonFlat1: TButtonFlat;
+    DateTimePickerCur: TDateTimePicker;
+    DateTimePickerEnd: TDateTimePicker;
+    DateTimePickerStart: TDateTimePicker;
+    Calendar: TCalendarPicker;
+    ButtonFlat2: TButtonFlat;
+    ButtonFlat3: TButtonFlat;
     procedure Timer1Timer(Sender: TObject);
     procedure DrawPanelPaint(Sender: TObject);
     procedure DrawPanelMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
@@ -34,6 +43,9 @@ type
     procedure TableEx1GetData(FCol, FRow: Integer; var Value: string);
     procedure ButtonFlat1Click(Sender: TObject);
     procedure FormPaint(Sender: TObject);
+    procedure CalendarChange(Sender: TObject);
+    procedure ButtonFlat3Click(Sender: TObject);
+    procedure ButtonFlat2Click(Sender: TObject);
   private
     FPanelMouse:TPoint;
     FWorkTimeMin:Integer;
@@ -45,8 +57,15 @@ type
     FRangeTo:TTime;
     FDB:TDB;
     FTimeItems:TTimeItems;
+    FCurrentDate: TDate;
+    FTimeSections:TTimeSections;
+    FDoTimeSection:Boolean;
+    FNewTStart:TTime;
+    FNewTEnd:TTime;
+    FTimeItemUnderCursor:Integer;
+    procedure SetCurrentDate(const Value: TDate);
   public
-    { Public declarations }
+    property CurrentDate:TDate read FCurrentDate write SetCurrentDate;
   end;
 
 var
@@ -91,11 +110,19 @@ var Item:TTimeItem;
 begin
  if FPanelMouseDown then
   begin
+
    FPanelMouseDown:=False;
    FPanelMouseDownPos:=Point(-1, -1);
+   if FRangeFrom = FRangeTo then
+    begin
+     if IndexInList(FTimeItemUnderCursor, FTimeItems.Count) then
+      TableEx1.ItemIndex:=FTimeItemUnderCursor;
+     Exit;
+    end;
    Item:=TTimeItem.Create(FTimeItems);
    with Item do
     begin
+     Date:=Trunc(CurrentDate);
      TimeFrom:=FRangeFrom;
      TimeTo:=FRangeTo;
      Description:='';
@@ -104,14 +131,15 @@ begin
     begin
      Item.Description:=FormInputText.EditText.Text;
      FTimeItems.Insert(0, Item);
+     FTimeItems.Update(0);
     end
    else Item.Free;
   end;
 end;
 
 procedure TForm1.DrawPanelPaint(Sender: TObject);
-var CRect, tmpRect:TRect;
-    MPos, H, M:Integer;
+var CRect, tmpRect, txtRect:TRect;
+    MPos, H, M, i, LastLeft, LastTextWidth:Integer;
     MProc:Double;
     SelTime:TTime;
     KeepTime:TTime;
@@ -121,7 +149,7 @@ begin
   begin
    BeginDraw;
    try
-    Brush.Color:=$0043B6E3;
+    Brush.Color:=clWhite;//$0043B6E3;
     FillRect(CRect);
     //--------------------------------------
     ScaleRect.Left:=50;
@@ -145,7 +173,50 @@ begin
     RoundRect(tmpRect, tmpRect.Height, tmpRect.Height);
     Brush.Style:=bsClear;
     TextOut(tmpRect.Right - 15, tmpRect.Bottom + 5, FormatDateTime('HH:mm', DateTimePickerCur.Time));
+    //Временные отрезки
+    LastLeft:=-1;
+    FTimeItemUnderCursor:=-1;
+    for i:= 0 to FTimeItems.Count-1 do
+     begin
+      if i <> TableEx1.ItemIndex then
+       Brush.Color:=$0019A0E3
+      else Brush.Color:=$0046E3CC;
+      tmpRect:=ScaleRect;
+      tmpRect.Left:=ScaleRect.Left + Round(ScaleRect.Width / 100 * ((GetMins(FTimeItems[i].TimeFrom) - GetMins(DateTimePickerStart.Time)) /  (FWorkTimeMin / 100)));
+      tmpRect.Right:=ScaleRect.Left + Round(ScaleRect.Width / 100 * ((GetMins(FTimeItems[i].TimeTo) - GetMins(DateTimePickerStart.Time)) /  (FWorkTimeMin / 100)));
+      tmpRect.Inflate(0, -3);
+      if tmpRect.Left <= ScaleRect.Left+3 then tmpRect.Left:=ScaleRect.Left+3;
+      if tmpRect.Right >= ScaleRect.Right-3 then tmpRect.Right:=ScaleRect.Right-3;
 
+      Brush.Style:=bsSolid;
+      RoundRect(tmpRect, tmpRect.Height, tmpRect.Height);
+      if tmpRect.Contains(FPanelMouse) then
+       begin
+        FTimeItemUnderCursor:=i;
+        if LastLeft = -1 then LastLeft:=5
+        else LastLeft:=LastLeft + LastTextWidth;
+        LastTextWidth:=TextWidth(FTimeItems[i].Description) + 10;
+        txtRect:=Rect(LastLeft, ScaleRect.Bottom + 20, LastLeft + LastTextWidth, ScaleRect.Bottom + 20 + 20);
+        RoundRect(txtRect, txtRect.Height, txtRect.Height);
+        Brush.Style:=bsClear;
+        TextOut(LastLeft+5, tmpRect.Bottom + 5 + 21, FTimeItems[i].Description);
+       end;
+     end;
+    //Текущая задача
+    if FDoTimeSection then
+     begin
+      Brush.Color:=$0055E5FE;
+      tmpRect:=ScaleRect;
+      tmpRect.Left:=ScaleRect.Left + Round(ScaleRect.Width / 100 * ((GetMins(FNewTStart) - GetMins(DateTimePickerStart.Time)) /  (FWorkTimeMin / 100)));
+      tmpRect.Right:=ScaleRect.Left + Round(ScaleRect.Width / 100 * ((GetMins(FNewTEnd) - GetMins(DateTimePickerStart.Time)) /  (FWorkTimeMin / 100)));
+      tmpRect.Inflate(0, -3);
+      if tmpRect.Left <= ScaleRect.Left+3 then tmpRect.Left:=ScaleRect.Left+3;
+      if tmpRect.Right >= ScaleRect.Right-3 then tmpRect.Right:=ScaleRect.Right-3;
+
+      Brush.Style:=bsSolid;
+      RoundRect(tmpRect, tmpRect.Height, tmpRect.Height);
+     end;
+    //Текущий выбор
     tmpRect:=ScaleRect;
     tmpRect.Inflate(5, 5);
     if tmpRect.Contains(FPanelMouse) or FPanelMouseDown then
@@ -185,18 +256,18 @@ begin
       TextOut(MPos - 15, ScaleRect.Top - 60, FormatDateTime('HH:mm - указано', SelTime));
       TextOut(MPos - 15, ScaleRect.Top - 80, FormatDateTime('HH:mm - разница с текущим', GetTime(Abs(GetMins(DateTimePickerCur.Time) - (H * 60 + M) - GetMins(DateTimePickerStart.Time)))));
       if FPanelMouseDown then
-      begin
-       MProc:=FPanelMouseDownPos.X - ScaleRect.Left;
-       MProc:=MProc / (ScaleRect.Width / 100);
-       MProc:=MProc * (FWorkTimeMin / 100); //Минуты
+       begin
+        MProc:=FPanelMouseDownPos.X - ScaleRect.Left;
+        MProc:=MProc / (ScaleRect.Width / 100);
+        MProc:=MProc * (FWorkTimeMin / 100); //Минуты
 
-       H:=Ceil(MProc) div 60;
-       M:=Trunc(Ceil(MProc) mod 60 / 5) * 5;
-       KeepTime:=GetTime(GetMins(DateTimePickerStart.Time) + (H * 60 + M));
-       FRangeFrom:=KeepTime;
-       FRangeTo:=SelTime;
-       TextOut(MPos - 15, ScaleRect.Top - 100, FormatDateTime('HH:mm - ', KeepTime)+FormatDateTime('HH:mm - выбрано', SelTime));
-      end;
+        H:=Ceil(MProc) div 60;
+        M:=Trunc(Ceil(MProc) mod 60 / 5) * 5;
+        KeepTime:=GetTime(GetMins(DateTimePickerStart.Time) + (H * 60 + M));
+        FRangeFrom:=KeepTime;
+        FRangeTo:=SelTime;
+        TextOut(MPos - 15, ScaleRect.Top - 100, FormatDateTime('HH:mm - ', KeepTime)+FormatDateTime('HH:mm - выбрано', SelTime));
+       end;
      end;
     //TextOut(10, 0, Format('%d:%d', [FPanelMouse.X, FPanelMouse.Y]));
     //--------------------------------------
@@ -210,6 +281,46 @@ end;
 procedure TForm1.ButtonFlat1Click(Sender: TObject);
 begin
  Close;
+end;
+
+procedure TForm1.ButtonFlat2Click(Sender: TObject);
+var Item:TTimeItem;
+begin
+ if FDoTimeSection then
+  begin
+   FDoTimeSection:=False;
+   FNewTEnd:=Frac(Now);
+   FPanelMouseDown:=False;
+   FPanelMouseDownPos:=Point(-1, -1);
+   Item:=TTimeItem.Create(FTimeItems);
+   with Item do
+    begin
+     Date:=Trunc(Now);
+     TimeFrom:=FNewTStart;
+     TimeTo:=FNewTEnd;
+     Description:='';
+    end;
+   if FormInputText.ShowModal = mrOK then
+    begin
+     Item.Description:=FormInputText.EditText.Text;
+     FTimeItems.Insert(0, Item);
+     FTimeItems.Update(0);
+    end
+   else Item.Free;
+  end;
+end;
+
+procedure TForm1.ButtonFlat3Click(Sender: TObject);
+begin
+ CurrentDate:=Now;
+ FNewTStart:=Frac(Now);
+ FNewTEnd:=FNewTStart;
+ FDoTimeSection:=True;
+end;
+
+procedure TForm1.CalendarChange(Sender: TObject);
+begin
+ CurrentDate:=Calendar.Date;
 end;
 
 procedure TForm1.DateTimePickerCurChange(Sender: TObject);
@@ -238,18 +349,29 @@ begin
  DateTimePickerCurChange(nil);
 end;
 
+//procedure
+
 procedure TForm1.FormCreate(Sender: TObject);
 begin
  FDB:=TDB.Create(ExtractFilePath(ParamStr(0))+'\data.db');
  FTimeItems:=TTimeItems.Create(FDB, TableEx1);
+ CurrentDate:=Now;
  DateTimePickerEndChange(nil);
+ FDoTimeSection:=False;
 end;
 
 procedure TForm1.FormPaint(Sender: TObject);
 begin
- Canvas.Pen.Color:=$00DBDBDB;
+ Canvas.Pen.Color:=$00ADADAD;
  Canvas.Pen.Width:=3;
  Canvas.Rectangle(ClientRect);
+end;
+
+procedure TForm1.SetCurrentDate(const Value: TDate);
+begin
+ FCurrentDate:=Value;
+ Calendar.Date:=FCurrentDate;
+ FTimeItems.Reload(FCurrentDate);
 end;
 
 procedure TForm1.TableEx1GetData(FCol, FRow: Integer; var Value: string);
@@ -257,8 +379,8 @@ begin
  if not IndexInList(FRow, FTimeItems.Count) then Exit;
  Value:='';
  case FCol of
-  1:Value:=FTimeItems[FRow].Description;
-  2:Value:=FormatDateTime('HH:mm', FTimeItems[FRow].TimeFrom)+' - '+FormatDateTime('HH:mm', FTimeItems[FRow].TimeTo);
+  1:Value:=FormatDateTime('HH:mm', FTimeItems[FRow].TimeFrom)+' - '+FormatDateTime('HH:mm', FTimeItems[FRow].TimeTo);
+  2:Value:=FTimeItems[FRow].Description;
  end;
 end;
 
@@ -271,6 +393,10 @@ procedure TForm1.Timer2Timer(Sender: TObject);
 begin
  DateTimePickerCur.Time:=Now;
  DateTimePickerCurChange(nil);
+ if FDoTimeSection then
+  begin
+   FNewTEnd:=Frac(Now);
+  end;
 end;
 
 end.

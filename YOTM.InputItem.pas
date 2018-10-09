@@ -50,7 +50,7 @@ end;
 
 procedure TFormInputText.FormPaint(Sender: TObject);
 begin
- Canvas.Pen.Color:=$00DBDBDB;
+ Canvas.Pen.Color:=$00ADADAD;
  Canvas.Pen.Width:=3;
  Canvas.Rectangle(ClientRect);
 end;

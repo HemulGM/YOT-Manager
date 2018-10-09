@@ -16,6 +16,7 @@ object FormInputText: TFormInputText
   Padding.Right = 2
   Padding.Bottom = 2
   OldCreateOrder = False
+  Position = poMainFormCenter
   OnPaint = FormPaint
   PixelsPerInch = 96
   TextHeight = 16
@@ -25,13 +26,14 @@ object FormInputText: TFormInputText
     Width = 413
     Height = 27
     Cursor = crHandPoint
+    SkinData.SkinSection = 'DRAGBAR'
     BevelOuter = bvNone
     Caption = ' '
     Color = 14408667
     Padding.Bottom = 2
     ParentBackground = False
     TabOrder = 2
-    SkinData.SkinSection = 'DRAGBAR'
+    DraggedControl = Owner
     object Label1: TLabel
       AlignWithMargins = True
       Left = 3
@@ -41,8 +43,6 @@ object FormInputText: TFormInputText
       Align = alLeft
       Caption = #1042#1074#1077#1076#1080#1090#1077' '#1086#1087#1080#1089#1072#1085#1080#1077
       Layout = tlCenter
-      ExplicitLeft = 0
-      ExplicitTop = 0
       ExplicitHeight = 16
     end
     object ButtonFlat1: TButtonFlat
@@ -80,27 +80,23 @@ object FormInputText: TFormInputText
       TabOrder = 0
       TabStop = True
       TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-      ExplicitLeft = 376
     end
   end
   object Panel1: TPanel
     Left = 2
-    Top = 128
+    Top = 134
     Width = 413
-    Height = 41
+    Height = 35
     Align = alBottom
     BevelOuter = bvNone
     Color = 14408667
     ParentBackground = False
     TabOrder = 1
-    ExplicitLeft = 88
-    ExplicitTop = 160
-    ExplicitWidth = 185
     object ButtonFlat2: TButtonFlat
       Left = 313
       Top = 0
       Width = 100
-      Height = 41
+      Height = 35
       Align = alRight
       Caption = #1054#1090#1084#1077#1085#1072
       ColorNormal = 14408667
@@ -132,18 +128,18 @@ object FormInputText: TFormInputText
       TabOrder = 1
       TabStop = True
       TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-      ExplicitLeft = 319
+      ExplicitHeight = 41
     end
     object ButtonFlat3: TButtonFlat
       Left = 213
       Top = 0
       Width = 100
-      Height = 41
+      Height = 35
       Align = alRight
       Caption = #1054#1082
       ColorNormal = 14408667
-      ColorOver = 3026601
-      ColorPressed = 2237053
+      ColorOver = 3451947
+      ColorPressed = 2850337
       Font.Charset = DEFAULT_CHARSET
       Font.Color = 4737096
       Font.Height = -13
@@ -170,7 +166,7 @@ object FormInputText: TFormInputText
       TabOrder = 0
       TabStop = True
       TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-      ExplicitLeft = 313
+      ExplicitHeight = 41
     end
   end
   object EditText: TEdit
