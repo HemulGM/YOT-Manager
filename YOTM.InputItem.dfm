@@ -26,13 +26,13 @@ object FormInputText: TFormInputText
     Width = 413
     Height = 27
     Cursor = crHandPoint
-    SkinData.SkinSection = 'DRAGBAR'
     BevelOuter = bvNone
     Caption = ' '
     Color = 14408667
     Padding.Bottom = 2
     ParentBackground = False
     TabOrder = 2
+    SkinData.SkinSection = 'DRAGBAR'
     DraggedControl = Owner
     object Label1: TLabel
       AlignWithMargins = True
@@ -73,7 +73,6 @@ object FormInputText: TFormInputText
       IgnorBounds = True
       ImageIndentLeft = 0
       ImageIndex = 0
-      Images = Form1.ImageList1
       OnClick = ButtonFlat1Click
       RoundRectParam = 0
       ShowFocusRect = False
@@ -121,14 +120,14 @@ object FormInputText: TFormInputText
       ImageIndentLeft = 5
       ImageIndentRight = -5
       ImageIndex = 0
-      Images = Form1.ImageList1
+      Images = FormMain.ImageList1
       OnClick = ButtonFlat2Click
       RoundRectParam = 0
       ShowFocusRect = False
       TabOrder = 1
       TabStop = True
       TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-      ExplicitHeight = 41
+      ExplicitLeft = 319
     end
     object ButtonFlat3: TButtonFlat
       Left = 213
@@ -159,14 +158,13 @@ object FormInputText: TFormInputText
       ImageIndentLeft = 5
       ImageIndentRight = -5
       ImageIndex = 1
-      Images = Form1.ImageList1
+      Images = FormMain.ImageList1
       OnClick = ButtonFlat3Click
       RoundRectParam = 0
       ShowFocusRect = False
       TabOrder = 0
       TabStop = True
       TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-      ExplicitHeight = 41
     end
   end
   object EditText: TEdit
