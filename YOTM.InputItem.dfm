@@ -2,13 +2,13 @@ object FormInputText: TFormInputText
   Left = 0
   Top = 0
   BorderStyle = bsNone
-  ClientHeight = 171
+  ClientHeight = 197
   ClientWidth = 417
-  Color = clWhite
+  Color = 3684408
   DoubleBuffered = True
   Font.Charset = DEFAULT_CHARSET
-  Font.Color = clWindowText
-  Font.Height = -13
+  Font.Color = 15724527
+  Font.Height = -16
   Font.Name = 'Tahoma'
   Font.Style = []
   Padding.Left = 2
@@ -19,31 +19,52 @@ object FormInputText: TFormInputText
   Position = poMainFormCenter
   OnPaint = FormPaint
   PixelsPerInch = 96
-  TextHeight = 16
+  TextHeight = 19
+  object Label1: TLabel
+    Left = 165
+    Top = 56
+    Width = 16
+    Height = 19
+    Caption = #8594
+  end
+  object Label2: TLabel
+    Left = 32
+    Top = 56
+    Width = 44
+    Height = 19
+    Caption = #1042#1088#1077#1084#1103
+  end
   object sDragBar1: TsDragBar
     Left = 2
     Top = 2
     Width = 413
     Height = 27
     Cursor = crHandPoint
+    SkinData.SkinSection = 'DRAGBAR'
     BevelOuter = bvNone
     Caption = ' '
-    Color = 14408667
+    Color = 3026478
     Padding.Bottom = 2
     ParentBackground = False
     TabOrder = 2
-    SkinData.SkinSection = 'DRAGBAR'
     DraggedControl = Owner
-    object Label1: TLabel
+    object Label7: TLabel
       AlignWithMargins = True
-      Left = 3
+      Left = 10
       Top = 3
-      Width = 107
+      Width = 120
       Height = 19
+      Margins.Left = 10
       Align = alLeft
-      Caption = #1042#1074#1077#1076#1080#1090#1077' '#1086#1087#1080#1089#1072#1085#1080#1077
+      Caption = #1047#1072#1087#1080#1089#1100' '#1086' '#1088#1072#1073#1086#1090#1077
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = 8947848
+      Font.Height = -16
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      Transparent = True
       Layout = tlCenter
-      ExplicitHeight = 16
     end
     object ButtonFlat1: TButtonFlat
       Left = 388
@@ -52,7 +73,7 @@ object FormInputText: TFormInputText
       Height = 25
       Align = alRight
       Caption = ''
-      ColorNormal = 14408667
+      ColorNormal = 3026478
       ColorOver = 3026601
       ColorPressed = 2237053
       Font.Charset = DEFAULT_CHARSET
@@ -73,6 +94,7 @@ object FormInputText: TFormInputText
       IgnorBounds = True
       ImageIndentLeft = 0
       ImageIndex = 0
+      Images = FormMain.ImageList24
       OnClick = ButtonFlat1Click
       RoundRectParam = 0
       ShowFocusRect = False
@@ -83,26 +105,28 @@ object FormInputText: TFormInputText
   end
   object Panel1: TPanel
     Left = 2
-    Top = 134
+    Top = 160
     Width = 413
     Height = 35
     Align = alBottom
     BevelOuter = bvNone
-    Color = 14408667
+    Color = 3026478
+    Padding.Top = 2
     ParentBackground = False
     TabOrder = 1
+    ExplicitTop = 134
     object ButtonFlat2: TButtonFlat
       Left = 313
-      Top = 0
+      Top = 2
       Width = 100
-      Height = 35
+      Height = 33
       Align = alRight
       Caption = #1054#1090#1084#1077#1085#1072
-      ColorNormal = 14408667
+      ColorNormal = 3026478
       ColorOver = 3026601
       ColorPressed = 2237053
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = 4737096
+      Font.Color = 15724527
       Font.Height = -13
       Font.Name = 'Tahoma'
       Font.Style = []
@@ -120,27 +144,33 @@ object FormInputText: TFormInputText
       ImageIndentLeft = 5
       ImageIndentRight = -5
       ImageIndex = 0
-      Images = FormMain.ImageList1
+      Images = FormMain.ImageList24
       OnClick = ButtonFlat2Click
       RoundRectParam = 0
       ShowFocusRect = False
       TabOrder = 1
       TabStop = True
       TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-      ExplicitLeft = 319
+      ExplicitTop = 0
+      ExplicitHeight = 35
     end
     object ButtonFlat3: TButtonFlat
-      Left = 213
-      Top = 0
+      AlignWithMargins = True
+      Left = 211
+      Top = 2
       Width = 100
-      Height = 35
+      Height = 33
+      Margins.Left = 0
+      Margins.Top = 0
+      Margins.Right = 2
+      Margins.Bottom = 0
       Align = alRight
       Caption = #1054#1082
-      ColorNormal = 14408667
+      ColorNormal = 3026478
       ColorOver = 3451947
       ColorPressed = 2850337
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = 4737096
+      Font.Color = 15724527
       Font.Height = -13
       Font.Name = 'Tahoma'
       Font.Style = []
@@ -158,28 +188,61 @@ object FormInputText: TFormInputText
       ImageIndentLeft = 5
       ImageIndentRight = -5
       ImageIndex = 1
-      Images = FormMain.ImageList1
+      Images = FormMain.ImageList24
       OnClick = ButtonFlat3Click
       RoundRectParam = 0
       ShowFocusRect = False
       TabOrder = 0
       TabStop = True
       TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+      ExplicitLeft = 213
+      ExplicitTop = 0
+      ExplicitHeight = 35
     end
   end
   object EditText: TEdit
     Left = 32
-    Top = 64
+    Top = 96
     Width = 353
     Height = 27
+    BevelInner = bvNone
     BevelKind = bkFlat
+    BevelWidth = 3
     BorderStyle = bsNone
+    Color = 3684408
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
+    Font.Color = 15724527
     Font.Height = -16
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
     TabOrder = 0
+    TextHint = #1058#1077#1082#1089#1090' '#1088#1072#1073#1086#1090#1099
+  end
+  object DateTimePickerFrom: TDateTimePicker
+    Left = 88
+    Top = 52
+    Width = 71
+    Height = 27
+    Date = 43385.591908275460000000
+    Format = 'HH:mm'
+    Time = 43385.591908275460000000
+    Color = 3684408
+    Kind = dtkTime
+    ParentColor = True
+    TabOrder = 3
+  end
+  object DateTimePickerTo: TDateTimePicker
+    Left = 187
+    Top = 52
+    Width = 71
+    Height = 27
+    Date = 43385.591908275460000000
+    Format = 'HH:mm'
+    Time = 43385.591908275460000000
+    Color = 3684408
+    Kind = dtkTime
+    ParentColor = True
+    TabOrder = 4
   end
 end

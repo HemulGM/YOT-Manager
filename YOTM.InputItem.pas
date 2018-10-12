@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, sPanel, YOTM.Main,
-  HGM.Button, Vcl.StdCtrls;
+  HGM.Button, Vcl.StdCtrls, sEdit, sSpinEdit, Vcl.Mask, Vcl.ComCtrls;
 
 type
   TFormInputText = class(TForm)
@@ -15,7 +15,11 @@ type
     EditText: TEdit;
     ButtonFlat2: TButtonFlat;
     ButtonFlat3: TButtonFlat;
+    Label7: TLabel;
     Label1: TLabel;
+    Label2: TLabel;
+    DateTimePickerFrom: TDateTimePicker;
+    DateTimePickerTo: TDateTimePicker;
     procedure FormPaint(Sender: TObject);
     procedure ButtonFlat1Click(Sender: TObject);
     procedure ButtonFlat3Click(Sender: TObject);
@@ -50,7 +54,7 @@ end;
 
 procedure TFormInputText.FormPaint(Sender: TObject);
 begin
- Canvas.Pen.Color:=$00ADADAD;
+ Canvas.Pen.Color:=$002E2E2E;
  Canvas.Pen.Width:=3;
  Canvas.Rectangle(ClientRect);
 end;

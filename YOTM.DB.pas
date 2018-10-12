@@ -70,7 +70,7 @@ interface
    TTaskRepeat = string; //“ут и часы {1..24} и дни недели {1..7} и дни мес€ца {1..31} и мес€цы {1..12}
 
    TTaskItem = class(TObject)
-  private
+   private
     FName: string;
     FDateCreate: TDateTime;
     FDateNotify: TDateTime;
@@ -127,7 +127,7 @@ interface
      procedure SetDataBase(const Value: TDB);
     public
      constructor Create(ADataBase:TDB; ATableEx:TTableEx);
-     procedure Reload(Date:TDate);
+     procedure Reload(Date:TDate = 0);
      procedure Update(Index: Integer);
      procedure Delete(Index: Integer); override;
      procedure Save;
@@ -235,6 +235,7 @@ begin
     WhereFieldEqual(fnDate, Trunc(Date));
     OrderBy(fnTimeFrom, True);
     Table:=FDataBase.DB.GetTable(GetSQL);
+    EndCreate;
     Table.MoveFirst;
     while not Table.EOF do
      begin
@@ -247,7 +248,7 @@ begin
       Add(Item);
       Table.Next;
      end;
-    EndCreate;
+    Table.Free;
    end;
  finally
   EndUpdate;
@@ -277,7 +278,7 @@ begin
     WhereFieldEqual(fnID, Items[Index].ID);
     DataBase.DB.ExecSQL(GetSQL);
     EndCreate;
-   end
+   end;
 end;
 
 procedure TTimeItems.Save;
@@ -369,41 +370,126 @@ begin
  FDataBase:=ADataBase;
  if not FDataBase.DB.TableExists(tnTable) then
   with SQL.CreateTable(tnTable) do
-   begin       {
+   begin
     AddField(fnID, ftInteger, True, True);
+    AddField(fnParent, ftInteger);
+    AddField(fnName, ftString);
     AddField(fnDesc, ftString);
-    AddField(fnTimeFrom, ftDateTime);
-    AddField(fnTimeTo, ftDateTime);
-    AddField(fnDate, ftDateTime);
+    AddField(fnDateCreate, ftDateTime);
+    AddField(fnTaskType, ftInteger);
+    AddField(fnTaskRepeat, ftString);
+    AddField(fnDateDeadline, ftDateTime);
+    AddField(fnDateNotify, ftDateTime);
+    AddField(fnNotifyComplete, ftBoolean);
     FDataBase.DB.ExecSQL(GetSQL);
-    EndCreate;  }
+    EndCreate;
    end;
 end;
 
 procedure TTaskItems.Delete(Index: Integer);
 begin
-  inherited;
-
+ with SQL.Delete(tnTable) do
+  begin
+   WhereFieldEqual(fnID, Items[Index].ID);
+   DataBase.DB.ExecSQL(GetSQL);
+   EndCreate;
+  end;
+ inherited;
 end;
 
-procedure TTaskItems.Reload(Date: TDate);
+procedure TTaskItems.Reload(Date: TDate = 0);
+var Table:TSQLiteTable;
+    Item:TTaskItem;
 begin
-
+ BeginUpdate;
+ Clear;
+ try
+  with SQL.Select(tnTable) do
+   begin
+    AddField(fnID);
+    AddField(fnParent);
+    AddField(fnName);
+    AddField(fnDesc);
+    AddField(fnDateCreate);
+    AddField(fnTaskType);
+    AddField(fnTaskRepeat);
+    AddField(fnDateDeadline);
+    AddField(fnDateNotify);
+    AddField(fnNotifyComplete);
+    if Date <> 0 then
+     WhereFieldEqual(fnDateCreate, Trunc(Date));
+    OrderBy(fnDateCreate, True);
+    Table:=FDataBase.DB.GetTable(GetSQL);
+    EndCreate;
+    Table.MoveFirst;
+    while not Table.EOF do
+     begin
+      Item:=TTaskItem.Create(Self);
+      Item.ID:=Table.FieldAsInteger(0);
+      Item.Parent:=Table.FieldAsInteger(1);
+      Item.Name:=Table.FieldAsString(2);
+      Item.Description:=Table.FieldAsString(3);
+      Item.DateCreate:=Table.FieldAsDateTime(4);
+      Item.TaskType:=TTaskType(Table.FieldAsInteger(5));
+      Item.FTaskRepeat:=Table.FieldAsString(6);
+      Item.DateDeadline:=Table.FieldAsDateTime(7);
+      Item.DateNotify:=Table.FieldAsDateTime(8);
+      Item.NotifyComplete:=Table.FieldAsBoolean(9);
+      Add(Item);
+      Table.Next;
+     end;
+    Table.Free;
+   end;
+ finally
+  EndUpdate;
+ end;
 end;
 
 procedure TTaskItems.Save;
+var i:Integer;
 begin
-
+ for i := 0 to Count-1 do Update(i);
 end;
 
 procedure TTaskItems.SetDataBase(const Value: TDB);
 begin
-
+ FDataBase:=Value;
 end;
 
 procedure TTaskItems.Update(Index: Integer);
 begin
-
+ if Items[Index].ID < 0 then
+  with SQL.InsertInto(tnTable) do
+   begin
+    AddValue(fnParent, Items[Index].Parent);
+    AddValue(fnName, Items[Index].Name);
+    AddValue(fnDesc, Items[Index].Description);
+    AddValue(fnDateCreate, Items[Index].DateCreate);
+    AddValue(fnTaskType, Ord(Items[Index].TaskType));
+    AddValue(fnTaskRepeat, Items[Index].FTaskRepeat);
+    AddValue(fnDateDeadline, Items[Index].DateDeadline);
+    AddValue(fnDateNotify, Items[Index].DateNotify);
+    AddValue(fnNotifyComplete, Items[Index].NotifyComplete);
+    DataBase.DB.ExecSQL(GetSQL);
+    Items[Index].ID:=DataBase.DB.GetLastInsertRowID;
+    EndCreate;
+   end
+ else
+  with SQL.Update(tnTable) do
+   begin
+    AddValue(fnParent, Items[Index].Parent);
+    AddValue(fnName, Items[Index].Name);
+    AddValue(fnDesc, Items[Index].Description);
+    AddValue(fnDateCreate, Items[Index].DateCreate);
+    AddValue(fnTaskType, Ord(Items[Index].TaskType));
+    AddValue(fnTaskRepeat, Items[Index].FTaskRepeat);
+    AddValue(fnDateDeadline, Items[Index].DateDeadline);
+    AddValue(fnDateNotify, Items[Index].DateNotify);
+    AddValue(fnNotifyComplete, Items[Index].NotifyComplete);
+    WhereFieldEqual(fnID, Items[Index].ID);
+    DataBase.DB.ExecSQL(GetSQL);
+    EndCreate;
+   end;
 end;
 
 end.
