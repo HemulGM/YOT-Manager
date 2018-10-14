@@ -218,7 +218,9 @@ begin
   TheText := GetCellText(ACol, ARow);
   with Rect, DrawGrid1.Canvas do
    begin
-    Brush.Color:=Color;
+    if TheText <> '' then
+     Brush.Color:=$002E2E2E//Color;
+    else Brush.Color:=$00383838;
     Brush.Style:=bsSolid;
     FillRect(Rect);
     Brush.Style:=bsClear;

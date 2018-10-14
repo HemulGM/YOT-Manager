@@ -26,8 +26,6 @@ object FormMain: TFormMain
     BevelOuter = bvNone
     ParentColor = True
     TabOrder = 0
-    ExplicitLeft = 162
-    ExplicitTop = -192
     object PanelClient: TPanel
       Left = 0
       Top = 40
@@ -36,7 +34,6 @@ object FormMain: TFormMain
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitHeight = 522
       DesignSize = (
         450
         560)
@@ -63,8 +60,6 @@ object FormMain: TFormMain
           OnMouseDown = DrawPanelMouseDown
           OnMouseMove = DrawPanelMouseMove
           OnMouseUp = DrawPanelMouseUp
-          ExplicitLeft = 6
-          ExplicitTop = 146
         end
         object TableExTimes: TTableEx
           Left = 0
@@ -98,9 +93,10 @@ object FormMain: TFormMain
             end
             item
               Caption = #1054#1087#1080#1089#1072#1085#1080#1077
-              Width = 318
+              Width = 317
               MinWidth = 150
             end>
+          CanNoSelect = False
           ItemCount = 1
           LineColor = 3684408
           LineColorXor = 4079166
@@ -171,8 +167,6 @@ object FormMain: TFormMain
             TabOrder = 0
             TabStop = True
             TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-            ExplicitLeft = 377
-            ExplicitHeight = 33
           end
           object ButtonFlatTaskStart: TButtonFlat
             AlignWithMargins = True
@@ -207,8 +201,6 @@ object FormMain: TFormMain
             TabOrder = 1
             TabStop = True
             TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-            ExplicitLeft = 3
-            ExplicitHeight = 33
           end
           object ButtonFlatAddTime: TButtonFlat
             AlignWithMargins = True
@@ -246,7 +238,6 @@ object FormMain: TFormMain
             TabOrder = 2
             TabStop = True
             TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-            ExplicitHeight = 33
           end
         end
       end
@@ -321,7 +312,7 @@ object FormMain: TFormMain
           DefaultDrawing = False
           DrawingStyle = gdsGradient
           FixedCols = 0
-          RowCount = 7
+          RowCount = 6
           FixedRows = 0
           Font.Charset = DEFAULT_CHARSET
           Font.Color = 15921906
@@ -334,6 +325,21 @@ object FormMain: TFormMain
           ScrollBars = ssNone
           TabOrder = 0
           OnDrawCell = DrawGrid1DrawCell
+          ColWidths = (
+            63
+            63
+            63
+            63
+            63
+            63
+            63)
+          RowHeights = (
+            65
+            65
+            65
+            65
+            65
+            65)
         end
       end
     end
@@ -343,14 +349,13 @@ object FormMain: TFormMain
       Width = 450
       Height = 40
       Cursor = crHandPoint
-      SkinData.SkinSection = 'DRAGBAR'
       BevelOuter = bvNone
       Caption = ' '
       Color = 3026478
       ParentBackground = False
       TabOrder = 1
+      SkinData.SkinSection = 'DRAGBAR'
       DraggedControl = Owner
-      ExplicitWidth = 900
       object Shape2: TShape
         Left = 372
         Top = 0
@@ -411,8 +416,6 @@ object FormMain: TFormMain
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
         Visible = False
-        ExplicitLeft = 865
-        ExplicitHeight = 32
       end
       object ButtonFlatMinimize: TButtonFlat
         AlignWithMargins = True
@@ -450,8 +453,6 @@ object FormMain: TFormMain
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
         Visible = False
-        ExplicitLeft = 827
-        ExplicitHeight = 32
       end
       object ButtonFlatSettings: TButtonFlat
         Left = 334
@@ -488,8 +489,6 @@ object FormMain: TFormMain
         TabOrder = 2
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-        ExplicitLeft = 340
-        ExplicitHeight = 38
       end
       object ButtonFlatTimes: TButtonFlat
         Left = 258
@@ -526,9 +525,6 @@ object FormMain: TFormMain
         TabOrder = 3
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-        ExplicitLeft = 256
-        ExplicitTop = -1
-        ExplicitHeight = 38
       end
       object ButtonFlatCalendar: TButtonFlat
         Left = 296
@@ -565,8 +561,6 @@ object FormMain: TFormMain
         TabOrder = 4
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-        ExplicitLeft = 264
-        ExplicitHeight = 38
       end
     end
   end
@@ -578,7 +572,6 @@ object FormMain: TFormMain
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitWidth = 0
     object Shape1: TShape
       Left = 568
       Top = 80
@@ -597,14 +590,13 @@ object FormMain: TFormMain
       Width = 570
       Height = 40
       Cursor = crHandPoint
-      SkinData.SkinSection = 'DRAGBAR'
       BevelOuter = bvNone
       Caption = ' '
       Color = 3026478
       ParentBackground = False
       TabOrder = 0
+      SkinData.SkinSection = 'DRAGBAR'
       DraggedControl = Owner
-      ExplicitWidth = 450
       object Label7: TLabel
         AlignWithMargins = True
         Left = 10
@@ -657,7 +649,7 @@ object FormMain: TFormMain
         end
         item
           Caption = #1050#1086#1075#1076#1072
-          Width = 236
+          Width = 235
         end>
       CanNoSelect = False
       VisibleEdit = False
@@ -697,7 +689,6 @@ object FormMain: TFormMain
       Align = alTop
       BevelOuter = bvNone
       TabOrder = 2
-      ExplicitWidth = 434
       object ButtonFlat6: TButtonFlat
         AlignWithMargins = True
         Left = 534
@@ -734,8 +725,6 @@ object FormMain: TFormMain
         TabOrder = 0
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-        ExplicitLeft = 434
-        ExplicitHeight = 33
       end
       object Calendar: TCalendarPicker
         AlignWithMargins = True
@@ -766,8 +755,6 @@ object FormMain: TFormMain
         ParentFont = False
         TabOrder = 1
         TextHint = #1042#1099#1073#1088#1072#1090#1100' '#1076#1072#1090#1091
-        ExplicitLeft = 274
-        ExplicitHeight = 33
       end
       object ButtonFlat7: TButtonFlat
         AlignWithMargins = True
@@ -806,8 +793,6 @@ object FormMain: TFormMain
         TabOrder = 2
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-        ExplicitLeft = 241
-        ExplicitHeight = 33
       end
       object ButtonFlat1: TButtonFlat
         AlignWithMargins = True
@@ -867,7 +852,7 @@ object FormMain: TFormMain
     Left = 76
     Top = 128
     Bitmap = {
-      494C01010C005800A00018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01010C005800A40018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000006000000001002000000000000090
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
