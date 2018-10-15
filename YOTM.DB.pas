@@ -27,12 +27,14 @@ interface
      FTimeTo: TTime;
      FTimeFrom: TTime;
      FDate: TDate;
+    FTask: Integer;
      procedure SetOwner(const Value: TTimeItems);
      procedure SetDescription(const Value: string);
      procedure SetTimeFrom(const Value: TTime);
      procedure SetTimeTo(const Value: TTime);
      procedure SetID(const Value: Integer);
      procedure SetDate(const Value: TDate);
+    procedure SetTask(const Value: Integer);
     public
      constructor Create(AOwner: TTimeItems);
      property Owner:TTimeItems read FOwner write SetOwner;
@@ -41,16 +43,18 @@ interface
      property TimeTo:TTime read FTimeTo write SetTimeTo;
      property Date:TDate read FDate write SetDate;
      property ID:Integer read FID write SetID;
+     property Task:Integer read FTask write SetTask;
    end;
 
    TTimeItems = class(TTableData<TTimeItem>)
     const
      tnTable = 'TimeItems';
      fnID = 'tiID';
-     fnDesc = 'tidesc';
+     fnTask = 'tiTask';
+     fnDesc = 'tiDesc';
      fnTimeFrom = 'tiTimeFrom';
-     fnTimeTo = 'toTimeTo';
-     fnDate = 'toDate';
+     fnTimeTo = 'tiTimeTo';
+     fnDate = 'tiDate';
     private
      FDataBase: TDB;
      procedure SetDataBase(const Value: TDB);
@@ -70,32 +74,36 @@ interface
    TTaskRepeat = string; //“ут и часы {1..24} и дни недели {1..7} и дни мес€ца {1..31} и мес€цы {1..12}
 
    TTaskItem = class(TObject)
-   private
-    FName: string;
-    FDateCreate: TDateTime;
-    FDateNotify: TDateTime;
-    FParent: Integer;
-    FOwner: TTaskItems;
-    FNotifyComplete: Boolean;
-    FDateDeadline: TDateTime;
-    FID: Integer;
-    FDescription: string;
-    FTaskType: TTaskType;
-    FTaskRepeat:string;
-    function GetTaskRepeat(Index: Byte): Boolean;
-    procedure SetDateCreate(const Value: TDateTime);
-    procedure SetDateDeadline(const Value: TDateTime);
-    procedure SetDateNotify(const Value: TDateTime);
-    procedure SetDescription(const Value: string);
-    procedure SetID(const Value: Integer);
-    procedure SetName(const Value: string);
-    procedure SetNotifyComplete(const Value: Boolean);
-    procedure SetOwner(const Value: TTaskItems);
-    procedure SetParent(const Value: Integer);
-    procedure SetTaskRepeat(Index: Byte; const Value: Boolean);
-    procedure SetTaskType(const Value: TTaskType);
+    private
+     FName: string;
+     FDateCreate: TDateTime;
+     FDateNotify: TDateTime;
+     FParent: Integer;
+     FDeadline: Boolean;
+     FOwner: TTaskItems;
+     FNotifyComplete: Boolean;
+     FDateDeadline: TDateTime;
+     FID: Integer;
+     FDescription: string;
+     FTaskType: TTaskType;
+     FTaskRepeat:string;
+     FSaved:Boolean;
+     function GetTaskRepeat(Index: Byte): Boolean;
+     procedure SetDateCreate(const Value: TDateTime);
+     procedure SetDateDeadline(const Value: TDateTime);
+     procedure SetDateNotify(const Value: TDateTime);
+     procedure SetDescription(const Value: string);
+     procedure SetID(const Value: Integer);
+     procedure SetName(const Value: string);
+     procedure SetNotifyComplete(const Value: Boolean);
+     procedure SetOwner(const Value: TTaskItems);
+     procedure SetParent(const Value: Integer);
+     procedure SetTaskRepeat(Index: Byte; const Value: Boolean);
+     procedure SetTaskType(const Value: TTaskType);
+     procedure SetDeadline(const Value: Boolean);
     public
      constructor Create(AOwner: TTaskItems);
+     procedure Update;
      property Owner:TTaskItems read FOwner write SetOwner;
      property ID:Integer read FID write SetID;
      property Parent:Integer read FParent write SetParent;
@@ -107,6 +115,8 @@ interface
      property DateDeadline:TDateTime read FDateDeadline write SetDateDeadline;
      property DateNotify:TDateTime read FDateNotify write SetDateNotify;
      property NotifyComplete:Boolean read FNotifyComplete write SetNotifyComplete;
+     property Deadline:Boolean read FDeadline write SetDeadline;
+     property Saved:Boolean read FSaved;
    end;
 //000000000000000000000000000000
    TTaskItems = class(TTableData<TTaskItem>)
@@ -122,6 +132,7 @@ interface
      fnDateDeadline = 'tkDateDeadline';
      fnDateNotify = 'tkDateNotify';
      fnNotifyComplete = 'tkNotifyComplete';
+     fnDeadline = 'tkDeadline';
     private
      FDataBase: TDB;
      procedure SetDataBase(const Value: TDB);
@@ -142,6 +153,7 @@ constructor TTimeItem.Create(AOwner: TTimeItems);
 begin
  inherited Create;
  FID:=-1;
+ FTask:=-1;
  Owner:=AOwner;
 end;
 
@@ -163,6 +175,11 @@ end;
 procedure TTimeItem.SetOwner(const Value: TTimeItems);
 begin
  FOwner:=Value;
+end;
+
+procedure TTimeItem.SetTask(const Value: Integer);
+begin
+ FTask := Value;
 end;
 
 procedure TTimeItem.SetTimeFrom(const Value: TTime);
@@ -228,11 +245,13 @@ begin
   with SQL.Select(tnTable) do
    begin
     AddField(fnID);
+    AddField(fnTask);
     AddField(fnDesc);
     AddField(fnTimeFrom);
     AddField(fnTimeTo);
     AddField(fnDate);
-    WhereFieldEqual(fnDate, Trunc(Date));
+    if Date <> 0 then
+     WhereFieldEqual(fnDate, Trunc(Date));
     OrderBy(fnTimeFrom, True);
     Table:=FDataBase.DB.GetTable(GetSQL);
     EndCreate;
@@ -241,10 +260,11 @@ begin
      begin
       Item:=TTimeItem.Create(Self);
       Item.ID:=Table.FieldAsInteger(0);
-      Item.Description:=Table.FieldAsString(1);
-      Item.TimeFrom:=Frac(Table.FieldAsDateTime(2));
-      Item.TimeTo:=Frac(Table.FieldAsDateTime(3));
-      Item.Date:=Trunc(Table.FieldAsDateTime(4));
+      Item.Task:=Table.FieldAsInteger(1);
+      Item.Description:=Table.FieldAsString(2);
+      Item.TimeFrom:=Frac(Table.FieldAsDateTime(3));
+      Item.TimeTo:=Frac(Table.FieldAsDateTime(4));
+      Item.Date:=Trunc(Table.FieldAsDateTime(5));
       Add(Item);
       Table.Next;
      end;
@@ -260,6 +280,7 @@ begin
  if Items[Index].ID < 0 then
   with SQL.InsertInto(tnTable) do
    begin
+    AddValue(fnTask, Items[Index].Task);
     AddValue(fnDesc, Items[Index].Description);
     AddValue(fnTimeFrom, Items[Index].TimeFrom);
     AddValue(fnTimeTo, Items[Index].TimeTo);
@@ -271,6 +292,7 @@ begin
  else
   with SQL.Update(tnTable) do
    begin
+    AddValue(fnTask, Items[Index].Task);
     AddValue(fnDesc, Items[Index].Description);
     AddValue(fnTimeFrom, Items[Index].TimeFrom);
     AddValue(fnTimeTo, Items[Index].TimeTo);
@@ -297,8 +319,11 @@ end;
 constructor TTaskItem.Create(AOwner: TTaskItems);
 begin
  inherited Create;
+ FSaved:=False;
  FID:=-1;
  FParent:=-1;
+ FDeadline:=False;
+ FTaskRepeat:='0000000000000000000000000000000';
  Owner:=AOwner;
 end;
 
@@ -320,6 +345,11 @@ end;
 procedure TTaskItem.SetDateNotify(const Value: TDateTime);
 begin
  FDateNotify:=Value;
+end;
+
+procedure TTaskItem.SetDeadline(const Value: Boolean);
+begin
+ FDeadline := Value;
 end;
 
 procedure TTaskItem.SetDescription(const Value: string);
@@ -362,6 +392,11 @@ begin
  FTaskType:=Value;
 end;
 
+procedure TTaskItem.Update;
+begin
+ FSaved:=True;
+end;
+
 { TTaskItems }
 
 constructor TTaskItems.Create(ADataBase: TDB; ATableEx: TTableEx);
@@ -381,6 +416,7 @@ begin
     AddField(fnDateDeadline, ftDateTime);
     AddField(fnDateNotify, ftDateTime);
     AddField(fnNotifyComplete, ftBoolean);
+    AddField(fnDeadline, ftBoolean);
     FDataBase.DB.ExecSQL(GetSQL);
     EndCreate;
    end;
@@ -416,8 +452,13 @@ begin
     AddField(fnDateDeadline);
     AddField(fnDateNotify);
     AddField(fnNotifyComplete);
+    AddField(fnDeadline);
     if Date <> 0 then
-     WhereFieldEqual(fnDateCreate, Trunc(Date));
+     begin
+      WhereFieldEqual(fnDateCreate, Trunc(Date));
+      WhereFieldEqual(fnDeadline, False, wuOR);
+     end
+    else WhereFieldEqual(fnDeadline, False);
     OrderBy(fnDateCreate, True);
     Table:=FDataBase.DB.GetTable(GetSQL);
     EndCreate;
@@ -435,6 +476,8 @@ begin
       Item.DateDeadline:=Table.FieldAsDateTime(7);
       Item.DateNotify:=Table.FieldAsDateTime(8);
       Item.NotifyComplete:=Table.FieldAsBoolean(9);
+      Item.Deadline:=Table.FieldAsBoolean(10);
+      Item.Update;
       Add(Item);
       Table.Next;
      end;
@@ -470,6 +513,7 @@ begin
     AddValue(fnDateDeadline, Items[Index].DateDeadline);
     AddValue(fnDateNotify, Items[Index].DateNotify);
     AddValue(fnNotifyComplete, Items[Index].NotifyComplete);
+    AddValue(fnDeadline, Items[Index].Deadline);
     DataBase.DB.ExecSQL(GetSQL);
     Items[Index].ID:=DataBase.DB.GetLastInsertRowID;
     EndCreate;
@@ -486,10 +530,12 @@ begin
     AddValue(fnDateDeadline, Items[Index].DateDeadline);
     AddValue(fnDateNotify, Items[Index].DateNotify);
     AddValue(fnNotifyComplete, Items[Index].NotifyComplete);
+    AddValue(fnDeadline, Items[Index].Deadline);
     WhereFieldEqual(fnID, Items[Index].ID);
     DataBase.DB.ExecSQL(GetSQL);
     EndCreate;
    end;
+ Items[Index].Update;
 end;
 
 end.

@@ -39,7 +39,6 @@ type
     PanelRight: TPanel;
     PanelTasks: TPanel;
     sDragBar3: TsDragBar;
-    Label7: TLabel;
     Shape1: TShape;
     ButtonFlatMinimize: TButtonFlat;
     ApplicationEvents1: TApplicationEvents;
@@ -60,6 +59,13 @@ type
     ButtonFlatAddTime: TButtonFlat;
     ButtonFlat1: TButtonFlat;
     DrawGrid1: TDrawGrid;
+    Panel3: TPanel;
+    EditNewTaskName: TEdit;
+    ButtonFlat2: TButtonFlat;
+    ButtonFlat3: TButtonFlat;
+    ButtonFlat4: TButtonFlat;
+    ButtonFlat5: TButtonFlat;
+    ButtonFlat8: TButtonFlat;
     procedure TimerRepaintTimer(Sender: TObject);
     procedure DrawPanelPaint(Sender: TObject);
     procedure DrawPanelMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
@@ -95,6 +101,8 @@ type
     procedure ButtonFlat1Click(Sender: TObject);
     procedure DrawGrid1DrawCell(Sender: TObject; ACol, ARow: Integer;
       Rect: TRect; State: TGridDrawState);
+    procedure ButtonFlat2Click(Sender: TObject);
+    procedure TableExTasksEditCancel(Sender: TObject; ACol, ARow: Integer);
   private
     FLastDate:TDate;             //Реальная дата (без времени)
     FPanelMouse:TPoint;          //Позиция мыши на панели
@@ -218,9 +226,7 @@ begin
   TheText := GetCellText(ACol, ARow);
   with Rect, DrawGrid1.Canvas do
    begin
-    if TheText <> '' then
-     Brush.Color:=$002E2E2E//Color;
-    else Brush.Color:=$00383838;
+    Brush.Color:=Color;
     Brush.Style:=bsSolid;
     FillRect(Rect);
     Brush.Style:=bsClear;
@@ -547,6 +553,15 @@ begin
  TableExTasks.Edit(0, 1);
 end;
 
+procedure TFormMain.ButtonFlat2Click(Sender: TObject);
+var Item:TTaskItem;
+begin
+ Item:=TTaskItem.Create(FTaskItems);
+ Item.Name:=EditNewTaskName.Text;
+ FTaskItems.Insert(0, Item);
+ TableExTasks.Edit(0, 1);
+end;
+
 procedure TFormMain.ButtonFlat6Click(Sender: TObject);
 begin
  Calendar.Date:=Calendar.Date + 1;
@@ -589,8 +604,8 @@ begin
   begin
    VisNeed.Left:=VisNow.Width;
    VisNeed.Top:=0;
-   AnimateControlLeft(VisNow, 20, -450);
-   AnimateControlLeft(VisNeed, 20, 0);
+   AnimateControlLeft(VisNow, 25, -450);
+   AnimateControlLeft(VisNeed, 25, 0);
    VisNow:=VisNeed;
   end;
  Enabled:=True;
@@ -632,7 +647,6 @@ begin
  FDB:=TDB.Create(ExtractFilePath(ParamStr(0))+'\data.db');
  FTimeItems:=TTimeItems.Create(FDB, TableExTimes);
  FTaskItems:=TTaskItems.Create(FDB, TableExTasks);
- FTaskItems.Reload;
  CurrentDate:=Now;
  FLastDate:=Trunc(Now);
  DateTimePickerEndChange(nil);
@@ -658,6 +672,7 @@ begin
  FCurrentDate:=Value;
  Calendar.Date:=FCurrentDate;
  FTimeItems.Reload(FCurrentDate);
+ FTaskItems.Reload(FCurrentDate);
  UpdateCalendar;
 end;
 
@@ -674,6 +689,17 @@ begin
  end;
 end;
 
+procedure TFormMain.TableExTasksEditCancel(Sender: TObject; ACol, ARow: Integer);
+begin
+ if not IndexInList(ARow, FTaskItems.Count) then Exit;
+ case ACol of
+  1:
+   begin
+    if not FTaskItems[ARow].Saved then FTaskItems.Delete(ARow);
+   end;
+ end;
+end;
+
 procedure TFormMain.TableExTasksEditOk(Sender: TObject; Value: string; ItemValue, ACol, ARow: Integer);
 begin
  if not IndexInList(ARow, FTaskItems.Count) then Exit;
@@ -681,6 +707,14 @@ begin
   1:
    begin
     FTaskItems[ARow].Name:=Value;
+    if FTaskItems[ARow].Name = '' then
+     begin
+      if not FTaskItems[ARow].Saved then FTaskItems.Delete(ARow);
+     end
+    else
+     begin
+      FTaskItems.Update(ARow);
+     end;
    end;
  end;
 end;
@@ -691,7 +725,7 @@ begin
  Value:='';
  case FCol of
   1:Value:=FTaskItems[FRow].Name;
-  2:Value:=FormatDateTime('c', FTaskItems[FRow].DateDeadline);
+  2:if FTaskItems[FRow].Deadline then Value:=FormatDateTime('c', FTaskItems[FRow].DateDeadline);
  end;
 end;
 
