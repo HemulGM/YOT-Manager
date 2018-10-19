@@ -8,14 +8,26 @@ uses
   SQLLang in '..\SQLite\SQLLang.pas',
   YOTM.DB in 'YOTM.DB.pas',
   SQLiteHGM in '..\SQLite\SQLiteHGM.pas',
-  YOTM.InputItem in 'YOTM.InputItem.pas' {FormInputText};
+  YOTM.Form in 'YOTM.Form.pas' {FormCustom},
+  YOTM.Form.ModalEdit in 'YOTM.Form.ModalEdit.pas' {FormModalEdit},
+  YOTM.Form.EditTime in 'YOTM.Form.EditTime.pas' {FormEditTime},
+  YOTM.Form.Dialog in 'YOTM.Form.Dialog.pas' {FormAnswer},
+  YOTM.DB.Comments in 'YOTM.DB.Comments.pas',
+  YOTM.DB.Labels in 'YOTM.DB.Labels.pas',
+  YOTM.DB.LabelTypes in 'YOTM.DB.LabelTypes.pas',
+  YOTM.Form.SelectLabels in 'YOTM.Form.SelectLabels.pas' {FormSelectLabels},
+  YOTM.DB.Tasks in 'YOTM.DB.Tasks.pas',
+  YOTM.DB.Times in 'YOTM.DB.Times.pas',
+  Vcl.Themes,
+  Vcl.Styles;
 
 {$R *.res}
 
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
+  TStyleManager.TrySetStyle('Carbon');
   Application.CreateForm(TFormMain, FormMain);
-  Application.CreateForm(TFormInputText, FormInputText);
+  Application.CreateForm(TFormSelectLabels, FormSelectLabels);
   Application.Run;
 end.
