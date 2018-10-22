@@ -417,6 +417,7 @@ begin
     EndCreate;
    end;
  Items[Index].Update;
+ UpdateTable;
 end;
 
 end.

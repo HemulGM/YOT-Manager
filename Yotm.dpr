@@ -19,15 +19,16 @@ uses
   YOTM.DB.Tasks in 'YOTM.DB.Tasks.pas',
   YOTM.DB.Times in 'YOTM.DB.Times.pas',
   Vcl.Themes,
-  Vcl.Styles;
+  Vcl.Styles,
+  YOTM.Form.DateNotify in 'YOTM.Form.DateNotify.pas' {FormDateAndNotify};
 
 {$R *.res}
 
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  TStyleManager.TrySetStyle('Carbon');
   Application.CreateForm(TFormMain, FormMain);
   Application.CreateForm(TFormSelectLabels, FormSelectLabels);
+  Application.CreateForm(TFormDateAndNotify, FormDateAndNotify);
   Application.Run;
 end.

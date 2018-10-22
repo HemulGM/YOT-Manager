@@ -158,6 +158,10 @@ type
     procedure MenuItemTaskDelClick(Sender: TObject);
     procedure TableExTasksMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
+    procedure CalendarCalendarDrawDayItem(Sender: TObject;
+      DrawParams: TDrawViewInfoParams; CalendarViewViewInfo: TCellItemViewInfo);
+    procedure TableExTasksItemColClick(Sender: TObject;
+      MouseButton: TMouseButton; const Index: Integer);
   private
     FLastDate:TDate;             //Реальная дата (без времени)
     FPanelMouse:TPoint;          //Позиция мыши на панели
@@ -185,7 +189,6 @@ type
     VisNow:TControl;
     VisNeed:TControl;
     FMonthOffset:Integer;
-    D2:TDirect2DCanvas;
     procedure SetCurrentDate(const Value: TDate);
     procedure SlideTo(Slide: TSlide);
     function StartTask(TimeStart: TTime): Boolean;
@@ -410,15 +413,14 @@ begin
    begin
     if FPanelMouseDown then
       begin
-       AddTaskTime(CurrentDate, FRangeFrom, FRangeTo);
-       FPanelMouseDown:=False;
-       FPanelMouseDownPos:=Point(-1, -1);
        if FRangeFrom = FRangeTo then
         begin
          if IndexInList(FTimeItemUnderCursor, FTimeItems.Count) then
           TableExTimes.ItemIndex:=FTimeItemUnderCursor;
-         Exit;
-        end;
+        end
+       else AddTaskTime(CurrentDate, FRangeFrom, FRangeTo);
+       FPanelMouseDown:=False;
+       FPanelMouseDownPos:=Point(-1, -1);
       end;
    end;
   TMouseButton.mbRight:
@@ -460,6 +462,7 @@ begin
 
     tmpRect:=ScaleRect;
     tmpRect.Right:=tmpRect.Left +  Round(ScaleRect.Width / 100 * ((FNowTimeMin - GetMins(DateTimePickerStart.Time)) /  (FWorkTimeMin / 100)));
+    tmpRect.Right:=Min(tmpRect.Right, ScaleRect.Right);
     Brush.Style:=bsSolid;
     Brush.Color:=$003C86AB;
     tmpRect.Width:=Max(tmpRect.Width, tmpRect.Height);
@@ -481,7 +484,8 @@ begin
       tmpRect.Inflate(0, -3);
       if tmpRect.Left <= ScaleRect.Left+3 then tmpRect.Left:=ScaleRect.Left+3;
       if tmpRect.Right >= ScaleRect.Right-3 then tmpRect.Right:=ScaleRect.Right-3;
-
+      tmpRect.Left:=Max(Min(tmpRect.Left, ScaleRect.Right), ScaleRect.Left);
+      tmpRect.Right:=Max(Min(tmpRect.Right, ScaleRect.Right), ScaleRect.Left);
       Brush.Style:=bsSolid;
       RoundRect(tmpRect, tmpRect.Height, tmpRect.Height);
       if tmpRect.Contains(FPanelMouse) then
@@ -826,6 +830,12 @@ begin
  EditNewComment.Text:='';
 end;
 
+procedure TFormMain.CalendarCalendarDrawDayItem(Sender: TObject;
+  DrawParams: TDrawViewInfoParams; CalendarViewViewInfo: TCellItemViewInfo);
+begin
+ DrawParams.ForegroundColor:=clWhite;
+end;
+
 procedure TFormMain.CalendarChange(Sender: TObject);
 begin
  if Calendar.IsEmpty then Calendar.Date:=Now;
@@ -896,7 +906,6 @@ begin
  VisNow:=PanelTimes;
  HideTask;
  UpdateCounts;
- D2:=TDirect2DCanvas.Create(TableExTasks.Canvas, TableExTasks.ClientRect);
 end;
 
 procedure TFormMain.FormPaint(Sender: TObject);
@@ -1015,7 +1024,10 @@ end;
 procedure TFormMain.TableExTasksDblClick(Sender: TObject);
 begin
  if not IndexInList(TableExTasks.ItemUnderMouse, FTaskItems.Count) then Exit;
- ShowTask(TableExTasks.ItemUnderMouse);
+ if TableExTasks.FocusedColumn = 1 then
+  ShowTask(TableExTasks.ItemUnderMouse);
+ if TableExTasks.FocusedColumn = 0 then
+  TableExTasks.Edit(TableExTasks.ItemUnderMouse, 0);
 end;
 
 function RGBToHSV(R, G, B:Byte; var H, S, V:Double):Boolean;
@@ -1048,50 +1060,6 @@ begin
  Result:=True;
 end;
 
-function HSVToRGB(H, S, V: Double; var R, G, B: Byte): Boolean;
-var i: Integer;
-    f, p, q, t: Double;
-
-procedure CopyOutput(const RV, GV, BV: Double);
-const RGBmax = 255;
-begin
- R:=Round(RGBmax * RV);
- G:=Round(RGBmax * GV);
- B:=Round(RGBmax * BV);
-end;
-
-begin
- S:=S/100;
- V:=V/100;
- H:=H/60;
- //Assert(InRange(H, 0.0, 1.0));
- //Assert(InRange(S, 0.0, 1.0));
- //Assert(InRange(V, 0.0, 1.0));
- if S = 0.0 then
-  begin
-   // achromatic (grey)
-   CopyOutput(B, B, B);
-   Result:= True;
-   Exit;
-  end;
- //H:=H*6.0; // sector 0 to 5
- i:=floor(H);
- f:=H-i; // fractional part of H
- p:=V*(1.0-S);
- q:=V*(1.0-S*f);
- t:=V*(1.0-S*(1.0-f));
- case i of
-  0: CopyOutput(V, t, p);
-  1: CopyOutput(q, V, p);
-  2: CopyOutput(p, V, t);
-  3: CopyOutput(p, q, V);
-  4: CopyOutput(t, p, V);
- else
-  CopyOutput(V, p, q);
- end;
- Result:=True;
-end;
-
 function GetNormColor(Color:TColor):TColor;
 var R, G, B:Byte;
     H, S, V:Double;
@@ -1111,72 +1079,84 @@ var Txt:string;
     Task:TTaskItem;
     i, LP:Integer;
 begin
- if ACol <> 1 then Exit;
  if not IndexInList(ARow, FTaskItems.Count) then
   begin
+   if ACol <> 1 then Exit;
    Txt:='Нет задач';
    TableExTasks.Canvas.TextRect(Rect, Txt, [tfSingleLine, tfCenter, tfVerticalCenter, tfEndEllipsis]);
    Exit;
   end;
  Task:=FTaskItems[ARow];
- with D2 do
-  begin
-   BeginDraw;
-   TableExTasks.Canvas.Font.Size:=9;
-   if Assigned(Task.LabelItems) then
-    begin
-     LP:=Rect.Left+10;
-     for i:= 0 to Task.LabelItems.Count-1 do
-      begin
-       Brush.Color:=Task.LabelItems[i].Color;
-       Pen.Color:=ColorDarker(Brush.Color);
-       Txt:=Task.LabelItems[i].Name;
-       TxtRect:=Rect;
-       TxtRect.Left:=LP;
-       TxtRect.Width:=TableExTasks.Canvas.TextWidth(Txt) + 12;
-       TxtRect.Top:=TxtRect.Top + 20 + 4;
-       TxtRect.Bottom:=TxtRect.Bottom - 6;
-       LP:=TxtRect.Right+10;
-       RoundRect(TxtRect, TxtRect.Height, TxtRect.Height);
-      end;
-    end;
-   EndDraw;
-  end;
  case ACol of
-  1:Txt:=Task.Name;
-  2:if Task.Deadline then Txt:=FormatDateTime('c', Task.DateDeadline);
- else
-  Txt:='';
- end;
- with TableExTasks.Canvas do
-  begin
-   Font.Size:=11;
-   TxtRect:=Rect;
-   TxtRect.Offset(2, 2);
-   TxtRect.Bottom:=TxtRect.Top + 20;
-   TxtRect.Right:=TxtRect.Right - 100;
-   TextRect(TxtRect, Txt, [tfSingleLine, tfLeft, tfVerticalCenter, tfEndEllipsis]);
-   if Assigned(Task.LabelItems) then
-    begin
-     LP:=Rect.Left+10;
-     for i:= 0 to Task.LabelItems.Count-1 do
+  0:begin
+     case Task.State of
+      True:ImageList24.Draw(TableExTasks.Canvas,
+       Rect.Left+(Rect.Width div 2 - ImageList24.Width div 2),
+       Rect.Top+(Rect.Height div 2 - ImageList24.Height div 2),
+       18, True);
+      False:ImageList24.Draw(TableExTasks.Canvas,
+       Rect.Left+(Rect.Width div 2 - ImageList24.Width div 2),
+       Rect.Top+(Rect.Height div 2 - ImageList24.Height div 2),
+       19, True);
+     end;
+    end;
+  1:begin
+     with TableExTasks.Canvas do
       begin
-       Font.Size:=9;
-       Brush.Style:=bsClear;
-       Txt:=Task.LabelItems[i].Name;
+       TableExTasks.Canvas.Font.Size:=9;
+       if Assigned(Task.LabelItems) then
+        begin
+         LP:=Rect.Left+5;
+         for i:= 0 to Task.LabelItems.Count-1 do
+          begin
+           Brush.Color:=Task.LabelItems[i].Color;
+           Pen.Color:=ColorDarker(Brush.Color);
+           Txt:=Task.LabelItems[i].Name;
+           TxtRect:=Rect;
+           TxtRect.Left:=LP;
+           TxtRect.Width:=TableExTasks.Canvas.TextWidth(Txt) + 12;
+           TxtRect.Top:=TxtRect.Top + 20 + 4;
+           TxtRect.Bottom:=TxtRect.Bottom - 6;
+           LP:=TxtRect.Right+5;
+           //RoundRect(TxtRect, TxtRect.Height, TxtRect.Height);
+           Rectangle(TxtRect);
+          end;
+        end;
+      end;
+     Txt:=Task.Name;
+     with TableExTasks.Canvas do
+      begin
+       Font.Size:=11;
        TxtRect:=Rect;
-       TxtRect.Left:=LP;
-       TxtRect.Width:=TextWidth(Txt) + 12;
-       TxtRect.Top:=TxtRect.Top + 20 + 4;
-       TxtRect.Bottom:=TxtRect.Bottom - 6;
-       LP:=TxtRect.Right+10;
-       TxtRect.Inflate(-6, 0);
-       Font.Color:=GetNormColor(Task.LabelItems[i].Color);
-       TextRect(TxtRect, Txt, [tfSingleLine, tfCenter, tfVerticalCenter, tfEndEllipsis]);
+       TxtRect.Offset(2, 2);
+       TxtRect.Bottom:=TxtRect.Top + 20;
+       TxtRect.Right:=TxtRect.Right - 100;
+       Brush.Style:=bsClear;
+       TextRect(TxtRect, Txt, [tfSingleLine, tfLeft, tfVerticalCenter, tfEndEllipsis]);
+       if Assigned(Task.LabelItems) then
+        begin
+         LP:=Rect.Left+5;
+         for i:= 0 to Task.LabelItems.Count-1 do
+          begin
+           Font.Size:=9;
+           Brush.Style:=bsClear;
+           Txt:=Task.LabelItems[i].Name;
+           TxtRect:=Rect;
+           TxtRect.Left:=LP;
+           TxtRect.Width:=TextWidth(Txt) + 12;
+           TxtRect.Top:=TxtRect.Top + 20 + 4;
+           TxtRect.Bottom:=TxtRect.Bottom - 6;
+           LP:=TxtRect.Right+5;
+           TxtRect.Inflate(-6, 0);
+           Font.Color:=GetNormColor(Task.LabelItems[i].Color);
+           TextRect(TxtRect, Txt, [tfSingleLine, tfCenter, tfVerticalCenter, tfEndEllipsis]);
+           Font.Color:=clWhite;
+           TextOut(TxtRect.Left, TxtRect.Top, ' ');
+          end;
+        end;
       end;
     end;
-   Font.Color:=clWhite;
-  end;
+ end;
 end;
 
 procedure TFormMain.TableExTasksEdit(Sender: TObject; var Data: TTableEditStruct; ACol, ARow: Integer; var Allow: Boolean);
@@ -1188,6 +1168,13 @@ begin
     Allow:=True;
     Data.EditMode:=teText;
     Data.TextValue:=FTaskItems[ARow].Name;
+   end;
+  0:
+   begin
+    Allow:=False;
+    FTaskItems[ARow].State:=not FTaskItems[ARow].State;
+    FTaskItems.Update(ARow);
+    ShowTask(ARow);
    end;
  end;
 end;
@@ -1224,6 +1211,14 @@ begin
  end;
 end;
 
+procedure TFormMain.TableExTasksItemColClick(Sender: TObject;
+  MouseButton: TMouseButton; const Index: Integer);
+begin
+ if not IndexInList(TableExTasks.ItemIndex, FTaskItems.Count) then Exit;
+ if Index = 1 then
+  TableExTasks.Edit(TableExTasks.ItemIndex, Index);
+end;
+
 procedure TFormMain.TableExTasksKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
@@ -1251,7 +1246,7 @@ begin
  if not IndexInList(ARow, FTimeItems.Count) then Exit;
  if ACol <> 0 then Exit;
  if (not (gdHotTrack in State)) and (ARow <> TableExTimes.ItemIndex) then Exit;
- ImageList24.Draw(TableExTimes.Canvas, Rect.Left + (Rect.Width div 2 - 24 div 2), Rect.Top, 2, True);
+ //ImageList24.Draw(TableExTimes.Canvas, Rect.Left + (Rect.Width div 2 - 24 div 2), Rect.Top, 2, True);
 end;
 
 procedure TFormMain.TableExTimesGetData(FCol, FRow: Integer; var Value: string);
