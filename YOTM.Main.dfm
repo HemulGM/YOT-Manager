@@ -65,13 +65,13 @@ object FormMain: TFormMain
       Font.Style = []
       ParentFont = False
       TabOrder = 0
-      StyleElements = [seBorder]
       OnDblClick = TableExTasksDblClick
       OnMouseUp = TableExTasksMouseUp
       OnKeyDown = TableExTasksKeyDown
       OnDrawCellData = TableExTasksDrawCellData
       ItemIndex = -1
       OnChangeItem = TableExTasksChangeItem
+      OnItemColClick = TableExTasksItemColClick
       OnEdit = TableExTasksEdit
       OnEditCancel = TableExTasksEditCancel
       OnEditOk = TableExTasksEditOk
@@ -87,6 +87,7 @@ object FormMain: TFormMain
           MinWidth = 100
         end>
       DefaultDataDrawing = False
+      ShowScrollBar = False
       VisibleEdit = False
       ItemCount = 1
       LineColor = 3684408
@@ -1010,13 +1011,13 @@ object FormMain: TFormMain
     Width = 1484
     Height = 40
     Cursor = crHandPoint
-    SkinData.SkinSection = 'DRAGBAR'
     BevelOuter = bvNone
     Caption = ' '
     Color = 3026478
-    StyleElements = [seBorder]
     ParentBackground = False
     TabOrder = 2
+    StyleElements = [seBorder]
+    SkinData.SkinSection = 'DRAGBAR'
     DraggedControl = Owner
     object Shape2: TShape
       Left = 1284
@@ -1553,28 +1554,37 @@ object FormMain: TFormMain
         Margins.Left = 0
         Margins.Right = 0
         Align = alClient
+        BorderColor = 3684408
         CalendarHeaderInfo.DaysOfWeekFont.Charset = DEFAULT_CHARSET
-        CalendarHeaderInfo.DaysOfWeekFont.Color = clWindowText
+        CalendarHeaderInfo.DaysOfWeekFont.Color = clWhite
         CalendarHeaderInfo.DaysOfWeekFont.Height = -13
         CalendarHeaderInfo.DaysOfWeekFont.Name = 'Segoe UI'
         CalendarHeaderInfo.DaysOfWeekFont.Style = []
         CalendarHeaderInfo.Font.Charset = DEFAULT_CHARSET
-        CalendarHeaderInfo.Font.Color = clWindowText
+        CalendarHeaderInfo.Font.Color = clWhite
         CalendarHeaderInfo.Font.Height = -20
         CalendarHeaderInfo.Font.Name = 'Segoe UI'
         CalendarHeaderInfo.Font.Style = []
-        Color = clWindow
+        CalendarHeaderInfo.FontColor = 15658734
+        CalendarHeaderInfo.HighlightFontColor = 3966635
+        Color = 3684408
+        DisabledColor = 6974058
         FirstDayOfWeek = dwMonday
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = 3881787
+        Font.Color = 13948116
         Font.Height = -16
         Font.Name = 'Segoe UI'
         Font.Style = []
+        HighlightColor = 4605510
+        OnCalendarDrawDayItem = CalendarCalendarDrawDayItem
         OnChange = CalendarChange
         OnCloseUp = CalendarCloseUp
         ParentFont = False
+        SelectionColor = 3966635
+        ShowFirstOfGroupLabel = True
         TabOrder = 1
         TextHint = #1042#1099#1073#1088#1072#1090#1100' '#1076#1072#1090#1091
+        TodayColor = 3966635
       end
       object ButtonFlat6: TButtonFlat
         AlignWithMargins = True
@@ -1633,7 +1643,7 @@ object FormMain: TFormMain
     Left = 156
     Top = 200
     Bitmap = {
-      494C010114005800200118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C0101140058002C0118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000006000000090000000010020000000000000D8
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
