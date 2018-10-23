@@ -46,7 +46,7 @@ inherited FormSelectLabels: TFormSelectLabels
     Align = alClient
     BorderStyle = bsNone
     Color = 3684408
-    DefaultRowHeight = 30
+    DefaultRowHeight = 40
     Font.Charset = DEFAULT_CHARSET
     Font.Color = 15921906
     Font.Height = -15
@@ -60,12 +60,12 @@ inherited FormSelectLabels: TFormSelectLabels
     Columns = <
       item
         Caption = #1062#1074#1077#1090
-        Width = 30
-        MinWidth = 30
+        Width = 38
+        MinWidth = 38
       end
       item
         Caption = #1052#1077#1090#1082#1072
-        Width = 325
+        Width = 317
         FormatColumns = [tfSingleLine, tfVerticalCenter]
         MinWidth = 200
       end>
@@ -208,6 +208,7 @@ inherited FormSelectLabels: TFormSelectLabels
       TabOrder = 2
       TabStop = True
       TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+      ExplicitLeft = 0
     end
     object ButtonFlat1: TButtonFlat
       AlignWithMargins = True

@@ -112,7 +112,9 @@ begin
   with TableExLabels.Canvas do
    begin
     Brush.Color:=FLabelTypes[ARow].Color;
-    Rect.Inflate(-2,-2);
+    Rect.Left:=3;
+    Rect.Width:=34;
+    Rect.Inflate(0, -2);
     FillRect(Rect);
    end;
 end;

@@ -28,7 +28,5 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TFormMain, FormMain);
-  Application.CreateForm(TFormSelectLabels, FormSelectLabels);
-  Application.CreateForm(TFormDateAndNotify, FormDateAndNotify);
   Application.Run;
 end.

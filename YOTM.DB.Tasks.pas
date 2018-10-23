@@ -2,6 +2,7 @@ unit YOTM.DB.Tasks;
 
 interface
   uses SQLite3, SQLLang, SQLiteTable3, System.Generics.Collections,
+       System.SysUtils, Vcl.Graphics,
        HGM.Controls.VirtualTable, YOTM.DB, YOTM.DB.Labels;
 
   type
@@ -17,7 +18,7 @@ interface
     private
      FName: string;
      FDateCreate: TDateTime;
-     FDateNotify: TDateTime;
+     FDateNotify: TTime;
      FParent: Integer;
      FDeadline: Boolean;
      FOwner: TTaskItems;
@@ -30,10 +31,11 @@ interface
      FSaved:Boolean;
      FState: Boolean;
      FLabelItems:TLabelItems;
+     FNotify: Boolean;
+     FColor: TColor;
      function GetTaskRepeat(Index: Byte): Boolean;
-     procedure SetDateCreate(const Value: TDateTime);
      procedure SetDateDeadline(const Value: TDateTime);
-     procedure SetDateNotify(const Value: TDateTime);
+     procedure SetDateNotify(const Value: TTime);
      procedure SetDescription(const Value: string);
      procedure SetID(const Value: Integer);
      procedure SetName(const Value: string);
@@ -44,7 +46,9 @@ interface
      procedure SetTaskType(const Value: TTaskType);
      procedure SetDeadline(const Value: Boolean);
      procedure SetState(const Value: Boolean);
-    procedure SetLabelItems(const Value: TLabelItems);
+     procedure SetLabelItems(const Value: TLabelItems);
+     procedure SetNotify(const Value: Boolean);
+     procedure SetColor(const Value: TColor);
     public
      constructor Create(AOwner: TTaskItems);
      destructor Destroy;
@@ -54,15 +58,18 @@ interface
      property Parent:Integer read FParent write SetParent;
      property Name:string read FName write SetName;
      property Description:string read FDescription write SetDescription;
-     property DateCreate:TDateTime read FDateCreate write SetDateCreate;
+     property DateCreate:TDateTime read FDateCreate;
      property TaskType:TTaskType read FTaskType write SetTaskType;
      property TaskRepeat[Index:Byte]:Boolean read GetTaskRepeat write SetTaskRepeat;
      property DateDeadline:TDateTime read FDateDeadline write SetDateDeadline;
-     property DateNotify:TDateTime read FDateNotify write SetDateNotify;
+     property TimeNotify:TTime read FDateNotify write SetDateNotify;
      property NotifyComplete:Boolean read FNotifyComplete write SetNotifyComplete;
      property Deadline:Boolean read FDeadline write SetDeadline;
      property State:Boolean read FState write SetState;
+     property Notify:Boolean read FNotify write SetNotify;
+     property TaskRepeatData:string read FTaskRepeat write FTaskRepeat;
      property LabelItems:TLabelItems read FLabelItems write SetLabelItems;
+     property Color:TColor read FColor write SetColor;
      property Saved:Boolean read FSaved;
    end;
 
@@ -77,10 +84,12 @@ interface
      fnTaskType = 'tkTaskType';
      fnTaskRepeat = 'tkTaskRepeat';     //000000000000000000000000000000
      fnDateDeadline = 'tkDateDeadline';
-     fnDateNotify = 'tkDateNotify';
+     fnTimeNotify = 'tkDateNotify';
      fnNotifyComplete = 'tkNotifyComplete';
+     fnNotify = 'tkNotify';
      fnDeadline = 'tkDeadline';
      fnState = 'tkState';
+     fnColor = 'tkColor';
     private
      FDataBase: TDB;
      FShowEndedTask: Boolean;
@@ -113,6 +122,7 @@ constructor TTaskItem.Create(AOwner: TTaskItems);
 begin
  inherited Create;
  FSaved:=False;
+ FColor:=clNone;
  FID:=-1;
  FState:=False;
  FParent:=-1;
@@ -132,9 +142,9 @@ begin
  Result:=FTaskRepeat[Index] = '1';
 end;
 
-procedure TTaskItem.SetDateCreate(const Value: TDateTime);
+procedure TTaskItem.SetColor(const Value: TColor);
 begin
- FDateCreate:=Value;
+ FColor := Value;
 end;
 
 procedure TTaskItem.SetDateDeadline(const Value: TDateTime);
@@ -142,7 +152,7 @@ begin
  FDateDeadline:=Value;
 end;
 
-procedure TTaskItem.SetDateNotify(const Value: TDateTime);
+procedure TTaskItem.SetDateNotify(const Value: TTime);
 begin
  FDateNotify:=Value;
 end;
@@ -170,6 +180,11 @@ end;
 procedure TTaskItem.SetName(const Value: string);
 begin
  FName:=Value;
+end;
+
+procedure TTaskItem.SetNotify(const Value: Boolean);
+begin
+ FNotify := Value;
 end;
 
 procedure TTaskItem.SetNotifyComplete(const Value: Boolean);
@@ -224,10 +239,12 @@ begin
     AddField(fnTaskType, ftInteger);
     AddField(fnTaskRepeat, ftString);
     AddField(fnDateDeadline, ftDateTime);
-    AddField(fnDateNotify, ftDateTime);
+    AddField(fnTimeNotify, ftDateTime);
     AddField(fnNotifyComplete, ftBoolean);
+    AddField(fnNotify, ftBoolean);
     AddField(fnDeadline, ftBoolean);
     AddField(fnState, ftInteger);
+    AddField(fnColor, ftInteger);
     FDataBase.DB.ExecSQL(GetSQL);
     EndCreate;
    end;
@@ -300,14 +317,16 @@ begin
     AddField(fnTaskType);
     AddField(fnTaskRepeat);
     AddField(fnDateDeadline);
-    AddField(fnDateNotify);
+    AddField(fnTimeNotify);
     AddField(fnNotifyComplete);
     AddField(fnDeadline);
     AddField(fnState);
+    AddField(fnNotify);
+    AddField(fnColor);
     case FTaskFilter of
      tkfDated:
       begin
-       WhereFieldEqual(fnDateCreate, Trunc(FShowDate));
+       WhereFieldEqual(fnDateDeadline, Trunc(FShowDate));
        WhereFieldEqual(fnDeadline, True);
       end;
      tkfDeadlined:
@@ -331,14 +350,16 @@ begin
       Item.Parent:=Table.FieldAsInteger(1);
       Item.Name:=Table.FieldAsString(2);
       Item.Description:=Table.FieldAsString(3);
-      Item.DateCreate:=Table.FieldAsDateTime(4);
+      Item.FDateCreate:=Table.FieldAsDateTime(4);
       Item.TaskType:=TTaskType(Table.FieldAsInteger(5));
       Item.FTaskRepeat:=Table.FieldAsString(6);
       Item.DateDeadline:=Table.FieldAsDateTime(7);
-      Item.DateNotify:=Table.FieldAsDateTime(8);
+      Item.TimeNotify:=Frac(Table.FieldAsDateTime(8));
       Item.NotifyComplete:=Table.FieldAsBoolean(9);
       Item.Deadline:=Table.FieldAsBoolean(10);
       Item.State:=Table.FieldAsBoolean(11);
+      Item.Notify:=Table.FieldAsBoolean(12);
+      Item.Color:=TColor(Table.FieldAsInteger(13));
       Item.LabelItems:=TLabelItems.Create(FDataBase, nil);
       Item.LabelItems.Reload(Item.ID);
       Item.Update;
@@ -386,14 +407,16 @@ begin
     AddValue(fnParent, Items[Index].Parent);
     AddValue(fnName, Items[Index].Name);
     AddValue(fnDesc, Items[Index].Description);
-    AddValue(fnDateCreate, Items[Index].DateCreate);
+    AddValue(fnDateCreate, Now);
     AddValue(fnTaskType, Ord(Items[Index].TaskType));
     AddValue(fnTaskRepeat, Items[Index].FTaskRepeat);
     AddValue(fnDateDeadline, Items[Index].DateDeadline);
-    AddValue(fnDateNotify, Items[Index].DateNotify);
+    AddValue(fnTimeNotify, Items[Index].TimeNotify);
     AddValue(fnNotifyComplete, Items[Index].NotifyComplete);
     AddValue(fnDeadline, Items[Index].Deadline);
     AddValue(fnState, Items[Index].State);
+    AddValue(fnNotify, Items[Index].Notify);
+    AddValue(fnColor, Integer(Items[Index].Color));
     DataBase.DB.ExecSQL(GetSQL);
     Items[Index].ID:=DataBase.DB.GetLastInsertRowID;
     EndCreate;
@@ -404,14 +427,15 @@ begin
     AddValue(fnParent, Items[Index].Parent);
     AddValue(fnName, Items[Index].Name);
     AddValue(fnDesc, Items[Index].Description);
-    AddValue(fnDateCreate, Items[Index].DateCreate);
     AddValue(fnTaskType, Ord(Items[Index].TaskType));
     AddValue(fnTaskRepeat, Items[Index].FTaskRepeat);
     AddValue(fnDateDeadline, Items[Index].DateDeadline);
-    AddValue(fnDateNotify, Items[Index].DateNotify);
+    AddValue(fnTimeNotify, Items[Index].TimeNotify);
     AddValue(fnNotifyComplete, Items[Index].NotifyComplete);
     AddValue(fnDeadline, Items[Index].Deadline);
     AddValue(fnState, Items[Index].State);
+    AddValue(fnNotify, Items[Index].Notify);
+    AddValue(fnColor, Integer(Items[Index].Color));
     WhereFieldEqual(fnID, Items[Index].ID);
     DataBase.DB.ExecSQL(GetSQL);
     EndCreate;

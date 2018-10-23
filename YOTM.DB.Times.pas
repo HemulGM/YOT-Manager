@@ -2,7 +2,7 @@ unit YOTM.DB.Times;
 
 interface
   uses SQLite3, SQLLang, SQLiteTable3, System.Generics.Collections,
-       HGM.Controls.VirtualTable, YOTM.DB;
+       HGM.Controls.VirtualTable, YOTM.DB, Vcl.Graphics;
 
   type
    //Время работы
@@ -17,14 +17,16 @@ interface
      FTimeTo: TTime;
      FTimeFrom: TTime;
      FDate: TDate;
-    FTask: Integer;
+     FTask: Integer;
+     FColor: TColor;
      procedure SetOwner(const Value: TTimeItems);
      procedure SetDescription(const Value: string);
      procedure SetTimeFrom(const Value: TTime);
      procedure SetTimeTo(const Value: TTime);
      procedure SetID(const Value: Integer);
      procedure SetDate(const Value: TDate);
-    procedure SetTask(const Value: Integer);
+     procedure SetTask(const Value: Integer);
+    procedure SetColor(const Value: TColor);
     public
      constructor Create(AOwner: TTimeItems);
      property Owner:TTimeItems read FOwner write SetOwner;
@@ -32,6 +34,7 @@ interface
      property TimeFrom:TTime read FTimeFrom write SetTimeFrom;
      property TimeTo:TTime read FTimeTo write SetTimeTo;
      property Date:TDate read FDate write SetDate;
+     property Color:TColor read FColor write SetColor;
      property ID:Integer read FID write SetID;
      property Task:Integer read FTask write SetTask;
    end;
@@ -58,6 +61,7 @@ interface
    end;
 
 implementation
+ uses YOTM.DB.Tasks;
 
 { TTimeItem }
 
@@ -66,7 +70,13 @@ begin
  inherited Create;
  FID:=-1;
  FTask:=-1;
+ FColor:=clNone;
  Owner:=AOwner;
+end;
+
+procedure TTimeItem.SetColor(const Value: TColor);
+begin
+ FColor := Value;
 end;
 
 procedure TTimeItem.SetDate(const Value: TDate);
@@ -149,9 +159,11 @@ begin
     AddField(fnTimeFrom);
     AddField(fnTimeTo);
     AddField(fnDate);
+    AddField('IFNULL('+TTaskItems.fnColor+', 536870911)');
     if Date <> 0 then
      WhereFieldEqual(fnDate, Trunc(Date));
     OrderBy(fnTimeFrom, True);
+    LeftJoin(TTaskItems.tnTable, fnTask, TTaskItems.fnID);
     Table:=FDataBase.DB.GetTable(GetSQL);
     EndCreate;
     Table.MoveFirst;
@@ -164,6 +176,7 @@ begin
       Item.TimeFrom:=Frac(Table.FieldAsDateTime(3));
       Item.TimeTo:=Frac(Table.FieldAsDateTime(4));
       Item.Date:=Trunc(Table.FieldAsDateTime(5));
+      Item.Color:=TColor(Table.FieldAsInteger(6));
       Add(Item);
       Table.Next;
      end;
