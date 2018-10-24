@@ -29,55 +29,73 @@ type
   private
     FTimeTo: TTime;
     FTimeFrom: TTime;
+    FromHH, FromMM, ToHH, ToMM:Word;
     procedure SetTimeFrom(const Value: TTime);
     procedure SetTimeTo(const Value: TTime);
     procedure UpdateTime;
+    function GetTimeFrom: TTime;
+    function GetTimeTo: TTime;
   public
-    property TimeFrom:TTime read FTimeFrom write SetTimeFrom;
-    property TimeTo:TTime read FTimeTo write SetTimeTo;
+    property TimeFrom:TTime read GetTimeFrom write SetTimeFrom;
+    property TimeTo:TTime read GetTimeTo write SetTimeTo;
   end;
 
 var
   FormEditTime: TFormEditTime;
 
 implementation
- uses YOTM.Main;
+ uses YOTM.Main, Math;
 
 {$R *.dfm}
 
 procedure TFormEditTime.ButtonFlatUPDOWNClick(Sender: TObject);
 begin
  case (Sender as TButtonFlat).Tag of
-  10: TimeFrom:=TimeFrom - 1/24;
-  11: TimeFrom:=TimeFrom + 1/24;
-  20: TimeFrom:=TimeFrom - 1/24/60;
-  21: TimeFrom:=TimeFrom + 1/24/60;
-  30: TimeTo:=TimeTo - 1/24;
-  31: TimeTo:=TimeTo + 1/24;
-  40: TimeTo:=TimeTo - 1/24/60;
-  41: TimeTo:=TimeTo + 1/24/60;
+  10: FromHH:=Min(Max(0, FromHH - 1), 23);
+  11: FromHH:=Min(Max(0, FromHH + 1), 23);
+  20: FromMM:=Min(Max(0, FromMM - 1), 59);
+  21: FromMM:=Min(Max(0, FromMM + 1), 59);
+  30:   ToHH:=Min(Max(0,   ToHH - 1), 23);
+  31:   ToHH:=Min(Max(0,   ToHH + 1), 23);
+  40:   ToMM:=Min(Max(0,   ToMM - 1), 59);
+  41:   ToMM:=Min(Max(0,   ToMM + 1), 59);
  end;
+ UpdateTime;
+end;
+
+function TFormEditTime.GetTimeFrom: TTime;
+begin
+ Result:=EncodeTime(FromHH, FromMM, 0, 0);
+end;
+
+function TFormEditTime.GetTimeTo: TTime;
+begin
+ Result:=EncodeTime(ToHH, ToMM, 0, 0);
 end;
 
 procedure TFormEditTime.SetTimeFrom(const Value: TTime);
+var S, M:Word;
 begin
  FTimeFrom := Value;
+ DecodeTime(FTimeFrom, FromHH, FromMM, S, M);
  UpdateTime;
 end;
 
 procedure TFormEditTime.SetTimeTo(const Value: TTime);
+var S, M:Word;
 begin
  FTimeTo := Value;
+ DecodeTime(FTimeTo, ToHH, ToMM, S, M);
  UpdateTime;
 end;
 
 procedure TFormEditTime.UpdateTime;
 begin
- ButtonFlatTimeFromHH.Caption:=FormatDateTime('HH', FTimeFrom);
- ButtonFlatTimeFromMM.Caption:=FormatDateTime('nn', FTimeFrom);
+ ButtonFlatTimeFromHH.Caption:=FormatDateTime('HH', TimeFrom);
+ ButtonFlatTimeFromMM.Caption:=FormatDateTime('nn', TimeFrom);
 
- ButtonFlatTimeToHH.Caption:=FormatDateTime('HH', FTimeTo);
- ButtonFlatTimeToMM.Caption:=FormatDateTime('nn', FTimeTo);
+ ButtonFlatTimeToHH.Caption:=FormatDateTime('HH', TimeTo);
+ ButtonFlatTimeToMM.Caption:=FormatDateTime('nn', TimeTo);
 end;
 
 end.

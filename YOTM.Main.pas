@@ -208,8 +208,10 @@ type
     FTaskID:Integer;             //Открытая задача
     FCurrentDate: TDate;         //Выбранная пользователем дата
     FDoTimeSection:Boolean;      //Идёт работа над задачей
+    FNewTStartDate:TDateTime;
     FNewTStart:TTime;            //Время начала работы над задачей
     FNewTEnd:TTime;              //Время окончания работы над задачей
+    FNewTEndDate:TDateTime;
     FTimeItemUnderCursor:Integer;//Элемент отрезка времени под курсором
     FCurrentTime:TTime;          //Текущее время (без даты)
     SelTime:TTime;               //Выбранное время на шкале
@@ -221,7 +223,7 @@ type
     procedure SetCurrentDate(const Value: TDate);
     procedure SlideTo(Slide: TSlide);
     function StartTask(TimeStart: TTime): Boolean;
-    function AddTaskTime(ADate: TDate; TStart, TEnd:TTime): Boolean;
+    function AddTaskTime(ADate, ADateEnd: TDate; TStart, TEnd:TTime): Boolean;
     procedure UpdateCalendar;
     function GetCellText(ACol, ARow: Integer; var AnotherMonth:Boolean): string;
     function DaysThisMonth: Integer;
@@ -236,6 +238,7 @@ type
     procedure SetButtonWCaption(Target, CloseButton:TButtonFlat; Panel:TPanel; ACaption:string; ACloseBotton:Boolean);
     procedure UpdateTaskNowButton;
     procedure SetViewMode(const Value: TViewMode);
+    procedure UpdateDay;
   public
     property CurrentDate:TDate read FCurrentDate write SetCurrentDate;
     property ViewMode:TViewMode read FViewMode write SetViewMode;
@@ -453,7 +456,7 @@ begin
          if IndexInList(FTimeItemUnderCursor, FTimeItems.Count) then
           TableExTimes.ItemIndex:=FTimeItemUnderCursor;
         end
-       else AddTaskTime(CurrentDate, FRangeFrom, FRangeTo);
+       else AddTaskTime(CurrentDate, CurrentDate, FRangeFrom, FRangeTo);
        FPanelMouseDown:=False;
        FPanelMouseDownPos:=Point(-1, -1);
       end;
@@ -636,7 +639,7 @@ begin
  Close;
 end;
 
-function TFormMain.AddTaskTime(ADate:TDate; TStart, TEnd:TTime):Boolean;
+function TFormMain.AddTaskTime(ADate, ADateEnd:TDate; TStart, TEnd:TTime):Boolean;
 var Item:TTimeItem;
     EditTime:TFormEditTime;
 begin
@@ -656,7 +659,8 @@ begin
         Task:=FTaskItems[TableExTasks.ItemIndex].ID;
         Color:=FTaskItems[TableExTasks.ItemIndex].Color;
        end;
-      Date:=Trunc(ADate);
+      Date:=DateOf(ADate);
+      DateEnd:=DateOf(ADateEnd);
       Description:=EditTime.EditText.Text;
       TimeFrom:=EditTime.TimeFrom;
       TimeTo:=EditTime.TimeTo;
@@ -723,11 +727,13 @@ begin
   begin
    ButtonFlatTaskStart.Caption:='Начать';
    FDoTimeSection:=False;
-   FNewTEnd:=Frac(Now);
+   FNewTEnd:=TimeOf(Now);
+   FNewTEndDate:=DateOf(Now);
    FPanelMouseDown:=False;
    FPanelMouseDownPos:=Point(-1, -1);
-   if Abs(GetMins(FNewTStart) - GetMins(FNewTEnd)) < 1 then Exit;
-   AddTaskTime(Now, FNewTStart, FNewTEnd);
+   if FNewTStartDate = FNewTEndDate then
+    if Abs(GetMins(FNewTStart) - GetMins(FNewTEnd)) < 1 then Exit;
+   AddTaskTime(FNewTStartDate, FNewTEndDate, FNewTStart, FNewTEnd);
   end;
 end;
 
@@ -735,8 +741,8 @@ function TFormMain.StartTask(TimeStart:TTime):Boolean;
 begin
  Result:=False;
  if FDoTimeSection then Exit;
- CurrentDate:=Now;
- FNewTStart:=Frac(TimeStart);
+ FNewTStartDate:=DateOf(TimeStart);
+ FNewTStart:=TimeOf(TimeStart);
  FNewTEnd:=FNewTStart;
  FDoTimeSection:=True;
  Result:=True;
@@ -759,7 +765,6 @@ end;
 
 procedure TFormMain.ButtonFlatTaskNowClick(Sender: TObject);
 begin
- CurrentDate:=Now;
  ViewMode:=vmToday;
 end;
 
@@ -872,7 +877,7 @@ end;
 
 procedure TFormMain.ButtonFlatAddTimeClick(Sender: TObject);
 begin
- AddTaskTime(Now, Now, Now);
+ AddTaskTime(CurrentDate, CurrentDate, Now, Now);
 end;
 
 procedure TFormMain.SlideTo(Slide:TSlide);
@@ -938,7 +943,7 @@ end;
 procedure TFormMain.CalendarChange(Sender: TObject);
 begin
  if Calendar.IsEmpty then Calendar.Date:=Now;
- CurrentDate:=Calendar.Date;
+ ViewMode:=vmSelectedDate;
 end;
 
 procedure TFormMain.CalendarCloseUp(Sender: TObject);
@@ -948,12 +953,12 @@ end;
 
 procedure TFormMain.DateTimePickerEndChange(Sender: TObject);
 begin
- if Frac(DateTimePickerEnd.Time) < Frac(DateTimePickerStart.Time) then
+ if TimeOf(DateTimePickerEnd.Time) < TimeOf(DateTimePickerStart.Time) then
   DateTimePickerEnd.Time:=DateTimePickerStart.Time
  else
-  if Frac(DateTimePickerStart.Time) > Frac(DateTimePickerEnd.Time) then
+  if TimeOf(DateTimePickerStart.Time) > TimeOf(DateTimePickerEnd.Time) then
    DateTimePickerStart.Time:=DateTimePickerEnd.Time;
- if Frac(DateTimePickerEnd.Time) <= Frac(DateTimePickerStart.Time) then
+ if TimeOf(DateTimePickerEnd.Time) <= TimeOf(DateTimePickerStart.Time) then
   DateTimePickerEnd.Time:=DateTimePickerStart.Time+1/24/60;
 
  FWorkTimeMin:= Max(1, GetMins(DateTimePickerEnd.Time) - GetMins(DateTimePickerStart.Time));
@@ -1019,22 +1024,22 @@ begin
  ClientWidth:=1500;
  ClientHeight:=800;
  FTaskID:=-1;
+
  FDB:=TDB.Create(ExtractFilePath(ParamStr(0))+'\data.db');
  FTimeItems:=TTimeItems.Create(FDB, TableExTimes);
  FTaskItems:=TTaskItems.Create(FDB, TableExTasks);
  FComments:=TCommentItems.Create(FDB, TableExComments);
  FLabelTypes:=TLabelTypes.Create(FDB, nil);
- FLabelTypes.Reload;
  FLabelItems:=TLabelItems.Create(FDB, nil);
- CurrentDate:=Now;
- FLastDate:=Trunc(Now);
- DateTimePickerEndChange(nil);
+
  FDoTimeSection:=False;
- TimerTimeTimer(nil);
  VisNow:=PanelTimes;
  HideTask;
- UpdateCounts;
- UpdateTaskNowButton;
+
+ DateTimePickerEndChange(nil);
+ UpdateDay;
+ TimerTimeTimer(nil);
+ ViewMode:=vmToday;
 end;
 
 procedure TFormMain.FormPaint(Sender: TObject);
@@ -1110,6 +1115,7 @@ procedure TFormMain.PopupMenuTaskPopup(Sender: TObject);
 var MI:TMenuItem;
   i: Integer;
 begin
+ FLabelTypes.Reload;
  MenuItemTaskLabels.Clear;
 
  MI:=PopupMenuTask.CreateMenuItem;
@@ -1145,10 +1151,7 @@ procedure TFormMain.SetCurrentDate(const Value: TDate);
 begin
  if Value = FCurrentDate then Exit;
  FCurrentDate:=Value;
- Calendar.Date:=FCurrentDate;
  FTimeItems.Reload(FCurrentDate);
-
- ViewMode:=vmSelectedDate;
  UpdateCalendar;
 end;
 
@@ -1158,17 +1161,25 @@ begin
  case FViewMode of
   vmToday:
    begin
+    Calendar.Date:=Now;
+    CurrentDate:=Now;
+    FTaskItems.ShowDate:=CurrentDate;
+    FTaskItems.TaskFilter:=tkfDated;
+    FTaskItems.Reload;
     ButtonFlatViewMode.Caption:='Сегодня';
    end;
   vmSelectedDate:
    begin
-    FTaskItems.ShowDate:=CurrentDate;
+    FTaskItems.ShowDate:=Calendar.Date;
     FTaskItems.TaskFilter:=tkfDated;
     FTaskItems.Reload;
+    CurrentDate:=Calendar.Date;
     ButtonFlatViewMode.Caption:=HumanDateTime(FTaskItems.ShowDate, False);
    end;
   vmDeadlined:
    begin
+    Calendar.Date:=Now;
+    CurrentDate:=Now;
     FTaskItems.ShowDate:=Now;
     FTaskItems.TaskFilter:=tkfDeadlined;
     FTaskItems.Reload;
@@ -1176,6 +1187,9 @@ begin
    end;
   vmInbox:
    begin
+    Calendar.Date:=Now;
+    CurrentDate:=Now;
+    FTaskItems.ShowDate:=Now;
     FTaskItems.TaskFilter:=tkfNoDate;
     FTaskItems.Reload;
     ButtonFlatViewMode.Caption:='Входящие';
@@ -1535,21 +1549,24 @@ begin
  ButtonFlatTaskNow.Caption:=FormatDateTime('Сегодня: DD mmm, DDD', Now);
 end;
 
+procedure TFormMain.UpdateDay;
+begin
+ FLastDate:=DateOf(Now);
+ Calendar.Date:=FLastDate;
+ UpdateCounts;
+ UpdateTaskNowButton;
+end;
+
 procedure TFormMain.TimerTimeTimer(Sender: TObject);
 begin
- FCurrentTime:=Frac(Now);
+ FCurrentTime:=TimeOf(Now);
  FNowTimeMin:=GetMins(FCurrentTime);
  if FDoTimeSection then
   begin
    ButtonFlatTaskStart.Caption:=FormatDateTime('HH:mm:ss', FNewTEnd - FNewTStart);
-   FNewTEnd:=Frac(Now);
+   FNewTEnd:=TimeOf(Now);
   end;
- if FLastDate < Trunc(Now) then
-  begin
-   FLastDate:=Trunc(Now);
-   Calendar.Date:=FLastDate;
-   UpdateTaskNowButton;
-  end;
+ if FLastDate < DateOf(Now) then UpdateDay;
 end;
 
 end.

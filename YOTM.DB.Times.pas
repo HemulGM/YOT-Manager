@@ -19,6 +19,7 @@ interface
      FDate: TDate;
      FTask: Integer;
      FColor: TColor;
+     FDateEnd: TDate;
      procedure SetOwner(const Value: TTimeItems);
      procedure SetDescription(const Value: string);
      procedure SetTimeFrom(const Value: TTime);
@@ -26,7 +27,8 @@ interface
      procedure SetID(const Value: Integer);
      procedure SetDate(const Value: TDate);
      procedure SetTask(const Value: Integer);
-    procedure SetColor(const Value: TColor);
+     procedure SetColor(const Value: TColor);
+     procedure SetDateEnd(const Value: TDate);
     public
      constructor Create(AOwner: TTimeItems);
      property Owner:TTimeItems read FOwner write SetOwner;
@@ -34,6 +36,7 @@ interface
      property TimeFrom:TTime read FTimeFrom write SetTimeFrom;
      property TimeTo:TTime read FTimeTo write SetTimeTo;
      property Date:TDate read FDate write SetDate;
+     property DateEnd:TDate read FDateEnd write SetDateEnd;
      property Color:TColor read FColor write SetColor;
      property ID:Integer read FID write SetID;
      property Task:Integer read FTask write SetTask;
@@ -48,6 +51,7 @@ interface
      fnTimeFrom = 'tiTimeFrom';
      fnTimeTo = 'tiTimeTo';
      fnDate = 'tiDate';
+     fnDateEnd = 'tiDateEnd';
     private
      FDataBase: TDB;
      procedure SetDataBase(const Value: TDB);
@@ -82,6 +86,11 @@ end;
 procedure TTimeItem.SetDate(const Value: TDate);
 begin
  FDate := Value;
+end;
+
+procedure TTimeItem.SetDateEnd(const Value: TDate);
+begin
+ FDateEnd := Value;
 end;
 
 procedure TTimeItem.SetDescription(const Value: string);
@@ -128,6 +137,7 @@ begin
     AddField(fnTimeFrom, ftDateTime);
     AddField(fnTimeTo, ftDateTime);
     AddField(fnDate, ftDateTime);
+    AddField(fnDateEnd, ftDateTime);
     FDataBase.DB.ExecSQL(GetSQL);
     EndCreate;
    end;
@@ -160,8 +170,12 @@ begin
     AddField(fnTimeTo);
     AddField(fnDate);
     AddField('IFNULL('+TTaskItems.fnColor+', 536870911)');
+    AddField(fnDateEnd);
     if Date <> 0 then
-     WhereFieldEqual(fnDate, Trunc(Date));
+     begin
+      WhereField(fnDate, ' >= ', Trunc(Date));
+      WhereField(fnDateEnd, '<=', Trunc(Date));
+     end;
     OrderBy(fnTimeFrom, True);
     LeftJoin(TTaskItems.tnTable, fnTask, TTaskItems.fnID);
     Table:=FDataBase.DB.GetTable(GetSQL);
@@ -177,6 +191,7 @@ begin
       Item.TimeTo:=Frac(Table.FieldAsDateTime(4));
       Item.Date:=Trunc(Table.FieldAsDateTime(5));
       Item.Color:=TColor(Table.FieldAsInteger(6));
+      Item.DateEnd:=Table.FieldAsDateTime(7);
       Add(Item);
       Table.Next;
      end;
@@ -197,6 +212,7 @@ begin
     AddValue(fnTimeFrom, Items[Index].TimeFrom);
     AddValue(fnTimeTo, Items[Index].TimeTo);
     AddValue(fnDate, Items[Index].Date);
+    AddValue(fnDateEnd, Items[Index].DateEnd);
     DataBase.DB.ExecSQL(GetSQL);
     Items[Index].ID:=DataBase.DB.GetLastInsertRowID;
     EndCreate;
@@ -209,6 +225,7 @@ begin
     AddValue(fnTimeFrom, Items[Index].TimeFrom);
     AddValue(fnTimeTo, Items[Index].TimeTo);
     AddValue(fnDate, Items[Index].Date);
+    AddValue(fnDateEnd, Items[Index].DateEnd);
     WhereFieldEqual(fnID, Items[Index].ID);
     DataBase.DB.ExecSQL(GetSQL);
     EndCreate;

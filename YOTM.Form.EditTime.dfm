@@ -39,7 +39,7 @@ inherited FormEditTime: TFormEditTime
   inherited DragBarTop: TsDragBar
     Width = 437
     DraggedControl = Owner
-    ExplicitWidth = 413
+    ExplicitWidth = 437
     inherited LabelCaption: TLabel
       Width = 120
       Caption = #1047#1072#1087#1080#1089#1100' '#1086' '#1088#1072#1073#1086#1090#1077
@@ -47,18 +47,21 @@ inherited FormEditTime: TFormEditTime
     end
     inherited ButtonFlatClose: TButtonFlat
       Left = 412
-      ExplicitLeft = 388
+      ExplicitLeft = 412
     end
   end
   inherited PanelBottom: TPanel
     Top = 191
     Width = 437
-    ExplicitTop = 154
+    ExplicitTop = 191
+    ExplicitWidth = 437
     inherited ButtonFlatCancel: TButtonFlat
       Left = 337
+      ExplicitLeft = 337
     end
     inherited ButtonFlatOK: TButtonFlat
       Left = 235
+      ExplicitLeft = 235
     end
   end
   object EditText: TEdit
@@ -116,6 +119,8 @@ inherited FormEditTime: TFormEditTime
     TabOrder = 3
     TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+    AutoClick = 100
+    DblClickTooClick = True
   end
   object ButtonFlatTimeFromHH: TButtonFlat
     Left = 117
@@ -185,6 +190,8 @@ inherited FormEditTime: TFormEditTime
     TabOrder = 5
     TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+    AutoClick = 100
+    DblClickTooClick = True
   end
   object ButtonFlat4: TButtonFlat
     Tag = 21
@@ -221,6 +228,8 @@ inherited FormEditTime: TFormEditTime
     TabOrder = 6
     TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+    AutoClick = 100
+    DblClickTooClick = True
   end
   object ButtonFlatTimeFromMM: TButtonFlat
     Left = 163
@@ -290,6 +299,8 @@ inherited FormEditTime: TFormEditTime
     TabOrder = 8
     TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+    AutoClick = 100
+    DblClickTooClick = True
   end
   object ButtonFlat7: TButtonFlat
     Tag = 31
@@ -326,6 +337,8 @@ inherited FormEditTime: TFormEditTime
     TabOrder = 9
     TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+    AutoClick = 100
+    DblClickTooClick = True
   end
   object ButtonFlatTimeToHH: TButtonFlat
     Left = 231
@@ -395,6 +408,8 @@ inherited FormEditTime: TFormEditTime
     TabOrder = 11
     TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+    AutoClick = 100
+    DblClickTooClick = True
   end
   object ButtonFlat10: TButtonFlat
     Tag = 41
@@ -431,6 +446,8 @@ inherited FormEditTime: TFormEditTime
     TabOrder = 12
     TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+    AutoClick = 100
+    DblClickTooClick = True
   end
   object ButtonFlatTimeToMM: TButtonFlat
     Left = 277
@@ -500,5 +517,7 @@ inherited FormEditTime: TFormEditTime
     TabOrder = 14
     TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+    AutoClick = 100
+    DblClickTooClick = True
   end
 end

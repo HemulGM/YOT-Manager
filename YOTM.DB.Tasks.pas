@@ -3,7 +3,7 @@ unit YOTM.DB.Tasks;
 interface
   uses SQLite3, SQLLang, SQLiteTable3, System.Generics.Collections,
        System.SysUtils, Vcl.Graphics,
-       HGM.Controls.VirtualTable, YOTM.DB, YOTM.DB.Labels;
+       HGM.Controls.VirtualTable, YOTM.DB, YOTM.DB.Labels, dialogs;
 
   type
    TTaskFilter = (tkfAll, tkfDated, tkfDeadlined, tkfNoDate);
@@ -127,6 +127,7 @@ begin
  FState:=False;
  FParent:=-1;
  FDeadline:=False;
+ FLabelItems:=TLabelItems.Create(AOwner.DataBase, nil);
  FTaskRepeat:='0000000000000000000000000000000';
  Owner:=AOwner;
 end;
@@ -266,6 +267,12 @@ begin
    DataBase.DB.ExecSQL(GetSQL);
    EndCreate;
   end;
+ with SQL.Delete(TLabelItems.tnTable) do
+  begin
+   WhereFieldEqual(TLabelItems.fnTask, TaskID);
+   DataBase.DB.ExecSQL(GetSQL);
+   EndCreate;
+  end;
  Items[Index].Free;
  inherited;
 end;
@@ -292,9 +299,23 @@ begin
  with SQL.Select(tnTable) do
   begin
    AddField('Count(*)');
-   WhereField(fnDateDeadline, '<', Trunc(Date));
+   WhereParenthesesOpen;
+     WhereParenthesesOpen;
+       WhereParenthesesOpen;
+         WhereNotFieldEqual(fnNotify, True);
+         WhereField(fnTimeNotify, ' < ', Frac(Date), wuOr);
+       WhereParenthesesClose;
+       WhereField(fnDateDeadline, ' <= ', Trunc(Date));
+     WhereParenthesesClose;
+     WhereField(fnDateDeadline, '<', Trunc(Date), wuOR);
+   WhereParenthesesClose;
+
+   WhereParenthesesOpen;
+     WhereNotFieldEqual(fnNotify, True);
+     WhereField(fnTimeNotify, '<', Frac(Date), wuOr);
+   WhereParenthesesClose;
+   WhereNotFieldEqual(fnNotifyComplete, True);
    WhereFieldEqual(fnDeadline, True);
-   WhereFieldEqual(fnState, False);
    Result:=FDataBase.DB.GetTableValue(GetSQL);
    EndCreate;
   end;
@@ -331,7 +352,22 @@ begin
       end;
      tkfDeadlined:
       begin
-       WhereField(fnDateDeadline, '<', Trunc(FShowDate));
+       WhereParenthesesOpen;
+         WhereParenthesesOpen;
+           WhereParenthesesOpen;
+             WhereNotFieldEqual(fnNotify, True);
+             WhereField(fnTimeNotify, ' < ', Frac(FShowDate), wuOr);
+           WhereParenthesesClose;
+           WhereField(fnDateDeadline, ' <= ', Trunc(FShowDate));
+         WhereParenthesesClose;
+         WhereField(fnDateDeadline, '<', Trunc(FShowDate), wuOR);
+       WhereParenthesesClose;
+
+       WhereParenthesesOpen;
+         WhereNotFieldEqual(fnNotify, True);
+         WhereField(fnTimeNotify, '<', Frac(FShowDate), wuOr);
+       WhereParenthesesClose;
+       WhereNotFieldEqual(fnNotifyComplete, True);
        WhereFieldEqual(fnDeadline, True);
       end;
      tkfNoDate: WhereFieldEqual(fnDeadline, False);
@@ -360,7 +396,6 @@ begin
       Item.State:=Table.FieldAsBoolean(11);
       Item.Notify:=Table.FieldAsBoolean(12);
       Item.Color:=TColor(Table.FieldAsInteger(13));
-      Item.LabelItems:=TLabelItems.Create(FDataBase, nil);
       Item.LabelItems.Reload(Item.ID);
       Item.Update;
       Add(Item);
