@@ -679,7 +679,7 @@ inherited FormDateAndNotify: TFormDateAndNotify
         Width = 156
         Height = 29
         Align = alTop
-        Caption = '24:00'
+        Caption = '20:00'
         ColorNormal = 3684408
         ColorOver = 4868682
         ColorPressed = 2631720

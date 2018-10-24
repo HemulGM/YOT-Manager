@@ -643,8 +643,8 @@ begin
  EditTime:=TFormEditTime.Create(nil);
  try
   EditTime.EditText.Text:='';
-  EditTime.DateTimePickerFrom.Time:=TStart;
-  EditTime.DateTimePickerTo.Time:=TEnd;
+  EditTime.TimeFrom:=TStart;
+  EditTime.TimeTo:=TEnd;
   EditTime.Position:=poMainFormCenter;
   if EditTime.ShowModal = mrOK then
    begin
@@ -658,8 +658,8 @@ begin
        end;
       Date:=Trunc(ADate);
       Description:=EditTime.EditText.Text;
-      TimeFrom:=EditTime.DateTimePickerFrom.Time;
-      TimeTo:=EditTime.DateTimePickerTo.Time;
+      TimeFrom:=EditTime.TimeFrom;
+      TimeTo:=EditTime.TimeTo;
       FTimeItems.Insert(0, Item);
       FTimeItems.Update(0);
      end;

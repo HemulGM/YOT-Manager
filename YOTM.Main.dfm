@@ -269,7 +269,6 @@ object FormMain: TFormMain
       ParentBackground = False
       TabOrder = 2
       StyleElements = []
-      ExplicitTop = 40
       object EditNewTaskName: TEdit
         AlignWithMargins = True
         Left = 3
@@ -292,7 +291,6 @@ object FormMain: TFormMain
         TabOrder = 0
         TextHint = #1044#1086#1073#1072#1074#1080#1090#1100' '#1079#1072#1076#1072#1095#1091'...'
         StyleElements = []
-        ExplicitLeft = 6
       end
       object ButtonFlat2: TButtonFlat
         AlignWithMargins = True
@@ -395,8 +393,6 @@ object FormMain: TFormMain
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitTop = 44
-        ExplicitHeight = 156
         object MemoTaskDesc: TMemo
           Left = 0
           Top = 0
@@ -413,7 +409,6 @@ object FormMain: TFormMain
           ParentFont = False
           TabOrder = 0
           OnChange = MemoTaskDescChange
-          ExplicitHeight = 156
         end
       end
       object PanelTaskComments: TPanel
@@ -424,8 +419,6 @@ object FormMain: TFormMain
         Align = alRight
         BevelOuter = bvNone
         TabOrder = 1
-        ExplicitTop = 44
-        ExplicitHeight = 156
         object TableExComments: TTableEx
           Left = 0
           Top = 0
@@ -495,7 +488,6 @@ object FormMain: TFormMain
           ParentBackground = False
           TabOrder = 1
           StyleElements = []
-          ExplicitTop = 116
           object EditNewComment: TEdit
             AlignWithMargins = True
             Left = 3
@@ -570,8 +562,6 @@ object FormMain: TFormMain
         ParentBackground = False
         TabOrder = 2
         StyleElements = []
-        ExplicitLeft = -1
-        ExplicitTop = 8
         object ButtonFlatTaskClose: TButtonFlat
           AlignWithMargins = True
           Left = 743
@@ -670,7 +660,6 @@ object FormMain: TFormMain
           TabOrder = 2
           TextHint = #1050#1088#1072#1090#1082#1086#1077' '#1086#1087#1080#1089#1072#1085#1080#1077' '#1079#1072#1076#1072#1095#1080
           StyleElements = []
-          ExplicitTop = 4
         end
       end
       object PanelTaskLabels: TPanel
@@ -729,7 +718,6 @@ object FormMain: TFormMain
             TabOrder = 0
             TabStop = True
             TextFormat = [tfSingleLine, tfVerticalCenter]
-            ExplicitWidth = 300
           end
           object ButtonFlatDANClose: TButtonFlat
             AlignWithMargins = True
@@ -770,7 +758,6 @@ object FormMain: TFormMain
             TabOrder = 1
             TabStop = True
             TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-            ExplicitLeft = 174
           end
         end
         object PanelTaskColor: TPanel
@@ -818,7 +805,6 @@ object FormMain: TFormMain
             TabOrder = 0
             TabStop = True
             TextFormat = [tfSingleLine, tfVerticalCenter]
-            ExplicitWidth = 164
           end
           object ButtonFlatTaskColorClose: TButtonFlat
             AlignWithMargins = True
@@ -859,7 +845,6 @@ object FormMain: TFormMain
             TabOrder = 1
             TabStop = True
             TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-            ExplicitLeft = 173
           end
         end
       end
@@ -1717,7 +1702,6 @@ object FormMain: TFormMain
       TextFormat = [tfSingleLine, tfVerticalCenter]
       SubText = '0'
       VisibleSubText = True
-      ExplicitTop = 83
     end
     object ButtonFlatTaskNow: TButtonFlat
       AlignWithMargins = True
@@ -1758,7 +1742,6 @@ object FormMain: TFormMain
       TextFormat = [tfSingleLine, tfVerticalCenter]
       SubText = '0'
       VisibleSubText = True
-      ExplicitTop = 43
     end
     object ButtonFlatTaskInbox: TButtonFlat
       AlignWithMargins = True
@@ -1799,7 +1782,6 @@ object FormMain: TFormMain
       TextFormat = [tfSingleLine, tfVerticalCenter]
       SubText = '0'
       VisibleSubText = True
-      ExplicitTop = 123
     end
     object Panel3: TPanel
       Left = 0
@@ -1944,7 +1926,7 @@ object FormMain: TFormMain
     Left = 156
     Top = 200
     Bitmap = {
-      494C0101150058003C0118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010115005800400118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000006000000090000000010020000000000000D8
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

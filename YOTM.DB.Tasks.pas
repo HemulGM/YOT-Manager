@@ -277,8 +277,8 @@ begin
    AddField('Count(*)');
    if Date <> 0 then
     begin
-     WhereFieldEqual(fnDateCreate, Trunc(Date));
-     WhereFieldEqual(fnDeadline, False);
+     WhereFieldEqual(fnDateDeadline, Trunc(Date));
+     WhereFieldEqual(fnDeadline, True);
     end
    else WhereFieldEqual(fnDeadline, False);
    WhereFieldEqual(fnState, False);
@@ -292,7 +292,7 @@ begin
  with SQL.Select(tnTable) do
   begin
    AddField('Count(*)');
-   WhereField(fnDateDeadline, '<', Date);
+   WhereField(fnDateDeadline, '<', Trunc(Date));
    WhereFieldEqual(fnDeadline, True);
    WhereFieldEqual(fnState, False);
    Result:=FDataBase.DB.GetTableValue(GetSQL);
@@ -331,7 +331,7 @@ begin
       end;
      tkfDeadlined:
       begin
-       WhereField(fnDateDeadline, '<', FShowDate);
+       WhereField(fnDateDeadline, '<', Trunc(FShowDate));
        WhereFieldEqual(fnDeadline, True);
       end;
      tkfNoDate: WhereFieldEqual(fnDeadline, False);
