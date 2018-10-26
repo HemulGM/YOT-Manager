@@ -9,7 +9,7 @@ uses
   HGM.Controls.SpinEdit, Vcl.Grids, HGM.Controls.VirtualTable, YOTM.DB,
   System.ImageList, Vcl.ImgList, HGM.Button, sPanel, Vcl.WinXCalendars,
   Vcl.AppEvnts, Vcl.Menus, YOTM.DB.Comments, YOTM.DB.Labels, YOTM.DB.Tasks,
-  YOTM.DB.Times, HGM.Common.Utils, YOTM.DB.LabelTypes, sDialogs;
+  YOTM.DB.Times, HGM.Common.Utils, YOTM.DB.LabelTypes, sDialogs, YOTM.DB.Notes;
 
 type
   TTimeSection = record
@@ -18,7 +18,7 @@ type
 
   TViewMode = (vmToday, vmSelectedDate, vmDeadlined, vmInbox);
 
-  TSlide = (slTimes, slSettings, slCalendar);
+  TSlide = (slTimes, slSettings, slCalendar, slNotes);
 
   TTimeSections = TList<TTimeSection>;
 
@@ -117,6 +117,25 @@ type
     ButtonFlatTaskColor: TButtonFlat;
     ButtonFlatTaskColorClose: TButtonFlat;
     ColorDialog: TsColorDialog;
+    PopupMenuViewProp: TPopupMenu;
+    MenuItemShowEnded: TMenuItem;
+    ButtonFlatNotes: TButtonFlat;
+    PanelNotes: TPanel;
+    PanelLog: TPanel;
+    MemoLog: TMemo;
+    Shape13: TShape;
+    Label4: TLabel;
+    MemoNote: TMemo;
+    Panel5: TPanel;
+    ButtonFlat8: TButtonFlat;
+    ButtonFlat10: TButtonFlat;
+    Panel6: TPanel;
+    Shape14: TShape;
+    Shape15: TShape;
+    Label5: TLabel;
+    LabelNoteDate: TLabel;
+    LabelNoteModify: TLabel;
+    Label8: TLabel;
     procedure TimerRepaintTimer(Sender: TObject);
     procedure DrawPanelPaint(Sender: TObject);
     procedure DrawPanelMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
@@ -128,7 +147,6 @@ type
     procedure TableExTimesGetData(FCol, FRow: Integer; var Value: string);
     procedure ButtonFlatCloseClick(Sender: TObject);
     procedure FormPaint(Sender: TObject);
-    procedure CalendarChange(Sender: TObject);
     procedure ButtonFlatTaskStartClick(Sender: TObject);
     procedure ButtonFlatTaskEndClick(Sender: TObject);
     procedure TableExTimesItemColClick(Sender: TObject; MouseButton: TMouseButton;
@@ -190,6 +208,11 @@ type
       var New: Integer);
     procedure ButtonFlatTaskColorCloseClick(Sender: TObject);
     procedure ButtonFlatTaskColorClick(Sender: TObject);
+    procedure MenuItemShowEndedClick(Sender: TObject);
+    procedure ButtonFlatViewModeClick(Sender: TObject);
+    procedure ButtonFlatNotesClick(Sender: TObject);
+    procedure ButtonFlat8Click(Sender: TObject);
+    procedure ButtonFlat10Click(Sender: TObject);
   private
     FLastDate:TDate;             //Реальная дата (без времени)
     FPanelMouse:TPoint;          //Позиция мыши на панели
@@ -205,6 +228,7 @@ type
     FLabelTypes:TLabelTypes;
     FLabelItems:TLabelItems;
     FComments:TCommentItems;     //Комментарии к задаче
+    FNote:TNoteItem;             //Запись на день
     FTaskID:Integer;             //Открытая задача
     FCurrentDate: TDate;         //Выбранная пользователем дата
     FDoTimeSection:Boolean;      //Идёт работа над задачей
@@ -239,6 +263,11 @@ type
     procedure UpdateTaskNowButton;
     procedure SetViewMode(const Value: TViewMode);
     procedure UpdateDay;
+    procedure UpdateViewModeParam;
+    procedure DoLog(Text: string);
+    procedure SaveNote;
+    procedure LoadNote(Date:TDate);
+    procedure NoteInfo;
   public
     property CurrentDate:TDate read FCurrentDate write SetCurrentDate;
     property ViewMode:TViewMode read FViewMode write SetViewMode;
@@ -763,6 +792,11 @@ begin
  SlideTo(slTimes);
 end;
 
+procedure TFormMain.ButtonFlatViewModeClick(Sender: TObject);
+begin
+ ButtonFlatViewMode.ShowPopup;
+end;
+
 procedure TFormMain.ButtonFlatTaskNowClick(Sender: TObject);
 begin
  ViewMode:=vmToday;
@@ -787,6 +821,11 @@ begin
  UpdateTaskPanel(FTaskID);
 end;
 
+procedure TFormMain.ButtonFlat10Click(Sender: TObject);
+begin
+ LoadNote(CurrentDate);
+end;
+
 procedure TFormMain.ButtonFlat1Click(Sender: TObject);
 var Item:TTaskItem;
 begin
@@ -808,11 +847,18 @@ end;
 procedure TFormMain.ButtonFlat6Click(Sender: TObject);
 begin
  Calendar.Date:=Calendar.Date + 1;
+ ViewMode:=vmSelectedDate;
 end;
 
 procedure TFormMain.ButtonFlat7Click(Sender: TObject);
 begin
  Calendar.Date:=Calendar.Date - 1;
+ ViewMode:=vmSelectedDate;
+end;
+
+procedure TFormMain.ButtonFlat8Click(Sender: TObject);
+begin
+ SaveNote;
 end;
 
 procedure TFormMain.ButtonFlatCollapseScaleClick(Sender: TObject);
@@ -864,14 +910,13 @@ function TFormMain.DeleteTask(ID:Integer):Boolean;
 begin
  Result:=False;
  if not IndexInList(ID, FTaskItems.Count) then Exit;
- if not TFormAnswer.GetAnswer('Удалить задачу "'+FTaskItems[ID].Name+'"?') then Exit;
+ if not TFormAnswer.GetAnswer('Удалить задачу "'+CutString(FTaskItems[ID].Name, 100)+'"?', True) then Exit;
  FTaskItems.Delete(ID);
  UpdateTaskPanel(ID);
 end;
 
 procedure TFormMain.ButtonFlat9Click(Sender: TObject);
 begin
- if not IndexInList(TableExTasks.ItemIndex, FTaskItems.Count) then Exit;
  DeleteTask(TableExTasks.ItemIndex);
 end;
 
@@ -886,6 +931,7 @@ begin
  ButtonFlatTimes.ColorNormal:=$002E2E2E;
  ButtonFlatSettings.ColorNormal:=$002E2E2E;
  ButtonFlatCalendar.ColorNormal:=$002E2E2E;
+ ButtonFlatNotes.ColorNormal:=$002E2E2E;
  case Slide of
   slTimes:
    begin
@@ -901,6 +947,11 @@ begin
    begin
     VisNeed:=PanelCalendar;
     ButtonFlatCalendar.ColorNormal:=$00383838;
+   end;
+  slNotes:
+   begin
+    VisNeed:=PanelNotes;
+    ButtonFlatNotes.ColorNormal:=$00383838;
    end;
  end;
  if VisNeed <> VisNow then
@@ -934,21 +985,21 @@ begin
  EditNewComment.Text:='';
 end;
 
+procedure TFormMain.ButtonFlatNotesClick(Sender: TObject);
+begin
+ SlideTo(slNotes);
+end;
+
 procedure TFormMain.CalendarCalendarDrawDayItem(Sender: TObject;
   DrawParams: TDrawViewInfoParams; CalendarViewViewInfo: TCellItemViewInfo);
 begin
  DrawParams.ForegroundColor:=clWhite;
 end;
 
-procedure TFormMain.CalendarChange(Sender: TObject);
-begin
- if Calendar.IsEmpty then Calendar.Date:=Now;
- ViewMode:=vmSelectedDate;
-end;
-
 procedure TFormMain.CalendarCloseUp(Sender: TObject);
 begin
  if Calendar.IsEmpty then Calendar.Date:=Now;
+ ViewMode:=vmSelectedDate;
 end;
 
 procedure TFormMain.DateTimePickerEndChange(Sender: TObject);
@@ -1000,7 +1051,7 @@ begin
    SetButtonWCaption(ButtonFlatTaskColor, ButtonFlatTaskColorClose, PanelTaskColor, 'Выбрать цвет...', False);
    ButtonFlatTaskColor.ColorNormal:=$00313131;
   end;
- UpdateCounts;
+ //UpdateCounts;
  PanelTask.Height:=300;
  PanelTask.Enabled:=True;
 end;
@@ -1010,6 +1061,13 @@ begin
  PanelTask.Height:=1;
  PanelTask.Enabled:=False;
  TimerAutoSaveTaskTimer(nil);
+end;
+
+procedure TFormMain.DoLog(Text:string);
+begin
+ MemoLog.Lines.BeginUpdate;
+ MemoLog.Lines.Insert(0, Text+#13#10);
+ MemoLog.Lines.EndUpdate;
 end;
 
 procedure TFormMain.UpdateCounts;
@@ -1026,11 +1084,13 @@ begin
  FTaskID:=-1;
 
  FDB:=TDB.Create(ExtractFilePath(ParamStr(0))+'\data.db');
+ FDB.OnLog:=DoLog;
  FTimeItems:=TTimeItems.Create(FDB, TableExTimes);
  FTaskItems:=TTaskItems.Create(FDB, TableExTasks);
  FComments:=TCommentItems.Create(FDB, TableExComments);
  FLabelTypes:=TLabelTypes.Create(FDB, nil);
  FLabelItems:=TLabelItems.Create(FDB, nil);
+ FNote:=TNoteItem.Create(FDB);
 
  FDoTimeSection:=False;
  VisNow:=PanelTimes;
@@ -1064,9 +1124,20 @@ begin
   end;
 end;
 
+procedure TFormMain.MenuItemShowEndedClick(Sender: TObject);
+begin
+ FTaskItems.ShowEndedTask:=not FTaskItems.ShowEndedTask;
+ ViewMode:=ViewMode;
+end;
+
+procedure TFormMain.UpdateViewModeParam;
+begin
+ MenuItemShowEnded.Checked:=FTaskItems.ShowEndedTask;
+end;
+
 procedure TFormMain.MenuItemTaskDelClick(Sender: TObject);
 begin
- DeleteTask(TableExTasks.ItemUnderMouse);
+ DeleteTask(TableExTasks.ItemIndex);
 end;
 
 procedure TFormMain.MenuItemTaskDelLabelsClick(Sender: TObject);
@@ -1144,7 +1215,40 @@ begin
  MI.Caption:='Сбросить';
  MI.OnClick:=MenuItemTaskLabelReset;
  MenuItemTaskLabels.Add(MI);
+end;
 
+procedure TFormMain.NoteInfo;
+begin
+ if FNote.Loaded then
+  begin
+   MemoNote.Text:=FNote.Text;
+   MemoNote.ReadOnly:=False;
+   LabelNoteDate.Caption:=HumanDateTime(FNote.Date, False);
+   LabelNoteModify.Caption:=HumanDateTime(FNote.DateModify, True);
+  end
+ else
+  begin
+   MemoNote.Text:='';
+   MemoNote.ReadOnly:=True;
+   LabelNoteDate.Caption:='';
+   LabelNoteModify.Caption:='';
+  end;
+end;
+
+procedure TFormMain.SaveNote;
+begin
+ if FNote.Text <> MemoNote.Text then
+  begin
+   FNote.Text:=MemoNote.Text;
+   FNote.Save;
+   NoteInfo;
+  end;
+end;
+
+procedure TFormMain.LoadNote(Date:TDate);
+begin
+ FNote.Load(Date);
+ NoteInfo;
 end;
 
 procedure TFormMain.SetCurrentDate(const Value: TDate);
@@ -1152,6 +1256,8 @@ begin
  if Value = FCurrentDate then Exit;
  FCurrentDate:=Value;
  FTimeItems.Reload(FCurrentDate);
+ SaveNote;
+ LoadNote(FCurrentDate);
  UpdateCalendar;
 end;
 
@@ -1170,10 +1276,11 @@ begin
    end;
   vmSelectedDate:
    begin
+    //Calendar.Date:=Calendar.Date;
+    CurrentDate:=Calendar.Date;
     FTaskItems.ShowDate:=Calendar.Date;
     FTaskItems.TaskFilter:=tkfDated;
     FTaskItems.Reload;
-    CurrentDate:=Calendar.Date;
     ButtonFlatViewMode.Caption:=HumanDateTime(FTaskItems.ShowDate, False);
    end;
   vmDeadlined:
@@ -1198,6 +1305,8 @@ begin
  ButtonFlatViewMode.Width:=ButtonFlatViewMode.GetTextWidth + 20;
  ButtonFlatViewMode.Left:=PanelTaskEdit.Width div 2 - ButtonFlatViewMode.Width div 2;
  UpdateTaskPanel;
+ UpdateViewModeParam;
+ UpdateCounts;
 end;
 
 procedure TFormMain.TableExCommentsEdit(Sender: TObject; var Data: TTableEditStruct; ACol, ARow: Integer; var Allow: Boolean);
@@ -1346,6 +1455,16 @@ begin
  Task:=FTaskItems[ARow];
  case ACol of
   0:begin
+     with TableExTasks.Canvas do
+      begin
+       if Task.Color <> clNone then
+        begin
+         TxtRect:=Rect;
+         Brush.Color:=Task.Color;
+         Pen.Color:=Task.Color;
+         Rectangle(Rect);
+        end;
+      end;
      case Task.State of
       True:ImageList24.Draw(TableExTasks.Canvas,
        Rect.Left+(Rect.Width div 2 - ImageList24.Width div 2),
@@ -1472,6 +1591,7 @@ begin
    begin
     FTaskItems[TableExTasks.ItemIndex].State:=not FTaskItems[TableExTasks.ItemIndex].State;
     FTaskItems.Update(TableExTasks.ItemIndex);
+    UpdateCounts;
     UpdateTaskPanel(TableExTasks.ItemIndex);
    end;
  end;
@@ -1553,6 +1673,7 @@ procedure TFormMain.UpdateDay;
 begin
  FLastDate:=DateOf(Now);
  Calendar.Date:=FLastDate;
+ CurrentDate:=FLastDate;
  UpdateCounts;
  UpdateTaskNowButton;
 end;

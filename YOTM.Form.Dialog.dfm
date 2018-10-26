@@ -13,10 +13,12 @@ inherited FormAnswer: TFormAnswer
     Height = 73
     AutoSize = False
     Caption = #1042#1086#1087#1088#1086#1089'?'
+    WordWrap = True
   end
   inherited DragBarTop: TsDragBar
     Width = 433
     DraggedControl = Owner
+    ExplicitWidth = 433
     inherited LabelCaption: TLabel
       Width = 71
       Caption = #1042#1085#1080#1084#1072#1085#1080#1077
@@ -24,22 +26,23 @@ inherited FormAnswer: TFormAnswer
     end
     inherited ButtonFlatClose: TButtonFlat
       Left = 408
+      ExplicitLeft = 408
     end
   end
   inherited PanelBottom: TPanel
     Top = 152
     Width = 433
-    ExplicitTop = 285
-    ExplicitWidth = 612
+    ExplicitTop = 152
+    ExplicitWidth = 433
     inherited ButtonFlatCancel: TButtonFlat
       Left = 333
       Caption = #1053#1077#1090
-      ExplicitLeft = 512
+      ExplicitLeft = 333
     end
     inherited ButtonFlatOK: TButtonFlat
       Left = 231
       Caption = #1044#1072
-      ExplicitLeft = 410
+      ExplicitLeft = 231
     end
   end
 end

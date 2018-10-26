@@ -28,11 +28,11 @@ interface
      FDescription: string;
      FTaskType: TTaskType;
      FTaskRepeat:string;
-     FSaved:Boolean;
      FState: Boolean;
      FLabelItems:TLabelItems;
      FNotify: Boolean;
      FColor: TColor;
+     FSaved:Boolean;
      function GetTaskRepeat(Index: Byte): Boolean;
      procedure SetDateDeadline(const Value: TDateTime);
      procedure SetDateNotify(const Value: TTime);
@@ -94,11 +94,11 @@ interface
      FDataBase: TDB;
      FShowEndedTask: Boolean;
      FShowDate: TDate;
-    FTaskFilter: TTaskFilter;
+     FTaskFilter: TTaskFilter;
      procedure SetDataBase(const Value: TDB);
      procedure SetShowEndedTask(const Value: Boolean);
      procedure SetShowDate(const Value: TDate);
-    procedure SetTaskFilter(const Value: TTaskFilter);
+     procedure SetTaskFilter(const Value: TTaskFilter);
     public
      constructor Create(ADataBase:TDB; ATableEx:TTableEx);
      procedure Reload;
@@ -114,7 +114,7 @@ interface
    end;                                                                   //База
 
 implementation
- uses YOTM.DB.Comments;
+ uses YOTM.DB.Comments, DateUtils;
 
 { TTaskItem }
 
@@ -145,77 +145,106 @@ end;
 
 procedure TTaskItem.SetColor(const Value: TColor);
 begin
+ if FColor = Value then Exit;
  FColor := Value;
+ FSaved:=False;
 end;
 
 procedure TTaskItem.SetDateDeadline(const Value: TDateTime);
 begin
+ if FDateDeadline = Value then Exit;
  FDateDeadline:=Value;
+ FSaved:=False;
 end;
 
 procedure TTaskItem.SetDateNotify(const Value: TTime);
 begin
+ if FDateNotify = Value then Exit;
  FDateNotify:=Value;
+ FSaved:=False;
 end;
 
 procedure TTaskItem.SetDeadline(const Value: Boolean);
 begin
+ if FDeadline = Value then Exit;
  FDeadline := Value;
+ FSaved:=False;
 end;
 
 procedure TTaskItem.SetDescription(const Value: string);
 begin
+ if FDescription = Value then Exit;
  FDescription:=Value;
+ FSaved:=False;
 end;
 
 procedure TTaskItem.SetID(const Value: Integer);
 begin
+ if FID = Value then Exit;
  FID:=Value;
+ FSaved:=False;
 end;
 
 procedure TTaskItem.SetLabelItems(const Value: TLabelItems);
 begin
+ if FLabelItems = Value then Exit;
  FLabelItems := Value;
+ FSaved:=False;
 end;
 
 procedure TTaskItem.SetName(const Value: string);
 begin
+ if FName = Value then Exit;
  FName:=Value;
+ FSaved:=False;
 end;
 
 procedure TTaskItem.SetNotify(const Value: Boolean);
 begin
+ if FNotify = Value then Exit;
  FNotify := Value;
+ FSaved:=False;
 end;
 
 procedure TTaskItem.SetNotifyComplete(const Value: Boolean);
 begin
+ if FNotifyComplete = Value then Exit;
  FNotifyComplete:=Value;
+ FSaved:=False;
 end;
 
 procedure TTaskItem.SetOwner(const Value: TTaskItems);
 begin
+ if FOwner = Value then Exit;
  FOwner:=Value;
+ FSaved:=False;
 end;
 
 procedure TTaskItem.SetParent(const Value: Integer);
 begin
+ if FParent = Value then Exit;
  FParent:=Value;
+ FSaved:=False;
 end;
 
 procedure TTaskItem.SetState(const Value: Boolean);
 begin
+ if FState = Value then Exit;
  FState := Value;
+ FSaved:=False;
 end;
 
 procedure TTaskItem.SetTaskRepeat(Index: Byte; const Value: Boolean);
 begin
  if Value then FTaskRepeat[Index]:='1' else FTaskRepeat[Index]:='0';
+ FSaved:=False;
 end;
 
 procedure TTaskItem.SetTaskType(const Value: TTaskType);
 begin
+ if FTaskType = Value then Exit;
  FTaskType:=Value;
+ FSaved:=False;
 end;
 
 procedure TTaskItem.Update;
@@ -288,7 +317,8 @@ begin
      WhereFieldEqual(fnDeadline, True);
     end
    else WhereFieldEqual(fnDeadline, False);
-   WhereFieldEqual(fnState, False);
+   if not ShowEndedTask then
+    WhereFieldEqual(fnState, False);
    Result:=FDataBase.DB.GetTableValue(GetSQL);
    EndCreate;
   end;
@@ -299,23 +329,21 @@ begin
  with SQL.Select(tnTable) do
   begin
    AddField('Count(*)');
+
    WhereParenthesesOpen;
      WhereParenthesesOpen;
        WhereParenthesesOpen;
-         WhereNotFieldEqual(fnNotify, True);
-         WhereField(fnTimeNotify, ' < ', Frac(Date), wuOr);
+         WhereFieldEqual(fnNotify, True);
+         WhereField(fnTimeNotify, ' < ', TimeOf(Date));
        WhereParenthesesClose;
-       WhereField(fnDateDeadline, ' <= ', Trunc(Date));
+       WhereField(fnDateDeadline, ' = ', DateOf(Date));
      WhereParenthesesClose;
-     WhereField(fnDateDeadline, '<', Trunc(Date), wuOR);
+     WhereField(fnDateDeadline, '<', DateOf(Date), wuOR);
    WhereParenthesesClose;
 
-   WhereParenthesesOpen;
-     WhereNotFieldEqual(fnNotify, True);
-     WhereField(fnTimeNotify, '<', Frac(Date), wuOr);
-   WhereParenthesesClose;
    WhereNotFieldEqual(fnNotifyComplete, True);
    WhereFieldEqual(fnDeadline, True);
+   WhereFieldEqual(fnState, False);
    Result:=FDataBase.DB.GetTableValue(GetSQL);
    EndCreate;
   end;
@@ -347,34 +375,35 @@ begin
     case FTaskFilter of
      tkfDated:
       begin
-       WhereFieldEqual(fnDateDeadline, Trunc(FShowDate));
+       WhereFieldEqual(fnDateDeadline, DateOf(FShowDate));
        WhereFieldEqual(fnDeadline, True);
+       if not ShowEndedTask then WhereFieldEqual(fnState, False);
       end;
      tkfDeadlined:
       begin
        WhereParenthesesOpen;
          WhereParenthesesOpen;
            WhereParenthesesOpen;
-             WhereNotFieldEqual(fnNotify, True);
-             WhereField(fnTimeNotify, ' < ', Frac(FShowDate), wuOr);
+             WhereFieldEqual(fnNotify, True);
+             WhereField(fnTimeNotify, ' < ', TimeOf(FShowDate));
            WhereParenthesesClose;
-           WhereField(fnDateDeadline, ' <= ', Trunc(FShowDate));
+           WhereField(fnDateDeadline, ' = ', DateOf(FShowDate));
          WhereParenthesesClose;
-         WhereField(fnDateDeadline, '<', Trunc(FShowDate), wuOR);
+         WhereField(fnDateDeadline, '<', DateOf(FShowDate), wuOR);
        WhereParenthesesClose;
 
-       WhereParenthesesOpen;
-         WhereNotFieldEqual(fnNotify, True);
-         WhereField(fnTimeNotify, '<', Frac(FShowDate), wuOr);
-       WhereParenthesesClose;
        WhereNotFieldEqual(fnNotifyComplete, True);
        WhereFieldEqual(fnDeadline, True);
+       WhereFieldEqual(fnState, False);
       end;
-     tkfNoDate: WhereFieldEqual(fnDeadline, False);
+     tkfNoDate:
+      begin
+       WhereFieldEqual(fnDeadline, False);
+       if not ShowEndedTask then WhereFieldEqual(fnState, False);
+      end;
     end;
 
-    if not FShowEndedTask then WhereFieldEqual(fnState, False)
-    else OrderBy(fnState);
+    OrderBy(fnState);
     OrderBy(fnDateCreate, True);
     Table:=FDataBase.DB.GetTable(GetSQL);
     EndCreate;
@@ -436,6 +465,7 @@ end;
 
 procedure TTaskItems.Update(Index: Integer);
 begin
+ if Items[Index].Saved then Exit;
  if Items[Index].ID < 0 then
   with SQL.InsertInto(tnTable) do
    begin

@@ -20,7 +20,8 @@ uses
   YOTM.DB.Times in 'YOTM.DB.Times.pas',
   Vcl.Themes,
   Vcl.Styles,
-  YOTM.Form.DateNotify in 'YOTM.Form.DateNotify.pas' {FormDateAndNotify};
+  YOTM.Form.DateNotify in 'YOTM.Form.DateNotify.pas' {FormDateAndNotify},
+  YOTM.DB.Notes in 'YOTM.DB.Notes.pas';
 
 {$R *.res}
 
