@@ -81,7 +81,6 @@ object FormCustom: TFormCustom
       IgnorBounds = True
       ImageIndentLeft = 0
       ImageIndex = 0
-      Images = FormMain.ImageList24
       OnClick = ButtonFlatCloseClick
       RoundRectParam = 0
       ShowFocusRect = False

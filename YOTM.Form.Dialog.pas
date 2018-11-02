@@ -18,10 +18,17 @@ type
 
 var
   FormAnswer: TFormAnswer;
+  function GetAnswer(Question:string; NearMouse:Boolean = False):Boolean;
+
 
 implementation
 
 {$R *.dfm}
+
+function GetAnswer(Question:string; NearMouse:Boolean = False):Boolean;
+begin
+ Result:=TFormAnswer.GetAnswer(Question, NearMouse);
+end;
 
 { TFormAnswer }
 

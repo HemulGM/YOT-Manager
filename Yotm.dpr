@@ -21,7 +21,11 @@ uses
   Vcl.Themes,
   Vcl.Styles,
   YOTM.Form.DateNotify in 'YOTM.Form.DateNotify.pas' {FormDateAndNotify},
-  YOTM.DB.Notes in 'YOTM.DB.Notes.pas';
+  YOTM.DB.Notes in 'YOTM.DB.Notes.pas',
+  YOTM.Form.Notify in 'YOTM.Form.Notify.pas' {FormNotify},
+  YOTM.Form.Notify.Task in 'YOTM.Form.Notify.Task.pas' {FormNotifyTask},
+  YOTM.Manager in 'YOTM.Manager.pas',
+  YOTM.Form.DateNotify.TaskRepeat in 'YOTM.Form.DateNotify.TaskRepeat.pas' {FormTaskRepeat};
 
 {$R *.res}
 
@@ -29,5 +33,8 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TFormMain, FormMain);
+  Application.CreateForm(TFormNotify, FormNotify);
+  Application.CreateForm(TFormNotifyTask, FormNotifyTask);
+  Application.CreateForm(TFormTaskRepeat, FormTaskRepeat);
   Application.Run;
 end.

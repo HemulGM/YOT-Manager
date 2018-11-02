@@ -46,6 +46,7 @@ interface
    end;
 
 implementation
+ uses YOTM.DB.Labels;
 
 { TTimeItem }
 
@@ -98,6 +99,13 @@ begin
  with SQL.Delete(tnTable) do
   begin
    WhereFieldEqual(fnID, Items[Index].ID);
+   DataBase.DB.ExecSQL(GetSQL);
+   EndCreate;
+  end;
+ //Удалить так же все связи
+ with SQL.Delete(TLabelItems.tnTable) do
+  begin
+   WhereFieldEqual(TLabelItems.fnTypeID, Items[Index].ID);
    DataBase.DB.ExecSQL(GetSQL);
    EndCreate;
   end;

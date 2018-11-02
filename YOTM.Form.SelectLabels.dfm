@@ -12,7 +12,7 @@ inherited FormSelectLabels: TFormSelectLabels
   inherited DragBarTop: TsDragBar
     Width = 279
     DraggedControl = Owner
-    ExplicitWidth = 355
+    ExplicitWidth = 279
     inherited LabelCaption: TLabel
       Width = 45
       Caption = #1052#1077#1090#1082#1080
@@ -20,7 +20,8 @@ inherited FormSelectLabels: TFormSelectLabels
     end
     inherited ButtonFlatClose: TButtonFlat
       Left = 254
-      ExplicitLeft = 330
+      Images = FormMain.ImageList24
+      ExplicitLeft = 254
     end
   end
   inherited PanelBottom: TPanel
@@ -28,14 +29,14 @@ inherited FormSelectLabels: TFormSelectLabels
     Width = 279
     StyleElements = []
     ExplicitTop = 388
-    ExplicitWidth = 355
+    ExplicitWidth = 279
     inherited ButtonFlatCancel: TButtonFlat
       Left = 179
-      ExplicitLeft = 255
+      ExplicitLeft = 179
     end
     inherited ButtonFlatOK: TButtonFlat
       Left = 77
-      ExplicitLeft = 153
+      ExplicitLeft = 77
     end
   end
   object TableExLabels: TTableEx
@@ -60,8 +61,14 @@ inherited FormSelectLabels: TFormSelectLabels
     TabOrder = 2
     OnDrawCellData = TableExLabelsDrawCellData
     ItemIndex = -1
+    OnItemColClick = TableExLabelsItemColClick
     GetData = TableExLabelsGetData
     Columns = <
+      item
+        Width = 32
+        MinWidth = 32
+        AsButton = True
+      end
       item
         Caption = #1062#1074#1077#1090
         Width = 38
@@ -69,11 +76,12 @@ inherited FormSelectLabels: TFormSelectLabels
       end
       item
         Caption = #1052#1077#1090#1082#1072
-        Width = 241
+        Width = 209
         FormatColumns = [tfSingleLine, tfVerticalCenter]
         MinWidth = 200
       end>
     ShowScrollBar = False
+    CanNoSelect = False
     VisibleEdit = False
     ItemCount = 1
     LineColor = 3684408
@@ -103,6 +111,7 @@ inherited FormSelectLabels: TFormSelectLabels
     ColumnsFont.Name = 'Tahoma'
     ColumnsFont.Style = []
     DrawColumnBorded = False
+    CanClickToUnfocused = True
   end
   object PanelTaskAdd: TPanel
     Left = 2
@@ -119,7 +128,6 @@ inherited FormSelectLabels: TFormSelectLabels
     ParentBackground = False
     TabOrder = 3
     StyleElements = []
-    ExplicitWidth = 355
     object EditNewLabel: TEdit
       AlignWithMargins = True
       Left = 43
@@ -142,7 +150,6 @@ inherited FormSelectLabels: TFormSelectLabels
       TabOrder = 0
       TextHint = #1044#1086#1073#1072#1074#1080#1090#1100' '#1084#1077#1090#1082#1091'...'
       StyleElements = []
-      ExplicitWidth = 235
     end
     object ButtonFlatNewLabel: TButtonFlat
       AlignWithMargins = True
@@ -181,7 +188,6 @@ inherited FormSelectLabels: TFormSelectLabels
       TabOrder = 1
       TabStop = True
       TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-      ExplicitLeft = 281
     end
     object ButtonFlatLabelColor: TButtonFlat
       AlignWithMargins = True
@@ -257,7 +263,6 @@ inherited FormSelectLabels: TFormSelectLabels
       TabOrder = 3
       TabStop = True
       TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-      ExplicitLeft = 318
     end
   end
   object ColorDialog: TColorDialog

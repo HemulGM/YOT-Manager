@@ -25,6 +25,8 @@ type
       Rect: TRect; State: TGridDrawState);
     procedure FormShow(Sender: TObject);
     procedure ButtonFlat1Click(Sender: TObject);
+    procedure TableExLabelsItemColClick(Sender: TObject;
+      MouseButton: TMouseButton; const Index: Integer);
   private
     FLabelTypes:TLabelTypes;
     FForEdit:Boolean;
@@ -104,18 +106,29 @@ begin
  FForEdit:=False;
 end;
 
-procedure TFormSelectLabels.TableExLabelsDrawCellData(Sender: TObject; ACol,
-  ARow: Integer; Rect: TRect; State: TGridDrawState);
+procedure TFormSelectLabels.TableExLabelsDrawCellData(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
+function CheckImage(Value:Boolean):Integer;
+begin
+ if Value then Exit(18) else Exit(19);
+end;
 begin
  if not IndexInList(ARow, FLabelTypes.Count) then Exit;
- if ACol = 0 then
+ if ACol = 1 then
   with TableExLabels.Canvas do
    begin
     Brush.Color:=FLabelTypes[ARow].Color;
-    Rect.Left:=3;
+    Rect.Left:=Rect.Left+3;
     Rect.Width:=34;
     Rect.Inflate(0, -2);
     FillRect(Rect);
+   end;
+ if ACol = 0 then
+  with TableExLabels.Canvas do
+   begin                            //18 t 19 f
+    FormMain.ImageList24.Draw(TableExLabels.Canvas,
+     Rect.Left+(Rect.Width div 2-FormMain.ImageList24.Width div 2),
+     Rect.Top+(Rect.Height div 2-FormMain.ImageList24.Height div 2),
+     CheckImage(FLabelTypes.Checked[ARow]));
    end;
 end;
 
@@ -124,7 +137,15 @@ begin
  if not IndexInList(FRow, FLabelTypes.Count) then Exit;
  Value:='';
  case FCol of
-  1:Value:=FLabelTypes[FRow].Name;
+  2:Value:=FLabelTypes[FRow].Name;
+ end;
+end;
+
+procedure TFormSelectLabels.TableExLabelsItemColClick(Sender: TObject; MouseButton: TMouseButton; const Index: Integer);
+begin
+ if not IndexInList(TableExLabels.ItemIndex, FLabelTypes.Count) then Exit;
+ case Index of
+  0: FLabelTypes.Checked[TableExLabels.ItemIndex]:=not FLabelTypes.Checked[TableExLabels.ItemIndex];
  end;
 end;
 

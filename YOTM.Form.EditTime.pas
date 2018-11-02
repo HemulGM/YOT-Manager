@@ -27,8 +27,6 @@ type
     Label3: TLabel;
     procedure ButtonFlatUPDOWNClick(Sender: TObject);
   private
-    FTimeTo: TTime;
-    FTimeFrom: TTime;
     FromHH, FromMM, ToHH, ToMM:Word;
     procedure SetTimeFrom(const Value: TTime);
     procedure SetTimeTo(const Value: TTime);
@@ -76,16 +74,14 @@ end;
 procedure TFormEditTime.SetTimeFrom(const Value: TTime);
 var S, M:Word;
 begin
- FTimeFrom := Value;
- DecodeTime(FTimeFrom, FromHH, FromMM, S, M);
+ DecodeTime(Value, FromHH, FromMM, S, M);
  UpdateTime;
 end;
 
 procedure TFormEditTime.SetTimeTo(const Value: TTime);
 var S, M:Word;
 begin
- FTimeTo := Value;
- DecodeTime(FTimeTo, ToHH, ToMM, S, M);
+ DecodeTime(Value, ToHH, ToMM, S, M);
  UpdateTime;
 end;
 

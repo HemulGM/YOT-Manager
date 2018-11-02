@@ -1,13 +1,13 @@
 inherited FormEditTime: TFormEditTime
   Caption = #1047#1072#1087#1080#1089#1100' '#1086' '#1088#1072#1073#1086#1090#1077
   ClientHeight = 228
-  ClientWidth = 441
-  ExplicitWidth = 441
+  ClientWidth = 241
+  ExplicitWidth = 241
   ExplicitHeight = 228
   PixelsPerInch = 96
   TextHeight = 19
   object Label1: TLabel [0]
-    Left = 209
+    Left = 116
     Top = 67
     Width = 16
     Height = 30
@@ -17,7 +17,7 @@ inherited FormEditTime: TFormEditTime
     Layout = tlCenter
   end
   object Label2: TLabel [1]
-    Left = 231
+    Left = 138
     Top = 67
     Width = 86
     Height = 30
@@ -27,7 +27,7 @@ inherited FormEditTime: TFormEditTime
     Layout = tlCenter
   end
   object Label3: TLabel [2]
-    Left = 117
+    Left = 24
     Top = 67
     Width = 86
     Height = 30
@@ -37,7 +37,7 @@ inherited FormEditTime: TFormEditTime
     Layout = tlCenter
   end
   inherited DragBarTop: TsDragBar
-    Width = 437
+    Width = 237
     DraggedControl = Owner
     ExplicitWidth = 437
     inherited LabelCaption: TLabel
@@ -46,28 +46,28 @@ inherited FormEditTime: TFormEditTime
       ExplicitWidth = 120
     end
     inherited ButtonFlatClose: TButtonFlat
-      Left = 412
+      Left = 212
       ExplicitLeft = 412
     end
   end
   inherited PanelBottom: TPanel
     Top = 191
-    Width = 437
+    Width = 237
     ExplicitTop = 191
     ExplicitWidth = 437
     inherited ButtonFlatCancel: TButtonFlat
-      Left = 337
+      Left = 137
       ExplicitLeft = 337
     end
     inherited ButtonFlatOK: TButtonFlat
-      Left = 235
+      Left = 35
       ExplicitLeft = 235
     end
   end
   object EditText: TEdit
     Left = 24
     Top = 136
-    Width = 393
+    Width = 200
     Height = 28
     BevelInner = bvNone
     BevelKind = bkSoft
@@ -86,7 +86,7 @@ inherited FormEditTime: TFormEditTime
   end
   object ButtonFlat1: TButtonFlat
     Tag = 11
-    Left = 117
+    Left = 24
     Top = 47
     Width = 40
     Height = 20
@@ -123,7 +123,7 @@ inherited FormEditTime: TFormEditTime
     DblClickTooClick = True
   end
   object ButtonFlatTimeFromHH: TButtonFlat
-    Left = 117
+    Left = 24
     Top = 67
     Width = 40
     Height = 30
@@ -157,7 +157,7 @@ inherited FormEditTime: TFormEditTime
   end
   object ButtonFlat3: TButtonFlat
     Tag = 10
-    Left = 117
+    Left = 24
     Top = 97
     Width = 40
     Height = 20
@@ -195,7 +195,7 @@ inherited FormEditTime: TFormEditTime
   end
   object ButtonFlat4: TButtonFlat
     Tag = 21
-    Left = 163
+    Left = 70
     Top = 47
     Width = 40
     Height = 20
@@ -232,7 +232,7 @@ inherited FormEditTime: TFormEditTime
     DblClickTooClick = True
   end
   object ButtonFlatTimeFromMM: TButtonFlat
-    Left = 163
+    Left = 70
     Top = 67
     Width = 40
     Height = 30
@@ -266,7 +266,7 @@ inherited FormEditTime: TFormEditTime
   end
   object ButtonFlat6: TButtonFlat
     Tag = 20
-    Left = 163
+    Left = 70
     Top = 97
     Width = 40
     Height = 20
@@ -304,7 +304,7 @@ inherited FormEditTime: TFormEditTime
   end
   object ButtonFlat7: TButtonFlat
     Tag = 31
-    Left = 231
+    Left = 138
     Top = 47
     Width = 40
     Height = 20
@@ -341,7 +341,7 @@ inherited FormEditTime: TFormEditTime
     DblClickTooClick = True
   end
   object ButtonFlatTimeToHH: TButtonFlat
-    Left = 231
+    Left = 138
     Top = 67
     Width = 40
     Height = 30
@@ -375,7 +375,7 @@ inherited FormEditTime: TFormEditTime
   end
   object ButtonFlat9: TButtonFlat
     Tag = 30
-    Left = 231
+    Left = 138
     Top = 97
     Width = 40
     Height = 20
@@ -413,7 +413,7 @@ inherited FormEditTime: TFormEditTime
   end
   object ButtonFlat10: TButtonFlat
     Tag = 41
-    Left = 277
+    Left = 184
     Top = 47
     Width = 40
     Height = 20
@@ -450,7 +450,7 @@ inherited FormEditTime: TFormEditTime
     DblClickTooClick = True
   end
   object ButtonFlatTimeToMM: TButtonFlat
-    Left = 277
+    Left = 184
     Top = 67
     Width = 40
     Height = 30
@@ -484,7 +484,7 @@ inherited FormEditTime: TFormEditTime
   end
   object ButtonFlat12: TButtonFlat
     Tag = 40
-    Left = 277
+    Left = 184
     Top = 97
     Width = 40
     Height = 20

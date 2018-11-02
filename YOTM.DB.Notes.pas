@@ -2,6 +2,7 @@ unit YOTM.DB.Notes;
 
 interface
   uses SQLite3, SQLLang, SQLiteTable3, System.Generics.Collections, SysUtils,
+       System.Classes,
        HGM.Controls.VirtualTable, YOTM.DB, Vcl.Graphics;
 
   type
@@ -29,6 +30,7 @@ interface
      procedure SetDataBase(const Value: TDB);
     public
      constructor Create(ADataBase:TDB);
+     destructor Destroy;
      procedure Load(ADate:TDate);
      procedure Save;
      property ID:Integer read FID write SetID;
@@ -65,6 +67,11 @@ begin
  FDate:=DateOf(Now);
 end;
 
+destructor TNoteItem.Destroy;
+begin
+ inherited;
+end;
+
 procedure TNoteItem.Load(ADate: TDate);
 var Table:TSQLiteTable;
 begin
@@ -92,11 +99,9 @@ begin
        Text:='';
        Date:=DateOf(ADate);
        DateModify:=Now;
-
        AddValue(fnDate, Date);
        AddValue(fnModify, DateModify);
        AddValue(fnText, Text);
-
        FDataBase.DB.ExecSQL(GetSQL);
        ID:=FDataBase.DB.GetLastInsertRowID;
        FLoaded:=True;
