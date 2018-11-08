@@ -53,6 +53,7 @@ interface
      constructor Create(AOwner: TTaskItems);
      destructor Destroy;
      procedure Update;
+     procedure DropLabels;
      property Owner:TTaskItems read FOwner write SetOwner;
      property ID:Integer read FID write SetID;
      property Parent:Integer read FParent write SetParent;
@@ -142,6 +143,16 @@ destructor TTaskItem.Destroy;
 begin
  FLabelItems.Free;
  inherited;
+end;
+
+procedure TTaskItem.DropLabels;
+begin
+ with SQL.Delete(TLabelItems.tnTable) do
+  begin
+   WhereFieldEqual(TLabelItems.fnTask, ID);
+   FDB.DB.ExecSQL(GetSQL);
+   EndCreate;
+  end;
 end;
 
 function TTaskItem.GetTaskRepeat(Index: Byte): Boolean;

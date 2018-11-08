@@ -1,14 +1,14 @@
 inherited FormEditTime: TFormEditTime
   Caption = #1047#1072#1087#1080#1089#1100' '#1086' '#1088#1072#1073#1086#1090#1077
-  ClientHeight = 228
-  ClientWidth = 241
-  ExplicitWidth = 241
-  ExplicitHeight = 228
+  ClientHeight = 162
+  ClientWidth = 569
+  ExplicitWidth = 569
+  ExplicitHeight = 162
   PixelsPerInch = 96
   TextHeight = 19
   object Label1: TLabel [0]
-    Left = 116
-    Top = 67
+    Left = 100
+    Top = 59
     Width = 16
     Height = 30
     Alignment = taCenter
@@ -17,8 +17,8 @@ inherited FormEditTime: TFormEditTime
     Layout = tlCenter
   end
   object Label2: TLabel [1]
-    Left = 138
-    Top = 67
+    Left = 122
+    Top = 59
     Width = 86
     Height = 30
     Alignment = taCenter
@@ -27,8 +27,8 @@ inherited FormEditTime: TFormEditTime
     Layout = tlCenter
   end
   object Label3: TLabel [2]
-    Left = 24
-    Top = 67
+    Left = 8
+    Top = 59
     Width = 86
     Height = 30
     Alignment = taCenter
@@ -37,37 +37,37 @@ inherited FormEditTime: TFormEditTime
     Layout = tlCenter
   end
   inherited DragBarTop: TsDragBar
-    Width = 237
+    Width = 565
     DraggedControl = Owner
-    ExplicitWidth = 437
+    ExplicitWidth = 237
     inherited LabelCaption: TLabel
       Width = 120
       Caption = #1047#1072#1087#1080#1089#1100' '#1086' '#1088#1072#1073#1086#1090#1077
       ExplicitWidth = 120
     end
     inherited ButtonFlatClose: TButtonFlat
-      Left = 212
-      ExplicitLeft = 412
+      Left = 540
+      ExplicitLeft = 212
     end
   end
   inherited PanelBottom: TPanel
-    Top = 191
-    Width = 237
+    Top = 125
+    Width = 565
     ExplicitTop = 191
-    ExplicitWidth = 437
+    ExplicitWidth = 237
     inherited ButtonFlatCancel: TButtonFlat
-      Left = 137
-      ExplicitLeft = 337
+      Left = 465
+      ExplicitLeft = 137
     end
     inherited ButtonFlatOK: TButtonFlat
-      Left = 35
-      ExplicitLeft = 235
+      Left = 363
+      ExplicitLeft = 35
     end
   end
   object EditText: TEdit
-    Left = 24
-    Top = 136
-    Width = 200
+    Left = 214
+    Top = 77
+    Width = 347
     Height = 28
     BevelInner = bvNone
     BevelKind = bkSoft
@@ -86,8 +86,8 @@ inherited FormEditTime: TFormEditTime
   end
   object ButtonFlat1: TButtonFlat
     Tag = 11
-    Left = 24
-    Top = 47
+    Left = 8
+    Top = 39
     Width = 40
     Height = 20
     Caption = ''
@@ -123,8 +123,8 @@ inherited FormEditTime: TFormEditTime
     DblClickTooClick = True
   end
   object ButtonFlatTimeFromHH: TButtonFlat
-    Left = 24
-    Top = 67
+    Left = 8
+    Top = 59
     Width = 40
     Height = 30
     Caption = '00'
@@ -157,8 +157,8 @@ inherited FormEditTime: TFormEditTime
   end
   object ButtonFlat3: TButtonFlat
     Tag = 10
-    Left = 24
-    Top = 97
+    Left = 8
+    Top = 89
     Width = 40
     Height = 20
     Caption = ''
@@ -195,8 +195,8 @@ inherited FormEditTime: TFormEditTime
   end
   object ButtonFlat4: TButtonFlat
     Tag = 21
-    Left = 70
-    Top = 47
+    Left = 54
+    Top = 39
     Width = 40
     Height = 20
     Caption = ''
@@ -232,8 +232,8 @@ inherited FormEditTime: TFormEditTime
     DblClickTooClick = True
   end
   object ButtonFlatTimeFromMM: TButtonFlat
-    Left = 70
-    Top = 67
+    Left = 54
+    Top = 59
     Width = 40
     Height = 30
     Caption = '00'
@@ -266,8 +266,8 @@ inherited FormEditTime: TFormEditTime
   end
   object ButtonFlat6: TButtonFlat
     Tag = 20
-    Left = 70
-    Top = 97
+    Left = 54
+    Top = 89
     Width = 40
     Height = 20
     Caption = ''
@@ -304,8 +304,8 @@ inherited FormEditTime: TFormEditTime
   end
   object ButtonFlat7: TButtonFlat
     Tag = 31
-    Left = 138
-    Top = 47
+    Left = 122
+    Top = 39
     Width = 40
     Height = 20
     Caption = ''
@@ -341,8 +341,8 @@ inherited FormEditTime: TFormEditTime
     DblClickTooClick = True
   end
   object ButtonFlatTimeToHH: TButtonFlat
-    Left = 138
-    Top = 67
+    Left = 122
+    Top = 59
     Width = 40
     Height = 30
     Caption = '00'
@@ -375,8 +375,8 @@ inherited FormEditTime: TFormEditTime
   end
   object ButtonFlat9: TButtonFlat
     Tag = 30
-    Left = 138
-    Top = 97
+    Left = 122
+    Top = 89
     Width = 40
     Height = 20
     Caption = ''
@@ -413,8 +413,8 @@ inherited FormEditTime: TFormEditTime
   end
   object ButtonFlat10: TButtonFlat
     Tag = 41
-    Left = 184
-    Top = 47
+    Left = 168
+    Top = 39
     Width = 40
     Height = 20
     Caption = ''
@@ -450,8 +450,8 @@ inherited FormEditTime: TFormEditTime
     DblClickTooClick = True
   end
   object ButtonFlatTimeToMM: TButtonFlat
-    Left = 184
-    Top = 67
+    Left = 168
+    Top = 59
     Width = 40
     Height = 30
     Caption = '00'
@@ -484,8 +484,8 @@ inherited FormEditTime: TFormEditTime
   end
   object ButtonFlat12: TButtonFlat
     Tag = 40
-    Left = 184
-    Top = 97
+    Left = 168
+    Top = 89
     Width = 40
     Height = 20
     Caption = ''
@@ -519,5 +519,17 @@ inherited FormEditTime: TFormEditTime
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
     AutoClick = 100
     DblClickTooClick = True
+  end
+  object ComboBoxEx1: TComboBoxEx
+    Left = 214
+    Top = 43
+    Width = 347
+    Height = 28
+    ItemsEx = <>
+    StyleEx = [csExPathWordBreak]
+    Color = 3026478
+    Ctl3D = True
+    ParentCtl3D = False
+    TabOrder = 15
   end
 end

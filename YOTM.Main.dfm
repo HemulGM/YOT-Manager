@@ -440,6 +440,7 @@ object FormMain: TFormMain
           ParentFont = False
           TabOrder = 0
           StyleElements = [seBorder]
+          OnMouseUp = TableExCommentsMouseUp
           ItemIndex = -1
           GetData = TableExCommentsGetData
           OnEdit = TableExCommentsEdit
@@ -480,6 +481,7 @@ object FormMain: TFormMain
           ColumnsFont.Name = 'Tahoma'
           ColumnsFont.Style = []
           DrawColumnBorded = False
+          MouseRightClickTooClick = True
         end
         object Panel2: TPanel
           Left = 0
@@ -876,308 +878,6 @@ object FormMain: TFormMain
       DesignSize = (
         450
         737)
-      object PanelTimes: TPanel
-        Left = 0
-        Top = 0
-        Width = 450
-        Height = 737
-        Anchors = [akLeft, akTop, akBottom]
-        BevelOuter = bvNone
-        TabOrder = 1
-        object Shape12: TShape
-          Left = 0
-          Top = 40
-          Width = 450
-          Height = 2
-          Align = alTop
-          Brush.Color = 3026478
-          Pen.Color = 3026478
-          ExplicitTop = 8
-        end
-        object TableExTimes: TTableEx
-          Left = 0
-          Top = 42
-          Width = 450
-          Height = 473
-          Align = alClient
-          BorderStyle = bsNone
-          Color = 3684408
-          DefaultRowHeight = 30
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = 15921906
-          Font.Height = -15
-          Font.Name = 'Tahoma'
-          Font.Style = []
-          ParentFont = False
-          TabOrder = 0
-          StyleElements = [seBorder]
-          OnDrawCellData = TableExTimesDrawCellData
-          ItemIndex = -1
-          OnItemColClick = TableExTimesItemColClick
-          GetData = TableExTimesGetData
-          Columns = <
-            item
-              Width = 32
-              MinWidth = 32
-              AsButton = True
-            end
-            item
-              Caption = #1042#1088#1077#1084#1103
-              Format = [tfCenter, tfLeft, tfSingleLine, tfVerticalCenter]
-            end
-            item
-              Caption = #1054#1087#1080#1089#1072#1085#1080#1077
-              Width = 318
-              MinWidth = 150
-            end>
-          ItemCount = 1
-          LineColor = 3684408
-          LineColorXor = 4079166
-          LineHotColor = 2763306
-          LineSelColor = 4934475
-          ColumnsColor = 3684408
-          FontHotLine.Charset = DEFAULT_CHARSET
-          FontHotLine.Color = 15921906
-          FontHotLine.Height = -15
-          FontHotLine.Name = 'Tahoma'
-          FontHotLine.Style = []
-          FontLine.Charset = DEFAULT_CHARSET
-          FontLine.Color = 15921906
-          FontLine.Height = -15
-          FontLine.Name = 'Tahoma'
-          FontLine.Style = []
-          FontSelLine.Charset = DEFAULT_CHARSET
-          FontSelLine.Color = 15921906
-          FontSelLine.Height = -15
-          FontSelLine.Name = 'Tahoma'
-          FontSelLine.Style = []
-          ColumnsFont.Charset = DEFAULT_CHARSET
-          ColumnsFont.Color = clWhite
-          ColumnsFont.Height = -15
-          ColumnsFont.Name = 'Tahoma'
-          ColumnsFont.Style = []
-          DrawColumnBorded = False
-        end
-        object Panel1: TPanel
-          Left = 0
-          Top = 0
-          Width = 450
-          Height = 40
-          Align = alTop
-          BevelOuter = bvNone
-          TabOrder = 1
-          object ButtonFlatTaskEnd: TButtonFlat
-            AlignWithMargins = True
-            Left = 357
-            Top = 3
-            Width = 90
-            Height = 34
-            Margins.Left = 0
-            Align = alRight
-            Caption = #1047#1072#1082#1086#1085#1095#1080#1090#1100
-            ColorNormal = 3684408
-            ColorOver = 6381921
-            ColorPressed = 3815994
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWhite
-            Font.Height = -13
-            Font.Name = 'Tahoma'
-            Font.Style = []
-            FontOver.Charset = DEFAULT_CHARSET
-            FontOver.Color = clWhite
-            FontOver.Height = -13
-            FontOver.Name = 'Tahoma'
-            FontOver.Style = []
-            FontDown.Charset = DEFAULT_CHARSET
-            FontDown.Color = clWhite
-            FontDown.Height = -13
-            FontDown.Name = 'Tahoma'
-            FontDown.Style = []
-            IgnorBounds = True
-            OnClick = ButtonFlatTaskEndClick
-            RoundRectParam = 0
-            ShowFocusRect = False
-            TabOrder = 0
-            TabStop = True
-            TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-          end
-          object ButtonFlatTaskStart: TButtonFlat
-            AlignWithMargins = True
-            Left = 264
-            Top = 3
-            Width = 90
-            Height = 34
-            Align = alRight
-            Caption = #1053#1072#1095#1072#1090#1100
-            ColorNormal = 3684408
-            ColorOver = 6381921
-            ColorPressed = 3815994
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWhite
-            Font.Height = -13
-            Font.Name = 'Tahoma'
-            Font.Style = []
-            FontOver.Charset = DEFAULT_CHARSET
-            FontOver.Color = clWhite
-            FontOver.Height = -13
-            FontOver.Name = 'Tahoma'
-            FontOver.Style = []
-            FontDown.Charset = DEFAULT_CHARSET
-            FontDown.Color = clWhite
-            FontDown.Height = -13
-            FontDown.Name = 'Tahoma'
-            FontDown.Style = []
-            IgnorBounds = True
-            OnClick = ButtonFlatTaskStartClick
-            RoundRectParam = 0
-            ShowFocusRect = False
-            TabOrder = 1
-            TabStop = True
-            TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-          end
-          object ButtonFlatAddTime: TButtonFlat
-            AlignWithMargins = True
-            Left = 3
-            Top = 3
-            Width = 33
-            Height = 34
-            Align = alLeft
-            Caption = ''
-            ColorNormal = 3684408
-            ColorOver = 6381921
-            ColorPressed = 3815994
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWhite
-            Font.Height = -13
-            Font.Name = 'Tahoma'
-            Font.Style = []
-            FontOver.Charset = DEFAULT_CHARSET
-            FontOver.Color = clWhite
-            FontOver.Height = -13
-            FontOver.Name = 'Tahoma'
-            FontOver.Style = []
-            FontDown.Charset = DEFAULT_CHARSET
-            FontDown.Color = clWhite
-            FontDown.Height = -13
-            FontDown.Name = 'Tahoma'
-            FontDown.Style = []
-            IgnorBounds = True
-            ImageIndentLeft = 4
-            ImageIndex = 11
-            Images = ImageList24
-            OnClick = ButtonFlatAddTimeClick
-            RoundRectParam = 0
-            ShowFocusRect = False
-            TabOrder = 2
-            TabStop = True
-            TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-          end
-        end
-        object PanelTimeScale: TPanel
-          Left = 0
-          Top = 515
-          Width = 450
-          Height = 222
-          Align = alBottom
-          BevelOuter = bvNone
-          TabOrder = 2
-          object Shape7: TShape
-            Left = 0
-            Top = 0
-            Width = 450
-            Height = 2
-            Align = alTop
-            Brush.Color = 3026478
-            Pen.Color = 3026478
-            ExplicitLeft = -6
-            ExplicitTop = -5
-          end
-          object DrawPanel: TDrawPanel
-            Left = 0
-            Top = 42
-            Width = 450
-            Height = 180
-            Caption = 'DrawPanel'
-            DefaultPaint = False
-            OnPaint = DrawPanelPaint
-            Align = alBottom
-            Color = 3684408
-            ParentBackground = False
-            TabOrder = 0
-            OnMouseDown = DrawPanelMouseDown
-            OnMouseMove = DrawPanelMouseMove
-            OnMouseUp = DrawPanelMouseUp
-          end
-          object Panel4: TPanel
-            Left = 0
-            Top = 2
-            Width = 450
-            Height = 40
-            Align = alTop
-            BevelOuter = bvNone
-            TabOrder = 1
-            object Label3: TLabel
-              AlignWithMargins = True
-              Left = 10
-              Top = 3
-              Width = 157
-              Height = 34
-              Margins.Left = 10
-              Align = alLeft
-              Caption = #1042#1088#1077#1084#1077#1085#1085#1072#1103' '#1096#1082#1072#1083#1072
-              Color = 3684408
-              Font.Charset = DEFAULT_CHARSET
-              Font.Color = 15921906
-              Font.Height = -19
-              Font.Name = 'Tahoma'
-              Font.Style = []
-              ParentColor = False
-              ParentFont = False
-              Transparent = False
-              Layout = tlCenter
-              ExplicitHeight = 23
-            end
-            object ButtonFlatCollapseScale: TButtonFlat
-              AlignWithMargins = True
-              Left = 413
-              Top = 3
-              Width = 34
-              Height = 34
-              Margins.Left = 0
-              Align = alRight
-              Caption = ''
-              ColorNormal = 3684408
-              ColorOver = 6381921
-              ColorPressed = 3815994
-              Font.Charset = DEFAULT_CHARSET
-              Font.Color = clWhite
-              Font.Height = -13
-              Font.Name = 'Tahoma'
-              Font.Style = []
-              FontOver.Charset = DEFAULT_CHARSET
-              FontOver.Color = clWhite
-              FontOver.Height = -13
-              FontOver.Name = 'Tahoma'
-              FontOver.Style = []
-              FontDown.Charset = DEFAULT_CHARSET
-              FontDown.Color = clWhite
-              FontDown.Height = -13
-              FontDown.Name = 'Tahoma'
-              FontDown.Style = []
-              IgnorBounds = True
-              ImageIndentLeft = 4
-              ImageIndex = 10
-              Images = ImageList24
-              OnClick = ButtonFlatCollapseScaleClick
-              RoundRectParam = 0
-              ShowFocusRect = False
-              TabOrder = 0
-              TabStop = True
-              TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-            end
-          end
-        end
-      end
       object PanelCalendar: TPanel
         Left = 0
         Top = 0
@@ -2301,6 +2001,310 @@ object FormMain: TFormMain
           TextFormat = [tfSingleLine, tfVerticalCenter]
         end
       end
+      object PanelTimes: TPanel
+        Left = 0
+        Top = 0
+        Width = 450
+        Height = 737
+        Anchors = [akLeft, akTop, akBottom]
+        BevelOuter = bvNone
+        TabOrder = 1
+        object Shape12: TShape
+          Left = 0
+          Top = 40
+          Width = 450
+          Height = 2
+          Align = alTop
+          Brush.Color = 3026478
+          Pen.Color = 3026478
+          ExplicitTop = 8
+        end
+        object TableExTimes: TTableEx
+          Left = 0
+          Top = 42
+          Width = 450
+          Height = 473
+          Align = alClient
+          BorderStyle = bsNone
+          Color = 3684408
+          DefaultRowHeight = 30
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = 15921906
+          Font.Height = -15
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 0
+          StyleElements = [seBorder]
+          OnMouseUp = TableExTimesMouseUp
+          OnDrawCellData = TableExTimesDrawCellData
+          ItemIndex = -1
+          OnItemColClick = TableExTimesItemColClick
+          GetData = TableExTimesGetData
+          Columns = <
+            item
+              Width = 32
+              MinWidth = 32
+              AsButton = True
+            end
+            item
+              Caption = #1042#1088#1077#1084#1103
+              Format = [tfCenter, tfLeft, tfSingleLine, tfVerticalCenter]
+            end
+            item
+              Caption = #1054#1087#1080#1089#1072#1085#1080#1077
+              Width = 318
+              MinWidth = 150
+            end>
+          ItemCount = 1
+          LineColor = 3684408
+          LineColorXor = 4079166
+          LineHotColor = 2763306
+          LineSelColor = 4934475
+          ColumnsColor = 3684408
+          FontHotLine.Charset = DEFAULT_CHARSET
+          FontHotLine.Color = 15921906
+          FontHotLine.Height = -15
+          FontHotLine.Name = 'Tahoma'
+          FontHotLine.Style = []
+          FontLine.Charset = DEFAULT_CHARSET
+          FontLine.Color = 15921906
+          FontLine.Height = -15
+          FontLine.Name = 'Tahoma'
+          FontLine.Style = []
+          FontSelLine.Charset = DEFAULT_CHARSET
+          FontSelLine.Color = 15921906
+          FontSelLine.Height = -15
+          FontSelLine.Name = 'Tahoma'
+          FontSelLine.Style = []
+          ColumnsFont.Charset = DEFAULT_CHARSET
+          ColumnsFont.Color = clWhite
+          ColumnsFont.Height = -15
+          ColumnsFont.Name = 'Tahoma'
+          ColumnsFont.Style = []
+          DrawColumnBorded = False
+          MouseRightClickTooClick = True
+        end
+        object Panel1: TPanel
+          Left = 0
+          Top = 0
+          Width = 450
+          Height = 40
+          Align = alTop
+          BevelOuter = bvNone
+          TabOrder = 1
+          object ButtonFlatTaskEnd: TButtonFlat
+            AlignWithMargins = True
+            Left = 357
+            Top = 3
+            Width = 90
+            Height = 34
+            Margins.Left = 0
+            Align = alRight
+            Caption = #1047#1072#1082#1086#1085#1095#1080#1090#1100
+            ColorNormal = 3684408
+            ColorOver = 6381921
+            ColorPressed = 3815994
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWhite
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            FontOver.Charset = DEFAULT_CHARSET
+            FontOver.Color = clWhite
+            FontOver.Height = -13
+            FontOver.Name = 'Tahoma'
+            FontOver.Style = []
+            FontDown.Charset = DEFAULT_CHARSET
+            FontDown.Color = clWhite
+            FontDown.Height = -13
+            FontDown.Name = 'Tahoma'
+            FontDown.Style = []
+            IgnorBounds = True
+            OnClick = ButtonFlatTaskEndClick
+            RoundRectParam = 0
+            ShowFocusRect = False
+            TabOrder = 0
+            TabStop = True
+            TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+          end
+          object ButtonFlatTaskStart: TButtonFlat
+            AlignWithMargins = True
+            Left = 264
+            Top = 3
+            Width = 90
+            Height = 34
+            Align = alRight
+            Caption = #1053#1072#1095#1072#1090#1100
+            ColorNormal = 3684408
+            ColorOver = 6381921
+            ColorPressed = 3815994
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWhite
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            FontOver.Charset = DEFAULT_CHARSET
+            FontOver.Color = clWhite
+            FontOver.Height = -13
+            FontOver.Name = 'Tahoma'
+            FontOver.Style = []
+            FontDown.Charset = DEFAULT_CHARSET
+            FontDown.Color = clWhite
+            FontDown.Height = -13
+            FontDown.Name = 'Tahoma'
+            FontDown.Style = []
+            IgnorBounds = True
+            OnClick = ButtonFlatTaskStartClick
+            RoundRectParam = 0
+            ShowFocusRect = False
+            TabOrder = 1
+            TabStop = True
+            TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+          end
+          object ButtonFlatAddTime: TButtonFlat
+            AlignWithMargins = True
+            Left = 3
+            Top = 3
+            Width = 33
+            Height = 34
+            Align = alLeft
+            Caption = ''
+            ColorNormal = 3684408
+            ColorOver = 6381921
+            ColorPressed = 3815994
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWhite
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            FontOver.Charset = DEFAULT_CHARSET
+            FontOver.Color = clWhite
+            FontOver.Height = -13
+            FontOver.Name = 'Tahoma'
+            FontOver.Style = []
+            FontDown.Charset = DEFAULT_CHARSET
+            FontDown.Color = clWhite
+            FontDown.Height = -13
+            FontDown.Name = 'Tahoma'
+            FontDown.Style = []
+            IgnorBounds = True
+            ImageIndentLeft = 4
+            ImageIndex = 11
+            Images = ImageList24
+            OnClick = ButtonFlatAddTimeClick
+            RoundRectParam = 0
+            ShowFocusRect = False
+            TabOrder = 2
+            TabStop = True
+            TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+          end
+        end
+        object PanelTimeScale: TPanel
+          Left = 0
+          Top = 515
+          Width = 450
+          Height = 222
+          Align = alBottom
+          BevelOuter = bvNone
+          TabOrder = 2
+          object Shape7: TShape
+            Left = 0
+            Top = 0
+            Width = 450
+            Height = 2
+            Align = alTop
+            Brush.Color = 3026478
+            Pen.Color = 3026478
+            ExplicitLeft = -6
+            ExplicitTop = -5
+          end
+          object DrawPanel: TDrawPanel
+            Left = 0
+            Top = 42
+            Width = 450
+            Height = 180
+            Caption = 'DrawPanel'
+            DefaultPaint = False
+            OnPaint = DrawPanelPaint
+            Align = alBottom
+            Color = 3684408
+            ParentBackground = False
+            TabOrder = 0
+            OnMouseDown = DrawPanelMouseDown
+            OnMouseMove = DrawPanelMouseMove
+            OnMouseUp = DrawPanelMouseUp
+          end
+          object Panel4: TPanel
+            Left = 0
+            Top = 2
+            Width = 450
+            Height = 40
+            Align = alTop
+            BevelOuter = bvNone
+            TabOrder = 1
+            object Label3: TLabel
+              AlignWithMargins = True
+              Left = 10
+              Top = 3
+              Width = 157
+              Height = 34
+              Margins.Left = 10
+              Align = alLeft
+              Caption = #1042#1088#1077#1084#1077#1085#1085#1072#1103' '#1096#1082#1072#1083#1072
+              Color = 3684408
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = 15921906
+              Font.Height = -19
+              Font.Name = 'Tahoma'
+              Font.Style = []
+              ParentColor = False
+              ParentFont = False
+              Transparent = False
+              Layout = tlCenter
+              ExplicitHeight = 23
+            end
+            object ButtonFlatCollapseScale: TButtonFlat
+              AlignWithMargins = True
+              Left = 413
+              Top = 3
+              Width = 34
+              Height = 34
+              Margins.Left = 0
+              Align = alRight
+              Caption = ''
+              ColorNormal = 3684408
+              ColorOver = 6381921
+              ColorPressed = 3815994
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWhite
+              Font.Height = -13
+              Font.Name = 'Tahoma'
+              Font.Style = []
+              FontOver.Charset = DEFAULT_CHARSET
+              FontOver.Color = clWhite
+              FontOver.Height = -13
+              FontOver.Name = 'Tahoma'
+              FontOver.Style = []
+              FontDown.Charset = DEFAULT_CHARSET
+              FontDown.Color = clWhite
+              FontDown.Height = -13
+              FontDown.Name = 'Tahoma'
+              FontDown.Style = []
+              IgnorBounds = True
+              ImageIndentLeft = 4
+              ImageIndex = 10
+              Images = ImageList24
+              OnClick = ButtonFlatCollapseScaleClick
+              RoundRectParam = 0
+              ShowFocusRect = False
+              TabOrder = 0
+              TabStop = True
+              TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+            end
+          end
+        end
+      end
     end
   end
   object DragBarTop: TsDragBar
@@ -2973,27 +2977,347 @@ object FormMain: TFormMain
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
       end
     end
+    object ButtonFlat19: TButtonFlat
+      Left = 128
+      Top = 256
+      Width = 90
+      Height = 30
+      Caption = #1050#1085#1086#1087#1082#1072
+      ColorNormal = 14668740
+      ColorOver = 11373924
+      ColorPressed = 10451273
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      FontOver.Charset = DEFAULT_CHARSET
+      FontOver.Color = clWhite
+      FontOver.Height = -13
+      FontOver.Name = 'Tahoma'
+      FontOver.Style = []
+      FontDown.Charset = DEFAULT_CHARSET
+      FontDown.Color = clWhite
+      FontDown.Height = -13
+      FontDown.Name = 'Tahoma'
+      FontDown.Style = []
+      IgnorBounds = True
+      OnClick = ButtonFlat19Click
+      RoundRectParam = 0
+      ShowFocusRect = False
+      TabOrder = 4
+      TabStop = True
+      TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+    end
   end
   object TimerRepaint: TTimer
     Interval = 30
     OnTimer = TimerRepaintTimer
-    Left = 80
-    Top = 200
+    Left = 48
+    Top = 640
   end
   object TimerTime: TTimer
     OnTimer = TimerTimeTimer
-    Left = 80
-    Top = 272
+    Left = 48
+    Top = 584
   end
   object ImageList24: TImageList
     ColorDepth = cd32Bit
     Height = 24
     Width = 24
-    Left = 156
-    Top = 200
+    Left = 44
+    Top = 520
     Bitmap = {
-      494C01011A0058008C0118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
-      000000000000360000002800000060000000A8000000010020000000000000FC
+      494C01011C005800A00118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      000000000000360000002800000060000000C000000001002000000000000020
+      0100000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -3073,10 +3397,10 @@ object FormMain: TFormMain
       0000000000000000000063636377DEDEDEFBACACACD93939397E0A0A0A300101
       0104000000010505051A30303060A9A9A9DAE0E0E0FD7474749E000000050000
       0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000454545568F8F8FA58F8F8FA5555555820000
+      000000000000454545528F8F8FA58F8F8FA55656568500000002000000000000
       0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000030303044D4D4D6E030303090000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       00000000000039393944DCDCDCF99E9E9ECF1414143E00000000000000000000
@@ -3085,11 +3409,11 @@ object FormMain: TFormMain
       00000000000039393944DCDCDCF99E9E9ECF1414143E00000000060606091C1C
       1C201C1C1C230909090F000000000A0A0A19929292BEDEDEDEFD4C4C4C7B0000
       0001000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000006F6F6F8AE3E3E3FFE3E3E3FF898989D30000
+      0000000000006C6C6C83E3E3E3FFE3E3E3FF898989D301010104000000000000
       0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000000000000005050507D7D7D7FC9C9C9CC42323
+      2339000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       00000707070AAFAFAFCDC2C2C2ED1C1C1C480000000000000000000000000000
       0000000000000000000000000000000000001010101DB9B9B9DFBCBCBCEA0E0E
@@ -3097,11 +3421,11 @@ object FormMain: TFormMain
       00000707070AAFAFAFCDC2C2C2ED1C1C1C48000000002D2D2D36AFAFAFC9E3E3
       E3FFE3E3E3FFB7B7B7DB3A3A3A50000000001010101DB9B9B9DFBCBCBCEA0E0E
       0E27000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000006F6F6F8AE3E3E3FFE3E3E3FF898989D30000
+      0000000000006C6C6C83E3E3E3FFE3E3E3FF898989D301010104000000000000
       0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000000000000005050507DBDBDBFDE3E3E3FFD2D2
+      D2F5636363870303030A00000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       00002C2C2C3BE0E0E0FE686868A4000000050000000000000000000000000000
       0000000000000000000000000000000000000000000052525271E1E1E1FD4343
@@ -3109,11 +3433,11 @@ object FormMain: TFormMain
       00002C2C2C3BE0E0E0FE686868A4000000051B1B1B21D5D5D5F2E3E3E3FFE3E3
       E3FFE3E3E3FFE3E3E3FFDBDBDBFC2C2C2C4B0000000052525271E1E1E1FD4343
       437E000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000006F6F6F8AE3E3E3FFE3E3E3FF898989D30000
+      0000000000006C6C6C83E3E3E3FFE3E3E3FF898989D301010104000000000000
       0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000000000000005050507DBDBDBFDE3E3E3FFE3E3
+      E3FFE3E3E3FFB4B4B4DC3030304C000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       00005A5A5A75E1E1E1FD2C2C2C65000000000000000000000000000000000000
       0000000000000000000000000000000000000000000018181828E0E0E0FD7171
@@ -3121,11 +3445,11 @@ object FormMain: TFormMain
       00005A5A5A75E1E1E1FD2C2C2C65000000008282829DE2E2E2FEE3E3E3FFE3E3
       E3FFE3E3E3FFE3E3E3FFE3E3E3FF949494C60303030C18181828E0E0E0FD7171
       71B2000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000006F6F6F8AE3E3E3FFE3E3E3FF898989D30000
+      0000000000006C6C6C83E3E3E3FFE3E3E3FF898989D301010104000000000000
       0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000000000000005050507DBDBDBFDE3E3E3FFE3E3
+      E3FFE3E3E3FFE3E3E3FFD8D8D8F87777779F0F0F0F1A00000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       00006E6E6E86DDDDDDFA19191951000000000000000000000000000000000000
       0000000000000000000000000000000000000000000004040405DADADAFC8888
@@ -3133,11 +3457,11 @@ object FormMain: TFormMain
       00006E6E6E86DDDDDDFA1919195101010102A5A5A5C1E3E3E3FFE3E3E3FFE3E3
       E3FFE3E3E3FFE3E3E3FFE3E3E3FFB6B6B6EC0808081C04040405DADADAFC8888
       88CD000000020000000000000000000000000000000000000000000000000000
+      00000000000000000000000000006F6F6F8AE3E3E3FFE3E3E3FF898989D30000
+      0000000000006C6C6C83E3E3E3FFE3E3E3FF898989D301010104000000000000
       0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000000000000005050507DBDBDBFDE3E3E3FFE3E3
+      E3FFE3E3E3FFE3E3E3FFE3E3E3FFE3E3E3FFB5B5B5DD1515153D000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000064646480E0E0E0FC2323235A000000000000000000000000000000000000
       000000000000000000000000000000000000000000000D0D0D11DEDEDEFE7D7D
@@ -3145,11 +3469,11 @@ object FormMain: TFormMain
       000064646480E0E0E0FC2323235A00000000939393B5E3E3E3FFE3E3E3FFE3E3
       E3FFE3E3E3FFE3E3E3FFE3E3E3FFA5A5A5DE060606170D0D0D11DEDEDEFE7D7D
       7DC8000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000006F6F6F8AE3E3E3FFE3E3E3FF898989D30000
+      0000000000006C6C6C83E3E3E3FFE3E3E3FF898989D301010104000000000000
       0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000000000000005050507DBDBDBFDE3E3E3FFE3E3
+      E3FFE3E3E3FFE3E3E3FFE3E3E3FFAAAAAADA3636367B03030310000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       00003C3C3C5BE1E1E1FE54545486000000000000000000000000000000000000
       000000000000000000000000000000000000000000003E3E3E50E1E1E1FD5050
@@ -3157,11 +3481,11 @@ object FormMain: TFormMain
       00003C3C3C5BE1E1E1FE54545486000000003C3C3C5ADFDFDFFEE3E3E3FFE3E3
       E3FFE3E3E3FFE3E3E3FFE0E0E0FB4F4F4F8D000000053E3E3E50E1E1E1FD5050
       5091000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000006F6F6F8AE3E3E3FFE3E3E3FF898989D30000
+      0000000000006C6C6C83E3E3E3FFE3E3E3FF898989D301010104000000000000
       0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000000000000005050507DBDBDBFDE3E3E3FFE3E3
+      E3FFE3E3E3FFCFCFCFF1676767AA1111113A0000000200000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       00001010101DC5C5C5F0AAAAAADB070707130000000000000000000000000000
       00000000000000000000000000000000000003030304989898B1CACACAEA2121
@@ -3169,11 +3493,11 @@ object FormMain: TFormMain
       00001010101DC5C5C5F0AAAAAADB070707130000000068686896DCDCDCFDE3E3
       E3FFE3E3E3FFDCDCDCFA777777B90505051903030304989898B1CACACAEA2121
       215A000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000006F6F6F8AE3E3E3FFE3E3E3FF898989D30000
+      0000000000006C6C6C83E3E3E3FFE3E3E3FF898989D301010104000000000000
       0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000000000000005050507DBDBDBFDE3E3E3FFE2E2
+      E2FE9E9E9ED32E2E2E6E0202020F000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000005F5F5F8AE2E2E2FE7575759D0101010700000000000000000000
       00000000000000000000000000000000000064646475E1E1E1FE717171B10202
@@ -3181,11 +3505,11 @@ object FormMain: TFormMain
       0000000000005F5F5F8AE2E2E2FE7575759D01010107000000001E1E1E496565
       65A5666666AA272727630202020D0000000064646475E1E1E1FE717171B10202
       020F000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000006F6F6F8AE3E3E3FFE3E3E3FF898989D30000
+      0000000000006C6C6C83E3E3E3FFE3E3E3FF898989D301010104000000000000
       0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000000000000005050507DBDBDBFDC2C2C2E95555
+      559A0909092C0000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000303030B959595C7DDDDDDFB7D7D7DA20E0E0E14000000000000
       000000000000000000000B0B0B0D6F6F6F7FDBDBDBF79C9C9CCD0F0F0F380000
@@ -3193,22 +3517,22 @@ object FormMain: TFormMain
       0000000000000303030B959595C7DDDDDDFB7D7D7DA20E0E0E14000000000000
       000000000001000000000B0B0B0D6F6F6F7FDBDBDBF79C9C9CCD0F0F0F380000
       0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000063636386CCCCCCFBCCCCCCFB7D7D7DCF0000
+      0000000000006262627FCCCCCCFBCCCCCCFB7D7D7DD001010104000000000000
       0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      000000000000000000000B0B0B1A8D8D8DC5E2E2E2FEC5C5C5E58080809D5656
-      5663555555607A7A7A8EC2C2C2DAE2E2E2FE959595C916161642000000000000
+      00000000000000000000000000000000000004040406888888CB2121215A0202
+      0209000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000B0B0B1A8D8D8DC5E2E2E2FEC5C5C5E58080809D5656
       5663555555607A7A7A8EC2C2C2DAE2E2E2FE959595C916161642000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000B0B0B1A8D8D8DC5E2E2E2FEC5C5C5E58080809D5656
+      5663555555607A7A7A8EC2C2C2DAE2E2E2FE959595C916161642000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000000606061C0E0E0E3F0E0E0E3F0A0A0A310000
+      0000000000000505051A0E0E0E3F0E0E0E3F0B0B0B3300000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000000606061C000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       00000000000000000000000000000101010A43434381A9A9A9E2D3D3D3F6E3E3
@@ -5011,17 +5335,26 @@ object FormMain: TFormMain
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000424D3E000000000000003E000000
-      2800000060000000A80000000100010000000000E00700000000000000000000
-      000000000000000000000000FFFFFF00FFFFFFFFFFFF000000000000FFFFFFFF
-      FFFF000000000000FFFFFFFFFFFF000000000000FFF7FFFFF7FF000000000000
-      FF007FFF007F000000000000FE003FFE003F000000000000FC001FFC001F0000
-      00000000F87E0FF8420F000000000000F0FF0FF0810F000000000000F0FF8FF0
-      008F000000000000F1FF8FF1000F000000000000F1FF87F00007000000000000
-      F1FF8FF1000F000000000000F1FF8FF1000F000000000000F0FF0FF0800F0000
-      00000000F87F0FF8410F000000000000F83C1FF8341F000000000000FC003FFC
-      003F000000000000FE007FFE007F000000000000FF80FFFF80FF000000000000
-      FFFFFFFFFFFF000000000000FFFFFFFFFFFF000000000000FFFFFFFFFFFF0000
-      00000000FFFFFFFFFFFF000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFC
+      2800000060000000C00000000100010000000000000900000000000000000000
+      000000000000000000000000FFFFFF0000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF7FFFFF7FFFFFFFFFFFFFF
+      FF007FFF007FFFFFFFFFFFFFFE003FFE003FFFFFFFFFFFFFFC001FFC001FFE18
+      3FFF1FFFF87E0FF8420FFE183FFF0FFFF0FF0FF0810FFE183FFF03FFF0FF8FF0
+      008FFE183FFF01FFF1FF8FF1000FFE183FFF007FF1FF87F00007FE183FFF003F
+      F1FF8FF1000FFE183FFF003FF1FF8FF1000FFE183FFF007FF0FF0FF0800FFE18
+      3FFF01FFF87F0FF8410FFE183FFF07FFF83C1FF8341FFE183FFF0FFFFC003FFC
+      003FFE187FFFBFFFFE007FFE007FFFFFFFFFFFFFFF80FFFF80FFFFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFC
       FFFFFFFFFFFFFFFFFFFFFFFCFFFFFFFFFFFFFFFFFF807FFCFFFFFFFFFFFFFFFF
       FE001FFC7FFFFFFFFFFC001FFE000FFC7FFFFFC1FFF8000FFE0E07FC0FFFFF00
       7FF0000FF83F07FC03FFFF803FF0000FF0FE07FC03FFFC9C3FF0180FE07803F8
@@ -5079,16 +5412,16 @@ object FormMain: TFormMain
       000000000000}
   end
   object PopupMenuTaskStart: TPopupMenu
-    Left = 64
-    Top = 504
+    Left = 976
+    Top = 712
     object MenuItemTaskStartFrom: TMenuItem
       Caption = #1053#1072#1095#1072#1090#1100' '#1079#1072#1076#1072#1095#1091' '#1089'...'
       OnClick = MenuItemTaskStartFromClick
     end
   end
   object PopupMenuView: TPopupMenu
-    Left = 160
-    Top = 272
+    Left = 136
+    Top = 32
     object MenuItemOpenLabels: TMenuItem
       Caption = #1052#1077#1090#1082#1080
       OnClick = MenuItemOpenLabelsClick
@@ -5096,8 +5429,8 @@ object FormMain: TFormMain
   end
   object PopupMenuTask: TPopupMenu
     OnPopup = PopupMenuTaskPopup
-    Left = 72
-    Top = 368
+    Left = 416
+    Top = 280
     object N2: TMenuItem
       Caption = #1044#1086#1073#1072#1074#1080#1090#1100' '#1087#1086#1076#1079#1072#1076#1072#1095#1091
     end
@@ -5121,8 +5454,8 @@ object FormMain: TFormMain
   object TimerAutoSaveTask: TTimer
     Enabled = False
     Interval = 2000
-    Left = 176
-    Top = 360
+    Left = 136
+    Top = 640
   end
   object ColorDialog: TsColorDialog
     Ctl3D = False
@@ -5146,15 +5479,56 @@ object FormMain: TFormMain
       '94DD85'
       '94DD85'
       '94DD85')
-    Left = 180
-    Top = 512
+    Left = 132
+    Top = 584
   end
   object PopupMenuViewProp: TPopupMenu
-    Left = 180
-    Top = 448
+    Left = 596
+    Top = 64
     object MenuItemShowEnded: TMenuItem
       Caption = #1055#1086#1082#1072#1079#1099#1074#1072#1090#1100' '#1079#1072#1074#1077#1088#1096#1105#1085#1085#1099#1077' '#1079#1072#1076#1072#1095#1080
       OnClick = MenuItemShowEndedClick
     end
+  end
+  object PopupMenuComment: TPopupMenu
+    Left = 756
+    Top = 687
+    object MenuItemCommentDel: TMenuItem
+      Caption = #1059#1076#1072#1083#1080#1090#1100
+      OnClick = MenuItemCommentDelClick
+    end
+  end
+  object PopupMenuTimes: TPopupMenu
+    Left = 1025
+    Top = 251
+    object MenuItemTimeEdit: TMenuItem
+      Caption = #1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1090#1100
+      Default = True
+    end
+    object MenuItemTimeStartFrom: TMenuItem
+      Caption = #1053#1072#1095#1072#1090#1100' '#1079#1072#1076#1072#1095#1091' '#1089#1088#1072#1079#1091' '#1087#1086#1089#1083#1077' '#1101#1090#1086#1081
+    end
+    object N1: TMenuItem
+      Caption = '-'
+    end
+    object MenuItemLinkWithTask: TMenuItem
+      Caption = #1055#1088#1080#1074#1103#1079#1072#1090#1100' '#1082' '#1074#1099#1073#1088#1072#1085#1085#1086#1081' '#1079#1072#1076#1072#1095#1077
+    end
+    object MenuItemDropTaskLink: TMenuItem
+      Caption = #1054#1090#1074#1103#1079#1072#1090#1100' '#1086#1090' '#1079#1072#1076#1072#1095#1080
+    end
+    object N5: TMenuItem
+      Caption = '-'
+    end
+    object MenuItemTimeDelete: TMenuItem
+      Caption = #1059#1076#1072#1083#1080#1090#1100
+      OnClick = MenuItemTimeDeleteClick
+    end
+  end
+  object TrayIcon: TTrayIcon
+    Visible = True
+    OnClick = TrayIconClick
+    Left = 652
+    Top = 336
   end
 end

@@ -2,6 +2,8 @@ inherited FormNotifyTask: TFormNotifyTask
   Caption = 'FormNotifyTask'
   ClientHeight = 160
   ClientWidth = 400
+  Position = poDesigned
+  OnClose = FormClose
   ExplicitWidth = 400
   ExplicitHeight = 160
   PixelsPerInch = 96
@@ -21,6 +23,7 @@ inherited FormNotifyTask: TFormNotifyTask
   inherited DragBarTop: TsDragBar
     Width = 396
     DraggedControl = Owner
+    ExplicitWidth = 396
     inherited LabelCaption: TLabel
       Width = 97
       Caption = 'YOT Manager'
@@ -28,6 +31,7 @@ inherited FormNotifyTask: TFormNotifyTask
     end
     inherited ButtonFlatClose: TButtonFlat
       Left = 358
+      ExplicitLeft = 358
     end
   end
   object Panel1: TPanel
@@ -39,10 +43,7 @@ inherited FormNotifyTask: TFormNotifyTask
     BevelOuter = bvNone
     ParentColor = True
     TabOrder = 1
-    ExplicitLeft = -1
-    ExplicitTop = 308
-    ExplicitWidth = 397
-    object ButtonFlat1: TButtonFlat
+    object ButtonFlatHoldOverMore: TButtonFlat
       AlignWithMargins = True
       Left = 177
       Top = 10
@@ -76,15 +77,15 @@ inherited FormNotifyTask: TFormNotifyTask
       ImageIndentLeft = -3
       ImageIndex = 10
       Images = FormMain.ImageList24
+      OnClick = ButtonFlatHoldOverMoreClick
       RoundRectParam = 10
       Shape = stRoundRect
       ShowFocusRect = False
       TabOrder = 0
       TabStop = True
       TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-      ExplicitLeft = 93
     end
-    object ButtonFlat2: TButtonFlat
+    object ButtonFlatHoldOverDefault: TButtonFlat
       AlignWithMargins = True
       Left = 10
       Top = 10
@@ -122,6 +123,7 @@ inherited FormNotifyTask: TFormNotifyTask
       TabOrder = 1
       TabStop = True
       TextFormat = [tfSingleLine, tfVerticalCenter]
+      Popup = PopupMenuHoldOver
     end
   end
   object ButtonFlatTaskState: TButtonFlat
@@ -154,6 +156,7 @@ inherited FormNotifyTask: TFormNotifyTask
     ImageIndentRight = 2
     ImageIndex = 19
     Images = FormMain.ImageList24
+    OnClick = ButtonFlatTaskStateClick
     RoundRectParam = 0
     ShowFocusRect = False
     TabOrder = 2
@@ -182,5 +185,24 @@ inherited FormNotifyTask: TFormNotifyTask
     TabOrder = 3
     Text = #1050#1088#1072#1090#1082#1086#1077' '#1086#1087#1080#1089#1072#1085#1080#1077' '#1079#1072#1076#1072#1095#1080
     StyleElements = []
+  end
+  object PopupMenuHoldOver: TPopupMenu
+    Left = 312
+    Top = 56
+    object MenuItemHO5: TMenuItem
+      Caption = #1053#1072#1087#1086#1084#1085#1080#1090#1100' '#1095#1077#1088#1077#1079' 5 '#1084#1080#1085#1091#1090
+    end
+    object MenuItemHO10: TMenuItem
+      Caption = #1053#1072#1087#1086#1084#1085#1080#1090#1100' '#1095#1077#1088#1077#1079' 10 '#1084#1080#1085#1091#1090
+    end
+    object MenuItemHO15: TMenuItem
+      Caption = #1053#1072#1087#1086#1084#1085#1080#1090#1100' '#1095#1077#1088#1077#1079' 15 '#1084#1080#1085#1091#1090
+    end
+    object MenuItemHO20: TMenuItem
+      Caption = #1053#1072#1087#1086#1084#1085#1080#1090#1100' '#1095#1077#1088#1077#1079' 20 '#1084#1080#1085#1091#1090
+    end
+    object MenuItemHO25: TMenuItem
+      Caption = #1053#1072#1087#1086#1084#1085#1080#1090#1100' '#1095#1077#1088#1077#1079' 25 '#1084#1080#1085#1091#1090
+    end
   end
 end

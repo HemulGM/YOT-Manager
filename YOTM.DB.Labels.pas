@@ -39,7 +39,8 @@ interface
      constructor Create(ADataBase:TDB; ATableEx:TTableEx);
      procedure Reload(TaskID:Integer);
      function New(Item:TLabelItem):Integer;
-     procedure Drop(Index: Integer);
+     procedure Delete(Index: Integer); override;
+     procedure DropAll(TaskID:Integer);
      property DataBase:TDB read FDataBase write SetDataBase;
    end;
 
@@ -100,7 +101,7 @@ begin
    end;
 end;
 
-procedure TLabelItems.Drop(Index: Integer);
+procedure TLabelItems.Delete(Index: Integer);
 begin
  with SQL.Delete(tnTable) do
   begin
@@ -112,8 +113,21 @@ begin
  inherited;
 end;
 
-function TLabelItems.New(Item: TLabelItem): Integer;
+procedure TLabelItems.DropAll(TaskID:Integer);
 begin
+ with SQL.Delete(tnTable) do
+  begin
+   WhereFieldEqual(fnTask, TaskID);
+   DataBase.DB.ExecSQL(GetSQL);
+   EndCreate;
+  end;
+ Clear;
+end;
+
+function TLabelItems.New(Item: TLabelItem): Integer;
+var i: Integer;
+begin
+ for i:= 0 to Count-1 do if Items[i].TypeID = Item.TypeID then Exit(i);
  with SQL.InsertInto(tnTable) do
   begin
    AddValue(fnTask, Item.Task);

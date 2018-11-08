@@ -1,48 +1,36 @@
-object FormCustom: TFormCustom
-  Left = 0
-  Top = 0
-  BorderStyle = bsNone
-  ClientHeight = 322
-  ClientWidth = 616
-  Color = 3684408
-  DoubleBuffered = True
-  Font.Charset = DEFAULT_CHARSET
-  Font.Color = 15724527
-  Font.Height = -16
-  Font.Name = 'Tahoma'
-  Font.Style = []
-  Padding.Left = 2
-  Padding.Top = 2
-  Padding.Right = 2
-  Padding.Bottom = 2
-  OldCreateOrder = False
-  Position = poMainFormCenter
-  OnPaint = FormPaint
+inherited FormTimeOverlay: TFormTimeOverlay
+  Caption = 'FormTimeOverlay'
+  ClientHeight = 40
+  ClientWidth = 300
+  FormStyle = fsStayOnTop
+  Position = poDesigned
+  OnCreate = FormCreate
+  ExplicitWidth = 300
+  ExplicitHeight = 40
   PixelsPerInch = 96
   TextHeight = 19
-  object DragBarTop: TsDragBar
-    Left = 2
-    Top = 2
-    Width = 612
-    Height = 27
-    Cursor = crHandPoint
-    SkinData.SkinSection = 'DRAGBAR'
-    BevelOuter = bvNone
-    Caption = ' '
-    Color = 3026478
-    Padding.Bottom = 2
-    ParentBackground = False
-    TabOrder = 0
+  inherited DragBarTop: TsDragBar
+    Width = 296
+    Height = 36
+    Align = alClient
     DraggedControl = Owner
-    object LabelCaption: TLabel
+    inherited LabelCaption: TLabel
+      Left = 65
+      Width = 156
+      Height = 28
+      Align = alClient
+      Caption = #1053#1086#1074#1072#1103' '#1079#1072#1076#1072#1095#1072
+      ExplicitWidth = 98
+    end
+    object LabelTime: TLabel [1]
       AlignWithMargins = True
       Left = 10
       Top = 3
-      Width = 91
-      Height = 19
+      Width = 42
+      Height = 28
       Margins.Left = 10
       Align = alLeft
-      Caption = 'FormCustom'
+      Caption = '09:11'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = 8947848
       Font.Height = -16
@@ -51,12 +39,22 @@ object FormCustom: TFormCustom
       ParentFont = False
       Transparent = True
       Layout = tlCenter
+      ExplicitHeight = 19
     end
-    object ButtonFlatClose: TButtonFlat
-      Left = 587
+    inherited ButtonFlatClose: TButtonFlat
+      Left = 260
+      Width = 36
+      Height = 34
+      ImageIndentLeft = 5
+      ExplicitLeft = 192
+      ExplicitWidth = 36
+      ExplicitHeight = 36
+    end
+    object ButtonFlatSwitch: TButtonFlat
+      Left = 224
       Top = 0
-      Width = 25
-      Height = 25
+      Width = 36
+      Height = 34
       Align = alRight
       Caption = ''
       ColorNormal = 3026478
@@ -78,15 +76,17 @@ object FormCustom: TFormCustom
       FontDown.Name = 'Tahoma'
       FontDown.Style = []
       IgnorBounds = True
-      ImageIndentLeft = 0
-      ImageIndex = 0
+      ImageIndentLeft = 5
+      ImageIndex = 26
       Images = FormMain.ImageList24
-      OnClick = ButtonFlatCloseClick
+      OnClick = ButtonFlatSwitchClick
       RoundRectParam = 0
       ShowFocusRect = False
-      TabOrder = 0
+      TabOrder = 1
       TabStop = True
       TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+      ExplicitLeft = 192
+      ExplicitHeight = 36
     end
   end
 end

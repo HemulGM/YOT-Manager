@@ -19,6 +19,7 @@ var
   FormNotify: TFormNotify;
 
 implementation
+ uses YOTM.Main;
 
 {$R *.dfm}
 

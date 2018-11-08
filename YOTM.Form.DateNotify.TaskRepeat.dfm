@@ -59,8 +59,8 @@ inherited FormTaskRepeat: TFormTaskRepeat
         TabOrder = 0
         StyleElements = []
         object ComboBox1: TComboBox
-          Left = 208
-          Top = 21
+          Left = 160
+          Top = 4
           Width = 137
           Height = 27
           Font.Charset = DEFAULT_CHARSET
@@ -78,10 +78,6 @@ inherited FormTaskRepeat: TFormTaskRepeat
       Caption = 'TabSheetDay'
       ImageIndex = 1
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 33
-      ExplicitWidth = 0
-      ExplicitHeight = 206
       object Panel1: TPanel
         Left = 0
         Top = 0
@@ -93,35 +89,22 @@ inherited FormTaskRepeat: TFormTaskRepeat
         ParentBackground = False
         TabOrder = 0
         StyleElements = []
-        ExplicitHeight = 206
       end
     end
     object TabSheetWeek: TTabSheet
       Caption = 'TabSheetWeek'
       ImageIndex = 2
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 33
-      ExplicitWidth = 0
-      ExplicitHeight = 206
     end
     object TabSheetMonth: TTabSheet
       Caption = 'TabSheetMonth'
       ImageIndex = 3
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 33
-      ExplicitWidth = 0
-      ExplicitHeight = 206
     end
     object TabSheetYear: TTabSheet
       Caption = 'TabSheetYear'
       ImageIndex = 4
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 33
-      ExplicitWidth = 0
-      ExplicitHeight = 206
     end
   end
   object Panel2: TPanel

@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, YOTM.Form.ModalEdit, Vcl.ExtCtrls,
   HGM.Button, Vcl.StdCtrls, sPanel, Vcl.Grids, HGM.Controls.VirtualTable, YOTM.DB.LabelTypes,
-  YOTM.DB;
+  YOTM.DB, YOTM.DB.Labels;
 
 type
   TFormSelectLabels = class(TFormModalEdit)
@@ -16,7 +16,7 @@ type
     ButtonFlatNewLabel: TButtonFlat;
     ButtonFlatLabelColor: TButtonFlat;
     ColorDialog: TColorDialog;
-    ButtonFlat1: TButtonFlat;
+    ButtonFlatDelete: TButtonFlat;
     procedure FormCreate(Sender: TObject);
     procedure TableExLabelsGetData(FCol, FRow: Integer; var Value: string);
     procedure ButtonFlatNewLabelClick(Sender: TObject);
@@ -24,16 +24,16 @@ type
     procedure TableExLabelsDrawCellData(Sender: TObject; ACol, ARow: Integer;
       Rect: TRect; State: TGridDrawState);
     procedure FormShow(Sender: TObject);
-    procedure ButtonFlat1Click(Sender: TObject);
+    procedure ButtonFlatDeleteClick(Sender: TObject);
     procedure TableExLabelsItemColClick(Sender: TObject;
       MouseButton: TMouseButton; const Index: Integer);
   private
     FLabelTypes:TLabelTypes;
     FForEdit:Boolean;
-    FSelectedItem: TLabelType;
   public
-    procedure ShowForEdit;
-    class function Select(var LabelType:TLabelType):Boolean;
+    destructor Destroy; override;
+    class function Select(Items:TLabelItems; TaskID:Integer):Boolean;
+    class procedure OpenForEdit;
   end;
 
 var
@@ -44,10 +44,24 @@ implementation
 
 {$R *.dfm}
 
-procedure TFormSelectLabels.ButtonFlat1Click(Sender: TObject);
+procedure TFormSelectLabels.ButtonFlatDeleteClick(Sender: TObject);
+var i:Integer;
 begin
- if not IndexInList(TableExLabels.ItemIndex, FLabelTypes.Count) then Exit;
- if TFormAnswer.GetAnswer('Удалить выбранную метку?') then FLabelTypes.Delete(TableExLabels.ItemIndex);
+ if FLabelTypes.CheckedCount > 0 then
+  begin
+   if TFormAnswer.GetAnswer('Удалить выбранные метки?') then
+    begin
+     i:=0;
+     repeat
+      if FLabelTypes.Checked[i] then FLabelTypes.Delete(i) else Inc(i);
+     until FLabelTypes.CheckedCount <= 0;
+    end;
+  end
+ else
+  begin
+   if not IndexInList(TableExLabels.ItemIndex, FLabelTypes.Count) then Exit;
+   if TFormAnswer.GetAnswer('Удалить выбранную метку?') then FLabelTypes.Delete(TableExLabels.ItemIndex);
+  end;
 end;
 
 procedure TFormSelectLabels.ButtonFlatLabelColorClick(Sender: TObject);
@@ -68,6 +82,12 @@ begin
  FLabelTypes.Update(0);
 end;
 
+destructor TFormSelectLabels.Destroy;
+begin
+ FLabelTypes.Free;
+ inherited;
+end;
+
 procedure TFormSelectLabels.FormCreate(Sender: TObject);
 begin
  inherited;
@@ -77,33 +97,59 @@ end;
 procedure TFormSelectLabels.FormShow(Sender: TObject);
 begin
  inherited;
- FLabelTypes.Reload;
  ButtonFlatCancel.Visible:=not FForEdit;
  ButtonFlatOK.Left:=0;
 end;
 
-class function TFormSelectLabels.Select(var LabelType: TLabelType): Boolean;
+class procedure TFormSelectLabels.OpenForEdit;
 begin
- Result:=False;
  with TFormSelectLabels.Create(nil) do
   begin
-   if ShowModal = mrOK then
-    begin
-     if IndexInList(TableExLabels.ItemIndex, FLabelTypes.Count) then
-      begin
-       LabelType:=FLabelTypes[TableExLabels.ItemIndex];
-       Result:=True;
-      end;
-    end;
+   FForEdit:=True;
+   FLabelTypes.Reload;
+   ShowModal;
+   FForEdit:=False;
    Free;
   end;
 end;
 
-procedure TFormSelectLabels.ShowForEdit;
+class function TFormSelectLabels.Select(Items:TLabelItems; TaskID:Integer): Boolean;
+var i, j:Integer;
+    Item:TLabelItem;
 begin
- FForEdit:=True;
- ShowModal;
- FForEdit:=False;
+ Result:=False;
+ with TFormSelectLabels.Create(nil) do
+  begin
+   FLabelTypes.Reload;
+   if Assigned(Items) then
+    begin
+     for i:= 0 to Items.Count-1 do
+      for j:= 0 to FLabelTypes.Count-1 do
+       if Items[i].TypeID = FLabelTypes[j].ID then
+        begin
+         FLabelTypes.Checked[j]:=True;
+         Break;
+        end;
+    end;
+   if ShowModal = mrOK then
+    begin
+     if Assigned(Items) then
+      begin
+       if Items.Count > 0 then Items.DropAll(TaskID);
+       for i:= 0 to FLabelTypes.Count-1 do
+        begin
+         if FLabelTypes.Checked[i] then
+          begin
+           Item:=TLabelItem.Create(FLabelTypes[i]);
+           Item.Task:=TaskID;
+           Items.New(Item);
+          end;
+        end;
+      end;
+     Result:=True;
+    end;
+   Free;
+  end;
 end;
 
 procedure TFormSelectLabels.TableExLabelsDrawCellData(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);

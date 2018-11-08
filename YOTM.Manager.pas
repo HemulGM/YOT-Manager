@@ -10,6 +10,7 @@ interface
   YOTM.DB.Times, HGM.Common.Utils, YOTM.DB.LabelTypes, sDialogs, YOTM.DB.Notes;
 
  type
+  TTaskNotify = procedure(Task:TTaskItem) of object;
   TManager = class(TObject)
    private
     FDataBase: TDB;
@@ -18,18 +19,22 @@ interface
     FTasks:TTaskItems;
     FTimeNow:Integer;
     FOnWorkDayStarted: TNotifyEvent;
+    FOnTaskNotify: TTaskNotify;
     procedure SetDataBase(const Value: TDB);
     procedure OnTimerCheck(Sender:TObject);
     procedure SetActivate(const Value: Boolean);
-    procedure WorkDayStarted;
     procedure SetOnWorkDayStarted(const Value: TNotifyEvent);
+    procedure SetOnTaskNotify(const Value: TTaskNotify);
+   protected
     procedure Notify(Task:TTaskItem);
+    procedure WorkDayStarted;
    public
     constructor Create(ADataBase: TDB);
     destructor Destroy;
     property DataBase:TDB read FDataBase write SetDataBase;
     property Activate:Boolean read FActivate write SetActivate;
     property OnWorkDayStarted:TNotifyEvent read FOnWorkDayStarted write SetOnWorkDayStarted;
+    property OnTaskNotify:TTaskNotify read FOnTaskNotify write SetOnTaskNotify;
   end;
 
  var
@@ -60,7 +65,7 @@ end;
 
 procedure TManager.Notify(Task: TTaskItem);
 begin
-
+ if Assigned(FOnTaskNotify) then FOnTaskNotify(Task);
 end;
 
 procedure TManager.OnTimerCheck(Sender: TObject);
@@ -93,6 +98,11 @@ end;
 procedure TManager.SetDataBase(const Value: TDB);
 begin
  FDataBase := Value;
+end;
+
+procedure TManager.SetOnTaskNotify(const Value: TTaskNotify);
+begin
+ FOnTaskNotify := Value;
 end;
 
 procedure TManager.SetOnWorkDayStarted(const Value: TNotifyEvent);

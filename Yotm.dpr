@@ -25,7 +25,8 @@ uses
   YOTM.Form.Notify in 'YOTM.Form.Notify.pas' {FormNotify},
   YOTM.Form.Notify.Task in 'YOTM.Form.Notify.Task.pas' {FormNotifyTask},
   YOTM.Manager in 'YOTM.Manager.pas',
-  YOTM.Form.DateNotify.TaskRepeat in 'YOTM.Form.DateNotify.TaskRepeat.pas' {FormTaskRepeat};
+  YOTM.Form.DateNotify.TaskRepeat in 'YOTM.Form.DateNotify.TaskRepeat.pas' {FormTaskRepeat},
+  YOTM.Form.OverlayTime in 'YOTM.Form.OverlayTime.pas' {FormTimeOverlay};
 
 {$R *.res}
 
@@ -33,8 +34,5 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TFormMain, FormMain);
-  Application.CreateForm(TFormNotify, FormNotify);
-  Application.CreateForm(TFormNotifyTask, FormNotifyTask);
-  Application.CreateForm(TFormTaskRepeat, FormTaskRepeat);
   Application.Run;
 end.

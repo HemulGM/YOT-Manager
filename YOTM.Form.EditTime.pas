@@ -25,6 +25,7 @@ type
     ButtonFlat12: TButtonFlat;
     Label2: TLabel;
     Label3: TLabel;
+    ComboBoxEx1: TComboBoxEx;
     procedure ButtonFlatUPDOWNClick(Sender: TObject);
   private
     FromHH, FromMM, ToHH, ToMM:Word;

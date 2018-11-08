@@ -23,6 +23,7 @@ inherited FormNotify: TFormNotify
       Width = 38
       Height = 38
       ImageIndentLeft = 6
+      Images = FormMain.ImageList24
       ExplicitLeft = 335
       ExplicitWidth = 38
       ExplicitHeight = 38

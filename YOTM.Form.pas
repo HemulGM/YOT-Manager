@@ -17,15 +17,15 @@ type
   private
     function GetCaption: String;
     procedure SetCaption(const Value: String);
-    { Private declarations }
   public
-    property Caption:String read GetCaption write SetCaption;
+    property Caption:string read GetCaption write SetCaption;
   end;
 
 var
   FormCustom: TFormCustom;
 
 implementation
+ uses YOTM.Main;
 
 {$R *.dfm}
 

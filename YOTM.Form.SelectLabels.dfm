@@ -1,12 +1,12 @@
 inherited FormSelectLabels: TFormSelectLabels
   Caption = 'FormSelectLabels'
-  ClientHeight = 425
+  ClientHeight = 437
   ClientWidth = 283
   StyleElements = []
   OnCreate = FormCreate
   OnShow = FormShow
   ExplicitWidth = 283
-  ExplicitHeight = 425
+  ExplicitHeight = 437
   PixelsPerInch = 96
   TextHeight = 19
   inherited DragBarTop: TsDragBar
@@ -20,15 +20,14 @@ inherited FormSelectLabels: TFormSelectLabels
     end
     inherited ButtonFlatClose: TButtonFlat
       Left = 254
-      Images = FormMain.ImageList24
       ExplicitLeft = 254
     end
   end
   inherited PanelBottom: TPanel
-    Top = 388
+    Top = 400
     Width = 279
     StyleElements = []
-    ExplicitTop = 388
+    ExplicitTop = 400
     ExplicitWidth = 279
     inherited ButtonFlatCancel: TButtonFlat
       Left = 179
@@ -43,7 +42,7 @@ inherited FormSelectLabels: TFormSelectLabels
     Left = 2
     Top = 69
     Width = 279
-    Height = 319
+    Height = 331
     Margins.Left = 20
     Margins.Top = 0
     Margins.Right = 20
@@ -130,7 +129,7 @@ inherited FormSelectLabels: TFormSelectLabels
     StyleElements = []
     object EditNewLabel: TEdit
       AlignWithMargins = True
-      Left = 43
+      Left = 3
       Top = 3
       Width = 159
       Height = 34
@@ -150,6 +149,7 @@ inherited FormSelectLabels: TFormSelectLabels
       TabOrder = 0
       TextHint = #1044#1086#1073#1072#1074#1080#1090#1100' '#1084#1077#1090#1082#1091'...'
       StyleElements = []
+      ExplicitLeft = 43
     end
     object ButtonFlatNewLabel: TButtonFlat
       AlignWithMargins = True
@@ -191,11 +191,11 @@ inherited FormSelectLabels: TFormSelectLabels
     end
     object ButtonFlatLabelColor: TButtonFlat
       AlignWithMargins = True
-      Left = 3
+      Left = 168
       Top = 3
       Width = 34
       Height = 34
-      Align = alLeft
+      Align = alRight
       Caption = ''
       ColorNormal = 4694832
       ColorOver = 6381921
@@ -225,8 +225,9 @@ inherited FormSelectLabels: TFormSelectLabels
       TabOrder = 2
       TabStop = True
       TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+      ExplicitLeft = 179
     end
-    object ButtonFlat1: TButtonFlat
+    object ButtonFlatDelete: TButtonFlat
       AlignWithMargins = True
       Left = 242
       Top = 3
@@ -257,7 +258,7 @@ inherited FormSelectLabels: TFormSelectLabels
       ImageIndentLeft = 4
       ImageIndex = 7
       Images = FormMain.ImageList24
-      OnClick = ButtonFlat1Click
+      OnClick = ButtonFlatDeleteClick
       RoundRectParam = 0
       ShowFocusRect = False
       TabOrder = 3
