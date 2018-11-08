@@ -2978,8 +2978,8 @@ object FormMain: TFormMain
       end
     end
     object ButtonFlat19: TButtonFlat
-      Left = 128
-      Top = 256
+      Left = 156
+      Top = 168
       Width = 90
       Height = 30
       Caption = #1050#1085#1086#1087#1082#1072
@@ -2987,7 +2987,7 @@ object FormMain: TFormMain
       ColorOver = 11373924
       ColorPressed = 10451273
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWhite
+      Font.Color = clBlack
       Font.Height = -13
       Font.Name = 'Tahoma'
       Font.Style = []
@@ -3028,7 +3028,7 @@ object FormMain: TFormMain
     Left = 44
     Top = 520
     Bitmap = {
-      494C01011C005800A00118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01011C005800A40118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000C000000001002000000000000020
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
