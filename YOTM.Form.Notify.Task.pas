@@ -5,7 +5,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, YOTM.Form.Notify, HGM.Button,
-  Vcl.StdCtrls, Vcl.ExtCtrls, sPanel, YOTM.DB.Tasks, Vcl.Menus;
+  Vcl.StdCtrls, Vcl.ExtCtrls, sPanel, YOTM.DB.Tasks, Vcl.Menus,
+  HGM.Controls.PanelExt;
 
 type
   TFormNotifyTask = class(TFormNotify)
@@ -25,6 +26,8 @@ type
     procedure ButtonFlatCloseClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure ButtonFlatTaskStateClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure FormHide(Sender: TObject);
   private
     TaskID:Integer;
   public
@@ -60,6 +63,16 @@ end;
 procedure TFormNotifyTask.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
  Action:=caFree;
+end;
+
+procedure TFormNotifyTask.FormHide(Sender: TObject);
+begin
+ AnimateWindow(Handle, 500, AW_BLEND or AW_HIDE);
+end;
+
+procedure TFormNotifyTask.FormShow(Sender: TObject);
+begin
+ AnimateWindow(Handle, 500, AW_BLEND or AW_SLIDE);
 end;
 
 class procedure TFormNotifyTask.Notify(Task: TTaskItem);

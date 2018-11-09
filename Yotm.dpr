@@ -18,8 +18,6 @@ uses
   YOTM.Form.SelectLabels in 'YOTM.Form.SelectLabels.pas' {FormSelectLabels},
   YOTM.DB.Tasks in 'YOTM.DB.Tasks.pas',
   YOTM.DB.Times in 'YOTM.DB.Times.pas',
-  Vcl.Themes,
-  Vcl.Styles,
   YOTM.Form.DateNotify in 'YOTM.Form.DateNotify.pas' {FormDateAndNotify},
   YOTM.DB.Notes in 'YOTM.DB.Notes.pas',
   YOTM.Form.Notify in 'YOTM.Form.Notify.pas' {FormNotify},
@@ -34,5 +32,6 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TFormMain, FormMain);
+  FormMain.Initializate;
   Application.Run;
 end.

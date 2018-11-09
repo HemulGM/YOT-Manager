@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, YOTM.Form, Vcl.ExtCtrls, HGM.Button,
-  Vcl.StdCtrls, sPanel;
+  Vcl.StdCtrls, sPanel, HGM.Controls.PanelExt;
 
 type
   TFormModalEdit = class(TFormCustom)

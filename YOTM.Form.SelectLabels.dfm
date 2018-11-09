@@ -4,14 +4,12 @@ inherited FormSelectLabels: TFormSelectLabels
   ClientWidth = 283
   StyleElements = []
   OnCreate = FormCreate
-  OnShow = FormShow
   ExplicitWidth = 283
   ExplicitHeight = 437
   PixelsPerInch = 96
   TextHeight = 19
-  inherited DragBarTop: TsDragBar
+  inherited DragBarTop: TDragPanel
     Width = 279
-    DraggedControl = Owner
     ExplicitWidth = 279
     inherited LabelCaption: TLabel
       Width = 45
@@ -149,7 +147,6 @@ inherited FormSelectLabels: TFormSelectLabels
       TabOrder = 0
       TextHint = #1044#1086#1073#1072#1074#1080#1090#1100' '#1084#1077#1090#1082#1091'...'
       StyleElements = []
-      ExplicitLeft = 43
     end
     object ButtonFlatNewLabel: TButtonFlat
       AlignWithMargins = True
@@ -225,7 +222,6 @@ inherited FormSelectLabels: TFormSelectLabels
       TabOrder = 2
       TabStop = True
       TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-      ExplicitLeft = 179
     end
     object ButtonFlatDelete: TButtonFlat
       AlignWithMargins = True

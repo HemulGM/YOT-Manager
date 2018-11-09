@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, YOTM.Form, HGM.Button, Vcl.StdCtrls,
-  Vcl.ExtCtrls, sPanel;
+  Vcl.ExtCtrls, sPanel, HGM.Controls.PanelExt;
 
 type
   TChangeActive = procedure(Sender:TObject; State:Boolean) of object;

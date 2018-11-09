@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, YOTM.Form.ModalEdit, HGM.Button,
   Vcl.StdCtrls, Vcl.ExtCtrls, sPanel, Vcl.WinXCalendars, YOTM.Main, YOTM.DB.Tasks,
-  Vcl.Menus, HGM.Common.Utils;
+  Vcl.Menus, HGM.Common.Utils, HGM.Controls.PanelExt;
 
 type
   TDateNotifyData = record
@@ -147,7 +147,7 @@ begin
    begin
     FlashControl(EditTime);
     MessageBox(Handle, 'Не верно указано время напоминания!', 'Внимание', MB_OK or MB_ICONWARNING);
-    Exit(False);
+    Exit;
    end;
   end
  else FData.SelectedTime:=False;

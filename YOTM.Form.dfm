@@ -16,24 +16,28 @@ object FormCustom: TFormCustom
   Padding.Right = 2
   Padding.Bottom = 2
   OldCreateOrder = False
-  Position = poMainFormCenter
+  Position = poDesigned
+  OnCreate = FormCreate
+  OnHide = FormHide
   OnPaint = FormPaint
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 19
-  object DragBarTop: TsDragBar
+  object DragBarTop: TDragPanel
     Left = 2
     Top = 2
     Width = 612
     Height = 27
     Cursor = crHandPoint
-    SkinData.SkinSection = 'DRAGBAR'
+    Align = alTop
     BevelOuter = bvNone
     Caption = ' '
     Color = 3026478
     Padding.Bottom = 2
     ParentBackground = False
     TabOrder = 0
-    DraggedControl = Owner
+    ExplicitLeft = 5
+    ExplicitTop = 77
     object LabelCaption: TLabel
       AlignWithMargins = True
       Left = 10

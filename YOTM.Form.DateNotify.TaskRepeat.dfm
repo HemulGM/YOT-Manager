@@ -7,9 +7,8 @@ inherited FormTaskRepeat: TFormTaskRepeat
   ExplicitHeight = 309
   PixelsPerInch = 96
   TextHeight = 19
-  inherited DragBarTop: TsDragBar
+  inherited DragBarTop: TDragPanel
     Width = 557
-    DraggedControl = Owner
     ExplicitWidth = 557
     inherited LabelCaption: TLabel
       Width = 150
@@ -78,6 +77,10 @@ inherited FormTaskRepeat: TFormTaskRepeat
       Caption = 'TabSheetDay'
       ImageIndex = 1
       TabVisible = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel1: TPanel
         Left = 0
         Top = 0
@@ -95,16 +98,28 @@ inherited FormTaskRepeat: TFormTaskRepeat
       Caption = 'TabSheetWeek'
       ImageIndex = 2
       TabVisible = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
     object TabSheetMonth: TTabSheet
       Caption = 'TabSheetMonth'
       ImageIndex = 3
       TabVisible = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
     object TabSheetYear: TTabSheet
       Caption = 'TabSheetYear'
       ImageIndex = 4
       TabVisible = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
   end
   object Panel2: TPanel

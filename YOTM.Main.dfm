@@ -2049,11 +2049,12 @@ object FormMain: TFormMain
             end
             item
               Caption = #1042#1088#1077#1084#1103
+              Width = 200
               Format = [tfCenter, tfLeft, tfSingleLine, tfVerticalCenter]
             end
             item
               Caption = #1054#1087#1080#1089#1072#1085#1080#1077
-              Width = 318
+              Width = 218
               MinWidth = 150
             end>
           ItemCount = 1
@@ -3028,7 +3029,7 @@ object FormMain: TFormMain
     Left = 44
     Top = 520
     Bitmap = {
-      494C01011C005800A40118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01011C005800AC0118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000C000000001002000000000000020
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

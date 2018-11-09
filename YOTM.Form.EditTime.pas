@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, YOTM.Form.ModalEdit, Vcl.ComCtrls,
-  Vcl.StdCtrls, Vcl.ExtCtrls, HGM.Button, sPanel;
+  Vcl.StdCtrls, Vcl.ExtCtrls, HGM.Button, sPanel, HGM.Controls.PanelExt;
 
 type
   TFormEditTime = class(TFormModalEdit)

@@ -4,6 +4,7 @@ inherited FormNotifyTask: TFormNotifyTask
   ClientWidth = 400
   Position = poDesigned
   OnClose = FormClose
+  OnShow = FormShow
   ExplicitWidth = 400
   ExplicitHeight = 160
   PixelsPerInch = 96
@@ -20,9 +21,8 @@ inherited FormNotifyTask: TFormNotifyTask
     ExplicitTop = 0
     ExplicitWidth = 627
   end
-  inherited DragBarTop: TsDragBar
+  inherited DragBarTop: TDragPanel
     Width = 396
-    DraggedControl = Owner
     ExplicitWidth = 396
     inherited LabelCaption: TLabel
       Width = 97
@@ -167,7 +167,7 @@ inherited FormNotifyTask: TFormNotifyTask
     AlignWithMargins = True
     Left = 45
     Top = 64
-    Width = 350
+    Width = 340
     Height = 34
     BevelInner = bvNone
     BevelKind = bkSoft

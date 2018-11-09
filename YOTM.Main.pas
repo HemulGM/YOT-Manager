@@ -343,6 +343,7 @@ type
     procedure UpdateTimeOverlayData;
     procedure TimeOverlayCallBack(Sender:TObject; State:Boolean);
   public
+    procedure Initializate;
     procedure SetTaskComplete(TaskID:Integer);
     property CurrentDate:TDate read FCurrentDate write SetCurrentDate;
     property ViewMode:TViewMode read FViewMode write SetViewMode;
@@ -1326,40 +1327,9 @@ begin
  MemoTaskDescExit(nil);
 end;
 
-procedure TFormMain.DoLog(Text:string);
-begin
- //MemoLog.Lines.BeginUpdate;
- //MemoLog.Lines.Insert(0, Text+#13#10);
- //MemoLog.Lines.EndUpdate;
-end;
-
-procedure TFormMain.UpdateCounts;
-begin
- ButtonFlatTaskNow.SubText:=IntToStr(FTaskItems.GetCount(Now));
- ButtonFlatDeadlined.SubText:=IntToStr(FTaskItems.GetDeadlined(Now));
- ButtonFlatTaskInbox.SubText:=IntToStr(FTaskItems.GetCount(0));
-end;
-
-procedure TFormMain.FormCreate(Sender: TObject);
+procedure TFormMain.Initializate;
 var WD:TWorkDays;
 begin
- ClientWidth:=1500;
- ClientHeight:=800;
- FTaskID:=-1;
-
- PanelCalendar.Left:=PanelRight.Width+10;
- PanelTimes.Left:=0;
- PanelSettings.Left:=PanelRight.Width+10;
- PanelNotes.Left:=PanelRight.Width+10;
-
- FDB:=TDB.Create(ExtractFilePath(ParamStr(0))+'\data.db');
- FDB.OnLog:=DoLog;
- FTimeItems:=TTimeItems.Create(FDB, TableExTimes);
- FTaskItems:=TTaskItems.Create(FDB, TableExTasks);
- FComments:=TCommentItems.Create(FDB, TableExComments);
- FLabelTypes:=TLabelTypes.Create(FDB, nil);
- FLabelItems:=TLabelItems.Create(FDB, nil);
- FNote:=TNoteItem.Create(FDB);
  FTimeManager:=TManager.Create(FDB);
  FTimeManager.OnWorkDayStarted:=WorkDayStarted;
  FTimeManager.OnTaskNotify:=TaskNotify;
@@ -1392,6 +1362,41 @@ begin
  {$IFDEF DEBUG}
    Caption:=Caption + ' (Debug)';
  {$ENDIF}
+end;
+
+procedure TFormMain.DoLog(Text:string);
+begin
+ //MemoLog.Lines.BeginUpdate;
+ //MemoLog.Lines.Insert(0, Text+#13#10);
+ //MemoLog.Lines.EndUpdate;
+end;
+
+procedure TFormMain.UpdateCounts;
+begin
+ ButtonFlatTaskNow.SubText:=IntToStr(FTaskItems.GetCount(Now));
+ ButtonFlatDeadlined.SubText:=IntToStr(FTaskItems.GetDeadlined(Now));
+ ButtonFlatTaskInbox.SubText:=IntToStr(FTaskItems.GetCount(0));
+end;
+
+procedure TFormMain.FormCreate(Sender: TObject);
+begin
+ ClientWidth:=1500;
+ ClientHeight:=800;
+ FTaskID:=-1;
+
+ PanelCalendar.Left:=PanelRight.Width+10;
+ PanelTimes.Left:=0;
+ PanelSettings.Left:=PanelRight.Width+10;
+ PanelNotes.Left:=PanelRight.Width+10;
+
+ FDB:=TDB.Create(ExtractFilePath(ParamStr(0))+'\data.db');
+ FDB.OnLog:=DoLog;
+ FTimeItems:=TTimeItems.Create(FDB, TableExTimes);
+ FTaskItems:=TTaskItems.Create(FDB, TableExTasks);
+ FComments:=TCommentItems.Create(FDB, TableExComments);
+ FLabelTypes:=TLabelTypes.Create(FDB, nil);
+ FLabelItems:=TLabelItems.Create(FDB, nil);
+ FNote:=TNoteItem.Create(FDB);
 end;
 
 procedure TFormMain.FormPaint(Sender: TObject);
@@ -2014,8 +2019,7 @@ end;
 
 procedure TFormMain.TaskNotify(Task: TTaskItem);
 begin
- ShowMessage(Task.Name);
- //TFormNotifyTask
+ TFormNotifyTask.Notify(Task);
 end;
 
 procedure TFormMain.TimeOverlayCallBack(Sender: TObject; State: Boolean);
@@ -2038,8 +2042,9 @@ begin
  FLastDate:=DateOf(Now);
  Calendar.Date:=FLastDate;
  CurrentDate:=FLastDate;
- UpdateCounts;
- UpdateTaskNowButton;
+ ViewMode:=ViewMode;
+ //UpdateCounts;
+ //UpdateTaskNowButton;
 end;
 
 procedure TFormMain.TimerTimeTimer(Sender: TObject);

@@ -36,10 +36,9 @@ inherited FormEditTime: TFormEditTime
     Caption = ':'
     Layout = tlCenter
   end
-  inherited DragBarTop: TsDragBar
+  inherited DragBarTop: TDragPanel
     Width = 565
-    DraggedControl = Owner
-    ExplicitWidth = 237
+    ExplicitWidth = 565
     inherited LabelCaption: TLabel
       Width = 120
       Caption = #1047#1072#1087#1080#1089#1100' '#1086' '#1088#1072#1073#1086#1090#1077
@@ -47,21 +46,21 @@ inherited FormEditTime: TFormEditTime
     end
     inherited ButtonFlatClose: TButtonFlat
       Left = 540
-      ExplicitLeft = 212
+      ExplicitLeft = 540
     end
   end
   inherited PanelBottom: TPanel
     Top = 125
     Width = 565
-    ExplicitTop = 191
-    ExplicitWidth = 237
+    ExplicitTop = 125
+    ExplicitWidth = 565
     inherited ButtonFlatCancel: TButtonFlat
       Left = 465
-      ExplicitLeft = 137
+      ExplicitLeft = 465
     end
     inherited ButtonFlatOK: TButtonFlat
       Left = 363
-      ExplicitLeft = 35
+      ExplicitLeft = 363
     end
   end
   object EditText: TEdit

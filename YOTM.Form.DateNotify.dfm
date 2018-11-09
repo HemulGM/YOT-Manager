@@ -7,9 +7,8 @@ inherited FormDateAndNotify: TFormDateAndNotify
   ExplicitHeight = 573
   PixelsPerInch = 96
   TextHeight = 19
-  inherited DragBarTop: TsDragBar
+  inherited DragBarTop: TDragPanel
     Width = 331
-    DraggedControl = Owner
     ExplicitWidth = 331
     inherited LabelCaption: TLabel
       Width = 151
@@ -24,7 +23,7 @@ inherited FormDateAndNotify: TFormDateAndNotify
   inherited PanelBottom: TPanel
     Top = 536
     Width = 331
-    ExplicitTop = 476
+    ExplicitTop = 536
     ExplicitWidth = 331
     inherited ButtonFlatCancel: TButtonFlat
       Left = 231
@@ -77,7 +76,6 @@ inherited FormDateAndNotify: TFormDateAndNotify
     ShowHint = False
     TabOrder = 2
     TodayColor = 3966635
-    ExplicitHeight = 343
   end
   object Panel1: TPanel
     Left = 2
@@ -126,7 +124,6 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TextHint = #1042#1088#1077#1084#1103' '#1085#1072#1087#1086#1084#1080#1085#1072#1085#1080#1103
         StyleElements = [seFont, seClient]
         OnChange = EditTimeChange
-        ExplicitLeft = 0
       end
       object ButtonFlatSelectTime: TButtonFlat
         AlignWithMargins = True
@@ -210,9 +207,6 @@ inherited FormDateAndNotify: TFormDateAndNotify
       TabOrder = 1
       TabStop = True
       TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-      ExplicitLeft = 292
-      ExplicitTop = 54
-      ExplicitWidth = 77
     end
   end
   object PanelSelectTime: TPanel
@@ -230,8 +224,6 @@ inherited FormDateAndNotify: TFormDateAndNotify
     TabOrder = 4
     Visible = False
     OnExit = PanelSelectTimeExit
-    ExplicitTop = 35
-    ExplicitHeight = 355
     object Panel3: TPanel
       Left = 0
       Top = 0
@@ -240,8 +232,6 @@ inherited FormDateAndNotify: TFormDateAndNotify
       Align = alLeft
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitLeft = -6
-      ExplicitTop = 4
       object ButtonFlat1: TButtonFlat
         Tag = 11
         Left = 0
@@ -275,7 +265,6 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 0
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-        ExplicitTop = 310
       end
       object ButtonFlat2: TButtonFlat
         Tag = 10
@@ -310,7 +299,6 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 1
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-        ExplicitTop = 275
       end
       object ButtonFlat3: TButtonFlat
         Tag = 9
@@ -345,7 +333,6 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 2
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-        ExplicitTop = 244
       end
       object ButtonFlat4: TButtonFlat
         Tag = 8
@@ -380,7 +367,6 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 3
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-        ExplicitTop = 213
       end
       object ButtonFlat5: TButtonFlat
         Tag = 7
@@ -415,7 +401,6 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 4
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-        ExplicitTop = 182
       end
       object ButtonFlat6: TButtonFlat
         Tag = 6
@@ -450,7 +435,6 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 5
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-        ExplicitTop = 151
       end
       object ButtonFlat7: TButtonFlat
         Tag = 5
@@ -485,7 +469,6 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 6
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-        ExplicitTop = 120
       end
       object ButtonFlat8: TButtonFlat
         Tag = 4
@@ -520,7 +503,6 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 7
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-        ExplicitTop = 89
       end
       object ButtonFlat9: TButtonFlat
         Tag = 3
@@ -589,7 +571,6 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 9
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-        ExplicitTop = 31
       end
       object ButtonFlat11: TButtonFlat
         Tag = 1
@@ -658,8 +639,6 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 11
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-        ExplicitLeft = -6
-        ExplicitTop = 339
       end
     end
     object Panel4: TPanel
@@ -670,8 +649,6 @@ inherited FormDateAndNotify: TFormDateAndNotify
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 1
-      ExplicitLeft = 0
-      ExplicitWidth = 155
       object ButtonFlat22: TButtonFlat
         Tag = 11
         Left = 0
@@ -705,7 +682,6 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 0
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-        ExplicitTop = 37
       end
       object ButtonFlat21: TButtonFlat
         Tag = 10
@@ -740,8 +716,6 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 1
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-        ExplicitLeft = 6
-        ExplicitTop = 226
       end
       object ButtonFlat20: TButtonFlat
         Tag = 9
@@ -776,8 +750,6 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 2
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-        ExplicitLeft = 6
-        ExplicitTop = 197
       end
       object ButtonFlat19: TButtonFlat
         Tag = 8
@@ -812,8 +784,6 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 3
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-        ExplicitLeft = 6
-        ExplicitTop = 168
       end
       object ButtonFlat18: TButtonFlat
         Tag = 7
@@ -848,8 +818,6 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 4
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-        ExplicitLeft = 6
-        ExplicitTop = 139
       end
       object ButtonFlat17: TButtonFlat
         Tag = 6
@@ -884,8 +852,6 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 5
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-        ExplicitLeft = 6
-        ExplicitTop = 110
       end
       object ButtonFlat16: TButtonFlat
         Tag = 5
@@ -920,7 +886,6 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 6
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-        ExplicitTop = 81
       end
       object ButtonFlat15: TButtonFlat
         Tag = 4
@@ -955,8 +920,6 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 7
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-        ExplicitLeft = 6
-        ExplicitTop = 52
       end
       object ButtonFlat14: TButtonFlat
         Tag = 2
@@ -991,7 +954,6 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 8
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-        ExplicitTop = 37
       end
       object ButtonFlat12: TButtonFlat
         Tag = 3
@@ -1026,7 +988,6 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 9
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-        ExplicitTop = 66
       end
       object ButtonFlat23: TButtonFlat
         Tag = 11
@@ -1061,7 +1022,6 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 10
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-        ExplicitTop = 269
       end
       object ButtonFlat24: TButtonFlat
         Tag = 11
@@ -1096,7 +1056,6 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 11
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-        ExplicitTop = 269
       end
     end
   end

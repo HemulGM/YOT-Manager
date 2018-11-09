@@ -2,13 +2,6 @@ inherited FormModalEdit: TFormModalEdit
   Caption = 'FormModalEdit'
   PixelsPerInch = 96
   TextHeight = 19
-  inherited DragBarTop: TsDragBar
-    DraggedControl = Owner
-    ExplicitWidth = 612
-    inherited ButtonFlatClose: TButtonFlat
-      ExplicitLeft = 587
-    end
-  end
   object PanelBottom: TPanel
     Left = 2
     Top = 285

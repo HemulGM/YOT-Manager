@@ -2,6 +2,7 @@ inherited FormAnswer: TFormAnswer
   Caption = 'FormAnswer'
   ClientHeight = 189
   ClientWidth = 437
+  OnShow = FormShow
   ExplicitWidth = 437
   ExplicitHeight = 189
   PixelsPerInch = 96
@@ -15,9 +16,8 @@ inherited FormAnswer: TFormAnswer
     Caption = #1042#1086#1087#1088#1086#1089'?'
     WordWrap = True
   end
-  inherited DragBarTop: TsDragBar
+  inherited DragBarTop: TDragPanel
     Width = 433
-    DraggedControl = Owner
     ExplicitWidth = 433
     inherited LabelCaption: TLabel
       Width = 71
