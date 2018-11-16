@@ -3,13 +3,14 @@ inherited FormSelectLabels: TFormSelectLabels
   ClientHeight = 437
   ClientWidth = 283
   StyleElements = []
-  OnCreate = FormCreate
   ExplicitWidth = 283
   ExplicitHeight = 437
   PixelsPerInch = 96
   TextHeight = 19
   inherited DragBarTop: TDragPanel
     Width = 279
+    ExplicitLeft = 2
+    ExplicitTop = 2
     ExplicitWidth = 279
     inherited LabelCaption: TLabel
       Width = 45
@@ -75,7 +76,7 @@ inherited FormSelectLabels: TFormSelectLabels
         Caption = #1052#1077#1090#1082#1072
         Width = 209
         FormatColumns = [tfSingleLine, tfVerticalCenter]
-        MinWidth = 200
+        MinWidth = 90
       end>
     ShowScrollBar = False
     CanNoSelect = False

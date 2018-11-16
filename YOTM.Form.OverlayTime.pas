@@ -14,6 +14,8 @@ type
     ButtonFlatSwitch: TButtonFlat;
     procedure FormCreate(Sender: TObject);
     procedure ButtonFlatSwitchClick(Sender: TObject);
+    procedure LabelCaptionMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
   private
     FActiveWork: Boolean;
     FTime: string;
@@ -46,8 +48,14 @@ end;
 procedure TFormTimeOverlay.FormCreate(Sender: TObject);
 begin
  inherited;
- Top:=Screen.WorkAreaRect.Bottom - ClientHeight;
- Left:=Screen.WorkAreaRect.Right - ClientWidth;
+ Top:=Screen.WorkAreaRect.Bottom - ClientHeight - 5;
+ Left:=Screen.WorkAreaRect.Right - ClientWidth - 5;
+end;
+
+procedure TFormTimeOverlay.LabelCaptionMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+ DragBarTop.DoDrag;
 end;
 
 procedure TFormTimeOverlay.Pause;

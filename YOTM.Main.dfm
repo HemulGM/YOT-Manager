@@ -2978,38 +2978,6 @@ object FormMain: TFormMain
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
       end
     end
-    object ButtonFlat19: TButtonFlat
-      Left = 156
-      Top = 168
-      Width = 90
-      Height = 30
-      Caption = #1050#1085#1086#1087#1082#1072
-      ColorNormal = 14668740
-      ColorOver = 11373924
-      ColorPressed = 10451273
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
-      Font.Height = -13
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      FontOver.Charset = DEFAULT_CHARSET
-      FontOver.Color = clWhite
-      FontOver.Height = -13
-      FontOver.Name = 'Tahoma'
-      FontOver.Style = []
-      FontDown.Charset = DEFAULT_CHARSET
-      FontDown.Color = clWhite
-      FontDown.Height = -13
-      FontDown.Name = 'Tahoma'
-      FontDown.Style = []
-      IgnorBounds = True
-      OnClick = ButtonFlat19Click
-      RoundRectParam = 0
-      ShowFocusRect = False
-      TabOrder = 4
-      TabStop = True
-      TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-    end
   end
   object TimerRepaint: TTimer
     Interval = 30
@@ -3029,7 +2997,7 @@ object FormMain: TFormMain
     Left = 44
     Top = 520
     Bitmap = {
-      494C01011C005800AC0118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01011C005800B40118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000C000000001002000000000000020
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

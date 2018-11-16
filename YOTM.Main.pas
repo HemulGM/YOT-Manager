@@ -178,7 +178,6 @@ type
     MenuItemTimeEdit: TMenuItem;
     MenuItemTimeStartFrom: TMenuItem;
     TrayIcon: TTrayIcon;
-    ButtonFlat19: TButtonFlat;
     procedure TimerRepaintTimer(Sender: TObject);
     procedure DrawPanelPaint(Sender: TObject);
     procedure DrawPanelMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
@@ -263,7 +262,6 @@ type
       Shift: TShiftState; X, Y: Integer);
     procedure MenuItemTimeDeleteClick(Sender: TObject);
     procedure TrayIconClick(Sender: TObject);
-    procedure ButtonFlat19Click(Sender: TObject);
   private
     FromHH, FromMM, ToHH, ToMM:Word;
     FLastDate:TDate;             //Реальная дата (без времени)
@@ -342,6 +340,7 @@ type
     procedure OpenTimeOverlay;
     procedure UpdateTimeOverlayData;
     procedure TimeOverlayCallBack(Sender:TObject; State:Boolean);
+    function AddTask(Name:string = ''; Date:TDateTime = 0): TTaskItem;
   public
     procedure Initializate;
     procedure SetTaskComplete(TaskID:Integer);
@@ -1001,11 +1000,6 @@ begin
  UpdateTime;
 end;
 
-procedure TFormMain.ButtonFlat19Click(Sender: TObject);
-begin
- TFormNotifyTask.Notify(CurrentTask);
-end;
-
 function TFormMain.GetTaskSelected: Boolean;
 begin
  Result:=Assigned(CurrentTask) and (CurrentTask.ID >= 0);
@@ -1095,28 +1089,38 @@ begin
 end;
 
 procedure TFormMain.ButtonFlat1Click(Sender: TObject);
-var Item:TTaskItem;
 begin
- Item:=TTaskItem.Create(FTaskItems);
- case ViewMode of
-  vmToday, vmSelectedDate:
-   begin
-    Item.Deadline:=True;
-    Item.DateDeadline:=FTaskItems.ShowDate;
-   end;
- end;
- FTaskItems.Insert(0, Item);
+ AddTask;
  TableExTasks.Edit(0, 1);
 end;
 
-procedure TFormMain.ButtonFlat2Click(Sender: TObject);
+function TFormMain.AddTask(Name:string = ''; Date:TDateTime = 0):TTaskItem;
 var Item:TTaskItem;
 begin
  Item:=TTaskItem.Create(FTaskItems);
- Item.Name:=EditNewTaskName.Text;
+ Item.Name:=Name;
+ if Date = 0 then
+  case ViewMode of
+   vmToday, vmSelectedDate:
+    begin
+     Item.Deadline:=True;
+     Item.DateDeadline:=CurrentDate;
+    end;
+  end
+ else
+  begin
+   Item.Deadline:=True;
+   Item.DateDeadline:=Date;
+  end;
+ FTaskItems.Update(Item);
  FTaskItems.Insert(0, Item);
- TableExTasks.ItemIndex:=0;
+end;
+
+procedure TFormMain.ButtonFlat2Click(Sender: TObject);
+begin
+ AddTask(EditNewTaskName.Text);
  EditNewTaskName.Clear;
+ TableExTasks.ItemIndex:=0;
 end;
 
 procedure TFormMain.ButtonFlat6Click(Sender: TObject);
@@ -1316,14 +1320,16 @@ begin
    ButtonFlatTaskColor.ColorNormal:=$00313131;
   end;
  //UpdateCounts;
- PanelTask.Height:=300;
- PanelTask.Enabled:=True;
+ //PanelTask.Height:=300;
+ //PanelTask.Enabled:=True;
+ PanelTask.Visible:=True;
 end;
 
 procedure TFormMain.HideTask;
 begin
- PanelTask.Height:=1;
- PanelTask.Enabled:=False;
+ //PanelTask.Height:=1;
+ //PanelTask.Enabled:=False;
+ PanelTask.Visible:=False;
  MemoTaskDescExit(nil);
 end;
 
@@ -1872,7 +1878,7 @@ end;
 procedure TFormMain.TableExTasksEdit(Sender: TObject; var Data: TTableEditStruct; ACol, ARow: Integer; var Allow: Boolean);
 begin
  if not IndexInList(ARow, FTaskItems.Count) then Exit;
- if (not PanelTask.Enabled) and (FTaskItems[ARow].Saved) then
+ if (not PanelTask.Visible) and (FTaskItems[ARow].Saved) then
   begin
    ShowTask(ARow);
    Exit;

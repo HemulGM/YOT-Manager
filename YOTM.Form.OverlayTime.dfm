@@ -1,10 +1,15 @@
 inherited FormTimeOverlay: TFormTimeOverlay
+  AlignWithMargins = True
+  Margins.Left = 5
+  Margins.Top = 5
+  Margins.Right = 5
+  Margins.Bottom = 5
   Caption = 'FormTimeOverlay'
   ClientHeight = 40
   ClientWidth = 300
   FormStyle = fsStayOnTop
-  Position = poDesigned
-  OnCreate = FormCreate
+  ScreenSnap = True
+  SnapBuffer = 15
   ExplicitWidth = 300
   ExplicitHeight = 40
   PixelsPerInch = 96
@@ -13,16 +18,21 @@ inherited FormTimeOverlay: TFormTimeOverlay
     Width = 296
     Height = 36
     Align = alClient
+    ExplicitLeft = 2
+    ExplicitTop = 2
     ExplicitWidth = 296
     ExplicitHeight = 36
     inherited LabelCaption: TLabel
-      Left = 65
-      Width = 156
+      Left = 58
+      Width = 167
       Height = 28
+      Margins.Left = 3
       Align = alClient
       Caption = #1053#1086#1074#1072#1103' '#1079#1072#1076#1072#1095#1072
+      FocusControl = DragBarTop
+      OnMouseDown = LabelCaptionMouseDown
       ExplicitLeft = 65
-      ExplicitWidth = 156
+      ExplicitWidth = 98
     end
     object LabelTime: TLabel [1]
       AlignWithMargins = True
@@ -33,6 +43,7 @@ inherited FormTimeOverlay: TFormTimeOverlay
       Margins.Left = 10
       Align = alLeft
       Caption = '09:11'
+      FocusControl = DragBarTop
       Font.Charset = DEFAULT_CHARSET
       Font.Color = 8947848
       Font.Height = -16
@@ -41,22 +52,27 @@ inherited FormTimeOverlay: TFormTimeOverlay
       ParentFont = False
       Transparent = True
       Layout = tlCenter
-      ExplicitHeight = 19
+      OnMouseDown = LabelCaptionMouseDown
+      ExplicitLeft = 34
     end
     inherited ButtonFlatClose: TButtonFlat
-      Left = 260
-      Width = 36
-      Height = 34
-      ImageIndentLeft = 5
-      ExplicitLeft = 260
-      ExplicitWidth = 36
-      ExplicitHeight = 34
+      AlignWithMargins = True
+      Left = 265
+      Top = 3
+      Width = 28
+      Height = 28
+      ImageIndentLeft = 2
+      ExplicitLeft = 257
+      ExplicitTop = 3
+      ExplicitWidth = 28
+      ExplicitHeight = 28
     end
     object ButtonFlatSwitch: TButtonFlat
-      Left = 224
-      Top = 0
-      Width = 36
-      Height = 34
+      AlignWithMargins = True
+      Left = 231
+      Top = 3
+      Width = 28
+      Height = 28
       Align = alRight
       Caption = ''
       ColorNormal = 3026478
@@ -78,7 +94,7 @@ inherited FormTimeOverlay: TFormTimeOverlay
       FontDown.Name = 'Tahoma'
       FontDown.Style = []
       IgnorBounds = True
-      ImageIndentLeft = 5
+      ImageIndentLeft = 2
       ImageIndex = 26
       Images = FormMain.ImageList24
       OnClick = ButtonFlatSwitchClick
@@ -87,6 +103,7 @@ inherited FormTimeOverlay: TFormTimeOverlay
       TabOrder = 1
       TabStop = True
       TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+      ExplicitLeft = 215
     end
   end
 end
