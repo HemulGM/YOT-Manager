@@ -13,8 +13,10 @@ object FormMain: TFormMain
   Font.Height = -13
   Font.Name = 'Tahoma'
   Font.Style = []
+  KeyPreview = True
   OldCreateOrder = False
   Position = poScreenCenter
+  ShowHint = True
   StyleElements = []
   OnCreate = FormCreate
   OnPaint = FormPaint
@@ -51,7 +53,7 @@ object FormMain: TFormMain
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 0
-    object Shape10: TShape
+    object ShapeBorder: TShape
       Left = 0
       Top = 40
       Width = 627
@@ -145,44 +147,6 @@ object FormMain: TFormMain
       DesignSize = (
         627
         40)
-      object ButtonFlat1: TButtonFlat
-        AlignWithMargins = True
-        Left = 3
-        Top = 3
-        Width = 94
-        Height = 34
-        Align = alLeft
-        Caption = #1047#1072#1076#1072#1095#1072
-        ColorNormal = 3684408
-        ColorOver = 6381921
-        ColorPressed = 3815994
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWhite
-        Font.Height = -13
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        FontOver.Charset = DEFAULT_CHARSET
-        FontOver.Color = clWhite
-        FontOver.Height = -13
-        FontOver.Name = 'Tahoma'
-        FontOver.Style = []
-        FontDown.Charset = DEFAULT_CHARSET
-        FontDown.Color = clWhite
-        FontDown.Height = -13
-        FontDown.Name = 'Tahoma'
-        FontDown.Style = []
-        IgnorBounds = True
-        ImageIndentLeft = 4
-        ImageIndentRight = 2
-        ImageIndex = 11
-        Images = ImageList24
-        OnClick = ButtonFlat1Click
-        RoundRectParam = 0
-        ShowFocusRect = False
-        TabOrder = 0
-        TabStop = True
-        TextFormat = [tfSingleLine, tfVerticalCenter]
-      end
       object ButtonFlat9: TButtonFlat
         AlignWithMargins = True
         Left = 103
@@ -217,7 +181,7 @@ object FormMain: TFormMain
         OnClick = ButtonFlat9Click
         RoundRectParam = 0
         ShowFocusRect = False
-        TabOrder = 1
+        TabOrder = 0
         TabStop = True
         TextFormat = [tfSingleLine, tfVerticalCenter]
       end
@@ -232,12 +196,12 @@ object FormMain: TFormMain
         ColorNormal = 5460819
         ColorOver = 6381921
         ColorPressed = 3815994
-        Flat = False
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWhite
         Font.Height = -13
         Font.Name = 'Tahoma'
         Font.Style = []
+        Flat = False
         FontOver.Charset = DEFAULT_CHARSET
         FontOver.Color = clWhite
         FontOver.Height = -13
@@ -255,55 +219,19 @@ object FormMain: TFormMain
         RoundRectParam = 0
         Shape = stRoundRect
         ShowFocusRect = False
-        TabOrder = 2
+        TabOrder = 1
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
         Popup = PopupMenuViewProp
       end
-    end
-    object PanelTaskAdd: TPanel
-      Left = 0
-      Top = 42
-      Width = 627
-      Height = 40
-      Align = alTop
-      BevelOuter = bvNone
-      Color = 3684408
-      ParentBackground = False
-      TabOrder = 2
-      StyleElements = []
-      object EditNewTaskName: TEdit
+      object ButtonFlatAddTask: TButtonFlat
         AlignWithMargins = True
         Left = 3
         Top = 3
-        Width = 584
+        Width = 94
         Height = 34
-        Align = alClient
-        BevelInner = bvNone
-        BevelKind = bkSoft
-        BevelOuter = bvSpace
-        BevelWidth = 6
-        BorderStyle = bsNone
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = 15921906
-        Font.Height = -16
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentColor = True
-        ParentFont = False
-        TabOrder = 0
-        TextHint = #1044#1086#1073#1072#1074#1080#1090#1100' '#1079#1072#1076#1072#1095#1091'...'
-        StyleElements = []
-      end
-      object ButtonFlat2: TButtonFlat
-        AlignWithMargins = True
-        Left = 590
-        Top = 3
-        Width = 34
-        Height = 34
-        Margins.Left = 0
-        Align = alRight
-        Caption = ''
+        Align = alLeft
+        Caption = #1047#1072#1076#1072#1095#1072
         ColorNormal = 3684408
         ColorOver = 6381921
         ColorPressed = 3815994
@@ -324,14 +252,52 @@ object FormMain: TFormMain
         FontDown.Style = []
         IgnorBounds = True
         ImageIndentLeft = 4
+        ImageIndentRight = 2
         ImageIndex = 11
         Images = ImageList24
-        OnClick = ButtonFlat2Click
+        OnClick = ButtonFlatAddTaskClick
         RoundRectParam = 0
         ShowFocusRect = False
-        TabOrder = 1
+        TabOrder = 2
         TabStop = True
-        TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+        TextFormat = [tfSingleLine, tfVerticalCenter]
+      end
+    end
+    object PanelTaskAdd: TPanel
+      Left = 0
+      Top = 42
+      Width = 627
+      Height = 40
+      Align = alTop
+      BevelOuter = bvNone
+      Color = 3684408
+      ParentBackground = False
+      TabOrder = 2
+      Visible = False
+      StyleElements = []
+      object EditNewTaskName: TEdit
+        AlignWithMargins = True
+        Left = 3
+        Top = 3
+        Width = 621
+        Height = 34
+        Align = alClient
+        BevelInner = bvNone
+        BevelKind = bkSoft
+        BevelOuter = bvSpace
+        BevelWidth = 6
+        BorderStyle = bsNone
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 15921906
+        Font.Height = -16
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentColor = True
+        ParentFont = False
+        TabOrder = 0
+        TextHint = #1044#1086#1073#1072#1074#1080#1090#1100' '#1079#1072#1076#1072#1095#1091'...'
+        StyleElements = []
+        OnKeyPress = EditNewTaskNameKeyPress
       end
     end
     object PanelTask: TPanel
@@ -701,12 +667,12 @@ object FormMain: TFormMain
             ColorNormal = 3223857
             ColorOver = 5329233
             ColorPressed = 1710618
-            Flat = False
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWhite
             Font.Height = -13
             Font.Name = 'Tahoma'
             Font.Style = []
+            Flat = False
             FontOver.Charset = DEFAULT_CHARSET
             FontOver.Color = clWhite
             FontOver.Height = -13
@@ -790,12 +756,12 @@ object FormMain: TFormMain
             ColorNormal = 3223857
             ColorOver = 5329233
             ColorPressed = 1710618
-            Flat = False
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWhite
             Font.Height = -13
             Font.Name = 'Tahoma'
             Font.Style = []
+            Flat = False
             FontOver.Charset = DEFAULT_CHARSET
             FontOver.Color = clWhite
             FontOver.Height = -13
@@ -878,61 +844,6 @@ object FormMain: TFormMain
       DesignSize = (
         450
         737)
-      object PanelCalendar: TPanel
-        Left = 0
-        Top = 0
-        Width = 450
-        Height = 737
-        Anchors = [akLeft, akTop, akBottom]
-        BevelOuter = bvNone
-        TabOrder = 2
-        object DrawGrid1: TDrawGrid
-          Left = 0
-          Top = 0
-          Width = 450
-          Height = 737
-          Align = alClient
-          BorderStyle = bsNone
-          Color = 3684408
-          ColCount = 7
-          DefaultColWidth = 63
-          DefaultRowHeight = 65
-          DefaultDrawing = False
-          DrawingStyle = gdsGradient
-          FixedCols = 0
-          RowCount = 8
-          FixedRows = 0
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = 15921906
-          Font.Height = -27
-          Font.Name = 'Tahoma'
-          Font.Style = []
-          GridLineWidth = 0
-          Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine]
-          ParentFont = False
-          ScrollBars = ssNone
-          TabOrder = 0
-          StyleElements = [seBorder]
-          OnDrawCell = DrawGrid1DrawCell
-          ColWidths = (
-            63
-            63
-            63
-            63
-            63
-            63
-            63)
-          RowHeights = (
-            65
-            65
-            65
-            65
-            65
-            65
-            65
-            65)
-        end
-      end
       object PanelNotes: TPanel
         Left = 0
         Top = 0
@@ -1345,12 +1256,12 @@ object FormMain: TFormMain
           ColorNormal = 3026478
           ColorOver = 4737096
           ColorPressed = 1973790
-          Flat = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWhite
           Font.Height = -16
           Font.Name = 'Tahoma'
           Font.Style = []
+          Flat = False
           FontOver.Charset = DEFAULT_CHARSET
           FontOver.Color = clWhite
           FontOver.Height = -16
@@ -1454,12 +1365,12 @@ object FormMain: TFormMain
           ColorNormal = 3026478
           ColorOver = 4737096
           ColorPressed = 1973790
-          Flat = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWhite
           Font.Height = -16
           Font.Name = 'Tahoma'
           Font.Style = []
+          Flat = False
           FontOver.Charset = DEFAULT_CHARSET
           FontOver.Color = clWhite
           FontOver.Height = -16
@@ -1563,12 +1474,12 @@ object FormMain: TFormMain
           ColorNormal = 3026478
           ColorOver = 4737096
           ColorPressed = 1973790
-          Flat = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWhite
           Font.Height = -16
           Font.Name = 'Tahoma'
           Font.Style = []
+          Flat = False
           FontOver.Charset = DEFAULT_CHARSET
           FontOver.Color = clWhite
           FontOver.Height = -16
@@ -1672,12 +1583,12 @@ object FormMain: TFormMain
           ColorNormal = 3026478
           ColorOver = 4737096
           ColorPressed = 1973790
-          Flat = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWhite
           Font.Height = -16
           Font.Name = 'Tahoma'
           Font.Style = []
+          Flat = False
           FontOver.Charset = DEFAULT_CHARSET
           FontOver.Color = clWhite
           FontOver.Height = -16
@@ -2049,12 +1960,12 @@ object FormMain: TFormMain
             end
             item
               Caption = #1042#1088#1077#1084#1103
-              Width = 200
+              Width = 64
               Format = [tfCenter, tfLeft, tfSingleLine, tfVerticalCenter]
             end
             item
               Caption = #1054#1087#1080#1089#1072#1085#1080#1077
-              Width = 218
+              Width = 354
               MinWidth = 150
             end>
           ItemCount = 1
@@ -2306,6 +2217,68 @@ object FormMain: TFormMain
           end
         end
       end
+      object PanelCalendar: TPanel
+        Left = 0
+        Top = 0
+        Width = 450
+        Height = 737
+        Anchors = [akLeft, akTop, akBottom]
+        BevelOuter = bvNone
+        TabOrder = 2
+        object DrawGridCalendar: TDrawGrid
+          Left = 0
+          Top = 0
+          Width = 450
+          Height = 737
+          Align = alClient
+          BorderStyle = bsNone
+          Color = 3684408
+          ColCount = 7
+          DefaultColWidth = 63
+          DefaultRowHeight = 65
+          DefaultDrawing = False
+          DrawingStyle = gdsGradient
+          FixedCols = 0
+          RowCount = 9
+          FixedRows = 0
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = 15921906
+          Font.Height = -27
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          GridLineWidth = 0
+          Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine]
+          ParentFont = False
+          ScrollBars = ssNone
+          TabOrder = 0
+          StyleElements = [seBorder]
+          OnDrawCell = DrawGridCalendarDrawCell
+          OnMouseEnter = DrawGridCalendarMouseEnter
+          OnMouseLeave = DrawGridCalendarMouseLeave
+          OnMouseMove = DrawGridCalendarMouseMove
+          OnMouseWheelDown = DrawGridCalendarMouseWheelDown
+          OnMouseWheelUp = DrawGridCalendarMouseWheelUp
+          OnSelectCell = DrawGridCalendarSelectCell
+          ColWidths = (
+            63
+            63
+            63
+            63
+            63
+            63
+            63)
+          RowHeights = (
+            65
+            65
+            65
+            65
+            65
+            65
+            65
+            65
+            65)
+        end
+      end
     end
   end
   object DragBarTop: TsDragBar
@@ -2353,7 +2326,7 @@ object FormMain: TFormMain
       Margins.Top = 10
       Margins.Bottom = 10
       Align = alLeft
-      Caption = 'File'
+      Caption = #1060#1072#1081#1083
       ColorNormal = 3026478
       ColorOver = 14196229
       ColorPressed = 12027396
@@ -2420,12 +2393,12 @@ object FormMain: TFormMain
       AlignWithMargins = True
       Left = 85
       Top = 10
-      Width = 38
+      Width = 108
       Height = 20
       Margins.Top = 10
       Margins.Bottom = 10
       Align = alLeft
-      Caption = 'Edit'
+      Caption = #1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1085#1080#1077
       ColorNormal = 3026478
       ColorOver = 14196229
       ColorPressed = 12027396
@@ -2454,14 +2427,14 @@ object FormMain: TFormMain
     end
     object ButtonFlatMenuView: TButtonFlat
       AlignWithMargins = True
-      Left = 129
+      Left = 199
       Top = 10
       Width = 38
       Height = 20
       Margins.Top = 10
       Margins.Bottom = 10
       Align = alLeft
-      Caption = 'View'
+      Caption = #1042#1080#1076
       ColorNormal = 3026478
       ColorOver = 14196229
       ColorPressed = 12027396
@@ -2765,7 +2738,6 @@ object FormMain: TFormMain
       Images = ImageList24
       OnClick = ButtonFlatDeadlinedClick
       RoundRectParam = 5
-      Shape = stRoundRect
       ShowFocusRect = False
       TabOrder = 0
       TabStop = True
@@ -2806,7 +2778,6 @@ object FormMain: TFormMain
       Images = ImageList24
       OnClick = ButtonFlatTaskNowClick
       RoundRectParam = 5
-      Shape = stRoundRect
       ShowFocusRect = False
       TabOrder = 1
       TabStop = True
@@ -2847,7 +2818,6 @@ object FormMain: TFormMain
       Images = ImageList24
       OnClick = ButtonFlatTaskInboxClick
       RoundRectParam = 5
-      Shape = stRoundRect
       ShowFocusRect = False
       TabOrder = 2
       TabStop = True
@@ -2863,6 +2833,45 @@ object FormMain: TFormMain
       Align = alTop
       BevelOuter = bvNone
       TabOrder = 3
+      object Calendar: TCalendarPicker
+        Left = 7
+        Top = 6
+        Width = 18
+        Height = 28
+        Margins.Left = 0
+        Margins.Right = 0
+        BorderColor = 3684408
+        CalendarHeaderInfo.DaysOfWeekFont.Charset = DEFAULT_CHARSET
+        CalendarHeaderInfo.DaysOfWeekFont.Color = clWhite
+        CalendarHeaderInfo.DaysOfWeekFont.Height = -13
+        CalendarHeaderInfo.DaysOfWeekFont.Name = 'Segoe UI'
+        CalendarHeaderInfo.DaysOfWeekFont.Style = []
+        CalendarHeaderInfo.Font.Charset = DEFAULT_CHARSET
+        CalendarHeaderInfo.Font.Color = clWhite
+        CalendarHeaderInfo.Font.Height = -20
+        CalendarHeaderInfo.Font.Name = 'Segoe UI'
+        CalendarHeaderInfo.Font.Style = []
+        CalendarHeaderInfo.FontColor = 15658734
+        CalendarHeaderInfo.HighlightFontColor = 3966635
+        Color = 3684408
+        DisabledColor = 6974058
+        FirstDayOfWeek = dwMonday
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 13948116
+        Font.Height = -16
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        HighlightColor = 4605510
+        OnCalendarDrawDayItem = CalendarCalendarDrawDayItem
+        OnChange = CalendarChange
+        OnCloseUp = CalendarCloseUp
+        ParentFont = False
+        SelectionColor = 3966635
+        ShowFirstOfGroupLabel = True
+        TabOrder = 1
+        TextHint = #1042#1099#1073#1088#1072#1090#1100' '#1076#1072#1090#1091
+        TodayColor = 3966635
+      end
       object ButtonFlat7: TButtonFlat
         AlignWithMargins = True
         Left = 3
@@ -2899,46 +2908,6 @@ object FormMain: TFormMain
         TabOrder = 0
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-      end
-      object Calendar: TCalendarPicker
-        AlignWithMargins = True
-        Left = 37
-        Top = 3
-        Width = 176
-        Height = 34
-        Margins.Left = 0
-        Margins.Right = 0
-        Align = alClient
-        BorderColor = 3684408
-        CalendarHeaderInfo.DaysOfWeekFont.Charset = DEFAULT_CHARSET
-        CalendarHeaderInfo.DaysOfWeekFont.Color = clWhite
-        CalendarHeaderInfo.DaysOfWeekFont.Height = -13
-        CalendarHeaderInfo.DaysOfWeekFont.Name = 'Segoe UI'
-        CalendarHeaderInfo.DaysOfWeekFont.Style = []
-        CalendarHeaderInfo.Font.Charset = DEFAULT_CHARSET
-        CalendarHeaderInfo.Font.Color = clWhite
-        CalendarHeaderInfo.Font.Height = -20
-        CalendarHeaderInfo.Font.Name = 'Segoe UI'
-        CalendarHeaderInfo.Font.Style = []
-        CalendarHeaderInfo.FontColor = 15658734
-        CalendarHeaderInfo.HighlightFontColor = 3966635
-        Color = 3684408
-        DisabledColor = 6974058
-        FirstDayOfWeek = dwMonday
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = 13948116
-        Font.Height = -16
-        Font.Name = 'Segoe UI'
-        Font.Style = []
-        HighlightColor = 4605510
-        OnCalendarDrawDayItem = CalendarCalendarDrawDayItem
-        OnCloseUp = CalendarCloseUp
-        ParentFont = False
-        SelectionColor = 3966635
-        ShowFirstOfGroupLabel = True
-        TabOrder = 1
-        TextHint = #1042#1099#1073#1088#1072#1090#1100' '#1076#1072#1090#1091
-        TodayColor = 3966635
       end
       object ButtonFlat6: TButtonFlat
         AlignWithMargins = True
@@ -2977,6 +2946,43 @@ object FormMain: TFormMain
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
       end
+      object ButtonFlatCurrentDate: TButtonFlat
+        AlignWithMargins = True
+        Left = 37
+        Top = 3
+        Width = 176
+        Height = 34
+        Margins.Left = 0
+        Margins.Right = 0
+        Align = alClient
+        Caption = #1044#1077#1082#1072#1073#1088#1100' 2018'
+        ColorNormal = clGray
+        ColorOver = 6381921
+        ColorPressed = 3815994
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -16
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        FontOver.Charset = DEFAULT_CHARSET
+        FontOver.Color = clWhite
+        FontOver.Height = -16
+        FontOver.Name = 'Tahoma'
+        FontOver.Style = []
+        FontDown.Charset = DEFAULT_CHARSET
+        FontDown.Color = clWhite
+        FontDown.Height = -16
+        FontDown.Name = 'Tahoma'
+        FontDown.Style = []
+        IgnorBounds = True
+        Images = ImageList24
+        OnClick = ButtonFlatCurrentDateClick
+        RoundRectParam = 0
+        ShowFocusRect = False
+        TabOrder = 3
+        TabStop = True
+        TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+      end
     end
   end
   object TimerRepaint: TTimer
@@ -2997,7 +3003,7 @@ object FormMain: TFormMain
     Left = 44
     Top = 520
     Bitmap = {
-      494C01011C005800B40118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01011C005800CC0118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000C000000001002000000000000020
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -5389,8 +5395,8 @@ object FormMain: TFormMain
     end
   end
   object PopupMenuView: TPopupMenu
-    Left = 136
-    Top = 32
+    Left = 128
+    Top = 248
     object MenuItemOpenLabels: TMenuItem
       Caption = #1052#1077#1090#1082#1080
       OnClick = MenuItemOpenLabelsClick
@@ -5499,5 +5505,149 @@ object FormMain: TFormMain
     OnClick = TrayIconClick
     Left = 652
     Top = 336
+  end
+  object ImageListCalendar: TImageList
+    ColorDepth = cd32Bit
+    Left = 128
+    Top = 520
+    Bitmap = {
+      494C010103000800300010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      0000000000003600000028000000400000001000000001002000000000000010
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000002090C3010262994183538C51B383CCD152E32AF07171B640001
+      0106000000000000000000000000000000000000000000000000000000000000
+      000000000000272A2B3042697794337E9AC52F81A0CD3C768CAF3E4E53640505
+      0506000000000000000000000000000000000000000000000000000000000000
+      00000000000002081630092262940E328EC5103594CD0C2B7BAF05133A640000
+      0106000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      00030E242990264C4CFD2B4F4DFF2B4F4DFF2B4F4DFF2B4F4DFF2A4E4CFF1C3B
+      3FDA02080C2C0000000000000000000000000000000000000000000000000202
+      0203426572900B97CCFD089FDAFF089FDAFF089FDAFF089FDAFF089ED8FF2883
+      A6DA2427282C0000000000000000000000000000000000000000000000000000
+      000309205A90164BCEFD1950DDFF1950DDFF1950DDFF1950DDFF184FDBFF1139
+      9EDA0107142C0000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000F27
+      2B9A2A4E4CFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F
+      4DFF214346EC0107092200000000000000000000000000000000000000004069
+      789A089DD8FF089FDAFF089FDAFF089FDAFF089FDAFF089FDAFF089FDAFF089F
+      DAFF1B8CB7EC1D1F1F2200000000000000000000000000000000000000000A21
+      629A184FDAFF1950DDFF1950DDFF1950DDFF1950DDFF1950DDFF1950DDFF1950
+      DDFF1440B3EC01050F2200000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000030F1247284C
+      4CFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F
+      4DFF2B4F4DFF163135BC00000000000000000000000000000000343B3E47089A
+      D2FF089FDAFF089FDAFF089FDAFF089FDAFF089FDAFF089FDAFF089FDAFF089F
+      DAFF089FDAFF387992BC00000000000000000000000000000000030D2547174C
+      D4FF1950DDFF1950DDFF1950DDFF1950DDFF1950DDFF1950DDFF1950DDFF1950
+      DDFF1950DDFF0D2F81BC00000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000153134B82B4F
+      4DFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F
+      4DFF2B4F4DFF274C4CFF01080C2E000000000000000000000000387991B8089F
+      DAFF089FDAFF089FDAFF089FDAFF089FDAFF089FDAFF089FDAFF089FDAFF089F
+      DAFF089FDAFF0898D0FF2628292E0000000000000000000000000D2E82B81950
+      DDFF1950DDFF1950DDFF1950DDFF1950DDFF1950DDFF1950DDFF1950DDFF1950
+      DDFF1950DDFF174BD2FF0107132E000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000214447F32B4F
+      4DFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F
+      4DFF2B4F4DFF2B4F4DFF09191C69000000000000000000000000158BB9F3089F
+      DAFF089FDAFF089FDAFF089FDAFF089FDAFF089FDAFF089FDAFF089FDAFF089F
+      DAFF089FDAFF089FDAFF405157690000000000000000000000001341B6F31950
+      DDFF1950DDFF1950DDFF1950DDFF1950DDFF1950DDFF1950DDFF1950DDFF1950
+      DDFF1950DDFF1950DDFF06153E69000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000000001010622484AFF2B4F
+      4DFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F
+      4DFF2B4F4DFF2B4F4DFF0B1E217A0000000000000000050505060A8FC2FF089F
+      DAFF089FDAFF089FDAFF089FDAFF089FDAFF089FDAFF089FDAFF089FDAFF089F
+      DAFF089FDAFF089FDAFF435B657A0000000000000000000001061545C2FF1950
+      DDFF1950DDFF1950DDFF1950DDFF1950DDFF1950DDFF1950DDFF1950DDFF1950
+      DDFF1950DDFF1950DDFF081A4D7A000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000000000000000000000000000001F4345F02B4F
+      4DFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F
+      4DFF2B4F4DFF2B4F4DFF07181C65000000000000000000000000188AB6F0089F
+      DAFF089FDAFF089FDAFF089FDAFF089FDAFF089FDAFF089FDAFF089FDAFF089F
+      DAFF089FDAFF089FDAFF3F4E5465000000000000000000000000133FB3F01950
+      DDFF1950DDFF1950DDFF1950DDFF1950DDFF1950DDFF1950DDFF1950DDFF1950
+      DDFF1950DDFF1950DDFF05133B65000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000142E32B02B4F
+      4DFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F
+      4DFF2B4F4DFF264B4BFE010609260000000000000000000000003B768CB0089F
+      DAFF089FDAFF089FDAFF089FDAFF089FDAFF089FDAFF089FDAFF089FDAFF089F
+      DAFF089FDAFF0996CDFE202222260000000000000000000000000D2C7BB01950
+      DDFF1950DDFF1950DDFF1950DDFF1950DDFF1950DDFF1950DDFF1950DDFF1950
+      DDFF1950DDFF164ACFFE01050F26000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000020C0F3A274B
+      4BFE2B4F4DFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F
+      4DFF2B4F4DFF132D31AE000000000000000000000000000000002D32333A0997
+      CEFE089FDAFF089FDAFF089FDAFF089FDAFF089FDAFF089FDAFF089FDAFF089F
+      DAFF089FDAFF3C7487AE0000000000000000000000000000000002091D3A174B
+      D0FE1950DDFF1950DDFF1950DDFF1950DDFF1950DDFF1950DDFF1950DDFF1950
+      DDFF1950DDFF0C2A76AE00000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000B20
+      2485294D4CFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F4DFF2B4F
+      4DFF1D3E41E1010406180000000000000000000000000000000000000000435F
+      6B85089BD5FF089FDAFF089FDAFF089FDAFF089FDAFF089FDAFF089FDAFF089F
+      DAFF2387ADE1151616180000000000000000000000000000000000000000071D
+      5185184DD7FF1950DDFF1950DDFF1950DDFF1950DDFF1950DDFF1950DDFF1950
+      DDFF113BA6E10003091800000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000091D2174234849F62B4F4DFF2B4F4DFF2B4F4DFF2B4F4DFF294D4CFF1634
+      37C40006071C0000000000000000000000000000000000000000000000000000
+      000042575F741291C2F6089FDAFF089FDAFF089FDAFF089FDAFF089BD4FF347C
+      96C419191A1C0000000000000000000000000000000000000000000000000000
+      0000061846741646C1F61950DDFF1950DDFF1950DDFF1950DDFF184DD7FF0D31
+      88C400030B1C0000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000004061B0B1D2076142D2FA7152E32AF0F252992030F12470000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000001818191B425861763D7285A73C768CAF42687692343B3D470000
+      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000040A1B061949760B2973A70C2B7BAF09216092030B25470000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000424D3E000000000000003E000000
+      2800000040000000100000000100010000000000800000000000000000000000
+      000000000000000000000000FFFFFF00FFFFFFFFFFFF0000F80FF80FF80F0000
+      E007E007E0070000E003E003E0030000C003C003C0030000C001C001C0010000
+      C001C001C00100008001800180010000C001C001C0010000C001C001C0010000
+      C003C003C0030000E003E003E0030000F007F007F0070000F81FF81FF81F0000
+      FFFFFFFFFFFF0000FFFFFFFFFFFF000000000000000000000000000000000000
+      000000000000}
   end
 end

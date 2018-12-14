@@ -23,13 +23,11 @@ type
     procedure ButtonFlatLabelColorClick(Sender: TObject);
     procedure TableExLabelsDrawCellData(Sender: TObject; ACol, ARow: Integer;
       Rect: TRect; State: TGridDrawState);
-    procedure FormShow(Sender: TObject);
     procedure ButtonFlatDeleteClick(Sender: TObject);
     procedure TableExLabelsItemColClick(Sender: TObject;
       MouseButton: TMouseButton; const Index: Integer);
   private
     FLabelTypes:TLabelTypes;
-    FForEdit:Boolean;
   public
     destructor Destroy; override;
     class function Select(Items:TLabelItems; TaskID:Integer):Boolean;
@@ -94,21 +92,14 @@ begin
  FLabelTypes:=TLabelTypes.Create(FDB, TableExLabels);
 end;
 
-procedure TFormSelectLabels.FormShow(Sender: TObject);
-begin
- inherited;
- ButtonFlatCancel.Visible:=not FForEdit;
- ButtonFlatOK.Left:=0;
-end;
-
 class procedure TFormSelectLabels.OpenForEdit;
 begin
  with TFormSelectLabels.Create(nil) do
   begin
-   FForEdit:=True;
+   ButtonFlatCancel.Visible:=False;
+   ButtonFlatOK.Left:=0;
    FLabelTypes.Reload;
    ShowModal;
-   FForEdit:=False;
    Free;
   end;
 end;

@@ -17,6 +17,7 @@ object FormCustom: TFormCustom
   Padding.Bottom = 2
   OldCreateOrder = False
   Position = poDesigned
+  OnActivate = FormActivate
   OnCreate = FormCreate
   OnHide = FormHide
   OnPaint = FormPaint
@@ -36,8 +37,6 @@ object FormCustom: TFormCustom
     Padding.Bottom = 2
     ParentBackground = False
     TabOrder = 0
-    ExplicitLeft = 5
-    ExplicitTop = 77
     object LabelCaption: TLabel
       AlignWithMargins = True
       Left = 10

@@ -130,12 +130,12 @@ inherited FormEditTime: TFormEditTime
     ColorNormal = 3026478
     ColorOver = 4737096
     ColorPressed = 1973790
-    Flat = False
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWhite
     Font.Height = -16
     Font.Name = 'Tahoma'
     Font.Style = []
+    Flat = False
     FontOver.Charset = DEFAULT_CHARSET
     FontOver.Color = clWhite
     FontOver.Height = -16
@@ -239,12 +239,12 @@ inherited FormEditTime: TFormEditTime
     ColorNormal = 3026478
     ColorOver = 4737096
     ColorPressed = 1973790
-    Flat = False
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWhite
     Font.Height = -16
     Font.Name = 'Tahoma'
     Font.Style = []
+    Flat = False
     FontOver.Charset = DEFAULT_CHARSET
     FontOver.Color = clWhite
     FontOver.Height = -16
@@ -348,12 +348,12 @@ inherited FormEditTime: TFormEditTime
     ColorNormal = 3026478
     ColorOver = 4737096
     ColorPressed = 1973790
-    Flat = False
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWhite
     Font.Height = -16
     Font.Name = 'Tahoma'
     Font.Style = []
+    Flat = False
     FontOver.Charset = DEFAULT_CHARSET
     FontOver.Color = clWhite
     FontOver.Height = -16
@@ -457,12 +457,12 @@ inherited FormEditTime: TFormEditTime
     ColorNormal = 3026478
     ColorOver = 4737096
     ColorPressed = 1973790
-    Flat = False
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWhite
     Font.Height = -16
     Font.Name = 'Tahoma'
     Font.Style = []
+    Flat = False
     FontOver.Charset = DEFAULT_CHARSET
     FontOver.Color = clWhite
     FontOver.Height = -16
@@ -519,12 +519,13 @@ inherited FormEditTime: TFormEditTime
     AutoClick = 100
     DblClickTooClick = True
   end
-  object ComboBoxEx1: TComboBoxEx
+  object ComboBoxTasks: TComboBoxEx
     Left = 214
     Top = 43
     Width = 347
     Height = 28
     ItemsEx = <>
+    Style = csExDropDownList
     StyleEx = [csExPathWordBreak]
     Color = 3026478
     Ctl3D = True

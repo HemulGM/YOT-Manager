@@ -2,8 +2,8 @@ unit YOTM.DB.Tasks;
 
 interface
   uses SQLite3, SQLLang, SQLiteTable3, System.Generics.Collections,
-       System.SysUtils, Vcl.Graphics,
-       HGM.Controls.VirtualTable, YOTM.DB, YOTM.DB.Labels, dialogs;
+       System.SysUtils, Vcl.Graphics, Vcl.Dialogs,
+       HGM.Controls.VirtualTable, YOTM.DB, YOTM.DB.Labels, HGM.Common.DateUtils;
 
   type
    TTaskFilter = (tkfAll, tkfDated, tkfDeadlined, tkfNoDate);
@@ -95,13 +95,17 @@ interface
      FDataBase: TDB;
      FShowEndedTask: Boolean;
      FShowDate: TDate;
+     FDatePeriod:TDatePeriod;
      FTaskFilter: TTaskFilter;
      FUpcoming: Boolean;
+     FUseDatePeriod: Boolean;
      procedure SetDataBase(const Value: TDB);
      procedure SetShowEndedTask(const Value: Boolean);
      procedure SetShowDate(const Value: TDate);
      procedure SetTaskFilter(const Value: TTaskFilter);
      procedure SetUpcoming(const Value: Boolean);
+     procedure SetUseDatePeriod(const Value: Boolean);
+     procedure SetDatePeriod(const Value: TDatePeriod);
     public
      constructor Create(ADataBase:TDB; ATableEx:TTableEx);
      destructor Destroy; override;
@@ -113,11 +117,14 @@ interface
      procedure Update(Task: TTaskItem);
      procedure Delete(Index: Integer); override;
      procedure Save;
+     function ListCount(Date:TDate; var Actual, NotActual, Deadlined:Integer):Integer;
      property ShowEndedTask:Boolean read FShowEndedTask write SetShowEndedTask default False;
      property ShowDate:TDate read FShowDate write SetShowDate;
      property DataBase:TDB read FDataBase write SetDataBase;
      property TaskFilter:TTaskFilter read FTaskFilter write SetTaskFilter default tkfAll;
      property Upcoming:Boolean read FUpcoming write SetUpcoming default False;
+     property UseDatePeriod:Boolean read FUseDatePeriod write SetUseDatePeriod default False;
+     property DatePeriod:TDatePeriod read FDatePeriod write SetDatePeriod;
    end;
 
 implementation
@@ -351,8 +358,8 @@ begin
      WhereFieldEqual(fnDeadline, True);
     end
    else WhereFieldEqual(fnDeadline, False);
-   if not ShowEndedTask then
-    WhereFieldEqual(fnState, False);
+   //if not ShowEndedTask then
+   WhereFieldEqual(fnState, False);
    Result:=FDataBase.DB.GetTableValue(GetSQL);
    EndCreate;
   end;
@@ -433,6 +440,29 @@ begin
  end;
 end;
 
+function TTaskItems.ListCount(Date: TDate; var Actual, NotActual, Deadlined:Integer): Integer;
+var i:Integer;
+begin
+ Result:=0;
+ Actual:=0;
+ NotActual:=0;
+ Deadlined:=0;
+ for i:= 0 to Count-1 do
+  if Items[i].Deadline then
+   begin
+    if SameDate(Items[i].DateDeadline, Date)
+    then
+     begin
+      if Items[i].State then Inc(NotActual) else
+       begin
+        Inc(Actual);
+        if DateOf(Date) < DateOf(Now) then Inc(Deadlined)
+       end;
+     end;
+    Inc(Result);
+   end;
+end;
+
 procedure TTaskItems.Reload;
 var Table, Labels:TSQLiteTable;
     Item:TTaskItem;
@@ -459,7 +489,10 @@ begin
     case FTaskFilter of
      tkfDated:
       begin
-       WhereFieldEqual(fnDateDeadline, DateOf(FShowDate));
+       if UseDatePeriod then
+        WhereFieldBetween(fnDateDeadline, DateOf(FDatePeriod.DateBegin), DateOf(FDatePeriod.DateEnd))
+       else
+        WhereFieldEqual(fnDateDeadline, DateOf(FShowDate));
        WhereFieldEqual(fnDeadline, True);
        if not ShowEndedTask then WhereFieldEqual(fnState, False);
       end;
@@ -507,12 +540,12 @@ begin
       Item.TaskType:=TTaskType(Table.FieldAsInteger(5));
       Item.FTaskRepeat:=Table.FieldAsString(6);
       Item.DateDeadline:=Table.FieldAsDateTime(7);
-      Item.TimeNotify:=Frac(Table.FieldAsDateTime(8));
+      Item.TimeNotify:=TimeOf(Table.FieldAsDateTime(8));
       Item.NotifyComplete:=Table.FieldAsBoolean(9);
       Item.Deadline:=Table.FieldAsBoolean(10);
       Item.State:=Table.FieldAsBoolean(11);
       Item.Notify:=Table.FieldAsBoolean(12);
-      Item.Color:=TColor(Table.FieldAsInteger(13));
+      Item.Color:=Table.FieldAsInteger(13);
       Item.LabelItems.Reload(Item.ID);
       Item.Update;
       Add(Item);
@@ -536,9 +569,19 @@ begin
  FDataBase:=Value;
 end;
 
+procedure TTaskItems.SetDatePeriod(const Value: TDatePeriod);
+begin
+ FDatePeriod := Value;
+end;
+
 procedure TTaskItems.SetUpcoming(const Value: Boolean);
 begin
  FUpcoming := Value;
+end;
+
+procedure TTaskItems.SetUseDatePeriod(const Value: Boolean);
+begin
+ FUseDatePeriod := Value;
 end;
 
 procedure TTaskItems.SetShowDate(const Value: TDate);
@@ -567,13 +610,13 @@ begin
     AddValue(fnDateCreate, Now);
     AddValue(fnTaskType, Ord(Task.TaskType));
     AddValue(fnTaskRepeat, Task.FTaskRepeat);
-    AddValue(fnDateDeadline, Task.DateDeadline);
+    AddValue(fnDateDeadline, DateOf(Task.DateDeadline));
     AddValue(fnTimeNotify, Task.TimeNotify);
     AddValue(fnNotifyComplete, Task.NotifyComplete);
     AddValue(fnDeadline, Task.Deadline);
     AddValue(fnState, Task.State);
     AddValue(fnNotify, Task.Notify);
-    AddValue(fnColor, Integer(Task.Color));
+    AddValue(fnColor, Task.Color);
     DataBase.DB.ExecSQL(GetSQL);
     Task.ID:=DataBase.DB.GetLastInsertRowID;
     EndCreate;
@@ -586,13 +629,13 @@ begin
     AddValue(fnDesc, Task.Description);
     AddValue(fnTaskType, Ord(Task.TaskType));
     AddValue(fnTaskRepeat, Task.FTaskRepeat);
-    AddValue(fnDateDeadline, Task.DateDeadline);
+    AddValue(fnDateDeadline, DateOf(Task.DateDeadline));
     AddValue(fnTimeNotify, Task.TimeNotify);
     AddValue(fnNotifyComplete, Task.NotifyComplete);
     AddValue(fnDeadline, Task.Deadline);
     AddValue(fnState, Task.State);
     AddValue(fnNotify, Task.Notify);
-    AddValue(fnColor, Integer(Task.Color));
+    AddValue(fnColor, Task.Color);
     WhereFieldEqual(fnID, Task.ID);
     DataBase.DB.ExecSQL(GetSQL);
     EndCreate;

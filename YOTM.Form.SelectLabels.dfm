@@ -9,8 +9,6 @@ inherited FormSelectLabels: TFormSelectLabels
   TextHeight = 19
   inherited DragBarTop: TDragPanel
     Width = 279
-    ExplicitLeft = 2
-    ExplicitTop = 2
     ExplicitWidth = 279
     inherited LabelCaption: TLabel
       Width = 45
@@ -69,12 +67,12 @@ inherited FormSelectLabels: TFormSelectLabels
       end
       item
         Caption = #1062#1074#1077#1090
-        Width = 38
+        Width = 64
         MinWidth = 38
       end
       item
         Caption = #1052#1077#1090#1082#1072
-        Width = 209
+        Width = 183
         FormatColumns = [tfSingleLine, tfVerticalCenter]
         MinWidth = 90
       end>

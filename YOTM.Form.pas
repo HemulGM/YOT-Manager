@@ -17,6 +17,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure FormHide(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
   private
     function GetCaption: String;
     procedure SetCaption(const Value: String);
@@ -36,8 +37,15 @@ begin
  Close;
 end;
 
-procedure TFormCustom.FormCreate(Sender: TObject);
+procedure TFormCustom.FormActivate(Sender: TObject);
 begin
+ SendMessage(Application.MainForm.Handle, WM_NCACTIVATE, Integer(True), 0);
+end;
+
+procedure TFormCustom.FormCreate(Sender: TObject);
+const CS_DROPSHADOW = $00020000;
+begin
+ SetClassLong(Handle, GCL_STYLE, GetWindowLong(Handle, GCL_STYLE) or CS_DROPSHADOW);
  //Position:=poMainFormCenter;
  Left:=Application.MainForm.Left + (Application.MainForm.Width div 2 - Width div 2);
  Top:=Application.MainForm.Top + (Application.MainForm.Height div 2 - Height div 2);

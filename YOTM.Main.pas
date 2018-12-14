@@ -16,6 +16,25 @@ type
    TimeS, TimeE:TTime;
   end;
 
+  TCalendarCell = record
+   Text:string;
+   IsDate:Boolean;
+   IsDayOsWeek:Boolean;
+   DayOfWeek:Integer;
+   Date:TDate;
+   /// <summary>
+   /// Не выбранный месяц
+   /// </summary>
+   IsAnotherMonth:Boolean;
+  end;
+
+  TCalendarArray = array[0..6, 0..8] of
+  record
+   Actual:Integer;
+   NotActual:Integer;
+   Deadlined:Integer;
+  end;
+
   TWorkDays = array[1..7] of Boolean;
 
   TViewMode = (vmToday, vmSelectedDate, vmDeadlined, vmInbox);
@@ -54,11 +73,9 @@ type
     PopupMenuTaskStart: TPopupMenu;
     MenuItemTaskStartFrom: TMenuItem;
     ButtonFlatAddTime: TButtonFlat;
-    ButtonFlat1: TButtonFlat;
-    DrawGrid1: TDrawGrid;
+    DrawGridCalendar: TDrawGrid;
     PanelTaskAdd: TPanel;
     EditNewTaskName: TEdit;
-    ButtonFlat2: TButtonFlat;
     ButtonFlat3: TButtonFlat;
     ButtonFlat4: TButtonFlat;
     ButtonFlat5: TButtonFlat;
@@ -109,7 +126,7 @@ type
     ButtonFlatTaskDAN: TButtonFlat;
     ButtonFlatDANClose: TButtonFlat;
     ButtonFlatViewMode: TButtonFlat;
-    Shape10: TShape;
+    ShapeBorder: TShape;
     Shape11: TShape;
     Shape12: TShape;
     PanelTaskColor: TPanel;
@@ -178,6 +195,9 @@ type
     MenuItemTimeEdit: TMenuItem;
     MenuItemTimeStartFrom: TMenuItem;
     TrayIcon: TTrayIcon;
+    ImageListCalendar: TImageList;
+    ButtonFlatCurrentDate: TButtonFlat;
+    ButtonFlatAddTask: TButtonFlat;
     procedure TimerRepaintTimer(Sender: TObject);
     procedure DrawPanelPaint(Sender: TObject);
     procedure DrawPanelMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
@@ -207,10 +227,9 @@ type
       ACol, ARow: Integer; var Allow: Boolean);
     procedure TableExTasksEditOk(Sender: TObject; Value: string; ItemValue,
       ACol, ARow: Integer);
-    procedure ButtonFlat1Click(Sender: TObject);
-    procedure DrawGrid1DrawCell(Sender: TObject; ACol, ARow: Integer;
+    procedure ButtonFlatAddTaskClick(Sender: TObject);
+    procedure DrawGridCalendarDrawCell(Sender: TObject; ACol, ARow: Integer;
       Rect: TRect; State: TGridDrawState);
-    procedure ButtonFlat2Click(Sender: TObject);
     procedure TableExTasksEditCancel(Sender: TObject; ACol, ARow: Integer);
     procedure ButtonFlat9Click(Sender: TObject);
     procedure TableExCommentsGetData(FCol, FRow: Integer; var Value: string);
@@ -262,6 +281,19 @@ type
       Shift: TShiftState; X, Y: Integer);
     procedure MenuItemTimeDeleteClick(Sender: TObject);
     procedure TrayIconClick(Sender: TObject);
+    procedure DrawGridCalendarSelectCell(Sender: TObject; ACol, ARow: Integer;
+      var CanSelect: Boolean);
+    procedure DrawGridCalendarMouseMove(Sender: TObject; Shift: TShiftState; X,
+      Y: Integer);
+    procedure DrawGridCalendarMouseWheelDown(Sender: TObject;
+      Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
+    procedure DrawGridCalendarMouseWheelUp(Sender: TObject; Shift: TShiftState;
+      MousePos: TPoint; var Handled: Boolean);
+    procedure DrawGridCalendarMouseEnter(Sender: TObject);
+    procedure DrawGridCalendarMouseLeave(Sender: TObject);
+    procedure EditNewTaskNameKeyPress(Sender: TObject; var Key: Char);
+    procedure CalendarChange(Sender: TObject);
+    procedure ButtonFlatCurrentDateClick(Sender: TObject);
   private
     FromHH, FromMM, ToHH, ToMM:Word;
     FLastDate:TDate;             //Реальная дата (без времени)
@@ -275,6 +307,7 @@ type
     FRangeTo:TTime;              //Конец ВЫБОРА времени на шкале
     FTimeItems:TTimeItems;       //Работы над задачами
     FTaskItems:TTaskItems;       //Задачи
+    FTasksOfCalendar:TTaskItems; //Список задач в календаре
     FLabelTypes:TLabelTypes;
     FLabelItems:TLabelItems;
     FComments:TCommentItems;     //Комментарии к задаче
@@ -292,7 +325,9 @@ type
     FTimeItemUnderCursor:Integer;//Элемент отрезка времени под курсором
     FCurrentTime:TTime;          //Текущее время (без даты)
     SelTime:TTime;               //Выбранное время на шкале
-    
+    CalendarMouseInside:Boolean;
+    CalendarMouseCoord:TPoint;
+    FCalendarArray:TCalendarArray;
     VisNow:TControl;
     VisNeed:TControl;
     FMonthOffset:Integer;
@@ -304,7 +339,7 @@ type
     function StartTask(TimeStart: TTime): Boolean;
     function AddTaskTime(ADate, ADateEnd: TDate; TStart, TEnd:TTime; ATaskID:Integer; AColor:TColor): Boolean;
     procedure UpdateCalendar;
-    function GetCellText(ACol, ARow: Integer; var AnotherMonth:Boolean): string;
+    function GetCellInfo(ACol, ARow: Integer; var Info:TCalendarCell): string;
     function DaysThisMonth: Integer;
     procedure HideTask;
     procedure ShowTask(TaskID: Integer);
@@ -341,6 +376,9 @@ type
     procedure UpdateTimeOverlayData;
     procedure TimeOverlayCallBack(Sender:TObject; State:Boolean);
     function AddTask(Name:string = ''; Date:TDateTime = 0): TTaskItem;
+    procedure OnChangeItems;
+    procedure ReloadCalendarData;
+    function GetDayCompletePercent: Integer;
   public
     procedure Initializate;
     procedure SetTaskComplete(TaskID:Integer);
@@ -353,6 +391,7 @@ type
 
     property CurrentTask:TTaskItem read GetCurrentTask;
     property TaskSelected:Boolean read GetTaskSelected;
+    property TaskItems:TTaskItems read FTaskItems;
   end;
 
 const
@@ -361,6 +400,8 @@ const
 
 var
   FormMain: TFormMain;
+  AccentColor:TColor = $00B86B00;
+  FWndFrameSize:Integer;
 
   function GetMins(Time:TTime):Integer;
   function GetTime(Mins:Integer):TTime;
@@ -370,7 +411,7 @@ var
 implementation
  uses Math, YOTM.Form.EditTime, DateUtils, YOTM.Form.Dialog,
    YOTM.Form.SelectLabels, Winapi.CommCtrl, YOTM.Form.DateNotify, YOTM.Form.OverlayTime,
-   YOTM.Form.Notify.Task;
+   YOTM.Form.Notify.Task, HGM.Common.DateUtils, Winapi.Dwmapi;
 
 {$R *.dfm}
 
@@ -499,20 +540,48 @@ begin
   end;
 end;
 
+procedure TFormMain.ReloadCalendarData;
+var   Cell:TCalendarCell;
+      i, j: Integer;
+      FirstDate: TDateTime;
+      NotCompleted:Integer;
+begin
+ GetCellInfo(0, 1, Cell);
+ FirstDate:=Cell.Date;
+ GetCellInfo(DrawGridCalendar.ColCount-1, DrawGridCalendar.RowCount - 1, Cell);
+ FTasksOfCalendar.TaskFilter:=tkfDated;
+ FTasksOfCalendar.ShowEndedTask:=FTaskItems.ShowEndedTask;
+ FTasksOfCalendar.UseDatePeriod:=True;
+ FTasksOfCalendar.DatePeriod:=TDatePeriod.Create(FirstDate, Cell.Date);
+ FTasksOfCalendar.Reload;
+ NotCompleted:=0;
+ for i:= 0 to FTasksOfCalendar.Count-1 do
+  if (not FTasksOfCalendar[i].State) and (FTasksOfCalendar[i].Deadline) and (DateOf(FTasksOfCalendar[i].DateDeadline) < DateOf(Now))
+  then Inc(NotCompleted);
+
+ for i:= 1 to DrawGridCalendar.RowCount-1 do
+  for j:= 0 to DrawGridCalendar.ColCount-1 do
+   begin
+    GetCellInfo(j, i, Cell);
+    //FCalendarArray[j, i].Actual:=
+    FTasksOfCalendar.ListCount(Cell.Date, FCalendarArray[j, i].Actual, FCalendarArray[j, i].NotActual, FCalendarArray[j, i].Deadlined);
+   end;
+ ButtonFlatCalendar.NotifyVisible:=NotCompleted > 0;
+ FTasksOfCalendar.Clear;
+ DrawGridCalendar.Repaint;
+end;
+
 procedure TFormMain.UpdateCalendar;
-var
-  AYear, AMonth, ADay: Word;
-  FirstDate: TDateTime;
+var AYear, AMonth, ADay: Word;
+    FirstDate: TDateTime;
 begin
  DecodeDate(CurrentDate, AYear, AMonth, ADay);
- FirstDate := EncodeDate(AYear, AMonth, 1);
- FMonthOffset := 2 - ((DayOfWeek(FirstDate) - StartOfWeek + 7) mod 7); { day of week for 1st of month }
- DrawGrid1.DefaultColWidth:=DrawGrid1.ClientWidth div DrawGrid1.ColCount;
- DrawGrid1.ColWidths[DrawGrid1.ColCount-1]:=DrawGrid1.DefaultColWidth + DrawGrid1.ClientWidth mod DrawGrid1.ColCount;
- DrawGrid1.Repaint;
- //if FMonthOffset = 2 then FMonthOffset := -5;
-  //MoveColRow((ADay - FMonthOffset) mod 7, (ADay - FMonthOffset) div 7 + 1, False, False);
-
+ FirstDate:=EncodeDate(AYear, AMonth, 1);
+ FMonthOffset:=2 - ((DayOfWeek(FirstDate) - StartOfWeek + 7) mod 7);
+ DrawGridCalendar.RowHeights[0]:=PanelTaskEdit.Height+ShapeBorder.Height;
+ DrawGridCalendar.DefaultColWidth:=DrawGridCalendar.ClientWidth div DrawGridCalendar.ColCount;
+ DrawGridCalendar.ColWidths[DrawGridCalendar.ColCount-1]:=DrawGridCalendar.DefaultColWidth + DrawGridCalendar.ClientWidth mod DrawGridCalendar.ColCount;
+ ReloadCalendarData;
 end;
 
 function TFormMain.DaysThisMonth: Integer;
@@ -527,35 +596,52 @@ begin
  Result:=EncodeDateTime(Y, M, Day, HH, MM, SS, MS);
 end;
 
-function TFormMain.GetCellText(ACol, ARow: Integer; var AnotherMonth:Boolean): string;
-var
-  DayNum, MNum: Integer;
-  Dt:TDate;
+function TFormMain.GetCellInfo(ACol, ARow: Integer; var Info:TCalendarCell): string;
+var DayNum:Integer;
+    Dt:TDate;
 begin
-  if ARow = 0 then  { day names at tops of columns }
-    Result := FormatSettings.ShortDayNames[(StartOfWeek + ACol) mod 7 + 1]
-  else
+ if ARow = 0 then
   begin
-    DayNum := FMonthOffset + ACol + (ARow - 2) * 7;
-    AnotherMonth:=False;
-    if (DayNum < 1) or (DayNum > DaysThisMonth) then
-     begin
-      Result := '';
-      Dt:=CurrentDate;
-      if (DayNum < 1) then
-       begin
-        Dt:=SetDay(CurrentDate, 1) - 1;
-        Result:=IntToStr(MonthDays[IsLeapYear(YearOf(Dt)), MonthOf(Dt)] + DayNum);
-       end
-      else
-       begin
-        Dt:=SetDay(Dt, MonthDays[IsLeapYear(YearOf(Dt)), MonthOf(Dt)]) + 1;
-        Result:=IntToStr(DayNum - DaysThisMonth);
-       end;
-      AnotherMonth:=True;
-     end
-    else Result := IntToStr(DayNum);
+   Info.Date:=0;
+   Info.IsDate:=False;
+   Info.IsDayOsWeek:=True;
+   Info.DayOfWeek:=(StartOfWeek + ACol) mod 7 + 1;
+   Info.IsAnotherMonth:=False;
+   Info.Text:=FormatSettings.ShortDayNames[(StartOfWeek + ACol) mod 7 + 1];
+  end
+ else
+  begin
+   Info.IsDayOsWeek:=False;
+   Info.Date:=0;
+   Info.IsDate:=True;
+   Info.DayOfWeek:=(StartOfWeek + ACol) mod 7 + 1;
+   DayNum:=FMonthOffset + ACol + (ARow - 2) * 7;
+   Info.IsAnotherMonth:=False;
+   if (DayNum < 1) or (DayNum > DaysThisMonth) then
+    begin
+     Info.IsAnotherMonth:=True;
+     Info.Text:='';
+     Dt:=CurrentDate;
+     if (DayNum < 1) then
+      begin
+       Dt:=SetDay(CurrentDate, 1) + (DayNum - 1);
+       Info.Text:=IntToStr(MonthDays[IsLeapYear(YearOf(Dt)), MonthOf(Dt)] + DayNum);
+      end
+     else
+      begin
+       Dt:=SetDay(Dt, MonthDays[IsLeapYear(YearOf(Dt)), MonthOf(Dt)]) + (DayNum - MonthDays[IsLeapYear(YearOf(Dt)), MonthOf(Dt)]);
+       Info.Text:=IntToStr(DayNum - DaysThisMonth);
+      end;
+     Info.Date:=Dt;
+    end
+   else
+    begin
+     Dt:=SetDay(CurrentDate, DayNum);
+     Info.Date:=Dt;
+     Info.Text:=IntToStr(DayNum);
+    end;
   end;
+ Result:=Info.Text;
 end;
 
 function TFormMain.GetCurrentTask: TTaskItem;
@@ -571,25 +657,136 @@ begin
   end;
 end;
 
-procedure TFormMain.DrawGrid1DrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-var
-  TheText: string;
-  AnotherMonth:Boolean;
+function TFormMain.GetDayCompletePercent:Integer;
 begin
-  TheText := GetCellText(ACol, ARow, AnotherMonth);
-  with Rect, DrawGrid1.Canvas do
-   begin
-    if AnotherMonth then
-     Brush.Color:=$00383838//Color;
-    else Brush.Color:=$002E2E2E;
-    Brush.Style:=bsSolid;
-    FillRect(Rect);
-    Brush.Style:=bsClear;
-    Font.Color:=$00F2F2F2;
-    Font.Size:=15;
-    TextRect(Rect, Left + (Right - Left - TextWidth(TheText)) div 2,
-                    Top + (Bottom - Top - TextHeight(TheText)) div 2, TheText);
-   end;
+ Result:=Round((FNowTimeMin - GetMins(WorkDayStart)) /  (FWorkTimeMin / 100));
+end;
+
+procedure TFormMain.DrawGridCalendarDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
+var Cell:TCalendarCell;
+    txt:string;
+    tmp:TRect;
+begin
+ GetCellInfo(ACol, ARow, Cell);
+ with Rect, DrawGridCalendar.Canvas do
+  begin
+   if Cell.IsDate then
+    begin
+     if Cell.IsAnotherMonth then
+      Brush.Color:=$00383838//Color;
+     else Brush.Color:=$002E2E2E;
+    end
+   else
+    begin
+     Brush.Color:=$00383838;
+    end;
+   if Cell.IsDate and CalendarMouseInside and (Point(ACol, ARow) = CalendarMouseCoord) then
+    Brush.Color:=ColorDarker(Brush.Color, 40);
+
+   if SameDate(Cell.Date, CurrentDate) then
+    Brush.Color:=ColorDarker(AccentColor);
+   Brush.Style:=bsSolid;
+   FillRect(Rect);
+   if Cell.IsDayOsWeek then
+    begin
+     Brush.Color:=$002E2E2E;
+     tmp:=System.Classes.Rect(Rect.Left, Rect.Bottom - ShapeBorder.Height, Rect.Right, Rect.Bottom);
+     FillRect(tmp);
+    end;
+
+   if IsToday(Cell.Date) then
+    begin
+     Brush.Style:=bsClear;
+     Pen.Color:=AccentColor;
+     Rectangle(Rect);
+     Brush.Style:=bsSolid;
+     Brush.Color:=AccentColor;
+     tmp:=Rect;
+     tmp.Inflate(-1, -1);
+     tmp.Width:=Round(tmp.Width / 100 * GetDayCompletePercent);
+     FillRect(tmp);
+    end;
+
+   Brush.Style:=bsClear;
+   Font.Color:=$00F2F2F2;
+   Font.Size:=15;
+   TextRect(Rect, Left + (Right - Left - TextWidth(Cell.Text)) div 2,
+                   Top + (Bottom - Top - TextHeight(Cell.Text)) div 2, Cell.Text);
+   if Cell.Text = '1' then
+    begin
+     Font.Size:=8;
+     txt:=FormatDateTime('mmm', Cell.Date);
+     TextRect(Rect, Left + (Right - Left - TextWidth(txt)) div 2,
+                   Top + 2, txt);
+    end;
+   if FCalendarArray[ACol, ARow].Deadlined > 0 then
+    begin
+     ImageListCalendar.Draw(DrawGridCalendar.Canvas, Rect.Left + 2, Rect.Top + 2, 2, True);
+    end
+   else
+   if FCalendarArray[ACol, ARow].Actual > 0 then
+    begin
+     ImageListCalendar.Draw(DrawGridCalendar.Canvas, Rect.Left + 2, Rect.Top + 2, 1, True);
+    end
+   else
+   if FCalendarArray[ACol, ARow].NotActual > 0 then
+    begin
+     ImageListCalendar.Draw(DrawGridCalendar.Canvas, Rect.Left + 2, Rect.Top + 2, 0, True);
+    end;
+  end;
+end;
+
+procedure TFormMain.DrawGridCalendarMouseEnter(Sender: TObject);
+begin
+ CalendarMouseInside:=True;
+end;
+
+procedure TFormMain.DrawGridCalendarMouseLeave(Sender: TObject);
+begin
+ CalendarMouseInside:=False;
+end;
+
+procedure TFormMain.DrawGridCalendarMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+var Cell:TCalendarCell;
+    C, R:Integer;
+begin
+ DrawGridCalendar.MouseToCell(X, Y, C, R);
+ if CalendarMouseInside then
+  begin
+   CalendarMouseCoord:=Point(C, R);
+   DrawGridCalendar.Repaint;
+  end;
+ GetCellInfo(C, R, Cell);
+ if DrawGridCalendar.Hint <> DateToStr(Cell.Date) then
+  begin
+   Application.CancelHint;
+   DrawGridCalendar.Hint:=DateToStr(Cell.Date);
+  end
+ else
+  begin
+   DrawGridCalendar.Hint:=DateToStr(Cell.Date);
+  end;
+end;
+
+procedure TFormMain.DrawGridCalendarMouseWheelDown(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
+begin
+ Handled:=True;
+end;
+
+procedure TFormMain.DrawGridCalendarMouseWheelUp(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
+begin
+ Handled:=True;
+end;
+
+procedure TFormMain.DrawGridCalendarSelectCell(Sender: TObject; ACol, ARow: Integer; var CanSelect: Boolean);
+var Cell:TCalendarCell;
+begin
+ GetCellInfo(ACol, ARow, Cell);
+ if Cell.IsDate then
+  begin
+   Calendar.Date:=Cell.Date;
+   ViewMode:=vmSelectedDate;
+  end;
 end;
 
 procedure TFormMain.DrawPanelMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -668,7 +865,7 @@ begin
     TextOut(ScaleRect.Right - 15, ScaleRect.Top - 20, FormatDateTime('HH:mm', WorkDayEnd));
 
     tmpRect:=ScaleRect;
-    tmpRect.Right:=tmpRect.Left +  Round(ScaleRect.Width / 100 * ((FNowTimeMin - GetMins(WorkDayStart)) /  (FWorkTimeMin / 100)));
+    tmpRect.Right:=tmpRect.Left +  Round(ScaleRect.Width / 100 * GetDayCompletePercent);
     tmpRect.Right:=Min(tmpRect.Right, ScaleRect.Right);
     Brush.Style:=bsSolid;
     Brush.Color:=$003C86AB;
@@ -798,6 +995,15 @@ begin
   end;
 end;
 
+procedure TFormMain.EditNewTaskNameKeyPress(Sender: TObject; var Key: Char);
+begin
+ if Key = #13 then
+  begin
+   Key:=#0;
+   ButtonFlatAddTaskClick(nil);
+  end;
+end;
+
 procedure TFormMain.ButtonFlatCalendarClick(Sender: TObject);
 begin
  SlideTo(slCalendar);
@@ -818,8 +1024,10 @@ begin
   EditTime.TimeFrom:=TStart;
   EditTime.TimeTo:=TEnd;
   EditTime.Position:=poMainFormCenter;
+  EditTime.TaskID:=ATaskID;
   if EditTime.ShowModal = mrOK then
    begin
+    ATaskID:=EditTime.TaskID;
     Item:=TTimeItem.Create(FTimeItems);
     with Item do
      begin
@@ -885,7 +1093,6 @@ begin
    FTaskItems.Update(FTaskItems[FTaskID]);
    UpdateTaskPanel(FTaskID);
    ViewMode:=ViewMode;
-   UpdateCounts;
   end;
 end;
 
@@ -1088,10 +1295,20 @@ begin
   end;
 end;
 
-procedure TFormMain.ButtonFlat1Click(Sender: TObject);
+procedure TFormMain.ButtonFlatAddTaskClick(Sender: TObject);
 begin
- AddTask;
- TableExTasks.Edit(0, 1);
+ if EditNewTaskName.Text = '' then
+  begin
+   AddTask;
+   TableExTasks.Edit(0, 1);
+  end
+ else
+  begin
+   AddTask(EditNewTaskName.Text);
+
+   EditNewTaskName.Clear;
+   TableExTasks.ItemIndex:=0;
+  end;
 end;
 
 function TFormMain.AddTask(Name:string = ''; Date:TDateTime = 0):TTaskItem;
@@ -1112,15 +1329,13 @@ begin
    Item.Deadline:=True;
    Item.DateDeadline:=Date;
   end;
- FTaskItems.Update(Item);
+ //Сразу запишем в БД, если есть название
+ if Name <> '' then
+  begin
+   FTaskItems.Update(Item);
+   OnChangeItems;
+  end;
  FTaskItems.Insert(0, Item);
-end;
-
-procedure TFormMain.ButtonFlat2Click(Sender: TObject);
-begin
- AddTask(EditNewTaskName.Text);
- EditNewTaskName.Clear;
- TableExTasks.ItemIndex:=0;
 end;
 
 procedure TFormMain.ButtonFlat6Click(Sender: TObject);
@@ -1156,6 +1371,13 @@ begin
   end;
 end;
 
+procedure TFormMain.ButtonFlatCurrentDateClick(Sender: TObject);
+begin
+ SendMessage(Calendar.Handle, WM_NCACTIVATE, Integer(True), 0);
+ FocusControl(Calendar);
+ PostMessage(Calendar.Handle, WM_KEYDOWN, VK_SPACE, 0);
+end;
+
 procedure TFormMain.SetButtonWCaption(Target, CloseButton:TButtonFlat; Panel:TPanel; ACaption:string; ACloseBotton:Boolean);
 begin
  Target.Caption:=ACaption;
@@ -1185,12 +1407,19 @@ begin
  PopupMenuView.Popup(Pt.X, Pt.Y+ButtonFlatMenuView.Height);
 end;
 
+procedure TFormMain.OnChangeItems;
+begin
+ UpdateCounts;
+ ReloadCalendarData;
+end;
+
 function TFormMain.DeleteTask(ID:Integer):Boolean;
 begin
  Result:=False;
  if not IndexInList(ID, FTaskItems.Count) then Exit;
  if not GetAnswer('Удалить задачу "'+CutString(FTaskItems[ID].Name, 100)+'"?', True) then Exit;
  FTaskItems.Delete(ID);
+ OnChangeItems;
  UpdateTaskPanel(ID);
  Result:=True;
 end;
@@ -1274,6 +1503,11 @@ procedure TFormMain.CalendarCalendarDrawDayItem(Sender: TObject;
   DrawParams: TDrawViewInfoParams; CalendarViewViewInfo: TCellItemViewInfo);
 begin
  DrawParams.ForegroundColor:=clWhite;
+end;
+
+procedure TFormMain.CalendarChange(Sender: TObject);
+begin
+ ButtonFlatCurrentDate.Caption:=FormatDateTime('DD MMM YYYY', Calendar.Date);
 end;
 
 procedure TFormMain.CalendarCloseUp(Sender: TObject);
@@ -1403,6 +1637,7 @@ begin
  FLabelTypes:=TLabelTypes.Create(FDB, nil);
  FLabelItems:=TLabelItems.Create(FDB, nil);
  FNote:=TNoteItem.Create(FDB);
+ FTasksOfCalendar:=TTaskItems.Create(FDB, nil);
 end;
 
 procedure TFormMain.FormPaint(Sender: TObject);
@@ -1445,6 +1680,7 @@ procedure TFormMain.MenuItemShowEndedClick(Sender: TObject);
 begin
  FTaskItems.ShowEndedTask:=not FTaskItems.ShowEndedTask;
  ViewMode:=ViewMode;
+ OnChangeItems;
 end;
 
 procedure TFormMain.UpdateViewModeParam;
@@ -1573,6 +1809,7 @@ begin
  NoteInfo;
 end;
 
+
 procedure TFormMain.SetCurrentDate(const Value: TDate);
 begin
  if Value = FCurrentDate then Exit;
@@ -1628,7 +1865,7 @@ begin
  ButtonFlatViewMode.Left:=PanelTaskEdit.Width div 2 - ButtonFlatViewMode.Width div 2;
  UpdateTaskPanel;
  UpdateViewModeParam;
- UpdateCounts;
+ OnChangeItems;
 end;
 
 procedure TFormMain.SetWorkDays(Days: TWorkDays);
@@ -1810,7 +2047,7 @@ begin
          TxtRect:=Rect;
          Brush.Color:=Task.Color;
          Pen.Color:=Task.Color;
-         TxtRect.Inflate(-1, -1);
+         //TxtRect.Inflate(-1, -1);
          Rectangle(TxtRect);
         end;
       end;
@@ -1828,7 +2065,7 @@ begin
   1:begin
      Txt:=Task.Name;
      with TableExTasks.Canvas do
-      begin   {
+      begin
        if Task.Color <> clNone then
         begin
          TxtRect:=Rect;
@@ -1837,7 +2074,7 @@ begin
          TxtRect.Right:=TxtRect.Left + TxtRect.Width div 3;
          TxtRect.Inflate(0, -1);
          Gradient(Handle, TxtRect, Task.Color, Brush.Color, False);
-        end; }
+        end;
        Pen.Width:=1;
        Font.Size:=11;
        TxtRect:=Rect;
@@ -1846,6 +2083,18 @@ begin
        TxtRect.Right:=TxtRect.Right - 100;
        Brush.Style:=bsClear;
        TextRect(TxtRect, Txt, [tfSingleLine, tfLeft, tfVerticalCenter, tfEndEllipsis]);
+
+       if Task.Deadline then
+        begin
+         TxtRect:=Rect;
+         TxtRect.Offset(2, 2);
+         TxtRect.Left:=TxtRect.Right - 100;
+         //TxtRect.Bottom:=TxtRect.Top + 20;
+         Brush.Style:=bsClear;
+         Txt:=HumanDateTime(Task.DateDeadline, False, True);
+         TextRect(TxtRect, Txt, [tfLeft, tfWordBreak]);
+        end;
+
        if Assigned(Task.LabelItems) then
         begin
          LP:=Rect.Left+5;
@@ -1934,6 +2183,7 @@ begin
     else
      begin
       FTaskItems.Update(FTaskItems[ARow]);
+      OnChangeItems;
       UpdateTaskPanel(ARow);
      end;
    end;
@@ -1948,7 +2198,7 @@ begin
    begin
     FTaskItems[TableExTasks.ItemIndex].State:=not FTaskItems[TableExTasks.ItemIndex].State;
     FTaskItems.Update(FTaskItems[TableExTasks.ItemIndex]);
-    UpdateCounts;
+    OnChangeItems;
     UpdateTaskPanel(TableExTasks.ItemIndex);
    end;
  end;
@@ -2049,14 +2299,13 @@ begin
  Calendar.Date:=FLastDate;
  CurrentDate:=FLastDate;
  ViewMode:=ViewMode;
- //UpdateCounts;
- //UpdateTaskNowButton;
 end;
 
 procedure TFormMain.TimerTimeTimer(Sender: TObject);
 begin
  FCurrentTime:=TimeOf(Now);
  FNowTimeMin:=GetMins(FCurrentTime);
+ DrawGridCalendar.Repaint;
  if FDoTimeSection then
   begin
    ButtonFlatTaskStart.Caption:=FormatDateTime('HH:mm:ss', FNewTEnd - FNewTStart);

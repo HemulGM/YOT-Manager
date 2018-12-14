@@ -25,18 +25,23 @@ type
     ButtonFlat12: TButtonFlat;
     Label2: TLabel;
     Label3: TLabel;
-    ComboBoxEx1: TComboBoxEx;
+    ComboBoxTasks: TComboBoxEx;
     procedure ButtonFlatUPDOWNClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     FromHH, FromMM, ToHH, ToMM:Word;
+    FTaskID: Integer;
     procedure SetTimeFrom(const Value: TTime);
     procedure SetTimeTo(const Value: TTime);
     procedure UpdateTime;
     function GetTimeFrom: TTime;
     function GetTimeTo: TTime;
+    procedure SetTaskID(const Value: Integer);
+    function GetTaskID: Integer;
   public
     property TimeFrom:TTime read GetTimeFrom write SetTimeFrom;
     property TimeTo:TTime read GetTimeTo write SetTimeTo;
+    property TaskID:Integer read GetTaskID write SetTaskID;
   end;
 
 var
@@ -62,6 +67,27 @@ begin
  UpdateTime;
 end;
 
+procedure TFormEditTime.FormCreate(Sender: TObject);
+var i: Integer;
+begin
+ inherited;
+ FTaskID:=-1;
+ for i:= 0 to FormMain.TaskItems.Count-1 do
+  with ComboBoxTasks.ItemsEx.Add do
+   begin
+    Caption:=FormMain.TaskItems[i].Name;
+    ImageIndex:=FormMain.TaskItems[i].ID;
+   end;
+end;
+
+function TFormEditTime.GetTaskID: Integer;
+var i:Integer;
+begin
+ if ComboBoxTasks.ItemIndex >= 0 then
+  Result:=ComboBoxTasks.ItemsEx[ComboBoxTasks.ItemIndex].ImageIndex
+ else Result:=FTaskID;
+end;
+
 function TFormEditTime.GetTimeFrom: TTime;
 begin
  Result:=EncodeTime(FromHH, FromMM, 0, 0);
@@ -70,6 +96,18 @@ end;
 function TFormEditTime.GetTimeTo: TTime;
 begin
  Result:=EncodeTime(ToHH, ToMM, 0, 0);
+end;
+
+procedure TFormEditTime.SetTaskID(const Value: Integer);
+var i: Integer;
+begin
+ FTaskID := Value;
+ for i:= 0 to ComboBoxTasks.ItemsEx.Count-1 do
+  if ComboBoxTasks.ItemsEx[i].ImageIndex = FTaskID then
+   begin
+    ComboBoxTasks.ItemIndex:=i;
+    Exit;
+   end;
 end;
 
 procedure TFormEditTime.SetTimeFrom(const Value: TTime);
