@@ -1912,6 +1912,68 @@ object FormMain: TFormMain
           TextFormat = [tfSingleLine, tfVerticalCenter]
         end
       end
+      object PanelCalendar: TPanel
+        Left = 0
+        Top = 0
+        Width = 450
+        Height = 737
+        Anchors = [akLeft, akTop, akBottom]
+        BevelOuter = bvNone
+        TabOrder = 2
+        object DrawGridCalendar: TDrawGrid
+          Left = 0
+          Top = 0
+          Width = 450
+          Height = 737
+          Align = alClient
+          BorderStyle = bsNone
+          Color = 3684408
+          ColCount = 7
+          DefaultColWidth = 63
+          DefaultRowHeight = 65
+          DefaultDrawing = False
+          DrawingStyle = gdsGradient
+          FixedCols = 0
+          RowCount = 9
+          FixedRows = 0
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = 15921906
+          Font.Height = -27
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          GridLineWidth = 0
+          Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine]
+          ParentFont = False
+          ScrollBars = ssNone
+          TabOrder = 0
+          StyleElements = [seBorder]
+          OnDrawCell = DrawGridCalendarDrawCell
+          OnMouseEnter = DrawGridCalendarMouseEnter
+          OnMouseLeave = DrawGridCalendarMouseLeave
+          OnMouseMove = DrawGridCalendarMouseMove
+          OnMouseWheelDown = DrawGridCalendarMouseWheelDown
+          OnMouseWheelUp = DrawGridCalendarMouseWheelUp
+          OnSelectCell = DrawGridCalendarSelectCell
+          ColWidths = (
+            63
+            63
+            63
+            63
+            63
+            63
+            63)
+          RowHeights = (
+            65
+            65
+            65
+            65
+            65
+            65
+            65
+            65
+            65)
+        end
+      end
       object PanelTimes: TPanel
         Left = 0
         Top = 0
@@ -1960,12 +2022,13 @@ object FormMain: TFormMain
             end
             item
               Caption = #1042#1088#1077#1084#1103
-              Width = 64
+              Width = 120
               Format = [tfCenter, tfLeft, tfSingleLine, tfVerticalCenter]
+              MinWidth = 120
             end
             item
               Caption = #1054#1087#1080#1089#1072#1085#1080#1077
-              Width = 354
+              Width = 298
               MinWidth = 150
             end>
           ItemCount = 1
@@ -2217,473 +2280,6 @@ object FormMain: TFormMain
           end
         end
       end
-      object PanelCalendar: TPanel
-        Left = 0
-        Top = 0
-        Width = 450
-        Height = 737
-        Anchors = [akLeft, akTop, akBottom]
-        BevelOuter = bvNone
-        TabOrder = 2
-        object DrawGridCalendar: TDrawGrid
-          Left = 0
-          Top = 0
-          Width = 450
-          Height = 737
-          Align = alClient
-          BorderStyle = bsNone
-          Color = 3684408
-          ColCount = 7
-          DefaultColWidth = 63
-          DefaultRowHeight = 65
-          DefaultDrawing = False
-          DrawingStyle = gdsGradient
-          FixedCols = 0
-          RowCount = 9
-          FixedRows = 0
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = 15921906
-          Font.Height = -27
-          Font.Name = 'Tahoma'
-          Font.Style = []
-          GridLineWidth = 0
-          Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine]
-          ParentFont = False
-          ScrollBars = ssNone
-          TabOrder = 0
-          StyleElements = [seBorder]
-          OnDrawCell = DrawGridCalendarDrawCell
-          OnMouseEnter = DrawGridCalendarMouseEnter
-          OnMouseLeave = DrawGridCalendarMouseLeave
-          OnMouseMove = DrawGridCalendarMouseMove
-          OnMouseWheelDown = DrawGridCalendarMouseWheelDown
-          OnMouseWheelUp = DrawGridCalendarMouseWheelUp
-          OnSelectCell = DrawGridCalendarSelectCell
-          ColWidths = (
-            63
-            63
-            63
-            63
-            63
-            63
-            63)
-          RowHeights = (
-            65
-            65
-            65
-            65
-            65
-            65
-            65
-            65
-            65)
-        end
-      end
-    end
-  end
-  object DragBarTop: TsDragBar
-    Left = 0
-    Top = 0
-    Width = 1331
-    Height = 40
-    Cursor = crHandPoint
-    SkinData.SkinSection = 'DRAGBAR'
-    BevelOuter = bvNone
-    Caption = ' '
-    Color = 3026478
-    StyleElements = [seBorder]
-    ParentBackground = False
-    TabOrder = 2
-    DraggedControl = Owner
-    object Shape2: TShape
-      Left = 1091
-      Top = 0
-      Width = 2
-      Height = 40
-      Align = alRight
-      Brush.Color = 3684408
-      Pen.Color = 3684408
-      ExplicitLeft = 916
-      ExplicitTop = 3
-    end
-    object Shape3: TShape
-      Left = 1253
-      Top = 0
-      Width = 2
-      Height = 40
-      Align = alRight
-      Brush.Color = 3684408
-      Pen.Color = 3684408
-      ExplicitLeft = 1094
-      ExplicitTop = -6
-    end
-    object ButtonFlat3: TButtonFlat
-      AlignWithMargins = True
-      Left = 41
-      Top = 10
-      Width = 38
-      Height = 20
-      Margins.Top = 10
-      Margins.Bottom = 10
-      Align = alLeft
-      Caption = #1060#1072#1081#1083
-      ColorNormal = 3026478
-      ColorOver = 14196229
-      ColorPressed = 12027396
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWhite
-      Font.Height = -13
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      FontOver.Charset = DEFAULT_CHARSET
-      FontOver.Color = clWhite
-      FontOver.Height = -13
-      FontOver.Name = 'Tahoma'
-      FontOver.Style = []
-      FontDown.Charset = DEFAULT_CHARSET
-      FontDown.Color = clWhite
-      FontDown.Height = -13
-      FontDown.Name = 'Tahoma'
-      FontDown.Style = []
-      IgnorBounds = True
-      ImageIndentLeft = 0
-      RoundRectParam = 0
-      ShowFocusRect = False
-      TabOrder = 0
-      TabStop = True
-      TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-    end
-    object ButtonFlat4: TButtonFlat
-      Left = 0
-      Top = 0
-      Width = 38
-      Height = 40
-      Align = alLeft
-      Caption = ''
-      ColorNormal = 3026478
-      ColorOver = 14196229
-      ColorPressed = 12027396
-      Enabled = False
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWhite
-      Font.Height = -13
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      FontOver.Charset = DEFAULT_CHARSET
-      FontOver.Color = clWhite
-      FontOver.Height = -13
-      FontOver.Name = 'Tahoma'
-      FontOver.Style = []
-      FontDown.Charset = DEFAULT_CHARSET
-      FontDown.Color = clWhite
-      FontDown.Height = -13
-      FontDown.Name = 'Tahoma'
-      FontDown.Style = []
-      IgnorBounds = True
-      ImageIndentLeft = 7
-      ImageIndex = 12
-      Images = ImageList24
-      RoundRectParam = 0
-      ShowFocusRect = False
-      TabOrder = 1
-      TabStop = True
-      TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-    end
-    object ButtonFlat5: TButtonFlat
-      AlignWithMargins = True
-      Left = 85
-      Top = 10
-      Width = 108
-      Height = 20
-      Margins.Top = 10
-      Margins.Bottom = 10
-      Align = alLeft
-      Caption = #1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1085#1080#1077
-      ColorNormal = 3026478
-      ColorOver = 14196229
-      ColorPressed = 12027396
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWhite
-      Font.Height = -13
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      FontOver.Charset = DEFAULT_CHARSET
-      FontOver.Color = clWhite
-      FontOver.Height = -13
-      FontOver.Name = 'Tahoma'
-      FontOver.Style = []
-      FontDown.Charset = DEFAULT_CHARSET
-      FontDown.Color = clWhite
-      FontDown.Height = -13
-      FontDown.Name = 'Tahoma'
-      FontDown.Style = []
-      IgnorBounds = True
-      ImageIndentLeft = 0
-      RoundRectParam = 0
-      ShowFocusRect = False
-      TabOrder = 2
-      TabStop = True
-      TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-    end
-    object ButtonFlatMenuView: TButtonFlat
-      AlignWithMargins = True
-      Left = 199
-      Top = 10
-      Width = 38
-      Height = 20
-      Margins.Top = 10
-      Margins.Bottom = 10
-      Align = alLeft
-      Caption = #1042#1080#1076
-      ColorNormal = 3026478
-      ColorOver = 14196229
-      ColorPressed = 12027396
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWhite
-      Font.Height = -13
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      FontOver.Charset = DEFAULT_CHARSET
-      FontOver.Color = clWhite
-      FontOver.Height = -13
-      FontOver.Name = 'Tahoma'
-      FontOver.Style = []
-      FontDown.Charset = DEFAULT_CHARSET
-      FontDown.Color = clWhite
-      FontDown.Height = -13
-      FontDown.Name = 'Tahoma'
-      FontDown.Style = []
-      IgnorBounds = True
-      ImageIndentLeft = 0
-      OnClick = ButtonFlatMenuViewClick
-      RoundRectParam = 0
-      ShowFocusRect = False
-      TabOrder = 3
-      TabStop = True
-      TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-    end
-    object ButtonFlatCalendar: TButtonFlat
-      Left = 1133
-      Top = 0
-      Width = 40
-      Height = 40
-      Align = alRight
-      Caption = #1050#1072#1083#1077#1085#1076#1072#1088#1100
-      ColorNormal = 3026478
-      ColorOver = 14196229
-      ColorPressed = 12027396
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWhite
-      Font.Height = -13
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      FontOver.Charset = DEFAULT_CHARSET
-      FontOver.Color = clWhite
-      FontOver.Height = -13
-      FontOver.Name = 'Tahoma'
-      FontOver.Style = []
-      FontDown.Charset = DEFAULT_CHARSET
-      FontDown.Color = clWhite
-      FontDown.Height = -13
-      FontDown.Name = 'Tahoma'
-      FontDown.Style = []
-      IgnorBounds = True
-      ImageIndentLeft = 7
-      ImageIndentRight = 10
-      ImageIndex = 6
-      Images = ImageList24
-      NotifyVisible = True
-      OnClick = ButtonFlatCalendarClick
-      RoundRectParam = 0
-      ShowFocusRect = False
-      TabOrder = 4
-      TabStop = True
-      TextFormat = [tfSingleLine, tfVerticalCenter]
-    end
-    object ButtonFlatClose: TButtonFlat
-      AlignWithMargins = True
-      Left = 1296
-      Top = 3
-      Width = 32
-      Height = 34
-      Align = alRight
-      Caption = ''
-      ColorNormal = 3026478
-      ColorOver = 3026601
-      ColorPressed = 2237053
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWhite
-      Font.Height = -13
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      FontOver.Charset = DEFAULT_CHARSET
-      FontOver.Color = clWhite
-      FontOver.Height = -13
-      FontOver.Name = 'Tahoma'
-      FontOver.Style = []
-      FontDown.Charset = DEFAULT_CHARSET
-      FontDown.Color = clWhite
-      FontDown.Height = -13
-      FontDown.Name = 'Tahoma'
-      FontDown.Style = []
-      IgnorBounds = True
-      ImageIndex = 0
-      Images = ImageList24
-      OnClick = ButtonFlatCloseClick
-      RoundRectParam = 0
-      ShowFocusRect = False
-      TabOrder = 5
-      TabStop = True
-      TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-      Visible = False
-    end
-    object ButtonFlatMinimize: TButtonFlat
-      AlignWithMargins = True
-      Left = 1258
-      Top = 3
-      Width = 32
-      Height = 34
-      Align = alRight
-      Caption = ''
-      ColorNormal = 3026478
-      ColorOver = clGray
-      ColorPressed = 7303023
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWhite
-      Font.Height = -13
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      FontOver.Charset = DEFAULT_CHARSET
-      FontOver.Color = clWhite
-      FontOver.Height = -13
-      FontOver.Name = 'Tahoma'
-      FontOver.Style = []
-      FontDown.Charset = DEFAULT_CHARSET
-      FontDown.Color = clWhite
-      FontDown.Height = -13
-      FontDown.Name = 'Tahoma'
-      FontDown.Style = []
-      IgnorBounds = True
-      ImageIndex = 7
-      Images = ImageList24
-      OnClick = ButtonFlatMinimizeClick
-      RoundRectParam = 0
-      ShowFocusRect = False
-      TabOrder = 6
-      TabStop = True
-      TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-      Visible = False
-    end
-    object ButtonFlatSettings: TButtonFlat
-      Left = 1213
-      Top = 0
-      Width = 40
-      Height = 40
-      Align = alRight
-      Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080
-      ColorNormal = 3026478
-      ColorOver = 14196229
-      ColorPressed = 12027396
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWhite
-      Font.Height = -13
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      FontOver.Charset = DEFAULT_CHARSET
-      FontOver.Color = clWhite
-      FontOver.Height = -13
-      FontOver.Name = 'Tahoma'
-      FontOver.Style = []
-      FontDown.Charset = DEFAULT_CHARSET
-      FontDown.Color = clWhite
-      FontDown.Height = -13
-      FontDown.Name = 'Tahoma'
-      FontDown.Style = []
-      IgnorBounds = True
-      ImageIndentLeft = 7
-      ImageIndentRight = 10
-      ImageIndex = 3
-      Images = ImageList24
-      OnClick = ButtonFlatSettingsClick
-      RoundRectParam = 0
-      ShowFocusRect = False
-      TabOrder = 7
-      TabStop = True
-      TextFormat = [tfSingleLine, tfVerticalCenter]
-    end
-    object ButtonFlatTimes: TButtonFlat
-      Left = 1093
-      Top = 0
-      Width = 40
-      Height = 40
-      Align = alRight
-      Caption = #1042#1088#1077#1084#1077#1085#1085#1072#1103' '#1096#1082#1072#1083#1072
-      ColorNormal = 3684408
-      ColorOver = 14196229
-      ColorPressed = 12027396
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWhite
-      Font.Height = -13
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      FontOver.Charset = DEFAULT_CHARSET
-      FontOver.Color = clWhite
-      FontOver.Height = -13
-      FontOver.Name = 'Tahoma'
-      FontOver.Style = []
-      FontDown.Charset = DEFAULT_CHARSET
-      FontDown.Color = clWhite
-      FontDown.Height = -13
-      FontDown.Name = 'Tahoma'
-      FontDown.Style = []
-      IgnorBounds = True
-      ImageIndentLeft = 7
-      ImageIndentRight = 10
-      ImageIndex = 8
-      Images = ImageList24
-      OnClick = ButtonFlatTimesClick
-      RoundRectParam = 0
-      ShowFocusRect = False
-      TabOrder = 8
-      TabStop = True
-      TextFormat = [tfSingleLine, tfVerticalCenter]
-    end
-    object ButtonFlatNotes: TButtonFlat
-      Left = 1173
-      Top = 0
-      Width = 40
-      Height = 40
-      Align = alRight
-      Caption = #1047#1072#1087#1080#1089#1080
-      ColorNormal = 3026478
-      ColorOver = 14196229
-      ColorPressed = 12027396
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWhite
-      Font.Height = -13
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      FontOver.Charset = DEFAULT_CHARSET
-      FontOver.Color = clWhite
-      FontOver.Height = -13
-      FontOver.Name = 'Tahoma'
-      FontOver.Style = []
-      FontDown.Charset = DEFAULT_CHARSET
-      FontDown.Color = clWhite
-      FontDown.Height = -13
-      FontDown.Name = 'Tahoma'
-      FontDown.Style = []
-      IgnorBounds = True
-      ImageIndentLeft = 7
-      ImageIndentRight = 10
-      ImageIndex = 21
-      Images = ImageList24
-      OnClick = ButtonFlatNotesClick
-      RoundRectParam = 0
-      ShowFocusRect = False
-      TabOrder = 9
-      TabStop = True
-      TextFormat = [tfSingleLine, tfVerticalCenter]
     end
   end
   object PanelLeft: TPanel
@@ -2985,6 +2581,414 @@ object FormMain: TFormMain
       end
     end
   end
+  object DragBarTop: TDragPanel
+    Left = 0
+    Top = 0
+    Width = 1331
+    Height = 40
+    Cursor = crHandPoint
+    Align = alTop
+    BevelOuter = bvNone
+    Caption = ' '
+    Color = 3026478
+    ParentBackground = False
+    TabOrder = 2
+    StyleElements = [seBorder]
+    object Shape2: TShape
+      Left = 1329
+      Top = 0
+      Width = 2
+      Height = 40
+      Align = alRight
+      Brush.Color = 3684408
+      Pen.Color = 3684408
+      ExplicitLeft = 1091
+    end
+    object Shape3: TShape
+      Left = 1251
+      Top = 0
+      Width = 2
+      Height = 40
+      Align = alRight
+      Brush.Color = 3684408
+      Pen.Color = 3684408
+      ExplicitLeft = 1253
+    end
+    object ButtonFlat3: TButtonFlat
+      AlignWithMargins = True
+      Left = 41
+      Top = 10
+      Width = 38
+      Height = 20
+      Margins.Top = 10
+      Margins.Bottom = 10
+      Align = alLeft
+      Caption = #1060#1072#1081#1083
+      ColorNormal = 3026478
+      ColorOver = 14196229
+      ColorPressed = 12027396
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      FontOver.Charset = DEFAULT_CHARSET
+      FontOver.Color = clWhite
+      FontOver.Height = -13
+      FontOver.Name = 'Tahoma'
+      FontOver.Style = []
+      FontDown.Charset = DEFAULT_CHARSET
+      FontDown.Color = clWhite
+      FontDown.Height = -13
+      FontDown.Name = 'Tahoma'
+      FontDown.Style = []
+      IgnorBounds = True
+      ImageIndentLeft = 0
+      RoundRectParam = 0
+      ShowFocusRect = False
+      TabOrder = 0
+      TabStop = True
+      TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+    end
+    object ButtonFlat4: TButtonFlat
+      Left = 0
+      Top = 0
+      Width = 38
+      Height = 40
+      Align = alLeft
+      Caption = ''
+      ColorNormal = 3026478
+      ColorOver = 14196229
+      ColorPressed = 12027396
+      Enabled = False
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      FontOver.Charset = DEFAULT_CHARSET
+      FontOver.Color = clWhite
+      FontOver.Height = -13
+      FontOver.Name = 'Tahoma'
+      FontOver.Style = []
+      FontDown.Charset = DEFAULT_CHARSET
+      FontDown.Color = clWhite
+      FontDown.Height = -13
+      FontDown.Name = 'Tahoma'
+      FontDown.Style = []
+      IgnorBounds = True
+      ImageIndentLeft = 7
+      ImageIndex = 12
+      Images = ImageList24
+      RoundRectParam = 0
+      ShowFocusRect = False
+      TabOrder = 1
+      TabStop = True
+      TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+    end
+    object ButtonFlat5: TButtonFlat
+      AlignWithMargins = True
+      Left = 85
+      Top = 10
+      Width = 108
+      Height = 20
+      Margins.Top = 10
+      Margins.Bottom = 10
+      Align = alLeft
+      Caption = #1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1085#1080#1077
+      ColorNormal = 3026478
+      ColorOver = 14196229
+      ColorPressed = 12027396
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      FontOver.Charset = DEFAULT_CHARSET
+      FontOver.Color = clWhite
+      FontOver.Height = -13
+      FontOver.Name = 'Tahoma'
+      FontOver.Style = []
+      FontDown.Charset = DEFAULT_CHARSET
+      FontDown.Color = clWhite
+      FontDown.Height = -13
+      FontDown.Name = 'Tahoma'
+      FontDown.Style = []
+      IgnorBounds = True
+      ImageIndentLeft = 0
+      RoundRectParam = 0
+      ShowFocusRect = False
+      TabOrder = 2
+      TabStop = True
+      TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+    end
+    object ButtonFlatMenuView: TButtonFlat
+      AlignWithMargins = True
+      Left = 199
+      Top = 10
+      Width = 38
+      Height = 20
+      Margins.Top = 10
+      Margins.Bottom = 10
+      Align = alLeft
+      Caption = #1042#1080#1076
+      ColorNormal = 3026478
+      ColorOver = 14196229
+      ColorPressed = 12027396
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      FontOver.Charset = DEFAULT_CHARSET
+      FontOver.Color = clWhite
+      FontOver.Height = -13
+      FontOver.Name = 'Tahoma'
+      FontOver.Style = []
+      FontDown.Charset = DEFAULT_CHARSET
+      FontDown.Color = clWhite
+      FontDown.Height = -13
+      FontDown.Name = 'Tahoma'
+      FontDown.Style = []
+      IgnorBounds = True
+      ImageIndentLeft = 0
+      OnClick = ButtonFlatMenuViewClick
+      RoundRectParam = 0
+      ShowFocusRect = False
+      TabOrder = 3
+      TabStop = True
+      TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+    end
+    object ButtonFlatCalendar: TButtonFlat
+      Left = 1131
+      Top = 0
+      Width = 40
+      Height = 40
+      Align = alRight
+      Caption = #1050#1072#1083#1077#1085#1076#1072#1088#1100
+      ColorNormal = 3026478
+      ColorOver = 14196229
+      ColorPressed = 12027396
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      FontOver.Charset = DEFAULT_CHARSET
+      FontOver.Color = clWhite
+      FontOver.Height = -13
+      FontOver.Name = 'Tahoma'
+      FontOver.Style = []
+      FontDown.Charset = DEFAULT_CHARSET
+      FontDown.Color = clWhite
+      FontDown.Height = -13
+      FontDown.Name = 'Tahoma'
+      FontDown.Style = []
+      IgnorBounds = True
+      ImageIndentLeft = 7
+      ImageIndentRight = 10
+      ImageIndex = 6
+      Images = ImageList24
+      NotifyVisible = True
+      OnClick = ButtonFlatCalendarClick
+      RoundRectParam = 0
+      ShowFocusRect = False
+      TabOrder = 4
+      TabStop = True
+      TextFormat = [tfSingleLine, tfVerticalCenter]
+      ExplicitLeft = 1133
+    end
+    object ButtonFlatClose: TButtonFlat
+      AlignWithMargins = True
+      Left = 1294
+      Top = 3
+      Width = 32
+      Height = 34
+      Align = alRight
+      Caption = ''
+      ColorNormal = 3026478
+      ColorOver = 3026601
+      ColorPressed = 2237053
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      FontOver.Charset = DEFAULT_CHARSET
+      FontOver.Color = clWhite
+      FontOver.Height = -13
+      FontOver.Name = 'Tahoma'
+      FontOver.Style = []
+      FontDown.Charset = DEFAULT_CHARSET
+      FontDown.Color = clWhite
+      FontDown.Height = -13
+      FontDown.Name = 'Tahoma'
+      FontDown.Style = []
+      IgnorBounds = True
+      ImageIndex = 0
+      Images = ImageList24
+      OnClick = ButtonFlatCloseClick
+      RoundRectParam = 0
+      ShowFocusRect = False
+      TabOrder = 5
+      TabStop = True
+      TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+      Visible = False
+      ExplicitLeft = 1296
+    end
+    object ButtonFlatMinimize: TButtonFlat
+      AlignWithMargins = True
+      Left = 1256
+      Top = 3
+      Width = 32
+      Height = 34
+      Align = alRight
+      Caption = ''
+      ColorNormal = 3026478
+      ColorOver = clGray
+      ColorPressed = 7303023
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      FontOver.Charset = DEFAULT_CHARSET
+      FontOver.Color = clWhite
+      FontOver.Height = -13
+      FontOver.Name = 'Tahoma'
+      FontOver.Style = []
+      FontDown.Charset = DEFAULT_CHARSET
+      FontDown.Color = clWhite
+      FontDown.Height = -13
+      FontDown.Name = 'Tahoma'
+      FontDown.Style = []
+      IgnorBounds = True
+      ImageIndex = 7
+      Images = ImageList24
+      OnClick = ButtonFlatMinimizeClick
+      RoundRectParam = 0
+      ShowFocusRect = False
+      TabOrder = 6
+      TabStop = True
+      TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+      Visible = False
+      ExplicitLeft = 1258
+    end
+    object ButtonFlatSettings: TButtonFlat
+      Left = 1211
+      Top = 0
+      Width = 40
+      Height = 40
+      Align = alRight
+      Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080
+      ColorNormal = 3026478
+      ColorOver = 14196229
+      ColorPressed = 12027396
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      FontOver.Charset = DEFAULT_CHARSET
+      FontOver.Color = clWhite
+      FontOver.Height = -13
+      FontOver.Name = 'Tahoma'
+      FontOver.Style = []
+      FontDown.Charset = DEFAULT_CHARSET
+      FontDown.Color = clWhite
+      FontDown.Height = -13
+      FontDown.Name = 'Tahoma'
+      FontDown.Style = []
+      IgnorBounds = True
+      ImageIndentLeft = 7
+      ImageIndentRight = 10
+      ImageIndex = 3
+      Images = ImageList24
+      OnClick = ButtonFlatSettingsClick
+      RoundRectParam = 0
+      ShowFocusRect = False
+      TabOrder = 7
+      TabStop = True
+      TextFormat = [tfSingleLine, tfVerticalCenter]
+      ExplicitLeft = 1213
+    end
+    object ButtonFlatTimes: TButtonFlat
+      Left = 1091
+      Top = 0
+      Width = 40
+      Height = 40
+      Align = alRight
+      Caption = #1042#1088#1077#1084#1077#1085#1085#1072#1103' '#1096#1082#1072#1083#1072
+      ColorNormal = 3684408
+      ColorOver = 14196229
+      ColorPressed = 12027396
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      FontOver.Charset = DEFAULT_CHARSET
+      FontOver.Color = clWhite
+      FontOver.Height = -13
+      FontOver.Name = 'Tahoma'
+      FontOver.Style = []
+      FontDown.Charset = DEFAULT_CHARSET
+      FontDown.Color = clWhite
+      FontDown.Height = -13
+      FontDown.Name = 'Tahoma'
+      FontDown.Style = []
+      IgnorBounds = True
+      ImageIndentLeft = 7
+      ImageIndentRight = 10
+      ImageIndex = 8
+      Images = ImageList24
+      OnClick = ButtonFlatTimesClick
+      RoundRectParam = 0
+      ShowFocusRect = False
+      TabOrder = 8
+      TabStop = True
+      TextFormat = [tfSingleLine, tfVerticalCenter]
+      ExplicitLeft = 1093
+    end
+    object ButtonFlatNotes: TButtonFlat
+      Left = 1171
+      Top = 0
+      Width = 40
+      Height = 40
+      Align = alRight
+      Caption = #1047#1072#1087#1080#1089#1080
+      ColorNormal = 3026478
+      ColorOver = 14196229
+      ColorPressed = 12027396
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      FontOver.Charset = DEFAULT_CHARSET
+      FontOver.Color = clWhite
+      FontOver.Height = -13
+      FontOver.Name = 'Tahoma'
+      FontOver.Style = []
+      FontDown.Charset = DEFAULT_CHARSET
+      FontDown.Color = clWhite
+      FontDown.Height = -13
+      FontDown.Name = 'Tahoma'
+      FontDown.Style = []
+      IgnorBounds = True
+      ImageIndentLeft = 7
+      ImageIndentRight = 10
+      ImageIndex = 21
+      Images = ImageList24
+      OnClick = ButtonFlatNotesClick
+      RoundRectParam = 0
+      ShowFocusRect = False
+      TabOrder = 9
+      TabStop = True
+      TextFormat = [tfSingleLine, tfVerticalCenter]
+      ExplicitLeft = 1173
+    end
+  end
   object TimerRepaint: TTimer
     Interval = 30
     OnTimer = TimerRepaintTimer
@@ -3003,7 +3007,7 @@ object FormMain: TFormMain
     Left = 44
     Top = 520
     Bitmap = {
-      494C01011C005800CC0118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01011C005800D00118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000C000000001002000000000000020
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -5511,7 +5515,7 @@ object FormMain: TFormMain
     Left = 128
     Top = 520
     Bitmap = {
-      494C010103000800300010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010103000800340010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

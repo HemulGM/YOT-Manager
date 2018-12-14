@@ -1,6 +1,6 @@
 ﻿[]
-Visible=False
-Coordinates=272,654,124,36
+Visible=True
+Coordinates=444,78,84,58
 
 [Shape8]
 Coordinates=0,137,59,36
@@ -26,9 +26,6 @@ Coordinates=355,270,88,36
 [ShapeBorder]
 Coordinates=669,482,90,36
 
-[ButtonFlatCalendar]
-Coordinates=924,56,126,36
-
 [ButtonFlat13]
 Coordinates=924,111,88,36
 
@@ -40,9 +37,6 @@ Coordinates=237,366,55,58
 
 [ButtonFlatTimeToHH]
 Coordinates=924,221,135,36
-
-[Shape2]
-Coordinates=333,558,59,36
 
 [Label11]
 Coordinates=165,155,60,58
@@ -61,9 +55,6 @@ Coordinates=924,276,132,36
 
 [Shape4]
 Coordinates=264,558,59,36
-
-[ButtonFlatSettings]
-Coordinates=924,331,120,36
 
 [Label12]
 Coordinates=99,366,60,58
@@ -97,9 +88,6 @@ Coordinates=28,558,66,36
 
 [DrawGridCalendar]
 Coordinates=924,441,121,36
-
-[ButtonFlat3]
-Coordinates=924,496,80,36
 
 [TableExTasks]
 Coordinates=924,551,96,36
@@ -164,17 +152,8 @@ Coordinates=1097,386,133,36
 [DrawPanel]
 Coordinates=337,462,77,58
 
-[DragBarTop]
-Coordinates=444,78,84,58
-
 [ButtonFlatWD5]
 Coordinates=1097,441,102,36
-
-[ButtonFlat4]
-Coordinates=1097,496,80,36
-
-[ButtonFlatNotes]
-Coordinates=1097,551,107,36
 
 [ButtonFlatNewComment]
 Coordinates=1291,56,154,36
@@ -302,33 +281,17 @@ Coordinates=444,232,111,58
 [ButtonFlat8]
 Coordinates=1291,606,80,36
 
-[ButtonFlatMenuView]
-Coordinates=1291,661,133,36
-
-[ButtonFlatClose]
-Coordinates=1291,716,106,36
-
-[ButtonFlatTimes]
-Coordinates=1182,728,108,36
-Visible=True
-
 [ButtonFlat9]
 Coordinates=1019,728,80,36
 
 [PanelNotes]
 Coordinates=282,155,81,58
 
-[Shape3]
-Coordinates=950,728,59,36
-
 [Shape13]
 Coordinates=881,728,66,36
 
 [ButtonFlatWD6]
 Coordinates=772,728,102,36
-
-[ButtonFlatMinimize]
-Coordinates=643,728,124,36
 
 [PanelTaskDAN]
 Coordinates=593,386,102,58
@@ -374,9 +337,6 @@ Coordinates=1494,166,88,36
 
 [MenuItemTimeStartFrom]
 Coordinates=1494,221,157,36
-
-[ButtonFlat5]
-Coordinates=1494,276,80,36
 
 [ButtonFlatTimeToMM]
 Coordinates=1494,331,138,36
