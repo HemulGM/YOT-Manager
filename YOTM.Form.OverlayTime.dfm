@@ -18,8 +18,6 @@ inherited FormTimeOverlay: TFormTimeOverlay
     Width = 296
     Height = 36
     Align = alClient
-    ExplicitLeft = 2
-    ExplicitTop = 2
     ExplicitWidth = 296
     ExplicitHeight = 36
     inherited LabelCaption: TLabel
@@ -31,7 +29,7 @@ inherited FormTimeOverlay: TFormTimeOverlay
       Caption = #1053#1086#1074#1072#1103' '#1079#1072#1076#1072#1095#1072
       FocusControl = DragBarTop
       OnMouseDown = LabelCaptionMouseDown
-      ExplicitLeft = 65
+      ExplicitLeft = 58
       ExplicitWidth = 98
     end
     object LabelTime: TLabel [1]
@@ -53,7 +51,7 @@ inherited FormTimeOverlay: TFormTimeOverlay
       Transparent = True
       Layout = tlCenter
       OnMouseDown = LabelCaptionMouseDown
-      ExplicitLeft = 34
+      ExplicitHeight = 19
     end
     inherited ButtonFlatClose: TButtonFlat
       AlignWithMargins = True
@@ -62,7 +60,7 @@ inherited FormTimeOverlay: TFormTimeOverlay
       Width = 28
       Height = 28
       ImageIndentLeft = 2
-      ExplicitLeft = 257
+      ExplicitLeft = 265
       ExplicitTop = 3
       ExplicitWidth = 28
       ExplicitHeight = 28
@@ -95,7 +93,7 @@ inherited FormTimeOverlay: TFormTimeOverlay
       FontDown.Style = []
       IgnorBounds = True
       ImageIndentLeft = 2
-      ImageIndex = 26
+      ImageIndex = 28
       Images = FormMain.ImageList24
       OnClick = ButtonFlatSwitchClick
       RoundRectParam = 0
@@ -103,7 +101,6 @@ inherited FormTimeOverlay: TFormTimeOverlay
       TabOrder = 1
       TabStop = True
       TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-      ExplicitLeft = 215
     end
   end
 end

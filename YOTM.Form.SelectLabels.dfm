@@ -72,7 +72,7 @@ inherited FormSelectLabels: TFormSelectLabels
       end
       item
         Caption = #1052#1077#1090#1082#1072
-        Width = 183
+        Width = 151
         FormatColumns = [tfSingleLine, tfVerticalCenter]
         MinWidth = 90
       end>

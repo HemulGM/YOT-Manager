@@ -23,7 +23,7 @@ type
    DayOfWeek:Integer;
    Date:TDate;
    /// <summary>
-   /// Не выбранный месяц
+   /// Не выбранный (не текущий) месяц
    /// </summary>
    IsAnotherMonth:Boolean;
   end;
@@ -188,7 +188,7 @@ type
     DragBarTop: TDragPanel;
     Shape2: TShape;
     Shape3: TShape;
-    ButtonFlat3: TButtonFlat;
+    ButtonFlatMenuFile: TButtonFlat;
     ButtonFlat4: TButtonFlat;
     ButtonFlat5: TButtonFlat;
     ButtonFlatMenuView: TButtonFlat;
@@ -198,6 +198,12 @@ type
     ButtonFlatSettings: TButtonFlat;
     ButtonFlatTimes: TButtonFlat;
     ButtonFlatNotes: TButtonFlat;
+    PopupMenuFile: TPopupMenu;
+    MenuItemQuit: TMenuItem;
+    Shape10: TShape;
+    ScrollBoxLabels: TScrollBox;
+    Shape18: TShape;
+    Panel7: TPanel;
     procedure TimerRepaintTimer(Sender: TObject);
     procedure DrawPanelPaint(Sender: TObject);
     procedure DrawPanelMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
@@ -294,7 +300,16 @@ type
     procedure EditNewTaskNameKeyPress(Sender: TObject; var Key: Char);
     procedure CalendarChange(Sender: TObject);
     procedure ButtonFlatCurrentDateClick(Sender: TObject);
-  private
+    procedure TableExTasksHotOver(Sender: TObject);
+    procedure MenuItemLinkWithTaskClick(Sender: TObject);
+    procedure MenuItemDropTaskLinkClick(Sender: TObject);
+    procedure MenuItemTimeStartFromClick(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure ButtonFlatMenuFileClick(Sender: TObject);
+    procedure MenuItemQuitClick(Sender: TObject);
+   protected
+    procedure WMSysCommand(var Message:TWMSysCommand); message WM_SYSCOMMAND;
+   private
     FromHH, FromMM, ToHH, ToMM:Word;
     FLastDate:TDate;             //Реальная дата (без времени)
     FPanelMouse:TPoint;          //Позиция мыши на панели
@@ -371,7 +386,6 @@ type
     function DeleteTime(ID: Integer): Boolean;
     function GetCurrentTask: TTaskItem;
     function GetTaskSelected: Boolean;
-    procedure WMSysCommand(var Message: TWMSysCommand); message WM_SysCommand;
     procedure OpenTimeOverlay;
     procedure UpdateTimeOverlayData;
     procedure TimeOverlayCallBack(Sender:TObject; State:Boolean);
@@ -379,9 +393,13 @@ type
     procedure OnChangeItems;
     procedure ReloadCalendarData;
     function GetDayCompletePercent: Integer;
-  public
+    function StopTimeSection: Boolean;
+    procedure FAddTaskTime(ADate, ADateEnd: TDate; TStart, TEnd: TTime; ATaskID: Integer; AColor: TColor; ADesc: string);
+    procedure ReloadLabelsTypes;
+   public
     procedure Initializate;
     procedure SetTaskComplete(TaskID:Integer);
+    procedure Quit;
     property CurrentDate:TDate read FCurrentDate write SetCurrentDate;
     property ViewMode:TViewMode read FViewMode write SetViewMode;
     property WorkDayStart:TTime read GetTimeFrom write SetTimeFrom;
@@ -402,6 +420,10 @@ var
   FormMain: TFormMain;
   AccentColor:TColor = $00B86B00;
   FWndFrameSize:Integer;
+  FAnimate:Integer = 0;
+  FAnimateDo:Boolean = False;
+  FItemLast:Integer = -1;
+  FItemCur:Integer = -1;
 
   function GetMins(Time:TTime):Integer;
   function GetTime(Mins:Integer):TTime;
@@ -423,8 +445,8 @@ end;
 
 procedure TFormMain.WMSysCommand(var Message: TWMSysCommand);
 begin
- Case Message. CmdType of
-  SC_CLOSE:    Application.Terminate;
+ case Message.CmdType of
+  SC_CLOSE:    Close;
   SC_MINIMIZE: ShowWindow(Handle, SW_HIDE);
   SC_MAXIMIZE: ShowWindow(Handle, SW_MAXIMIZE);
   SC_RESTORE:  ShowWindow(Handle, SW_RESTORE);
@@ -963,25 +985,25 @@ begin
       TextOut(MinSelTextLeft, ScaleRect.Top - 60, FormatDateTime('HH:mm - указано', SelTime));
       TextOut(MinSelTextLeft, ScaleRect.Top - 80, FormatDateTime('HH:mm - разница с текущим', GetTime(Abs(GetMins(FCurrentTime) - (H * 60 + M) - GetMins(WorkDayStart)))));
       //Диапазон выбора
-      MProc:=FPanelMouseDownPos.X - ScaleRect.Left;
-      MProc:=MProc / (ScaleRect.Width / 100);
-      MProc:=MProc * (FWorkTimeMin / 100); //Минуты
-
-      H:=Ceil(MProc) div 60;
-      M:=Trunc(Ceil(MProc) mod 60 / 5) * 5;
-      KeepTime:=GetTime(GetMins(WorkDayStart) + (H * 60 + M));
-      FRangeFrom:=KeepTime;
-      FRangeTo:=SelTime;
-      if GetMins(KeepTime) > GetMins(SelTime) then
-       begin
-        KeepTime:=SelTime;
-        SelTime:=FRangeFrom;
-
-        FRangeFrom:=KeepTime;
-        FRangeTo:=SelTime;
-       end;
       if FPanelMouseDown then
        begin
+        MProc:=FPanelMouseDownPos.X - ScaleRect.Left;
+        MProc:=MProc / (ScaleRect.Width / 100);
+        MProc:=MProc * (FWorkTimeMin / 100); //Минуты
+
+        H:=Ceil(MProc) div 60;
+        M:=Trunc(Ceil(MProc) mod 60 / 5) * 5;
+        KeepTime:=GetTime(GetMins(WorkDayStart) + (H * 60 + M));
+        FRangeFrom:=KeepTime;
+        FRangeTo:=SelTime;
+        if GetMins(KeepTime) > GetMins(SelTime) then
+         begin
+          KeepTime:=SelTime;
+          SelTime:=FRangeFrom;
+
+          FRangeFrom:=KeepTime;
+          FRangeTo:=SelTime;
+         end;
         SelAmount:=GetTime(Abs(GetMins(FRangeTo)-GetMins(FRangeFrom)));
         TextOut(MinSelTextLeft, ScaleRect.Top - 100, FormatDateTime('HH:mm - ', FRangeFrom)+FormatDateTime('HH:mm - выбрано ', FRangeTo)+FormatDateTime('(HH:mm)', SelAmount));
        end;
@@ -1014,10 +1036,28 @@ begin
  Close;
 end;
 
-function TFormMain.AddTaskTime(ADate, ADateEnd:TDate; TStart, TEnd:TTime; ATaskID:Integer; AColor:TColor):Boolean;
+procedure TFormMain.FAddTaskTime(ADate, ADateEnd:TDate; TStart, TEnd:TTime; ATaskID:Integer; AColor:TColor; ADesc:string);
 var Item:TTimeItem;
-    EditTime:TFormEditTime;
 begin
+ Item:=TTimeItem.Create(FTimeItems);
+ with Item do
+  begin
+   Task:=ATaskID;
+   Color:=AColor;
+   Date:=DateOf(ADate);
+   DateEnd:=DateOf(ADateEnd);
+   Description:=ADesc;
+   TimeFrom:=TimeOf(TStart);
+   TimeTo:=TimeOf(TEnd);
+   FTimeItems.Insert(0, Item);
+   FTimeItems.Update(0);
+  end;
+end;
+
+function TFormMain.AddTaskTime(ADate, ADateEnd:TDate; TStart, TEnd:TTime; ATaskID:Integer; AColor:TColor):Boolean;
+var EditTime:TFormEditTime;
+begin
+ Result:=False;
  EditTime:=TFormEditTime.Create(nil);
  try
   EditTime.EditText.Text:='';
@@ -1025,22 +1065,13 @@ begin
   EditTime.TimeTo:=TEnd;
   EditTime.Position:=poMainFormCenter;
   EditTime.TaskID:=ATaskID;
+  EditTime.TaskColor:=AColor;
   if EditTime.ShowModal = mrOK then
    begin
     ATaskID:=EditTime.TaskID;
-    Item:=TTimeItem.Create(FTimeItems);
-    with Item do
-     begin
-      Task:=ATaskID;
-      Color:=AColor;
-      Date:=DateOf(ADate);
-      DateEnd:=DateOf(ADateEnd);
-      Description:=EditTime.EditText.Text;
-      TimeFrom:=EditTime.TimeFrom;
-      TimeTo:=EditTime.TimeTo;
-      FTimeItems.Insert(0, Item);
-      FTimeItems.Update(0);
-     end;
+    AColor:=EditTime.TaskColor;
+    FAddTaskTime(DateOf(ADate), DateOf(ADateEnd), TStart, TEnd, ATaskID, AColor, EditTime.EditText.Text);
+    Result:=True;
    end;
  finally
   EditTime.Free;
@@ -1096,18 +1127,27 @@ begin
   end;
 end;
 
-procedure TFormMain.ButtonFlatTaskEndClick(Sender: TObject);
+function TFormMain.StopTimeSection:Boolean;
 begin
+ Result:=False;
  if FDoTimeSection then
   begin
    ButtonFlatTaskStart.Caption:='Начать';
-   FDoTimeSection:=False;
    FNewTEnd:=TimeOf(Now);
    FNewTEndDate:=DateOf(Now);
    FPanelMouseDown:=False;
    FPanelMouseDownPos:=Point(-1, -1);
+   FDoTimeSection:=False;
    if FNewTStartDate = FNewTEndDate then
     if Abs(GetMins(FNewTStart) - GetMins(FNewTEnd)) < 1 then Exit;
+   Result:=True;
+  end;
+end;
+
+procedure TFormMain.ButtonFlatTaskEndClick(Sender: TObject);
+begin
+ if StopTimeSection then
+  begin
    AddTaskTime(FNewTStartDate, FNewTEndDate, FNewTStart, FNewTEnd, FNewTTask, FNewTColor);
   end;
 end;
@@ -1124,7 +1164,11 @@ end;
 function TFormMain.StartTask(TimeStart:TTime):Boolean;
 begin
  Result:=False;
- if FDoTimeSection then Exit;
+ if FDoTimeSection then
+  begin
+   OpenTimeOverlay;
+   Exit;
+  end;
  FNewTStartDate:=DateOf(TimeStart);
  FNewTStart:=TimeOf(TimeStart);
  FNewTEnd:=FNewTStart;
@@ -1205,6 +1249,13 @@ begin
   41:   ToMM:=Min(Max(0,   ToMM + 1), 59);
  end;
  UpdateTime;
+end;
+
+procedure TFormMain.ButtonFlatMenuFileClick(Sender: TObject);
+var Pt:TPoint;
+begin
+ Pt:=ButtonFlatMenuFile.ClientToScreen(Point(0, 0));
+ PopupMenuFile.Popup(Pt.X, Pt.Y+ButtonFlatMenuFile.Height);
 end;
 
 function TFormMain.GetTaskSelected: Boolean;
@@ -1393,6 +1444,7 @@ begin
  FTaskItems[FTaskID].Deadline:=False;
  FTaskItems.Update(FTaskItems[FTaskID]);
  UpdateTaskPanel(FTaskID);
+ OnChangeItems;
 end;
 
 procedure TFormMain.ButtonFlatDeadlinedClick(Sender: TObject);
@@ -1616,6 +1668,47 @@ begin
  ButtonFlatTaskNow.SubText:=IntToStr(FTaskItems.GetCount(Now));
  ButtonFlatDeadlined.SubText:=IntToStr(FTaskItems.GetDeadlined(Now));
  ButtonFlatTaskInbox.SubText:=IntToStr(FTaskItems.GetCount(0));
+ ButtonFlatTaskNow.VisibleSubText:=ButtonFlatTaskNow.SubText <> '0';
+ ButtonFlatDeadlined.VisibleSubText:=ButtonFlatDeadlined.SubText <> '0';
+ ButtonFlatTaskInbox.VisibleSubText:=ButtonFlatTaskInbox.SubText <> '0';
+end;
+
+procedure TFormMain.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+begin
+ CanClose:=False;
+ Quit;
+end;
+
+procedure TFormMain.ReloadLabelsTypes;
+var i: Integer;
+    Button:TButtonFlat;
+begin
+ for i:= 0 to ScrollBoxLabels.ComponentCount-1 do
+  begin
+   ScrollBoxLabels.Components[i].Free;
+  end;
+ for i:= 0 to FLabelTypes.Count-1 do
+  begin
+   Button:=TButtonFlat.Create(ScrollBoxLabels);
+   Button.Name:='';
+   Button.Parent:=ScrollBoxLabels;
+   Button.Align:=alTop;
+   Button.AlignWithMargins:=True;
+   Button.ColorNormal:=$00383838;
+   Button.ColorOver:=$00616161;
+   Button.ColorPressed:=$003A3A3A;
+   Button.SubText:=' ';
+   Button.VisibleSubText:=True;
+   Button.Caption:=FLabelTypes[i].Name;
+   Button.SubTextColor:=FLabelTypes[i].Color;
+   Button.Height:=34;
+   Button.Font.Color:=clWhite;
+   Button.FontOver.Color:=clWhite;
+   Button.FontDown.Color:=clWhite;
+   Button.TextFormat:=[tfSingleLine, tfVerticalCenter];
+   Button.Tag:=FLabelTypes[i].ID;
+  end;
+ ScrollBoxLabels.Height:=Min(400, ScrollBoxLabels.ComponentCount * (34 + 6));
 end;
 
 procedure TFormMain.FormCreate(Sender: TObject);
@@ -1635,9 +1728,12 @@ begin
  FTaskItems:=TTaskItems.Create(FDB, TableExTasks);
  FComments:=TCommentItems.Create(FDB, TableExComments);
  FLabelTypes:=TLabelTypes.Create(FDB, nil);
+ FLabelTypes.Reload;
  FLabelItems:=TLabelItems.Create(FDB, nil);
  FNote:=TNoteItem.Create(FDB);
  FTasksOfCalendar:=TTaskItems.Create(FDB, nil);
+
+ ReloadLabelsTypes;
 end;
 
 procedure TFormMain.FormPaint(Sender: TObject);
@@ -1671,9 +1767,46 @@ begin
  DeleteComment(TableExComments.ItemIndex);
 end;
 
+procedure TFormMain.MenuItemDropTaskLinkClick(Sender: TObject);
+begin
+ if not IndexInList(TableExTimes.ItemIndex, FTimeItems.Count) then Exit;
+ FTimeItems[TableExTimes.ItemIndex].Task:=-1;
+ FTimeItems[TableExTimes.ItemIndex].Color:=clNone;
+ FTimeItems.Update(TableExTimes.ItemIndex);
+ FTimeItems.UpdateTable;
+end;
+
+procedure TFormMain.MenuItemLinkWithTaskClick(Sender: TObject);
+begin
+ if not IndexInList(TableExTimes.ItemIndex, FTimeItems.Count) then Exit;
+ if not IndexInList(TableExTasks.ItemIndex, FTaskItems.Count) then
+  begin
+   ShowNeedAction('Необходимо выбрать задачу!');
+   Exit;
+  end;
+ FTimeItems[TableExTimes.ItemIndex].Task:=FTaskItems[TableExTasks.ItemIndex].ID;
+ FTimeItems[TableExTimes.ItemIndex].Color:=FTaskItems[TableExTasks.ItemIndex].Color;
+ FTimeItems.Update(TableExTimes.ItemIndex);
+ FTimeItems.UpdateTable;
+end;
+
 procedure TFormMain.MenuItemOpenLabelsClick(Sender: TObject);
 begin
  TFormSelectLabels.OpenForEdit;
+end;
+
+procedure TFormMain.Quit;
+begin
+ if StopTimeSection then
+  begin
+   FAddTaskTime(FNewTStartDate, FNewTEndDate, FNewTStart, FNewTEnd, FNewTTask, FNewTColor, '<Автосохранение>');
+  end;
+ Application.Terminate;
+end;
+
+procedure TFormMain.MenuItemQuitClick(Sender: TObject);
+begin
+ Quit;
 end;
 
 procedure TFormMain.MenuItemShowEndedClick(Sender: TObject);
@@ -1721,6 +1854,12 @@ procedure TFormMain.MenuItemTimeDeleteClick(Sender: TObject);
 begin
  if not IndexInList(TableExTimes.ItemIndex, FTimeItems.Count) then Exit;
  DeleteTime(TableExTimes.ItemIndex);
+end;
+
+procedure TFormMain.MenuItemTimeStartFromClick(Sender: TObject);
+begin
+ if not IndexInList(TableExTimes.ItemIndex, FTimeItems.Count) then Exit;
+ StartTask(FTimeItems[TableExTimes.ItemIndex].TimeFrom);
 end;
 
 procedure TFormMain.MenuItemTaskLabelClick(Sender: TObject);
@@ -1914,7 +2053,11 @@ end;
 
 procedure TFormMain.TableExCommentsGetData(FCol, FRow: Integer; var Value: string);
 begin
- if not IndexInList(FRow, FComments.Count) then Exit;
+ if not IndexInList(FRow, FComments.Count) then
+  begin
+   Value:='Пусто';
+   Exit;
+  end;
  Value:='';
  case FCol of
   0:Value:=FComments[FRow].Text;
@@ -2034,7 +2177,8 @@ begin
   begin
    if ACol <> 1 then Exit;
    Txt:='Нет задач';
-   TableExTasks.Canvas.TextRect(Rect, Txt, [tfSingleLine, tfCenter, tfVerticalCenter, tfEndEllipsis]);
+   REct.Offset(-16, 0);
+   TableExTasks.Canvas.TextRect(Rect, Txt, [tfSingleLine, tfCenter, tfVerticalCenter]);
    Exit;
   end;
  Task:=FTaskItems[ARow];
@@ -2070,10 +2214,17 @@ begin
         begin
          TxtRect:=Rect;
          Pen.Color:=Task.Color;
-         Rectangle(Rect);
-         TxtRect.Right:=TxtRect.Left + TxtRect.Width div 3;
-         TxtRect.Inflate(0, -1);
+         //Rectangle(Rect);
+         if gdHotTrack in State then TxtRect.Right:=TxtRect.Left + Round(((TxtRect.Width div 3) / 100 * FAnimate)) + 10
+         else TxtRect.Right:=TxtRect.Left + 10;
+         //TxtRect.Inflate(0, -1);
+
          Gradient(Handle, TxtRect, Task.Color, Brush.Color, False);
+
+         TxtRect:=Rect;
+         TxtRect.Right:=TxtRect.Left + Round(((TxtRect.Width div 3) / 100 * Abs(100-FAnimate)));
+         if (ARow = FItemLast) and (ARow <> TableExTasks.ItemIndex) and (FItemLast <> FItemCur) then
+          Gradient(Handle, TxtRect, Task.Color, Brush.Color, False);
         end;
        Pen.Width:=1;
        Font.Size:=11;
@@ -2190,6 +2341,14 @@ begin
  end;
 end;
 
+procedure TFormMain.TableExTasksHotOver(Sender: TObject);
+begin
+ FAnimateDo:=True;
+ FAnimate:=0;
+ FItemLast:=FItemCur;
+ FItemCur:=TableExTasks.ItemUnderMouse;
+end;
+
 procedure TFormMain.TableExTasksItemColClick(Sender: TObject; MouseButton: TMouseButton; const Index: Integer);
 begin
  if not IndexInList(TableExTasks.ItemIndex, FTaskItems.Count) then Exit;
@@ -2223,17 +2382,24 @@ begin
 end;
 
 procedure TFormMain.TableExTimesDrawCellData(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
+var Tmp:TRect;
 begin
  if not IndexInList(ARow, FTimeItems.Count) then Exit;
  if ACol <> 0 then Exit;
  with TableExTimes.Canvas do
   begin
-   Pen.Color:=FTimeItems[ARow].Color;
-   Brush.Style:=bsClear;
-   Rectangle(Rect);
+   if FTimeItems[ARow].Task >= 0 then
+    begin
+     Pen.Color:=FTimeItems[ARow].Color;
+     Brush.Color:=Pen.Color;
+     Brush.Style:=bsSolid;
+     Tmp:=Rect;
+     Tmp.Width:=5;
+     Rectangle(Tmp);
+    end;
   end;
  if (not (gdHotTrack in State)) and (ARow <> TableExTimes.ItemIndex) then Exit;
- ImageList24.Draw(TableExTimes.Canvas, Rect.Left + (Rect.Width div 2 - 24 div 2), Rect.Top, 2, True);
+ ImageList24.Draw(TableExTimes.Canvas, Rect.Left + (Rect.Width div 2 - 24 div 2), Rect.Top + (Rect.Height div 2 - 24 div 2), 2, True);
 end;
 
 procedure TFormMain.TableExTimesGetData(FCol, FRow: Integer; var Value: string);
@@ -2280,12 +2446,22 @@ end;
 
 procedure TFormMain.TimeOverlayCallBack(Sender: TObject; State: Boolean);
 begin
- //Установка состояния записи работы
+ if not State then ButtonFlatTaskEndClick(nil);
 end;
 
 procedure TFormMain.TimerRepaintTimer(Sender: TObject);
 begin
  DrawPanel.Repaint;
+ if FAnimateDo then
+  begin
+   Inc(FAnimate, 20);
+   if FAnimate >= 100 then
+    begin
+     FAnimate:=100;
+     FAnimateDo:=False;
+    end;
+   TableExTasks.Repaint;
+  end;
 end;
 
 procedure TFormMain.UpdateTaskNowButton;
@@ -2299,6 +2475,7 @@ begin
  Calendar.Date:=FLastDate;
  CurrentDate:=FLastDate;
  ViewMode:=ViewMode;
+ UpdateTaskNowButton;
 end;
 
 procedure TFormMain.TimerTimeTimer(Sender: TObject);

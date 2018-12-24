@@ -59,10 +59,12 @@ type
     procedure ButtonFlat11Click(Sender: TObject);
     procedure ButtonFlatOKClick(Sender: TObject);
     procedure EditTimeChange(Sender: TObject);
+    procedure ButtonFlatRepeatClick(Sender: TObject);
   private
     FData:TDateNotifyData;
     procedure SetData(Data: TDateNotifyData);
     function GetData: Boolean;
+    procedure UpdateRepeatButton;
   public
     class function Select(var Data:TDateNotifyData):Boolean;
   end;
@@ -71,6 +73,7 @@ var
   FormDateAndNotify: TFormDateAndNotify;
 
 implementation
+ uses YOTM.Form.DateNotify.TaskRepeat;
 
 {$R *.dfm}
 
@@ -85,14 +88,19 @@ begin
  if FData.SelectedTime then
   EditTime.Text:=FormatDateTime('HH:mm', FData.SelectTime)
  else EditTime.Text:='';
+ UpdateRepeatButton;
+ EditTimeChange(nil);
+end;
+
+procedure TFormDateAndNotify.UpdateRepeatButton;
+begin
  case FData.SelectRepeatType of
   ttSimple: ButtonFlatRepeat.Caption:='Не повторять';
-  ttRepeatInDay: ButtonFlatRepeat.Caption:='Несколько раз в день';
-  ttRepeatInWeek: ButtonFlatRepeat.Caption:='Несколько раз в неделю';
-  ttRepeatInMonth: ButtonFlatRepeat.Caption:='Несколько раз в месяц';
-  ttRepeatInYear: ButtonFlatRepeat.Caption:='Несколько раз в год';
+  ttRepeatInDay: ButtonFlatRepeat.Caption:='Ежедневно';
+  ttRepeatInWeek: ButtonFlatRepeat.Caption:='Еженедельно';
+  ttRepeatInMonth: ButtonFlatRepeat.Caption:='Ежемесячно';
+  ttRepeatInYear: ButtonFlatRepeat.Caption:='Ежегодно';
  end;
- EditTimeChange(nil);
 end;
 
 procedure TFormDateAndNotify.ButtonFlat11Click(Sender: TObject);
@@ -104,6 +112,20 @@ end;
 procedure TFormDateAndNotify.ButtonFlatOKClick(Sender: TObject);
 begin
  if GetData then ModalResult:=mrOk;
+end;
+
+procedure TFormDateAndNotify.ButtonFlatRepeatClick(Sender: TObject);
+var RStr:string;
+    RType:TTaskType;
+begin
+ RStr:=FData.SelectRepeat;
+ RType:=FData.SelectRepeatType;
+ if TFormTaskRepeat.Select(RStr, RType) then
+  begin
+   FData.SelectRepeat:=RStr;
+   FData.SelectRepeatType:=RType;
+   UpdateRepeatButton;
+  end;
 end;
 
 procedure TFormDateAndNotify.ButtonFlatSelectTimeClick(Sender: TObject);
@@ -151,8 +173,6 @@ begin
    end;
   end
  else FData.SelectedTime:=False;
- FData.SelectRepeat:='';
- FData.SelectRepeatType:=ttSimple;
  Result:=True;
 end;
 

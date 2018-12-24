@@ -28,7 +28,7 @@ type
     property Time:string read FTime write SetTime;
     property ActiveWork:Boolean read FActiveWork write SetActiveWork;
     procedure SetActivateLow(Value:Boolean);
-    procedure Pause;
+    procedure Stop;
     procedure Resume;
     property Callback:TChangeActive read FCallback write SetCallback;
   end;
@@ -58,7 +58,7 @@ begin
  DragBarTop.DoDrag;
 end;
 
-procedure TFormTimeOverlay.Pause;
+procedure TFormTimeOverlay.Stop;
 begin
  ActiveWork:=False;
 end;
@@ -72,16 +72,15 @@ procedure TFormTimeOverlay.SetActivateLow(Value: Boolean);
 begin
  FActiveWork := Value;
  case Value of
-  True: ButtonFlatSwitch.ImageIndex:=26;
+  True: ButtonFlatSwitch.ImageIndex:=28;
   False:ButtonFlatSwitch.ImageIndex:=27;
  end;
 end;
 
 procedure TFormTimeOverlay.SetActiveWork(const Value: Boolean);
 begin
- SetActivateLow(Value);
  if FActiveWork = Value then Exit;
- FActiveWork := Value;
+ SetActivateLow(Value);
  if Assigned(FCallback) then FCallback(Self, FActiveWork);
 end;
 

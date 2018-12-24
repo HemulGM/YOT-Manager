@@ -2,7 +2,6 @@ inherited FormAnswer: TFormAnswer
   Caption = 'FormAnswer'
   ClientHeight = 189
   ClientWidth = 437
-  OnShow = FormShow
   ExplicitWidth = 437
   ExplicitHeight = 189
   PixelsPerInch = 96

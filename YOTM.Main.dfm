@@ -18,6 +18,7 @@ object FormMain: TFormMain
   Position = poScreenCenter
   ShowHint = True
   StyleElements = []
+  OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnPaint = FormPaint
   PixelsPerInch = 96
@@ -68,7 +69,7 @@ object FormMain: TFormMain
       Left = 0
       Top = 82
       Width = 627
-      Height = 455
+      Height = 358
       Align = alClient
       BorderStyle = bsNone
       Color = 3684408
@@ -89,6 +90,7 @@ object FormMain: TFormMain
       OnEdit = TableExTasksEdit
       OnEditCancel = TableExTasksEditCancel
       OnEditOk = TableExTasksEditOk
+      OnHotOver = TableExTasksHotOver
       ProcEmpty = True
       Columns = <
         item
@@ -97,7 +99,7 @@ object FormMain: TFormMain
         end
         item
           Caption = #1047#1072#1076#1072#1095#1072
-          Width = 595
+          Width = 563
           MinWidth = 100
         end>
       DefaultDataDrawing = False
@@ -188,7 +190,7 @@ object FormMain: TFormMain
       object ButtonFlatViewMode: TButtonFlat
         AlignWithMargins = True
         Left = 229
-        Top = 8
+        Top = 6
         Width = 153
         Height = 28
         Anchors = [akTop, akBottom]
@@ -302,9 +304,9 @@ object FormMain: TFormMain
     end
     object PanelTask: TPanel
       Left = 0
-      Top = 537
+      Top = 440
       Width = 627
-      Height = 200
+      Height = 297
       Align = alBottom
       BevelOuter = bvNone
       Caption = #1042#1099#1073#1077#1088#1080#1090#1077' '#1079#1072#1076#1072#1095#1091' '#1080#1079' '#1089#1087#1080#1089#1082#1072
@@ -325,7 +327,7 @@ object FormMain: TFormMain
         Left = 286
         Top = 86
         Width = 2
-        Height = 114
+        Height = 211
         Align = alRight
         Brush.Color = 3026478
         Pen.Color = 3026478
@@ -359,7 +361,7 @@ object FormMain: TFormMain
         Left = 0
         Top = 86
         Width = 286
-        Height = 114
+        Height = 211
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
@@ -367,7 +369,7 @@ object FormMain: TFormMain
           Left = 0
           Top = 0
           Width = 286
-          Height = 114
+          Height = 211
           Align = alClient
           BorderStyle = bsNone
           Color = 3223857
@@ -385,15 +387,25 @@ object FormMain: TFormMain
         Left = 288
         Top = 86
         Width = 339
-        Height = 114
+        Height = 211
         Align = alRight
         BevelOuter = bvNone
         TabOrder = 1
+        object Shape18: TShape
+          Left = 0
+          Top = 169
+          Width = 339
+          Height = 2
+          Align = alBottom
+          Brush.Color = 3026478
+          Pen.Color = 3026478
+          ExplicitTop = 8
+        end
         object TableExComments: TTableEx
           Left = 0
           Top = 0
           Width = 339
-          Height = 74
+          Height = 169
           Align = alClient
           BorderStyle = bsNone
           Color = 3684408
@@ -411,6 +423,7 @@ object FormMain: TFormMain
           GetData = TableExCommentsGetData
           OnEdit = TableExCommentsEdit
           OnEditOk = TableExCommentsEditOk
+          ProcEmpty = True
           Columns = <
             item
               Caption = #1050#1086#1084#1084#1077#1085#1090#1072#1088#1080#1081
@@ -451,7 +464,7 @@ object FormMain: TFormMain
         end
         object Panel2: TPanel
           Left = 0
-          Top = 74
+          Top = 171
           Width = 339
           Height = 40
           Align = alBottom
@@ -480,7 +493,7 @@ object FormMain: TFormMain
             Font.Style = []
             ParentFont = False
             TabOrder = 0
-            TextHint = #1050#1086#1084#1084#1077#1085#1090#1072#1088#1080#1081'...'
+            TextHint = #1053#1086#1074#1099#1081' '#1082#1086#1084#1084#1077#1085#1090#1072#1088#1080#1081'...'
             StyleElements = []
           end
           object ButtonFlatNewComment: TButtonFlat
@@ -1014,8 +1027,376 @@ object FormMain: TFormMain
           TabOrder = 2
         end
       end
-      object PanelSettings: TPanel
+      object PanelCalendar: TPanel
         Left = 0
+        Top = 0
+        Width = 450
+        Height = 737
+        Anchors = [akLeft, akTop, akBottom]
+        BevelOuter = bvNone
+        TabOrder = 2
+        object DrawGridCalendar: TDrawGrid
+          Left = 0
+          Top = 0
+          Width = 450
+          Height = 737
+          Align = alClient
+          BorderStyle = bsNone
+          Color = 3684408
+          ColCount = 7
+          DefaultColWidth = 63
+          DefaultRowHeight = 65
+          DefaultDrawing = False
+          DrawingStyle = gdsGradient
+          FixedCols = 0
+          RowCount = 9
+          FixedRows = 0
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = 15921906
+          Font.Height = -27
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          GridLineWidth = 0
+          Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine]
+          ParentFont = False
+          ScrollBars = ssNone
+          TabOrder = 0
+          StyleElements = [seBorder]
+          OnDrawCell = DrawGridCalendarDrawCell
+          OnMouseEnter = DrawGridCalendarMouseEnter
+          OnMouseLeave = DrawGridCalendarMouseLeave
+          OnMouseMove = DrawGridCalendarMouseMove
+          OnMouseWheelDown = DrawGridCalendarMouseWheelDown
+          OnMouseWheelUp = DrawGridCalendarMouseWheelUp
+          OnSelectCell = DrawGridCalendarSelectCell
+          ColWidths = (
+            63
+            63
+            63
+            63
+            63
+            63
+            63)
+          RowHeights = (
+            65
+            65
+            65
+            65
+            65
+            65
+            65
+            65
+            65)
+        end
+      end
+      object PanelTimes: TPanel
+        Left = 0
+        Top = 0
+        Width = 450
+        Height = 737
+        Anchors = [akLeft, akTop, akBottom]
+        BevelOuter = bvNone
+        TabOrder = 1
+        object Shape12: TShape
+          Left = 0
+          Top = 40
+          Width = 450
+          Height = 2
+          Align = alTop
+          Brush.Color = 3026478
+          Pen.Color = 3026478
+          ExplicitTop = 8
+        end
+        object TableExTimes: TTableEx
+          Left = 0
+          Top = 42
+          Width = 450
+          Height = 473
+          Align = alClient
+          BorderStyle = bsNone
+          Color = 3684408
+          DefaultRowHeight = 30
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = 15921906
+          Font.Height = -15
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 0
+          StyleElements = [seBorder]
+          OnMouseUp = TableExTimesMouseUp
+          OnDrawCellData = TableExTimesDrawCellData
+          ItemIndex = -1
+          OnItemColClick = TableExTimesItemColClick
+          GetData = TableExTimesGetData
+          Columns = <
+            item
+              Width = 32
+              MinWidth = 32
+              AsButton = True
+            end
+            item
+              Caption = #1042#1088#1077#1084#1103
+              Width = 120
+              Format = [tfCenter, tfLeft, tfSingleLine, tfVerticalCenter]
+              MinWidth = 120
+            end
+            item
+              Caption = #1054#1087#1080#1089#1072#1085#1080#1077
+              Width = 298
+              MinWidth = 150
+            end>
+          ItemCount = 1
+          LineColor = 3684408
+          LineColorXor = 4079166
+          LineHotColor = 2763306
+          LineSelColor = 4934475
+          ColumnsColor = 3684408
+          FontHotLine.Charset = DEFAULT_CHARSET
+          FontHotLine.Color = 15921906
+          FontHotLine.Height = -15
+          FontHotLine.Name = 'Tahoma'
+          FontHotLine.Style = []
+          FontLine.Charset = DEFAULT_CHARSET
+          FontLine.Color = 15921906
+          FontLine.Height = -15
+          FontLine.Name = 'Tahoma'
+          FontLine.Style = []
+          FontSelLine.Charset = DEFAULT_CHARSET
+          FontSelLine.Color = 15921906
+          FontSelLine.Height = -15
+          FontSelLine.Name = 'Tahoma'
+          FontSelLine.Style = []
+          ColumnsFont.Charset = DEFAULT_CHARSET
+          ColumnsFont.Color = clWhite
+          ColumnsFont.Height = -15
+          ColumnsFont.Name = 'Tahoma'
+          ColumnsFont.Style = []
+          DrawColumnBorded = False
+          MouseRightClickTooClick = True
+        end
+        object Panel1: TPanel
+          Left = 0
+          Top = 0
+          Width = 450
+          Height = 40
+          Align = alTop
+          BevelOuter = bvNone
+          TabOrder = 1
+          object ButtonFlatTaskEnd: TButtonFlat
+            AlignWithMargins = True
+            Left = 357
+            Top = 3
+            Width = 90
+            Height = 34
+            Margins.Left = 0
+            Align = alRight
+            Caption = #1047#1072#1082#1086#1085#1095#1080#1090#1100
+            ColorNormal = 3684408
+            ColorOver = 6381921
+            ColorPressed = 3815994
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWhite
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            FontOver.Charset = DEFAULT_CHARSET
+            FontOver.Color = clWhite
+            FontOver.Height = -13
+            FontOver.Name = 'Tahoma'
+            FontOver.Style = []
+            FontDown.Charset = DEFAULT_CHARSET
+            FontDown.Color = clWhite
+            FontDown.Height = -13
+            FontDown.Name = 'Tahoma'
+            FontDown.Style = []
+            IgnorBounds = True
+            OnClick = ButtonFlatTaskEndClick
+            RoundRectParam = 0
+            ShowFocusRect = False
+            TabOrder = 0
+            TabStop = True
+            TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+          end
+          object ButtonFlatTaskStart: TButtonFlat
+            AlignWithMargins = True
+            Left = 264
+            Top = 3
+            Width = 90
+            Height = 34
+            Align = alRight
+            Caption = #1053#1072#1095#1072#1090#1100
+            ColorNormal = 3684408
+            ColorOver = 6381921
+            ColorPressed = 3815994
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWhite
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            FontOver.Charset = DEFAULT_CHARSET
+            FontOver.Color = clWhite
+            FontOver.Height = -13
+            FontOver.Name = 'Tahoma'
+            FontOver.Style = []
+            FontDown.Charset = DEFAULT_CHARSET
+            FontDown.Color = clWhite
+            FontDown.Height = -13
+            FontDown.Name = 'Tahoma'
+            FontDown.Style = []
+            IgnorBounds = True
+            OnClick = ButtonFlatTaskStartClick
+            RoundRectParam = 0
+            ShowFocusRect = False
+            TabOrder = 1
+            TabStop = True
+            TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+          end
+          object ButtonFlatAddTime: TButtonFlat
+            AlignWithMargins = True
+            Left = 3
+            Top = 3
+            Width = 33
+            Height = 34
+            Align = alLeft
+            Caption = ''
+            ColorNormal = 3684408
+            ColorOver = 6381921
+            ColorPressed = 3815994
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWhite
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            FontOver.Charset = DEFAULT_CHARSET
+            FontOver.Color = clWhite
+            FontOver.Height = -13
+            FontOver.Name = 'Tahoma'
+            FontOver.Style = []
+            FontDown.Charset = DEFAULT_CHARSET
+            FontDown.Color = clWhite
+            FontDown.Height = -13
+            FontDown.Name = 'Tahoma'
+            FontDown.Style = []
+            IgnorBounds = True
+            ImageIndentLeft = 4
+            ImageIndex = 11
+            Images = ImageList24
+            OnClick = ButtonFlatAddTimeClick
+            RoundRectParam = 0
+            ShowFocusRect = False
+            TabOrder = 2
+            TabStop = True
+            TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+          end
+        end
+        object PanelTimeScale: TPanel
+          Left = 0
+          Top = 515
+          Width = 450
+          Height = 222
+          Align = alBottom
+          BevelOuter = bvNone
+          TabOrder = 2
+          object Shape7: TShape
+            Left = 0
+            Top = 0
+            Width = 450
+            Height = 2
+            Align = alTop
+            Brush.Color = 3026478
+            Pen.Color = 3026478
+            ExplicitLeft = -6
+            ExplicitTop = -5
+          end
+          object DrawPanel: TDrawPanel
+            Left = 0
+            Top = 42
+            Width = 450
+            Height = 180
+            Caption = 'DrawPanel'
+            DefaultPaint = False
+            OnPaint = DrawPanelPaint
+            Align = alBottom
+            Color = 3684408
+            ParentBackground = False
+            TabOrder = 0
+            OnMouseDown = DrawPanelMouseDown
+            OnMouseMove = DrawPanelMouseMove
+            OnMouseUp = DrawPanelMouseUp
+          end
+          object Panel4: TPanel
+            Left = 0
+            Top = 2
+            Width = 450
+            Height = 40
+            Align = alTop
+            BevelOuter = bvNone
+            TabOrder = 1
+            object Label3: TLabel
+              AlignWithMargins = True
+              Left = 10
+              Top = 3
+              Width = 157
+              Height = 34
+              Margins.Left = 10
+              Align = alLeft
+              Caption = #1042#1088#1077#1084#1077#1085#1085#1072#1103' '#1096#1082#1072#1083#1072
+              Color = 3684408
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = 15921906
+              Font.Height = -19
+              Font.Name = 'Tahoma'
+              Font.Style = []
+              ParentColor = False
+              ParentFont = False
+              Transparent = False
+              Layout = tlCenter
+              ExplicitHeight = 23
+            end
+            object ButtonFlatCollapseScale: TButtonFlat
+              AlignWithMargins = True
+              Left = 413
+              Top = 3
+              Width = 34
+              Height = 34
+              Margins.Left = 0
+              Align = alRight
+              Caption = ''
+              ColorNormal = 3684408
+              ColorOver = 6381921
+              ColorPressed = 3815994
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWhite
+              Font.Height = -13
+              Font.Name = 'Tahoma'
+              Font.Style = []
+              FontOver.Charset = DEFAULT_CHARSET
+              FontOver.Color = clWhite
+              FontOver.Height = -13
+              FontOver.Name = 'Tahoma'
+              FontOver.Style = []
+              FontDown.Charset = DEFAULT_CHARSET
+              FontDown.Color = clWhite
+              FontDown.Height = -13
+              FontDown.Name = 'Tahoma'
+              FontDown.Style = []
+              IgnorBounds = True
+              ImageIndentLeft = 4
+              ImageIndex = 10
+              Images = ImageList24
+              OnClick = ButtonFlatCollapseScaleClick
+              RoundRectParam = 0
+              ShowFocusRect = False
+              TabOrder = 0
+              TabStop = True
+              TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+            end
+          end
+        end
+      end
+      object PanelSettings: TPanel
+        Left = 1
         Top = 43
         Width = 450
         Height = 737
@@ -1912,374 +2293,6 @@ object FormMain: TFormMain
           TextFormat = [tfSingleLine, tfVerticalCenter]
         end
       end
-      object PanelCalendar: TPanel
-        Left = 0
-        Top = 0
-        Width = 450
-        Height = 737
-        Anchors = [akLeft, akTop, akBottom]
-        BevelOuter = bvNone
-        TabOrder = 2
-        object DrawGridCalendar: TDrawGrid
-          Left = 0
-          Top = 0
-          Width = 450
-          Height = 737
-          Align = alClient
-          BorderStyle = bsNone
-          Color = 3684408
-          ColCount = 7
-          DefaultColWidth = 63
-          DefaultRowHeight = 65
-          DefaultDrawing = False
-          DrawingStyle = gdsGradient
-          FixedCols = 0
-          RowCount = 9
-          FixedRows = 0
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = 15921906
-          Font.Height = -27
-          Font.Name = 'Tahoma'
-          Font.Style = []
-          GridLineWidth = 0
-          Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine]
-          ParentFont = False
-          ScrollBars = ssNone
-          TabOrder = 0
-          StyleElements = [seBorder]
-          OnDrawCell = DrawGridCalendarDrawCell
-          OnMouseEnter = DrawGridCalendarMouseEnter
-          OnMouseLeave = DrawGridCalendarMouseLeave
-          OnMouseMove = DrawGridCalendarMouseMove
-          OnMouseWheelDown = DrawGridCalendarMouseWheelDown
-          OnMouseWheelUp = DrawGridCalendarMouseWheelUp
-          OnSelectCell = DrawGridCalendarSelectCell
-          ColWidths = (
-            63
-            63
-            63
-            63
-            63
-            63
-            63)
-          RowHeights = (
-            65
-            65
-            65
-            65
-            65
-            65
-            65
-            65
-            65)
-        end
-      end
-      object PanelTimes: TPanel
-        Left = 0
-        Top = 0
-        Width = 450
-        Height = 737
-        Anchors = [akLeft, akTop, akBottom]
-        BevelOuter = bvNone
-        TabOrder = 1
-        object Shape12: TShape
-          Left = 0
-          Top = 40
-          Width = 450
-          Height = 2
-          Align = alTop
-          Brush.Color = 3026478
-          Pen.Color = 3026478
-          ExplicitTop = 8
-        end
-        object TableExTimes: TTableEx
-          Left = 0
-          Top = 42
-          Width = 450
-          Height = 473
-          Align = alClient
-          BorderStyle = bsNone
-          Color = 3684408
-          DefaultRowHeight = 30
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = 15921906
-          Font.Height = -15
-          Font.Name = 'Tahoma'
-          Font.Style = []
-          ParentFont = False
-          TabOrder = 0
-          StyleElements = [seBorder]
-          OnMouseUp = TableExTimesMouseUp
-          OnDrawCellData = TableExTimesDrawCellData
-          ItemIndex = -1
-          OnItemColClick = TableExTimesItemColClick
-          GetData = TableExTimesGetData
-          Columns = <
-            item
-              Width = 32
-              MinWidth = 32
-              AsButton = True
-            end
-            item
-              Caption = #1042#1088#1077#1084#1103
-              Width = 120
-              Format = [tfCenter, tfLeft, tfSingleLine, tfVerticalCenter]
-              MinWidth = 120
-            end
-            item
-              Caption = #1054#1087#1080#1089#1072#1085#1080#1077
-              Width = 298
-              MinWidth = 150
-            end>
-          ItemCount = 1
-          LineColor = 3684408
-          LineColorXor = 4079166
-          LineHotColor = 2763306
-          LineSelColor = 4934475
-          ColumnsColor = 3684408
-          FontHotLine.Charset = DEFAULT_CHARSET
-          FontHotLine.Color = 15921906
-          FontHotLine.Height = -15
-          FontHotLine.Name = 'Tahoma'
-          FontHotLine.Style = []
-          FontLine.Charset = DEFAULT_CHARSET
-          FontLine.Color = 15921906
-          FontLine.Height = -15
-          FontLine.Name = 'Tahoma'
-          FontLine.Style = []
-          FontSelLine.Charset = DEFAULT_CHARSET
-          FontSelLine.Color = 15921906
-          FontSelLine.Height = -15
-          FontSelLine.Name = 'Tahoma'
-          FontSelLine.Style = []
-          ColumnsFont.Charset = DEFAULT_CHARSET
-          ColumnsFont.Color = clWhite
-          ColumnsFont.Height = -15
-          ColumnsFont.Name = 'Tahoma'
-          ColumnsFont.Style = []
-          DrawColumnBorded = False
-          MouseRightClickTooClick = True
-        end
-        object Panel1: TPanel
-          Left = 0
-          Top = 0
-          Width = 450
-          Height = 40
-          Align = alTop
-          BevelOuter = bvNone
-          TabOrder = 1
-          object ButtonFlatTaskEnd: TButtonFlat
-            AlignWithMargins = True
-            Left = 357
-            Top = 3
-            Width = 90
-            Height = 34
-            Margins.Left = 0
-            Align = alRight
-            Caption = #1047#1072#1082#1086#1085#1095#1080#1090#1100
-            ColorNormal = 3684408
-            ColorOver = 6381921
-            ColorPressed = 3815994
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWhite
-            Font.Height = -13
-            Font.Name = 'Tahoma'
-            Font.Style = []
-            FontOver.Charset = DEFAULT_CHARSET
-            FontOver.Color = clWhite
-            FontOver.Height = -13
-            FontOver.Name = 'Tahoma'
-            FontOver.Style = []
-            FontDown.Charset = DEFAULT_CHARSET
-            FontDown.Color = clWhite
-            FontDown.Height = -13
-            FontDown.Name = 'Tahoma'
-            FontDown.Style = []
-            IgnorBounds = True
-            OnClick = ButtonFlatTaskEndClick
-            RoundRectParam = 0
-            ShowFocusRect = False
-            TabOrder = 0
-            TabStop = True
-            TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-          end
-          object ButtonFlatTaskStart: TButtonFlat
-            AlignWithMargins = True
-            Left = 264
-            Top = 3
-            Width = 90
-            Height = 34
-            Align = alRight
-            Caption = #1053#1072#1095#1072#1090#1100
-            ColorNormal = 3684408
-            ColorOver = 6381921
-            ColorPressed = 3815994
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWhite
-            Font.Height = -13
-            Font.Name = 'Tahoma'
-            Font.Style = []
-            FontOver.Charset = DEFAULT_CHARSET
-            FontOver.Color = clWhite
-            FontOver.Height = -13
-            FontOver.Name = 'Tahoma'
-            FontOver.Style = []
-            FontDown.Charset = DEFAULT_CHARSET
-            FontDown.Color = clWhite
-            FontDown.Height = -13
-            FontDown.Name = 'Tahoma'
-            FontDown.Style = []
-            IgnorBounds = True
-            OnClick = ButtonFlatTaskStartClick
-            RoundRectParam = 0
-            ShowFocusRect = False
-            TabOrder = 1
-            TabStop = True
-            TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-          end
-          object ButtonFlatAddTime: TButtonFlat
-            AlignWithMargins = True
-            Left = 3
-            Top = 3
-            Width = 33
-            Height = 34
-            Align = alLeft
-            Caption = ''
-            ColorNormal = 3684408
-            ColorOver = 6381921
-            ColorPressed = 3815994
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWhite
-            Font.Height = -13
-            Font.Name = 'Tahoma'
-            Font.Style = []
-            FontOver.Charset = DEFAULT_CHARSET
-            FontOver.Color = clWhite
-            FontOver.Height = -13
-            FontOver.Name = 'Tahoma'
-            FontOver.Style = []
-            FontDown.Charset = DEFAULT_CHARSET
-            FontDown.Color = clWhite
-            FontDown.Height = -13
-            FontDown.Name = 'Tahoma'
-            FontDown.Style = []
-            IgnorBounds = True
-            ImageIndentLeft = 4
-            ImageIndex = 11
-            Images = ImageList24
-            OnClick = ButtonFlatAddTimeClick
-            RoundRectParam = 0
-            ShowFocusRect = False
-            TabOrder = 2
-            TabStop = True
-            TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-          end
-        end
-        object PanelTimeScale: TPanel
-          Left = 0
-          Top = 515
-          Width = 450
-          Height = 222
-          Align = alBottom
-          BevelOuter = bvNone
-          TabOrder = 2
-          object Shape7: TShape
-            Left = 0
-            Top = 0
-            Width = 450
-            Height = 2
-            Align = alTop
-            Brush.Color = 3026478
-            Pen.Color = 3026478
-            ExplicitLeft = -6
-            ExplicitTop = -5
-          end
-          object DrawPanel: TDrawPanel
-            Left = 0
-            Top = 42
-            Width = 450
-            Height = 180
-            Caption = 'DrawPanel'
-            DefaultPaint = False
-            OnPaint = DrawPanelPaint
-            Align = alBottom
-            Color = 3684408
-            ParentBackground = False
-            TabOrder = 0
-            OnMouseDown = DrawPanelMouseDown
-            OnMouseMove = DrawPanelMouseMove
-            OnMouseUp = DrawPanelMouseUp
-          end
-          object Panel4: TPanel
-            Left = 0
-            Top = 2
-            Width = 450
-            Height = 40
-            Align = alTop
-            BevelOuter = bvNone
-            TabOrder = 1
-            object Label3: TLabel
-              AlignWithMargins = True
-              Left = 10
-              Top = 3
-              Width = 157
-              Height = 34
-              Margins.Left = 10
-              Align = alLeft
-              Caption = #1042#1088#1077#1084#1077#1085#1085#1072#1103' '#1096#1082#1072#1083#1072
-              Color = 3684408
-              Font.Charset = DEFAULT_CHARSET
-              Font.Color = 15921906
-              Font.Height = -19
-              Font.Name = 'Tahoma'
-              Font.Style = []
-              ParentColor = False
-              ParentFont = False
-              Transparent = False
-              Layout = tlCenter
-              ExplicitHeight = 23
-            end
-            object ButtonFlatCollapseScale: TButtonFlat
-              AlignWithMargins = True
-              Left = 413
-              Top = 3
-              Width = 34
-              Height = 34
-              Margins.Left = 0
-              Align = alRight
-              Caption = ''
-              ColorNormal = 3684408
-              ColorOver = 6381921
-              ColorPressed = 3815994
-              Font.Charset = DEFAULT_CHARSET
-              Font.Color = clWhite
-              Font.Height = -13
-              Font.Name = 'Tahoma'
-              Font.Style = []
-              FontOver.Charset = DEFAULT_CHARSET
-              FontOver.Color = clWhite
-              FontOver.Height = -13
-              FontOver.Name = 'Tahoma'
-              FontOver.Style = []
-              FontDown.Charset = DEFAULT_CHARSET
-              FontDown.Color = clWhite
-              FontDown.Height = -13
-              FontDown.Name = 'Tahoma'
-              FontDown.Style = []
-              IgnorBounds = True
-              ImageIndentLeft = 4
-              ImageIndex = 10
-              Images = ImageList24
-              OnClick = ButtonFlatCollapseScaleClick
-              RoundRectParam = 0
-              ShowFocusRect = False
-              TabOrder = 0
-              TabStop = True
-              TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-            end
-          end
-        end
-      end
     end
   end
   object PanelLeft: TPanel
@@ -2301,6 +2314,17 @@ object FormMain: TFormMain
       Pen.Color = 3026478
       ExplicitTop = 8
     end
+    object Shape10: TShape
+      Left = 0
+      Top = 162
+      Width = 250
+      Height = 2
+      Align = alTop
+      Brush.Color = 3026478
+      Pen.Color = 3026478
+      ExplicitLeft = -4
+      ExplicitTop = 249
+    end
     object ButtonFlatDeadlined: TButtonFlat
       AlignWithMargins = True
       Left = 3
@@ -2309,7 +2333,7 @@ object FormMain: TFormMain
       Height = 34
       Align = alTop
       Caption = #1055#1088#1086#1089#1088#1086#1095#1077#1085#1085#1099#1077' '#1079#1072#1076#1072#1095#1080
-      ColorNormal = clGray
+      ColorNormal = 3684408
       ColorOver = 6381921
       ColorPressed = 3815994
       Font.Charset = DEFAULT_CHARSET
@@ -2349,7 +2373,7 @@ object FormMain: TFormMain
       Height = 34
       Align = alTop
       Caption = #1057#1077#1075#1086#1076#1085#1103': 18 '#1086#1082#1090', '#1063#1090
-      ColorNormal = clGray
+      ColorNormal = 3684408
       ColorOver = 6381921
       ColorPressed = 3815994
       Font.Charset = DEFAULT_CHARSET
@@ -2389,7 +2413,7 @@ object FormMain: TFormMain
       Height = 34
       Align = alTop
       Caption = #1042#1093#1086#1076#1103#1097#1080#1077
-      ColorNormal = clGray
+      ColorNormal = 3684408
       ColorOver = 6381921
       ColorPressed = 3815994
       Font.Charset = DEFAULT_CHARSET
@@ -2477,7 +2501,7 @@ object FormMain: TFormMain
         Margins.Right = 0
         Align = alLeft
         Caption = ''
-        ColorNormal = clGray
+        ColorNormal = 3684408
         ColorOver = 6381921
         ColorPressed = 3815994
         Font.Charset = DEFAULT_CHARSET
@@ -2514,7 +2538,7 @@ object FormMain: TFormMain
         Margins.Left = 0
         Align = alRight
         Caption = ''
-        ColorNormal = clGray
+        ColorNormal = 3684408
         ColorOver = 6381921
         ColorPressed = 3815994
         Font.Charset = DEFAULT_CHARSET
@@ -2552,7 +2576,7 @@ object FormMain: TFormMain
         Margins.Right = 0
         Align = alClient
         Caption = #1044#1077#1082#1072#1073#1088#1100' 2018'
-        ColorNormal = clGray
+        ColorNormal = 3684408
         ColorOver = 6381921
         ColorPressed = 3815994
         Font.Charset = DEFAULT_CHARSET
@@ -2579,6 +2603,31 @@ object FormMain: TFormMain
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
       end
+    end
+    object ScrollBoxLabels: TScrollBox
+      Left = 0
+      Top = 189
+      Width = 250
+      Height = 197
+      Align = alTop
+      BorderStyle = bsNone
+      TabOrder = 4
+      ExplicitLeft = -1
+      ExplicitTop = 460
+    end
+    object Panel7: TPanel
+      Left = 0
+      Top = 164
+      Width = 250
+      Height = 25
+      Align = alTop
+      BevelOuter = bvNone
+      Caption = #1052#1077#1090#1082#1080
+      Color = 3026478
+      ParentBackground = False
+      TabOrder = 5
+      ExplicitLeft = 3
+      ExplicitTop = 170
     end
   end
   object DragBarTop: TDragPanel
@@ -2614,7 +2663,7 @@ object FormMain: TFormMain
       Pen.Color = 3684408
       ExplicitLeft = 1253
     end
-    object ButtonFlat3: TButtonFlat
+    object ButtonFlatMenuFile: TButtonFlat
       AlignWithMargins = True
       Left = 41
       Top = 10
@@ -2644,6 +2693,7 @@ object FormMain: TFormMain
       FontDown.Style = []
       IgnorBounds = True
       ImageIndentLeft = 0
+      OnClick = ButtonFlatMenuFileClick
       RoundRectParam = 0
       ShowFocusRect = False
       TabOrder = 0
@@ -2796,7 +2846,6 @@ object FormMain: TFormMain
       TabOrder = 4
       TabStop = True
       TextFormat = [tfSingleLine, tfVerticalCenter]
-      ExplicitLeft = 1133
     end
     object ButtonFlatClose: TButtonFlat
       AlignWithMargins = True
@@ -2834,7 +2883,6 @@ object FormMain: TFormMain
       TabStop = True
       TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
       Visible = False
-      ExplicitLeft = 1296
     end
     object ButtonFlatMinimize: TButtonFlat
       AlignWithMargins = True
@@ -2872,7 +2920,6 @@ object FormMain: TFormMain
       TabStop = True
       TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
       Visible = False
-      ExplicitLeft = 1258
     end
     object ButtonFlatSettings: TButtonFlat
       Left = 1211
@@ -2910,7 +2957,6 @@ object FormMain: TFormMain
       TabOrder = 7
       TabStop = True
       TextFormat = [tfSingleLine, tfVerticalCenter]
-      ExplicitLeft = 1213
     end
     object ButtonFlatTimes: TButtonFlat
       Left = 1091
@@ -2948,7 +2994,6 @@ object FormMain: TFormMain
       TabOrder = 8
       TabStop = True
       TextFormat = [tfSingleLine, tfVerticalCenter]
-      ExplicitLeft = 1093
     end
     object ButtonFlatNotes: TButtonFlat
       Left = 1171
@@ -2986,7 +3031,6 @@ object FormMain: TFormMain
       TabOrder = 9
       TabStop = True
       TextFormat = [tfSingleLine, tfVerticalCenter]
-      ExplicitLeft = 1173
     end
   end
   object TimerRepaint: TTimer
@@ -3007,7 +3051,7 @@ object FormMain: TFormMain
     Left = 44
     Top = 520
     Bitmap = {
-      494C01011C005800D00118001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01011D0058008C0218001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000C000000001002000000000000020
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -3082,6 +3126,8 @@ object FormMain: TFormMain
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000B0B0B0D424242564646465C4646465C4646465C4646
+      465C4646465C4646465C4646465C4646465C3E3E3F5B09090A1D000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -3092,6 +3138,8 @@ object FormMain: TFormMain
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000030303036E9E9E9F9F0F0F0FFF0F0F0FFF0F0F0FFF0F0
+      F0FFF0F0F0FFF0F0F0FFF0F0F0FFF0F0F0FFCCCCCDEA1D1D1D4F000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -3102,6 +3150,8 @@ object FormMain: TFormMain
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000030303036E9E9E9F9F0F0F0FFF0F0F0FFF0F0F0FFF0F0
+      F0FFF0F0F0FFF0F0F0FFF0F0F0FFF0F0F0FFCBCBCBE81C1C1C4E000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -3112,6 +3162,8 @@ object FormMain: TFormMain
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000030303036E9E9E9F9F0F0F0FFF0F0F0FFF0F0F0FFF0F0
+      F0FFF0F0F0FFF0F0F0FFF0F0F0FFF0F0F0FFCBCBCBE81C1C1C4E000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -3122,6 +3174,8 @@ object FormMain: TFormMain
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000030303036E9E9E9F9F0F0F0FFF0F0F0FFF0F0F0FFF0F0
+      F0FFF0F0F0FFF0F0F0FFF0F0F0FFF0F0F0FFCBCBCBE81C1C1C4E000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -3132,6 +3186,8 @@ object FormMain: TFormMain
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000030303036E9E9E9F9F0F0F0FFF0F0F0FFF0F0F0FFF0F0
+      F0FFF0F0F0FFF0F0F0FFF0F0F0FFF0F0F0FFCBCBCBE81C1C1C4E000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -3142,6 +3198,8 @@ object FormMain: TFormMain
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000030303036E9E9E9F9F0F0F0FFF0F0F0FFF0F0F0FFF0F0
+      F0FFF0F0F0FFF0F0F0FFF0F0F0FFF0F0F0FFCBCBCBE81C1C1C4E000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -3152,6 +3210,8 @@ object FormMain: TFormMain
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000030303036E9E9E9F9F0F0F0FFF0F0F0FFF0F0F0FFF0F0
+      F0FFF0F0F0FFF0F0F0FFF0F0F0FFF0F0F0FFCBCBCBE81C1C1C4E000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -3162,6 +3222,8 @@ object FormMain: TFormMain
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000030303036E9E9E9F9F0F0F0FFF0F0F0FFF0F0F0FFF0F0
+      F0FFF0F0F0FFF0F0F0FFF0F0F0FFF0F0F0FFCBCBCBE81C1C1C4E000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -3172,6 +3234,8 @@ object FormMain: TFormMain
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000030303036E9E9E9F9F0F0F0FFF0F0F0FFF0F0F0FFF0F0
+      F0FFF0F0F0FFF0F0F0FFF0F0F0FFF0F0F0FFCBCBCBE81C1C1C4E000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -3182,6 +3246,8 @@ object FormMain: TFormMain
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000002A2A2A2FCDCDCDE1D4D4D4E8D4D4D4E8D4D4D4E8D4D4
+      D4E8D4D4D4E8D4D4D4E8D4D4D4E8D4D4D4E8B7B7B8DB1A1A1D4A000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -3192,30 +3258,8 @@ object FormMain: TFormMain
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000000404040F0505051205050512050505120505
+      0512050505120505051205050512050505120505051201010104000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -5315,16 +5359,16 @@ object FormMain: TFormMain
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000424D3E000000000000003E000000
       2800000060000000C00000000100010000000000000900000000000000000000
-      000000000000000000000000FFFFFF0000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      00000000000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+      000000000000000000000000FFFFFF00FFFFFF000000000000000000FFFFFF00
+      0000000000000000FFFFFF000000000000000000FFFFFF000000000000000000
+      FFFFFF000000000000000000FFFFFF000000000000000000FC003F0000000000
+      00000000FC003F000000000000000000FC003F000000000000000000FC003F00
+      0000000000000000FC003F000000000000000000FC003F000000000000000000
+      FC003F000000000000000000FC003F000000000000000000FC003F0000000000
+      00000000FC003F000000000000000000FC003F000000000000000000FE003F00
+      0000000000000000FFFFFF000000000000000000FFFFFF000000000000000000
+      FFFFFF000000000000000000FFFFFF000000000000000000FFFFFF0000000000
+      00000000FFFFFF000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF7FFFFF7FFFFFFFFFFFFFF
       FF007FFF007FFFFFFFFFFFFFFE003FFE003FFFFFFFFFFFFFFC001FFC001FFE18
       3FFF1FFFF87E0FF8420FFE183FFF0FFFF0FF0FF0810FFE183FFF03FFF0FF8FF0
@@ -5486,15 +5530,18 @@ object FormMain: TFormMain
     end
     object MenuItemTimeStartFrom: TMenuItem
       Caption = #1053#1072#1095#1072#1090#1100' '#1079#1072#1076#1072#1095#1091' '#1089#1088#1072#1079#1091' '#1087#1086#1089#1083#1077' '#1101#1090#1086#1081
+      OnClick = MenuItemTimeStartFromClick
     end
     object N1: TMenuItem
       Caption = '-'
     end
     object MenuItemLinkWithTask: TMenuItem
       Caption = #1055#1088#1080#1074#1103#1079#1072#1090#1100' '#1082' '#1074#1099#1073#1088#1072#1085#1085#1086#1081' '#1079#1072#1076#1072#1095#1077
+      OnClick = MenuItemLinkWithTaskClick
     end
     object MenuItemDropTaskLink: TMenuItem
       Caption = #1054#1090#1074#1103#1079#1072#1090#1100' '#1086#1090' '#1079#1072#1076#1072#1095#1080
+      OnClick = MenuItemDropTaskLinkClick
     end
     object N5: TMenuItem
       Caption = '-'
@@ -5515,7 +5562,7 @@ object FormMain: TFormMain
     Left = 128
     Top = 520
     Bitmap = {
-      494C010103000800340010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010103000800E80010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -5653,5 +5700,13 @@ object FormMain: TFormMain
       C003C003C0030000E003E003E0030000F007F007F0070000F81FF81FF81F0000
       FFFFFFFFFFFF0000FFFFFFFFFFFF000000000000000000000000000000000000
       000000000000}
+  end
+  object PopupMenuFile: TPopupMenu
+    Left = 40
+    Top = 240
+    object MenuItemQuit: TMenuItem
+      Caption = #1042#1099#1093#1086#1076
+      OnClick = MenuItemQuitClick
+    end
   end
 end

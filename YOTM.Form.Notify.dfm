@@ -14,7 +14,6 @@ inherited FormNotify: TFormNotify
     ExplicitHeight = 40
     inherited LabelCaption: TLabel
       Width = 42
-      Height = 32
       Caption = 'Noitfy'
       ExplicitWidth = 42
     end

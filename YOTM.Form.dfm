@@ -46,6 +46,7 @@ object FormCustom: TFormCustom
       Margins.Left = 10
       Align = alLeft
       Caption = 'FormCustom'
+      FocusControl = DragBarTop
       Font.Charset = DEFAULT_CHARSET
       Font.Color = 8947848
       Font.Height = -16
@@ -54,6 +55,7 @@ object FormCustom: TFormCustom
       ParentFont = False
       Transparent = True
       Layout = tlCenter
+      OnMouseDown = LabelCaptionMouseDown
     end
     object ButtonFlatClose: TButtonFlat
       Left = 587

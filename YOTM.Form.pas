@@ -18,6 +18,8 @@ type
     procedure FormHide(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormActivate(Sender: TObject);
+    procedure LabelCaptionMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
   private
     function GetCaption: String;
     procedure SetCaption(const Value: String);
@@ -71,6 +73,12 @@ end;
 function TFormCustom.GetCaption: String;
 begin
  Result:=inherited Caption;
+end;
+
+procedure TFormCustom.LabelCaptionMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+ DragBarTop.DoDrag;
 end;
 
 procedure TFormCustom.SetCaption(const Value: String);

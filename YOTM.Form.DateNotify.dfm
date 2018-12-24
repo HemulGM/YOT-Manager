@@ -34,49 +34,6 @@ inherited FormDateAndNotify: TFormDateAndNotify
       ExplicitLeft = 129
     end
   end
-  object CalendarView: TCalendarView
-    AlignWithMargins = True
-    Left = 12
-    Top = 39
-    Width = 311
-    Height = 351
-    Margins.Left = 10
-    Margins.Top = 10
-    Margins.Right = 10
-    Margins.Bottom = 10
-    Align = alClient
-    BorderColor = 3684408
-    BorderStyle = bsNone
-    Color = 3684408
-    Date = 43394.000000000000000000
-    DisabledColor = 6974058
-    FirstDayOfWeek = dwMonday
-    FocusedColor = 2763306
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWhite
-    Font.Height = -20
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    HeaderInfo.DaysOfWeekFont.Charset = DEFAULT_CHARSET
-    HeaderInfo.DaysOfWeekFont.Color = clWindowText
-    HeaderInfo.DaysOfWeekFont.Height = -13
-    HeaderInfo.DaysOfWeekFont.Name = 'Segoe UI'
-    HeaderInfo.DaysOfWeekFont.Style = []
-    HeaderInfo.Font.Charset = DEFAULT_CHARSET
-    HeaderInfo.Font.Color = clWhite
-    HeaderInfo.Font.Height = -20
-    HeaderInfo.Font.Name = 'Segoe UI'
-    HeaderInfo.Font.Style = []
-    HeaderInfo.FontColor = 15658734
-    HighlightColor = 4605510
-    ParentFont = False
-    ParentShowHint = False
-    SelectionColor = 3966635
-    ShowFirstOfGroupLabel = True
-    ShowHint = False
-    TabOrder = 2
-    TodayColor = 3966635
-  end
   object Panel1: TPanel
     Left = 2
     Top = 400
@@ -182,12 +139,12 @@ inherited FormDateAndNotify: TFormDateAndNotify
       ColorNormal = 3684408
       ColorOver = 4868682
       ColorPressed = 2631720
-      Flat = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWhite
       Font.Height = -13
       Font.Name = 'Tahoma'
       Font.Style = []
+      Flat = False
       FontOver.Charset = DEFAULT_CHARSET
       FontOver.Color = clWhite
       FontOver.Height = -13
@@ -202,6 +159,7 @@ inherited FormDateAndNotify: TFormDateAndNotify
       ImageIndentRight = -10
       ImageIndex = 20
       Images = FormMain.ImageList24
+      OnClick = ButtonFlatRepeatClick
       RoundRectParam = 0
       ShowFocusRect = False
       TabOrder = 1
@@ -656,7 +614,7 @@ inherited FormDateAndNotify: TFormDateAndNotify
         Width = 156
         Height = 29
         Align = alTop
-        Caption = '20:00'
+        Caption = '00:00'
         ColorNormal = 3684408
         ColorOver = 4868682
         ColorPressed = 2631720
@@ -1058,5 +1016,48 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
       end
     end
+  end
+  object CalendarView: TCalendarView
+    AlignWithMargins = True
+    Left = 12
+    Top = 39
+    Width = 311
+    Height = 351
+    Margins.Left = 10
+    Margins.Top = 10
+    Margins.Right = 10
+    Margins.Bottom = 10
+    Align = alClient
+    BorderColor = 3684408
+    BorderStyle = bsNone
+    Color = 3684408
+    Date = 43394.000000000000000000
+    DisabledColor = 6974058
+    FirstDayOfWeek = dwMonday
+    FocusedColor = 2763306
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWhite
+    Font.Height = -20
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    HeaderInfo.DaysOfWeekFont.Charset = DEFAULT_CHARSET
+    HeaderInfo.DaysOfWeekFont.Color = clWindowText
+    HeaderInfo.DaysOfWeekFont.Height = -13
+    HeaderInfo.DaysOfWeekFont.Name = 'Segoe UI'
+    HeaderInfo.DaysOfWeekFont.Style = []
+    HeaderInfo.Font.Charset = DEFAULT_CHARSET
+    HeaderInfo.Font.Color = clWhite
+    HeaderInfo.Font.Height = -20
+    HeaderInfo.Font.Name = 'Segoe UI'
+    HeaderInfo.Font.Style = []
+    HeaderInfo.FontColor = 15658734
+    HighlightColor = 4605510
+    ParentFont = False
+    ParentShowHint = False
+    SelectionColor = 3966635
+    ShowFirstOfGroupLabel = True
+    ShowHint = False
+    TabOrder = 2
+    TodayColor = 3966635
   end
 end

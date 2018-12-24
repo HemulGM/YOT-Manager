@@ -65,7 +65,7 @@ inherited FormEditTime: TFormEditTime
   end
   object EditText: TEdit
     Left = 214
-    Top = 77
+    Top = 78
     Width = 347
     Height = 28
     BevelInner = bvNone
@@ -519,17 +519,91 @@ inherited FormEditTime: TFormEditTime
     AutoClick = 100
     DblClickTooClick = True
   end
-  object ComboBoxTasks: TComboBoxEx
+  object ButtonFlatTask: TButtonFlat
     Left = 214
-    Top = 43
+    Top = 42
     Width = 347
     Height = 28
-    ItemsEx = <>
-    Style = csExDropDownList
-    StyleEx = [csExPathWordBreak]
-    Color = 3026478
-    Ctl3D = True
-    ParentCtl3D = False
+    Caption = #1047#1072#1076#1072#1095#1072' '#1085#1077' '#1074#1099#1073#1088#1072#1085#1072
+    ColorNormal = 3684408
+    ColorOver = 6381921
+    ColorPressed = 3815994
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWhite
+    Font.Height = -13
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    Flat = False
+    FontOver.Charset = DEFAULT_CHARSET
+    FontOver.Color = clWhite
+    FontOver.Height = -13
+    FontOver.Name = 'Tahoma'
+    FontOver.Style = []
+    FontDown.Charset = DEFAULT_CHARSET
+    FontDown.Color = clWhite
+    FontDown.Height = -13
+    FontDown.Name = 'Tahoma'
+    FontDown.Style = []
+    IgnorBounds = True
+    OnClick = ButtonFlatTaskClick
+    RoundRectParam = 0
+    ShowFocusRect = False
     TabOrder = 15
+    TabStop = True
+    TextFormat = [tfSingleLine, tfVerticalCenter]
+  end
+  object TableExTasks: TTableEx
+    Left = 600
+    Top = 42
+    Width = 347
+    Height = 300
+    BorderStyle = bsNone
+    Color = 3684408
+    DefaultRowHeight = 25
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = 15921906
+    Font.Height = -15
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 16
+    ItemIndex = -1
+    OnItemClick = TableExTasksItemClick
+    GetData = TableExTasksGetData
+    Columns = <
+      item
+        Caption = #1050#1088#1072#1090#1082#1086#1077' '#1086#1087#1080#1089#1072#1085#1080#1077' '#1079#1072#1076#1072#1095#1080
+        Width = 347
+        MinWidth = 200
+      end>
+    VisibleEdit = False
+    ItemCount = 1
+    LineColor = 3684408
+    LineColorXor = 4079166
+    LineHotColor = 2763306
+    LineSelColor = 4934475
+    ColumnsColor = 3684408
+    FontHotLine.Charset = DEFAULT_CHARSET
+    FontHotLine.Color = 15921906
+    FontHotLine.Height = -15
+    FontHotLine.Name = 'Tahoma'
+    FontHotLine.Style = []
+    FontLine.Charset = DEFAULT_CHARSET
+    FontLine.Color = 15921906
+    FontLine.Height = -15
+    FontLine.Name = 'Tahoma'
+    FontLine.Style = []
+    FontSelLine.Charset = DEFAULT_CHARSET
+    FontSelLine.Color = 15921906
+    FontSelLine.Height = -15
+    FontSelLine.Name = 'Tahoma'
+    FontSelLine.Style = []
+    ShowColumns = False
+    ColumnsFont.Charset = DEFAULT_CHARSET
+    ColumnsFont.Color = clWhite
+    ColumnsFont.Height = -15
+    ColumnsFont.Name = 'Tahoma'
+    ColumnsFont.Style = []
+    DrawColumnBorded = False
   end
 end

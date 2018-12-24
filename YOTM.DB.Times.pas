@@ -138,6 +138,7 @@ begin
     AddField(fnTimeTo, ftDateTime);
     AddField(fnDate, ftDateTime);
     AddField(fnDateEnd, ftDateTime);
+    AddField(fnTask, ftInteger);
     FDataBase.DB.ExecSQL(GetSQL);
     EndCreate;
    end;
