@@ -1,12 +1,9 @@
 ﻿[]
 Visible=True
-Coordinates=444,78,84,58
+Coordinates=768,386,53,58
 
 [Shape8]
 Coordinates=0,137,59,36
-
-[Label10]
-Coordinates=593,309,60,58
 
 [PanelTaskEdit]
 Coordinates=768,1,98,58
@@ -20,26 +17,14 @@ Coordinates=580,558,108,58
 [Shape15]
 Coordinates=402,558,66,36
 
-[ButtonFlat15]
-Coordinates=355,270,88,36
-
 [ShapeBorder]
 Coordinates=669,482,90,36
-
-[ButtonFlat13]
-Coordinates=924,111,88,36
 
 [PopupMenuComment]
 Coordinates=913,166,139,36
 
 [Panel4]
 Coordinates=237,366,55,58
-
-[ButtonFlatTimeToHH]
-Coordinates=924,221,135,36
-
-[Label11]
-Coordinates=165,155,60,58
 
 [PanelTaskTop]
 Coordinates=475,462,97,58
@@ -56,14 +41,8 @@ Coordinates=924,276,132,36
 [Shape4]
 Coordinates=264,558,59,36
 
-[Label12]
-Coordinates=99,366,60,58
-
 [MenuItemTaskStartFrom]
 Coordinates=1097,1,156,36
-
-[Label2]
-Coordinates=0,0,53,58
 
 [N2]
 Coordinates=215,558,40,36
@@ -82,9 +61,6 @@ Coordinates=97,558,59,36
 
 [PanelLeft]
 Coordinates=258,462,69,58
-
-[Shape17]
-Coordinates=28,558,66,36
 
 [DrawGridCalendar]
 Coordinates=924,441,121,36
@@ -107,9 +83,6 @@ Coordinates=924,606,59,36
 [EditNewComment]
 Coordinates=768,463,118,58
 
-[Label13]
-Coordinates=168,366,60,58
-
 [ButtonFlatTaskEnd]
 Coordinates=1097,111,124,36
 
@@ -125,20 +98,11 @@ Coordinates=165,1,53,58
 [MenuItemTaskDel]
 Coordinates=1097,221,119,36
 
-[ButtonFlat12]
-Coordinates=1097,276,88,36
-
 [MemoLog]
 Coordinates=689,558,71,58
 
 [PanelLog]
 Coordinates=85,270,69,58
-
-[Label15]
-Coordinates=282,232,60,58
-
-[ButtonFlatWD7]
-Coordinates=1097,331,102,36
 
 [MenuItemLinkWithTask]
 Coordinates=1291,1,149,36
@@ -151,9 +115,6 @@ Coordinates=1097,386,133,36
 
 [DrawPanel]
 Coordinates=337,462,77,58
-
-[ButtonFlatWD5]
-Coordinates=1097,441,102,36
 
 [ButtonFlatNewComment]
 Coordinates=1291,56,154,36
@@ -185,23 +146,11 @@ Coordinates=1078,654,118,36
 [ButtonFlatTaskInbox]
 Coordinates=766,654,133,36
 
-[Label4]
-Coordinates=768,386,53,58
-
-[ButtonFlatTimeFromMM]
-Coordinates=1291,221,153,36
-
-[Label6]
-Coordinates=31,462,53,58
-
 [PopupMenuTask]
 Coordinates=959,654,111,36
 
 [ButtonFlat10]
 Coordinates=677,654,88,36
-
-[Label9]
-Coordinates=768,540,53,58
 
 [Shape6]
 Coordinates=608,654,59,36
@@ -212,23 +161,11 @@ Coordinates=574,462,78,58
 [EditTaskName]
 Coordinates=444,155,99,58
 
-[Label7]
-Coordinates=199,462,53,58
-
-[Label14]
-Coordinates=30,366,60,58
-
 [ButtonFlatTaskColorClose]
 Coordinates=1291,276,165,36
 
-[ButtonFlatTimeFromHH]
-Coordinates=1291,331,150,36
-
 [Panel1]
 Coordinates=72,1,55,58
-
-[ButtonFlat16]
-Coordinates=519,654,88,36
 
 [N3]
 Coordinates=470,654,40,36
@@ -254,20 +191,11 @@ Coordinates=768,232,107,58
 [ColorDialog]
 Coordinates=1291,386,82,36
 
-[Label1]
-Coordinates=223,270,53,58
-
-[Label16]
-Coordinates=768,78,60,58
-
 [Shape16]
 Coordinates=1108,709,66,36
 
 [PopupMenuViewProp]
 Coordinates=1291,441,138,36
-
-[ButtonFlat14]
-Coordinates=1291,496,88,36
 
 [ButtonFlatTaskDAN]
 Coordinates=1291,551,128,36
@@ -290,9 +218,6 @@ Coordinates=282,155,81,58
 [Shape13]
 Coordinates=881,728,66,36
 
-[ButtonFlatWD6]
-Coordinates=772,728,102,36
-
 [PanelTaskDAN]
 Coordinates=593,386,102,58
 
@@ -304,9 +229,6 @@ Coordinates=1494,56,146,36
 
 [ButtonFlatViewMode]
 Coordinates=504,728,133,36
-
-[ButtonFlat17]
-Coordinates=415,728,88,36
 
 [Shape12]
 Coordinates=346,728,66,36
@@ -323,23 +245,14 @@ Coordinates=78,728,131,36
 [Panel6]
 Coordinates=416,462,55,58
 
-[ButtonFlatWD3]
-Coordinates=1494,111,102,36
-
 [EditNewTaskName]
 Coordinates=282,78,124,58
 
 [Shape5]
 Coordinates=0,692,59,36
 
-[ButtonFlat18]
-Coordinates=1494,166,88,36
-
 [MenuItemTimeStartFrom]
 Coordinates=1494,221,157,36
-
-[ButtonFlatTimeToMM]
-Coordinates=1494,331,138,36
 
 [PopupMenuView]
 Coordinates=1494,386,111,36
@@ -365,9 +278,6 @@ Coordinates=1494,551,97,36
 [MenuItemShowEnded]
 Coordinates=1494,606,140,36
 
-[ButtonFlatWD1]
-Coordinates=1494,661,102,36
-
 [Shape11]
 Coordinates=1222,802,66,36
 
@@ -383,9 +293,6 @@ Coordinates=1494,771,85,36
 [Label8]
 Coordinates=593,232,53,58
 
-[ButtonFlat11]
-Coordinates=1405,802,88,36
-
 [Shape9]
 Coordinates=1084,802,59,36
 
@@ -395,9 +302,6 @@ Coordinates=955,802,125,36
 [PanelTasks]
 Coordinates=768,309,82,58
 
-[ButtonFlatWD4]
-Coordinates=846,802,102,36
-
 [ButtonFlat7]
 Coordinates=757,802,80,36
 
@@ -406,9 +310,6 @@ Coordinates=0,618,40,36
 
 [Panel2]
 Coordinates=53,77,55,58
-
-[ButtonFlatWD2]
-Coordinates=648,802,102,36
 
 [TimerTime]
 Coordinates=569,802,76,36

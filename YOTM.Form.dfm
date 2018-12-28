@@ -85,13 +85,17 @@ object FormCustom: TFormCustom
       IgnorBounds = True
       ImageIndentLeft = 0
       ImageIndex = 0
-      Images = FormMain.ImageList24
       OnClick = ButtonFlatCloseClick
       RoundRectParam = 0
       ShowFocusRect = False
       TabOrder = 0
       TabStop = True
       TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+      SubTextFont.Charset = DEFAULT_CHARSET
+      SubTextFont.Color = clWhite
+      SubTextFont.Height = -13
+      SubTextFont.Name = 'Tahoma'
+      SubTextFont.Style = []
     end
   end
 end

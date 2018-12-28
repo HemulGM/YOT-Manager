@@ -24,7 +24,8 @@ uses
   YOTM.Form.Notify.Task in 'YOTM.Form.Notify.Task.pas' {FormNotifyTask},
   YOTM.Manager in 'YOTM.Manager.pas',
   YOTM.Form.DateNotify.TaskRepeat in 'YOTM.Form.DateNotify.TaskRepeat.pas' {FormTaskRepeat},
-  YOTM.Form.OverlayTime in 'YOTM.Form.OverlayTime.pas' {FormTimeOverlay};
+  YOTM.Form.OverlayTime in 'YOTM.Form.OverlayTime.pas' {FormTimeOverlay},
+  YOTM.DB.TaskRepeats in 'YOTM.DB.TaskRepeats.pas';
 
 {$R *.res}
 

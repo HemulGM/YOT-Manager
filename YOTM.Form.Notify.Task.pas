@@ -9,6 +9,8 @@ uses
   HGM.Controls.PanelExt;
 
 type
+  TOnCloseAction = procedure(Task:Integer) of object;
+  
   TFormNotifyTask = class(TFormNotify)
     Shape4: TShape;
     Panel1: TPanel;
@@ -30,8 +32,10 @@ type
     procedure FormHide(Sender: TObject);
   private
     TaskID:Integer;
-  public
-    class procedure Notify(Task:TTaskItem);
+    Deadline:TDate;
+  public                                  
+    //class var OnCloseAction:TOnCloseAction;
+    class function Notify(Task:TTaskItem):TFormNotifyTask;
   end;
 
 var
@@ -56,12 +60,13 @@ end;
 
 procedure TFormNotifyTask.ButtonFlatTaskStateClick(Sender: TObject);
 begin
- FormMain.SetTaskComplete(TaskID);
+ FormMain.SetTaskComplete(TaskID, Deadline, True);
  Close;
 end;
 
 procedure TFormNotifyTask.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
+ //if Assigned(OnCloseAction) then OnCloseAction(TaskID);
  Action:=caFree;
 end;
 
@@ -75,12 +80,14 @@ begin
  AnimateWindow(Handle, 500, AW_BLEND or AW_SLIDE);
 end;
 
-class procedure TFormNotifyTask.Notify(Task: TTaskItem);
+class function TFormNotifyTask.Notify(Task: TTaskItem):TFormNotifyTask;
 begin
  if not Assigned(Task) then Exit;
- with TFormNotifyTask.Create(nil) do
+ Result:=TFormNotifyTask.Create(nil);
+ with Result do
   try
    TaskID:=Task.ID;
+   Deadline:=Task.DateDeadline;
    EditTaskName.Text:=Task.Name;
    SetButtonCheck(ButtonFlatTaskState, Task.State);
    Left:=Screen.WorkAreaRect.Right - (Width + 20);

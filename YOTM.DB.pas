@@ -28,7 +28,6 @@ interface
    FDB:TDB;                                                                     //База
 
 implementation
- uses YOTM.DB.Comments;
 
 { TDB }
 

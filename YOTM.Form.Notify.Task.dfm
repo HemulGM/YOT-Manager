@@ -2,9 +2,7 @@ inherited FormNotifyTask: TFormNotifyTask
   Caption = 'FormNotifyTask'
   ClientHeight = 160
   ClientWidth = 400
-  Position = poDesigned
   OnClose = FormClose
-  OnShow = FormShow
   ExplicitWidth = 400
   ExplicitHeight = 160
   PixelsPerInch = 96
@@ -26,6 +24,7 @@ inherited FormNotifyTask: TFormNotifyTask
     ExplicitWidth = 396
     inherited LabelCaption: TLabel
       Width = 97
+      Height = 32
       Caption = 'YOT Manager'
       ExplicitWidth = 97
     end
@@ -84,6 +83,11 @@ inherited FormNotifyTask: TFormNotifyTask
       TabOrder = 0
       TabStop = True
       TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+      SubTextFont.Charset = DEFAULT_CHARSET
+      SubTextFont.Color = clWhite
+      SubTextFont.Height = -13
+      SubTextFont.Name = 'Tahoma'
+      SubTextFont.Style = []
     end
     object ButtonFlatHoldOverDefault: TButtonFlat
       AlignWithMargins = True
@@ -123,6 +127,11 @@ inherited FormNotifyTask: TFormNotifyTask
       TabOrder = 1
       TabStop = True
       TextFormat = [tfSingleLine, tfVerticalCenter]
+      SubTextFont.Charset = DEFAULT_CHARSET
+      SubTextFont.Color = clWhite
+      SubTextFont.Height = -13
+      SubTextFont.Name = 'Tahoma'
+      SubTextFont.Style = []
       Popup = PopupMenuHoldOver
     end
   end
@@ -162,6 +171,11 @@ inherited FormNotifyTask: TFormNotifyTask
     TabOrder = 2
     TabStop = True
     TextFormat = [tfSingleLine, tfVerticalCenter]
+    SubTextFont.Charset = DEFAULT_CHARSET
+    SubTextFont.Color = clWhite
+    SubTextFont.Height = -13
+    SubTextFont.Name = 'Tahoma'
+    SubTextFont.Style = []
   end
   object EditTaskName: TEdit
     AlignWithMargins = True

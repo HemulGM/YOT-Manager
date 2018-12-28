@@ -12,7 +12,7 @@ interface
 
    TTaskType = (ttSimple, ttRepeatInDay, ttRepeatInWeek, ttRepeatInMonth, ttRepeatInYear);
 
-   TTaskRepeat = string; //Тут и часы {1..24} и дни недели {1..7} и дни месяца {1..31} и месяцы {1..12}
+   TTaskRepeat = string; //Тут и дни недели {1..7} и дни {1..31} и месяцы {1..12}
 
    TTaskItem = class(TObject)
     private
@@ -49,6 +49,7 @@ interface
      procedure SetLabelItems(const Value: TLabelItems);
      procedure SetNotify(const Value: Boolean);
      procedure SetColor(const Value: TColor);
+     function GetIsOftenRepeat: Boolean;
     public
      constructor Create(AOwner: TTaskItems);
      destructor Destroy;
@@ -57,21 +58,74 @@ interface
      property Owner:TTaskItems read FOwner write SetOwner;
      property ID:Integer read FID write SetID;
      property Parent:Integer read FParent write SetParent;
+     /// <summary>
+     /// Краткое описание задачи
+     /// Основное определяющее поле. Без него задачу считать не готовой
+     /// </summary>
      property Name:string read FName write SetName;
+     /// <summary>
+     /// Полное описание задачи (не обязательно)
+     /// </summary>
      property Description:string read FDescription write SetDescription;
+     /// <summary>
+     /// Дата создания задачи (автоматическое поле). Только для чтения.
+     /// </summary>
      property DateCreate:TDateTime read FDateCreate;
+     /// <summary>
+     /// Тип задачи (обычная или вид повторяемой задачи)
+     /// </summary>
      property TaskType:TTaskType read FTaskType write SetTaskType;
+     /// <summary>
+     /// Данные повторяемой задачи (активные дни недели, месяца)
+     /// </summary>
      property TaskRepeat[Index:Byte]:Boolean read GetTaskRepeat write SetTaskRepeat;
+     /// <summary>
+     /// Срок задачи (а также, дата напоминания).
+     /// Может не указываться, если Deadline = True, тогда задача будет во Входящих
+     /// </summary>
      property DateDeadline:TDateTime read FDateDeadline write SetDateDeadline;
+     /// <summary>
+     /// Время напоминания. Может не указываться,
+     /// тогда напоминание в начале рабочего или при запуске, если уже идёт раб. день
+     /// </summary>
      property TimeNotify:TTime read FDateNotify write SetDateNotify;
+     /// <summary>
+     /// Напоминание было и больше не нужно напоминать
+     /// </summary>
      property NotifyComplete:Boolean read FNotifyComplete write SetNotifyComplete;
+     /// <summary>
+     /// Определяет, есть ли у задачи дата напоминания (срок выполнения)
+     /// Если нет, то задача во Входящих
+     /// </summary>
      property Deadline:Boolean read FDeadline write SetDeadline;
+     /// <summary>
+     /// Выполнена ли задача или нет
+     /// </summary>
      property State:Boolean read FState write SetState;
+     /// <summary>
+     /// Нужно ли напоминать о задаче в указанное время или нет
+     /// </summary>
      property Notify:Boolean read FNotify write SetNotify;
+     /// <summary>
+     /// Данные повторяемой задачи (активные дни недели, месяца) в чистом виде
+     /// </summary>
      property TaskRepeatData:string read FTaskRepeat write FTaskRepeat;
+     /// <summary>
+     /// Метки задачи (подгружаемый список)
+     /// </summary>
      property LabelItems:TLabelItems read FLabelItems write SetLabelItems;
+     /// <summary>
+     /// Цвет задачи (пока так), возможно потом будет как метки
+     /// </summary>
      property Color:TColor read FColor write SetColor;
+     /// <summary>
+     /// Состояние записи задачи (записана в БД или нет)
+     /// </summary>
      property Saved:Boolean read FSaved;
+     /// <summary>
+     /// Частая ли повторяемая задача или нет (4 и более раз в неделю)
+     /// </summary>
+     property IsOftenRepeat:Boolean read GetIsOftenRepeat;
    end;
 
    TTaskItems = class(TTableData<TTaskItem>)
@@ -99,6 +153,7 @@ interface
      FTaskFilter: TTaskFilter;
      FUpcoming: Boolean;
      FUseDatePeriod: Boolean;
+     FCalcOftenRepeat: Boolean;
      procedure SetDataBase(const Value: TDB);
      procedure SetShowEndedTask(const Value: Boolean);
      procedure SetShowDate(const Value: TDate);
@@ -106,6 +161,8 @@ interface
      procedure SetUpcoming(const Value: Boolean);
      procedure SetUseDatePeriod(const Value: Boolean);
      procedure SetDatePeriod(const Value: TDatePeriod);
+     procedure GetRepeatedTasks;
+     procedure SetCalcOftenRepeat(const Value: Boolean);
     public
      constructor Create(ADataBase:TDB; ATableEx:TTableEx);
      destructor Destroy; override;
@@ -117,7 +174,7 @@ interface
      procedure Update(Task: TTaskItem);
      procedure Delete(Index: Integer); override;
      procedure Save;
-     function ListCount(Date:TDate; var Actual, NotActual, Deadlined:Integer):Integer;
+     function ListCount(Date:TDate; var Actual, NotActual, Deadlined, Repeated:Integer):Integer;
      property ShowEndedTask:Boolean read FShowEndedTask write SetShowEndedTask default False;
      property ShowDate:TDate read FShowDate write SetShowDate;
      property DataBase:TDB read FDataBase write SetDataBase;
@@ -125,10 +182,11 @@ interface
      property Upcoming:Boolean read FUpcoming write SetUpcoming default False;
      property UseDatePeriod:Boolean read FUseDatePeriod write SetUseDatePeriod default False;
      property DatePeriod:TDatePeriod read FDatePeriod write SetDatePeriod;
+     property CalcOftenRepeat:Boolean read FCalcOftenRepeat write SetCalcOftenRepeat default False;
    end;
 
 implementation
- uses YOTM.DB.Comments, DateUtils;
+ uses YOTM.DB.Comments, DateUtils, YOTM.DB.TaskRepeats;
 
 { TTaskItem }
 
@@ -162,8 +220,28 @@ begin
   end;
 end;
 
+function CntChRepeat(InputStr:string; InputSubStr:Char):integer;
+var i:integer;
+begin
+ Result:=0;
+ for i:= 1 to InputStr.Length do
+  if InputStr[i] = InputSubStr then Inc(result);
+end;
+
+function TTaskItem.GetIsOftenRepeat: Boolean;
+begin
+ Result:=False;
+ if TaskType = ttSimple then Exit;
+ if TaskType = ttRepeatInDay then Exit(True);
+ if TaskType = ttRepeatInWeek then
+  begin
+   if CntChRepeat(Copy(FTaskRepeat, 1, 7), '1') >= 4 then Exit(True);
+  end;
+end;
+
 function TTaskItem.GetTaskRepeat(Index: Byte): Boolean;
 begin
+ if Index > FTaskRepeat.Length then Exit(False);
  Result:=FTaskRepeat[Index] = '1';
 end;
 
@@ -292,6 +370,7 @@ begin
  FShowEndedTask:=False;
  FUpcoming:=False;
  FTaskFilter:=tkfAll;
+ FCalcOftenRepeat:=False;
  if not FDataBase.DB.TableExists(tnTable) then
   with SQL.CreateTable(tnTable) do
    begin
@@ -360,6 +439,7 @@ begin
    else WhereFieldEqual(fnDeadline, False);
    //if not ShowEndedTask then
    WhereFieldEqual(fnState, False);
+   WhereFieldEqual(fnTaskType, Ord(ttSimple));
    Result:=FDataBase.DB.GetTableValue(GetSQL);
    EndCreate;
   end;
@@ -385,6 +465,7 @@ begin
    WhereNotFieldEqual(fnNotifyComplete, True);
    WhereFieldEqual(fnDeadline, True);
    WhereFieldEqual(fnState, False);
+   WhereFieldEqual(fnTaskType, Ord(ttSimple));
    Result:=FDataBase.DB.GetTableValue(GetSQL);
    EndCreate;
   end;
@@ -393,6 +474,7 @@ end;
 function TTaskItems.GetItem(ID: Integer): TTaskItem;
 var Table:TSQLiteTable;
 begin
+ Result:=nil;
  try
   with SQL.Select(tnTable) do
     begin
@@ -410,6 +492,7 @@ begin
      AddField(fnState);
      AddField(fnNotify);
      AddField(fnColor);
+     WhereFieldEqual(fnID, ID);
      Table:=FDataBase.DB.GetTable(GetSQL);
      EndCreate;
      Table.MoveFirst;
@@ -440,35 +523,173 @@ begin
  end;
 end;
 
-function TTaskItems.ListCount(Date: TDate; var Actual, NotActual, Deadlined:Integer): Integer;
+function ThisTaskInThisDate(Task:TTaskItem; Date1, Date2:TDate):Boolean;
+begin
+ Result:=False;
+ case Task.TaskType of
+  ttRepeatInDay: Exit(True);
+  ttRepeatInWeek:
+   begin
+    while Date1 <= Date2 do
+     begin
+      if Task.TaskRepeat[DayOfTheWeek(Date1)] then Exit(True);
+      Date1:=Date1 + 1;
+     end;
+   end;
+  ttRepeatInMonth:
+   begin
+    while Date1 <= Date2 do
+     begin
+      if (DayOf(Date1) = DayOf(Task.DateDeadline)) and
+         (Task.TaskRepeat[MonthOf(Date1)])
+      then Exit(True);
+      Date1:=Date1 + 1;
+     end;
+   end;
+  ttRepeatInYear:
+   begin
+    while Date1 <= Date2 do
+     begin
+      if (DayOf(Date1) = DayOf(Task.DateDeadline)) and
+         (MonthOf(Date1) = MonthOf(Task.DateDeadline))
+      then Exit(True);
+      Date1:=Date1 + 1;
+     end;
+   end;
+ end;
+end;
+
+function TTaskItems.ListCount(Date: TDate; var Actual, NotActual, Deadlined, Repeated:Integer): Integer;
 var i:Integer;
 begin
  Result:=0;
  Actual:=0;
  NotActual:=0;
  Deadlined:=0;
+ Repeated:=0;
  for i:= 0 to Count-1 do
   if Items[i].Deadline then
    begin
-    if SameDate(Items[i].DateDeadline, Date)
-    then
+    if Items[i].TaskType = ttSimple then
      begin
-      if Items[i].State then Inc(NotActual) else
+      if SameDate(Items[i].DateDeadline, Date)
+      then
        begin
-        Inc(Actual);
-        if DateOf(Date) < DateOf(Now) then Inc(Deadlined)
+        if Items[i].State then Inc(NotActual) else
+         begin
+          Inc(Actual);
+          if DateOf(Date) < DateOf(Now) then Inc(Deadlined)
+         end;
        end;
+      Inc(Result);
+     end
+    else
+     begin
+      if Items[i].IsOftenRepeat or FCalcOftenRepeat then
+       if ThisTaskInThisDate(Items[i], Date, Date)
+       then
+        begin
+         Inc(Repeated);
+         {if Items[i].State then Inc(NotActual) else
+          begin
+           Inc(Actual);
+           if DateOf(Date) < DateOf(Now) then Inc(Deadlined)
+          end;    }
+        end;
      end;
-    Inc(Result);
    end;
+end;
+
+procedure TTaskItems.GetRepeatedTasks;
+var Table, Labels:TSQLiteTable;
+    Item:TTaskItem;
+    D1, D2:TDate;
+begin
+ try
+  if FUseDatePeriod then
+   begin
+    D1:=DateOf(FDatePeriod.DateBegin);
+    D2:=DateOf(FDatePeriod.DateEnd);
+   end
+  else
+   begin
+    D1:=DateOf(FShowDate);
+    D2:=DateOf(FShowDate);
+   end;
+  with SQL.Select(tnTable) do
+   begin
+    AddField(fnID);
+    AddField(fnParent);
+    AddField(fnName);
+    AddField(fnDesc);
+    AddField(fnDateCreate);
+    AddField(fnTaskType);
+    AddField(fnTaskRepeat);
+    AddField(fnDateDeadline);
+    AddField(fnTimeNotify);
+    AddField(fnNotifyComplete);
+    AddField(fnDeadline);
+    AddField(fnState);
+    AddField(fnNotify);
+    AddField(fnColor);
+    AddField(TRepeatStates.fnState);
+    WhereNotFieldEqual(fnTaskType, Ord(ttSimple));
+    WhereParenthesesOpen;
+     WhereFieldEqual(TRepeatStates.fnState, False);
+     WhereFieldIsNull(TRepeatStates.fnState, wuOr);
+    WhereParenthesesClose;
+    WhereParenthesesOpen;
+     WhereFieldBetween(TRepeatStates.fnDeadline, D1, D2);
+     WhereFieldIsNull(TRepeatStates.fnDeadline, wuOR);
+    WhereParenthesesClose;
+    OrderBy(fnState);
+    OrderBy(fnDateCreate, True);
+    LeftJoin(TRepeatStates.tnTable, fnID, TRepeatStates.fnTask);
+    Table:=FDataBase.DB.GetTable(GetSQL);
+    EndCreate;
+    Table.MoveFirst;
+    while not Table.EOF do
+     begin
+      Item:=TTaskItem.Create(Self);
+      Item.ID:=Table.FieldAsInteger(0);
+      Item.Parent:=Table.FieldAsInteger(1);
+      Item.Name:=Table.FieldAsString(2);
+      Item.Description:=Table.FieldAsString(3);
+      Item.FDateCreate:=Table.FieldAsDateTime(4);
+      Item.TaskType:=TTaskType(Table.FieldAsInteger(5));
+      Item.FTaskRepeat:=Table.FieldAsString(6);
+      Item.DateDeadline:=Table.FieldAsDateTime(7);
+      Item.TimeNotify:=TimeOf(Table.FieldAsDateTime(8));
+      Item.NotifyComplete:=Table.FieldAsBoolean(9);
+      Item.Deadline:=Table.FieldAsBoolean(10);
+      Item.State:=Table.FieldAsBoolean(11);
+      Item.Notify:=Table.FieldAsBoolean(12);
+      Item.Color:=Table.FieldAsInteger(13);
+      Item.LabelItems.Reload(Item.ID);
+      if ThisTaskInThisDate(Item, D1, D2) then
+       begin
+        if not FUseDatePeriod then Item.DateDeadline:=FShowDate;
+        Item.Update;
+        Add(Item);
+       end
+      else Item.Free;
+      Table.Next;
+     end;
+    Table.Free;
+   end;
+ finally
+
+ end;
 end;
 
 procedure TTaskItems.Reload;
 var Table, Labels:TSQLiteTable;
     Item:TTaskItem;
+    LoadRepeat:Boolean;
 begin
  BeginUpdate;
  Clear;
+ LoadRepeat:=False;
  try
   with SQL.Select(tnTable) do
    begin
@@ -489,6 +710,7 @@ begin
     case FTaskFilter of
      tkfDated:
       begin
+       LoadRepeat:=True;
        if UseDatePeriod then
         WhereFieldBetween(fnDateDeadline, DateOf(FDatePeriod.DateBegin), DateOf(FDatePeriod.DateEnd))
        else
@@ -498,6 +720,7 @@ begin
       end;
      tkfDeadlined:
       begin
+       LoadRepeat:=True;
        WhereParenthesesOpen;
          WhereParenthesesOpen;
            WhereParenthesesOpen;
@@ -515,6 +738,7 @@ begin
       end;
      tkfNoDate:
       begin
+       LoadRepeat:=False;
        WhereFieldEqual(fnDeadline, False);
        if not ShowEndedTask then WhereFieldEqual(fnState, False);
       end;
@@ -524,6 +748,7 @@ begin
       WhereFieldEqual(fnNotifyComplete, False);
       WhereFieldEqual(fnNotify, True);
      end;
+    WhereFieldEqual(fnTaskType, Ord(ttSimple));
     OrderBy(fnState);
     OrderBy(fnDateCreate, True);
     Table:=FDataBase.DB.GetTable(GetSQL);
@@ -553,6 +778,7 @@ begin
      end;
     Table.Free;
    end;
+  if LoadRepeat then GetRepeatedTasks;
  finally
   EndUpdate;
  end;
@@ -562,6 +788,11 @@ procedure TTaskItems.Save;
 var i:Integer;
 begin
  for i := 0 to Count-1 do Update(Items[i]);
+end;
+
+procedure TTaskItems.SetCalcOftenRepeat(const Value: Boolean);
+begin
+ FCalcOftenRepeat := Value;
 end;
 
 procedure TTaskItems.SetDataBase(const Value: TDB);

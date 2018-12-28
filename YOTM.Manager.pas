@@ -75,7 +75,6 @@ var i:Integer;
 begin
  DT:=Now;
  TkTime:=GetMins(DT);
- if FTimeNow = TkTime then Exit;  //Почему-то на той же минуте)
  FTimeNow:=TkTime;
  FTasks.ShowDate:=DT;
  FTasks.TaskFilter:=tkfDated;
@@ -84,13 +83,13 @@ begin
  for i:= 0 to FTasks.Count-1 do
   begin
    TkTime:=GetMins(FTasks[i].TimeNotify);
-   if TkTime = FTimeNow then Notify(FTasks[i]);
+   if TkTime <= FTimeNow then Notify(FTasks[i]);
   end;
 end;
 
 procedure TManager.SetActivate(const Value: Boolean);
 begin
- FActivate := Value;
+ FActivate:=Value;
  FTimerCheck.Enabled:=Value;
  if Value then OnTimerCheck(nil);
 end;

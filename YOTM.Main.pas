@@ -7,8 +7,8 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Direct2D, D2D1, System.Generics.Collections,
   HGM.Controls.PanelExt, Vcl.ComCtrls, System.Types, Vcl.StdCtrls,
   HGM.Controls.SpinEdit, Vcl.Grids, HGM.Controls.VirtualTable, YOTM.DB,
-  System.ImageList, Vcl.ImgList, HGM.Button, sPanel, Vcl.WinXCalendars,
-  Vcl.AppEvnts, Vcl.Menus, YOTM.DB.Comments, YOTM.DB.Labels, YOTM.DB.Tasks,
+  System.ImageList, Vcl.ImgList, HGM.Button, sPanel, Vcl.WinXCalendars, YOTM.Form.Notify.Task,
+  Vcl.AppEvnts, Vcl.Menus, YOTM.DB.Comments, YOTM.DB.Labels, YOTM.DB.Tasks, YOTM.DB.TaskRepeats,
   YOTM.DB.Times, HGM.Common.Utils, YOTM.DB.LabelTypes, sDialogs, YOTM.DB.Notes, YOTM.Manager;
 
 type
@@ -28,11 +28,21 @@ type
    IsAnotherMonth:Boolean;
   end;
 
-  TCalendarArray = array[0..6, 0..8] of
-  record
+  TCalendarArray = array[0..6, 0..8] of record
    Actual:Integer;
    NotActual:Integer;
    Deadlined:Integer;
+   Repeated:Integer;
+  end;
+
+  TNotifyItem = record
+   TaskID:Integer;
+   Form:TFormNotifyTask;
+  end;
+  TNotifyItems = class(TList<TNotifyItem>)
+   function FindByTask(TaskID:Integer):Integer;
+   function FindByForm(Form:TFormNotifyTask):Integer;
+   function Add(TaskID:Integer; Form:TFormNotifyTask):Integer; overload;
   end;
 
   TWorkDays = array[1..7] of Boolean;
@@ -51,7 +61,6 @@ type
     TableExTimes: TTableEx;
     ImageList24: TImageList;
     PanelSettings: TPanel;
-    Label1: TLabel;
     Panel1: TPanel;
     ButtonFlatTaskEnd: TButtonFlat;
     ButtonFlatTaskStart: TButtonFlat;
@@ -127,7 +136,6 @@ type
     PanelLog: TPanel;
     MemoLog: TMemo;
     Shape13: TShape;
-    Label4: TLabel;
     Panel5: TPanel;
     ButtonFlat8: TButtonFlat;
     ButtonFlat10: TButtonFlat;
@@ -138,39 +146,8 @@ type
     LabelNoteDate: TLabel;
     LabelNoteModify: TLabel;
     Label8: TLabel;
-    Label6: TLabel;
-    Label7: TLabel;
-    Label9: TLabel;
-    ButtonFlat11: TButtonFlat;
-    ButtonFlatTimeFromHH: TButtonFlat;
-    ButtonFlat12: TButtonFlat;
-    ButtonFlat13: TButtonFlat;
-    ButtonFlatTimeFromMM: TButtonFlat;
-    ButtonFlat14: TButtonFlat;
-    ButtonFlat15: TButtonFlat;
-    ButtonFlatTimeToHH: TButtonFlat;
-    ButtonFlat16: TButtonFlat;
-    ButtonFlat17: TButtonFlat;
-    ButtonFlatTimeToMM: TButtonFlat;
-    ButtonFlat18: TButtonFlat;
     Shape16: TShape;
     MemoNote: TMemo;
-    Shape17: TShape;
-    Label2: TLabel;
-    ButtonFlatWD1: TButtonFlat;
-    Label10: TLabel;
-    Label11: TLabel;
-    ButtonFlatWD2: TButtonFlat;
-    ButtonFlatWD3: TButtonFlat;
-    Label12: TLabel;
-    Label13: TLabel;
-    ButtonFlatWD4: TButtonFlat;
-    ButtonFlatWD5: TButtonFlat;
-    Label14: TLabel;
-    Label15: TLabel;
-    ButtonFlatWD6: TButtonFlat;
-    ButtonFlatWD7: TButtonFlat;
-    Label16: TLabel;
     PopupMenuComment: TPopupMenu;
     MenuItemCommentDel: TMenuItem;
     PopupMenuTimes: TPopupMenu;
@@ -204,6 +181,44 @@ type
     ScrollBoxLabels: TScrollBox;
     Shape18: TShape;
     Panel7: TPanel;
+    PanelWorkDays: TPanel;
+    Label6: TLabel;
+    Label7: TLabel;
+    Label9: TLabel;
+    ButtonFlat11: TButtonFlat;
+    ButtonFlatTimeFromHH: TButtonFlat;
+    ButtonFlat12: TButtonFlat;
+    ButtonFlat13: TButtonFlat;
+    ButtonFlatTimeFromMM: TButtonFlat;
+    ButtonFlat14: TButtonFlat;
+    ButtonFlat15: TButtonFlat;
+    ButtonFlatTimeToHH: TButtonFlat;
+    ButtonFlat16: TButtonFlat;
+    ButtonFlat17: TButtonFlat;
+    ButtonFlatTimeToMM: TButtonFlat;
+    ButtonFlat18: TButtonFlat;
+    Panel8: TPanel;
+    Panel9: TPanel;
+    Shape19: TShape;
+    Label1: TLabel;
+    Panel10: TPanel;
+    Label10: TLabel;
+    Label11: TLabel;
+    Label12: TLabel;
+    Label13: TLabel;
+    Label14: TLabel;
+    Label15: TLabel;
+    Label16: TLabel;
+    ButtonFlatWD1: TButtonFlat;
+    ButtonFlatWD2: TButtonFlat;
+    ButtonFlatWD3: TButtonFlat;
+    ButtonFlatWD4: TButtonFlat;
+    ButtonFlatWD5: TButtonFlat;
+    ButtonFlatWD6: TButtonFlat;
+    ButtonFlatWD7: TButtonFlat;
+    Shape17: TShape;
+    Panel11: TPanel;
+    Panel12: TPanel;
     procedure TimerRepaintTimer(Sender: TObject);
     procedure DrawPanelPaint(Sender: TObject);
     procedure DrawPanelMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
@@ -326,6 +341,7 @@ type
     FLabelTypes:TLabelTypes;
     FLabelItems:TLabelItems;
     FComments:TCommentItems;     //Комментарии к задаче
+    FRepeatStates:TRepeatStates;
     FNote:TNoteItem;             //Запись на день
     FTaskID:Integer;             //Открытая задача
     FCurrentDate: TDate;         //Выбранная пользователем дата
@@ -349,6 +365,7 @@ type
     FViewMode: TViewMode;
     FTimeManager: TManager;
     FWorkDays: TWorkDays;
+    FNotifyItems:TNotifyItems;
     procedure SetCurrentDate(const Value: TDate);
     procedure SlideTo(Slide: TSlide);
     function StartTask(TimeStart: TTime): Boolean;
@@ -396,9 +413,11 @@ type
     function StopTimeSection: Boolean;
     procedure FAddTaskTime(ADate, ADateEnd: TDate; TStart, TEnd: TTime; ATaskID: Integer; AColor: TColor; ADesc: string);
     procedure ReloadLabelsTypes;
+    procedure OnCloseNotifyAction(TaskID: Integer);
+    procedure Error(E: Exception; Message: string = '');
    public
     procedure Initializate;
-    procedure SetTaskComplete(TaskID:Integer);
+    procedure SetTaskComplete(TaskID:Integer; Deadline:TDate; State:Boolean);
     procedure Quit;
     property CurrentDate:TDate read FCurrentDate write SetCurrentDate;
     property ViewMode:TViewMode read FViewMode write SetViewMode;
@@ -433,9 +452,14 @@ var
 implementation
  uses Math, YOTM.Form.EditTime, DateUtils, YOTM.Form.Dialog,
    YOTM.Form.SelectLabels, Winapi.CommCtrl, YOTM.Form.DateNotify, YOTM.Form.OverlayTime,
-   YOTM.Form.Notify.Task, HGM.Common.DateUtils, Winapi.Dwmapi;
+   HGM.Common.DateUtils;
 
 {$R *.dfm}
+
+procedure TFormMain.Error(E:Exception; Message:string = '');
+begin
+ DoLog(Message); 
+end;
 
 procedure SetButtonCheck(Button:TButtonFlat; Value:Boolean);
 begin
@@ -572,21 +596,22 @@ begin
  FirstDate:=Cell.Date;
  GetCellInfo(DrawGridCalendar.ColCount-1, DrawGridCalendar.RowCount - 1, Cell);
  FTasksOfCalendar.TaskFilter:=tkfDated;
+ FTasksOfCalendar.CalcOftenRepeat:=False;
  FTasksOfCalendar.ShowEndedTask:=FTaskItems.ShowEndedTask;
  FTasksOfCalendar.UseDatePeriod:=True;
  FTasksOfCalendar.DatePeriod:=TDatePeriod.Create(FirstDate, Cell.Date);
  FTasksOfCalendar.Reload;
  NotCompleted:=0;
  for i:= 0 to FTasksOfCalendar.Count-1 do
-  if (not FTasksOfCalendar[i].State) and (FTasksOfCalendar[i].Deadline) and (DateOf(FTasksOfCalendar[i].DateDeadline) < DateOf(Now))
+  if (not FTasksOfCalendar[i].State) and (FTasksOfCalendar[i].Deadline)
+      and (DateOf(FTasksOfCalendar[i].DateDeadline) < DateOf(Now))
   then Inc(NotCompleted);
 
  for i:= 1 to DrawGridCalendar.RowCount-1 do
   for j:= 0 to DrawGridCalendar.ColCount-1 do
    begin
     GetCellInfo(j, i, Cell);
-    //FCalendarArray[j, i].Actual:=
-    FTasksOfCalendar.ListCount(Cell.Date, FCalendarArray[j, i].Actual, FCalendarArray[j, i].NotActual, FCalendarArray[j, i].Deadlined);
+    FTasksOfCalendar.ListCount(Cell.Date, FCalendarArray[j, i].Actual, FCalendarArray[j, i].NotActual, FCalendarArray[j, i].Deadlined, FCalendarArray[j, i].Repeated);
    end;
  ButtonFlatCalendar.NotifyVisible:=NotCompleted > 0;
  FTasksOfCalendar.Clear;
@@ -754,6 +779,13 @@ begin
    if FCalendarArray[ACol, ARow].NotActual > 0 then
     begin
      ImageListCalendar.Draw(DrawGridCalendar.Canvas, Rect.Left + 2, Rect.Top + 2, 0, True);
+    end;
+   if FCalendarArray[ACol, ARow].Repeated > 0 then
+    begin
+     Rect.Offset(0, Rect.Height-10);
+     rect.Height:=10;
+     Rectangle(Rect);
+    // ImageListCalendar.Draw(DrawGridCalendar.Canvas, Rect.Left + 2, Rect.Top + 2, 0, True);
     end;
   end;
 end;
@@ -1226,8 +1258,8 @@ end;
 procedure TFormMain.ButtonFlatTaskStateClick(Sender: TObject);
 begin
  if not IndexInList(FTaskID, FTaskItems.Count) then Exit;
- FTaskItems[FTaskID].State:= not FTaskItems[FTaskID].State;
- FTaskItems.Update(FTaskItems[FTaskID]);
+ SetTaskComplete(FTaskItems[FTaskID].ID, FTaskItems[FTaskID].DateDeadline, not FTaskItems[FTaskID].State);
+ OnChangeItems;
  UpdateTaskPanel(FTaskID);
 end;
 
@@ -1273,23 +1305,23 @@ begin
  Result:=EncodeTime(ToHH, ToMM, 0, 0);
 end;
 
-procedure TFormMain.SetTaskComplete(TaskID: Integer);
-var i:Integer;
-    Task:TTaskItem;
+procedure TFormMain.SetTaskComplete(TaskID: Integer; Deadline:TDate; State:Boolean);
+var Task:TTaskItem;
 begin
- for i:= 0 to FTaskItems.Count-1 do
-  if FTaskItems[i].ID = TaskID then
-   begin
-    FTaskItems[i].State:=True;
-    FTaskItems.Update(FTaskItems[i]);
-    TableExTasks.Repaint;
-    Exit;
-   end;
  Task:=FTaskItems.GetItem(TaskID);
  if Assigned(Task) then
   begin
-   Task.State:=True;
-   FTaskItems.Update(Task);
+   case task.TaskType of
+    ttSimple:
+     begin
+      Task.State:=State;
+      FTaskItems.Update(Task);
+     end
+   else
+    begin
+     FRepeatStates.CompleteTask(TaskID, Deadline, State);
+    end;
+   end;
   end;
 end;
 
@@ -1619,9 +1651,22 @@ begin
  MemoTaskDescExit(nil);
 end;
 
+procedure TFormMain.OnCloseNotifyAction(TaskID:Integer);
+var ID:Integer;
+begin
+ ID:=FNotifyItems.FindByTask(TaskID);
+ if not IndexInList(ID, FNotifyItems.Count) then Exit;
+ try
+  FNotifyItems.Delete(ID);
+ except
+  on E:Exception do Error(E, 'except OnCloseNotifyAction');
+ end;
+end;
+
 procedure TFormMain.Initializate;
 var WD:TWorkDays;
 begin
+ //TFormNotifyTask.OnCloseAction:=OnCloseNotifyAction;
  FTimeManager:=TManager.Create(FDB);
  FTimeManager.OnWorkDayStarted:=WorkDayStarted;
  FTimeManager.OnTaskNotify:=TaskNotify;
@@ -1654,6 +1699,8 @@ begin
  {$IFDEF DEBUG}
    Caption:=Caption + ' (Debug)';
  {$ENDIF}
+
+ ReloadLabelsTypes;
 end;
 
 procedure TFormMain.DoLog(Text:string);
@@ -1724,6 +1771,7 @@ begin
 
  FDB:=TDB.Create(ExtractFilePath(ParamStr(0))+'\data.db');
  FDB.OnLog:=DoLog;
+ FRepeatStates:=TRepeatStates.Create(FDB, nil);
  FTimeItems:=TTimeItems.Create(FDB, TableExTimes);
  FTaskItems:=TTaskItems.Create(FDB, TableExTasks);
  FComments:=TCommentItems.Create(FDB, TableExComments);
@@ -1732,8 +1780,7 @@ begin
  FLabelItems:=TLabelItems.Create(FDB, nil);
  FNote:=TNoteItem.Create(FDB);
  FTasksOfCalendar:=TTaskItems.Create(FDB, nil);
-
- ReloadLabelsTypes;
+ FNotifyItems:=TNotifyItems.Create;
 end;
 
 procedure TFormMain.FormPaint(Sender: TObject);
@@ -2355,8 +2402,7 @@ begin
  case Index of
   0:
    begin
-    FTaskItems[TableExTasks.ItemIndex].State:=not FTaskItems[TableExTasks.ItemIndex].State;
-    FTaskItems.Update(FTaskItems[TableExTasks.ItemIndex]);
+    SetTaskComplete(FTaskItems[TableExTasks.ItemIndex].ID, FTaskItems[TableExTasks.ItemIndex].DateDeadline, not FTaskItems[TableExTasks.ItemIndex].State);
     OnChangeItems;
     UpdateTaskPanel(TableExTasks.ItemIndex);
    end;
@@ -2441,7 +2487,9 @@ end;
 
 procedure TFormMain.TaskNotify(Task: TTaskItem);
 begin
- TFormNotifyTask.Notify(Task);
+ if IndexInList(FNotifyItems.FindByTask(Task.ID), FNotifyItems.Count) then Exit;
+ FNotifyItems.Add(Task.ID, TFormNotifyTask.Notify(Task));
+ FRepeatStates.NotifyComplete(Task.ID, Task.DateDeadline);
 end;
 
 procedure TFormMain.TimeOverlayCallBack(Sender: TObject; State: Boolean);
@@ -2496,6 +2544,32 @@ procedure TFormMain.TrayIconClick(Sender: TObject);
 begin
  Show;
  ShowWindow(Handle, SW_SHOW);
+end;
+
+{ TNotifyItems }
+
+function TNotifyItems.Add(TaskID: Integer; Form: TFormNotifyTask): Integer;
+var Item:TNotifyItem;
+begin
+ Item.TaskID:=TaskID;
+ Item.Form:=Form;
+ Result:=Add(Item);
+end;
+
+function TNotifyItems.FindByForm(Form: TFormNotifyTask): Integer;
+var i:Integer;
+begin
+ Result:=-1;
+ for i:= 0 to Count-1 do
+  if Items[i].Form = Form then Exit(i);
+end;
+
+function TNotifyItems.FindByTask(TaskID: Integer): Integer;
+var i:Integer;
+begin
+ Result:=-1;
+ for i:= 0 to Count-1 do
+  if Items[i].TaskID = TaskID then Exit(i);
 end;
 
 end.

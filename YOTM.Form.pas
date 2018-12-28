@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, YOTM.Main,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls,
   HGM.Button, Vcl.StdCtrls, sEdit, sSpinEdit, Vcl.Mask, Vcl.ComCtrls, HGM.Controls.PanelExt;
 
 type
