@@ -523,7 +523,7 @@ begin
  end;
 end;
 
-function ThisTaskInThisDate(Task:TTaskItem; Date1, Date2:TDate):Boolean;
+function ThisTaskInThisDate(Task:TTaskItem; Date1, Date2:TDate; var FDate:TDate):Boolean;
 begin
  Result:=False;
  case Task.TaskType of
@@ -532,7 +532,11 @@ begin
    begin
     while Date1 <= Date2 do
      begin
-      if Task.TaskRepeat[DayOfTheWeek(Date1)] then Exit(True);
+      if Task.TaskRepeat[DayOfTheWeek(Date1)] then
+       begin
+        FDate:=Date1;
+        Exit(True);
+       end;
       Date1:=Date1 + 1;
      end;
    end;
@@ -542,7 +546,11 @@ begin
      begin
       if (DayOf(Date1) = DayOf(Task.DateDeadline)) and
          (Task.TaskRepeat[MonthOf(Date1)])
-      then Exit(True);
+      then
+       begin
+        FDate:=Date1;
+        Exit(True);
+       end;
       Date1:=Date1 + 1;
      end;
    end;
@@ -552,7 +560,11 @@ begin
      begin
       if (DayOf(Date1) = DayOf(Task.DateDeadline)) and
          (MonthOf(Date1) = MonthOf(Task.DateDeadline))
-      then Exit(True);
+      then
+       begin
+        FDate:=Date1;
+        Exit(True);
+       end;
       Date1:=Date1 + 1;
      end;
    end;
@@ -561,6 +573,7 @@ end;
 
 function TTaskItems.ListCount(Date: TDate; var Actual, NotActual, Deadlined, Repeated:Integer): Integer;
 var i:Integer;
+    FDate:TDate;
 begin
  Result:=0;
  Actual:=0;
@@ -585,17 +598,17 @@ begin
      end
     else
      begin
-      if Items[i].IsOftenRepeat or FCalcOftenRepeat then
-       if ThisTaskInThisDate(Items[i], Date, Date)
-       then
-        begin
-         Inc(Repeated);
-         {if Items[i].State then Inc(NotActual) else
-          begin
-           Inc(Actual);
-           if DateOf(Date) < DateOf(Now) then Inc(Deadlined)
-          end;    }
-        end;
+      if (not Items[i].IsOftenRepeat) or FCalcOftenRepeat then
+       if ThisTaskInThisDate(Items[i], Date, Date, FDate) then
+        if SameDate(FDate, Date) then
+         begin
+          Inc(Repeated);
+          {if Items[i].State then Inc(NotActual) else
+           begin
+            Inc(Actual);
+            if DateOf(Date) < DateOf(Now) then Inc(Deadlined)
+           end;    }
+         end;
      end;
    end;
 end;
@@ -603,7 +616,7 @@ end;
 procedure TTaskItems.GetRepeatedTasks;
 var Table, Labels:TSQLiteTable;
     Item:TTaskItem;
-    D1, D2:TDate;
+    D1, D2, FDate:TDate;
 begin
  try
   if FUseDatePeriod then
@@ -633,6 +646,9 @@ begin
     AddField(fnNotify);
     AddField(fnColor);
     AddField(TRepeatStates.fnState);
+
+    LeftJoin(TRepeatStates.tnTable, fnID, TRepeatStates.fnTask);
+
     WhereNotFieldEqual(fnTaskType, Ord(ttSimple));
     WhereParenthesesOpen;
      WhereFieldEqual(TRepeatStates.fnState, False);
@@ -644,7 +660,6 @@ begin
     WhereParenthesesClose;
     OrderBy(fnState);
     OrderBy(fnDateCreate, True);
-    LeftJoin(TRepeatStates.tnTable, fnID, TRepeatStates.fnTask);
     Table:=FDataBase.DB.GetTable(GetSQL);
     EndCreate;
     Table.MoveFirst;
@@ -666,9 +681,9 @@ begin
       Item.Notify:=Table.FieldAsBoolean(12);
       Item.Color:=Table.FieldAsInteger(13);
       Item.LabelItems.Reload(Item.ID);
-      if ThisTaskInThisDate(Item, D1, D2) then
+      if ThisTaskInThisDate(Item, D1, D2, FDate) then
        begin
-        if not FUseDatePeriod then Item.DateDeadline:=FShowDate;
+        Item.DateDeadline:=FDate;
         Item.Update;
         Add(Item);
        end

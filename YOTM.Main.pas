@@ -416,6 +416,10 @@ type
     procedure OnCloseNotifyAction(TaskID: Integer);
     procedure Error(E: Exception; Message: string = '');
    public
+
+    AccentColor:TColor;
+    BackgroundColor:TColor;
+    ForegroundColor:TColor;
     procedure Initializate;
     procedure SetTaskComplete(TaskID:Integer; Deadline:TDate; State:Boolean);
     procedure Quit;
@@ -437,7 +441,7 @@ const
 
 var
   FormMain: TFormMain;
-  AccentColor:TColor = $00B86B00;
+
   FWndFrameSize:Integer;
   FAnimate:Integer = 0;
   FAnimateDo:Boolean = False;
@@ -450,9 +454,10 @@ var
   procedure SetButtonCheck(Button:TButtonFlat; Value:Boolean);
 
 implementation
- uses Math, YOTM.Form.EditTime, DateUtils, YOTM.Form.Dialog,
-   YOTM.Form.SelectLabels, Winapi.CommCtrl, YOTM.Form.DateNotify, YOTM.Form.OverlayTime,
-   HGM.Common.DateUtils;
+
+uses Math, YOTM.Form.EditTime, DateUtils, YOTM.Form.Dialog,
+     YOTM.Form.SelectLabels, Winapi.CommCtrl, YOTM.Form.DateNotify, YOTM.Form.OverlayTime,
+     HGM.Common.DateUtils;
 
 {$R *.dfm}
 
@@ -720,12 +725,12 @@ begin
    if Cell.IsDate then
     begin
      if Cell.IsAnotherMonth then
-      Brush.Color:=$00383838//Color;
-     else Brush.Color:=$002E2E2E;
+      Brush.Color:=ForegroundColor//Color;
+     else Brush.Color:=BackgroundColor;
     end
    else
     begin
-     Brush.Color:=$00383838;
+     Brush.Color:=ForegroundColor;
     end;
    if Cell.IsDate and CalendarMouseInside and (Point(ACol, ARow) = CalendarMouseCoord) then
     Brush.Color:=ColorDarker(Brush.Color, 40);
@@ -736,7 +741,7 @@ begin
    FillRect(Rect);
    if Cell.IsDayOsWeek then
     begin
-     Brush.Color:=$002E2E2E;
+     Brush.Color:=BackgroundColor;
      tmp:=System.Classes.Rect(Rect.Left, Rect.Bottom - ShapeBorder.Height, Rect.Right, Rect.Bottom);
      FillRect(tmp);
     end;
@@ -1319,6 +1324,7 @@ begin
      end
    else
     begin
+     Task.State:=State;
      FRepeatStates.CompleteTask(TaskID, Deadline, State);
     end;
    end;
@@ -1521,30 +1527,30 @@ end;
 procedure TFormMain.SlideTo(Slide:TSlide);
 begin
  Enabled:=False;
- ButtonFlatTimes.ColorNormal:=$002E2E2E;
- ButtonFlatSettings.ColorNormal:=$002E2E2E;
- ButtonFlatCalendar.ColorNormal:=$002E2E2E;
- ButtonFlatNotes.ColorNormal:=$002E2E2E;
+ ButtonFlatTimes.ColorNormal:=BackgroundColor;
+ ButtonFlatSettings.ColorNormal:=BackgroundColor;
+ ButtonFlatCalendar.ColorNormal:=BackgroundColor;
+ ButtonFlatNotes.ColorNormal:=BackgroundColor;
  case Slide of
   slTimes:
    begin
     VisNeed:=PanelTimes;
-    ButtonFlatTimes.ColorNormal:=$00383838;
+    ButtonFlatTimes.ColorNormal:=ForegroundColor;
    end;
   slSettings:
    begin
     VisNeed:=PanelSettings;
-    ButtonFlatSettings.ColorNormal:=$00383838;
+    ButtonFlatSettings.ColorNormal:=ForegroundColor;
    end;
   slCalendar:
    begin
     VisNeed:=PanelCalendar;
-    ButtonFlatCalendar.ColorNormal:=$00383838;
+    ButtonFlatCalendar.ColorNormal:=ForegroundColor;
    end;
   slNotes:
    begin
     VisNeed:=PanelNotes;
-    ButtonFlatNotes.ColorNormal:=$00383838;
+    ButtonFlatNotes.ColorNormal:=ForegroundColor;
    end;
  end;
  if VisNeed <> VisNow then
@@ -1741,7 +1747,7 @@ begin
    Button.Parent:=ScrollBoxLabels;
    Button.Align:=alTop;
    Button.AlignWithMargins:=True;
-   Button.ColorNormal:=$00383838;
+   Button.ColorNormal:=ForegroundColor;
    Button.ColorOver:=$00616161;
    Button.ColorPressed:=$003A3A3A;
    Button.SubText:=' ';
@@ -1760,6 +1766,10 @@ end;
 
 procedure TFormMain.FormCreate(Sender: TObject);
 begin
+ AccentColor:= $00B86B00;
+ BackgroundColor:= $002E2E2E;
+ ForegroundColor:= $00383838;
+
  ClientWidth:=1500;
  ClientHeight:=800;
  FTaskID:=-1;
