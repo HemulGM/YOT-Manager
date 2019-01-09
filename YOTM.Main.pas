@@ -776,7 +776,7 @@ begin
      ImageListCalendar.Draw(DrawGridCalendar.Canvas, Rect.Left + 2, Rect.Top + 2, 2, True);
     end
    else
-   if FCalendarArray[ACol, ARow].Actual > 0 then
+   if (FCalendarArray[ACol, ARow].Actual > 0) or (FCalendarArray[ACol, ARow].Repeated > 0) then
     begin
      ImageListCalendar.Draw(DrawGridCalendar.Canvas, Rect.Left + 2, Rect.Top + 2, 1, True);
     end
@@ -784,14 +784,14 @@ begin
    if FCalendarArray[ACol, ARow].NotActual > 0 then
     begin
      ImageListCalendar.Draw(DrawGridCalendar.Canvas, Rect.Left + 2, Rect.Top + 2, 0, True);
-    end;
+    end;  {
    if FCalendarArray[ACol, ARow].Repeated > 0 then
     begin
      Rect.Offset(0, Rect.Height-10);
      rect.Height:=10;
      Rectangle(Rect);
     // ImageListCalendar.Draw(DrawGridCalendar.Canvas, Rect.Left + 2, Rect.Top + 2, 0, True);
-    end;
+    end;    }
   end;
 end;
 
@@ -1326,6 +1326,7 @@ begin
     begin
      Task.State:=State;
      FRepeatStates.CompleteTask(TaskID, Deadline, State);
+     FTaskItems.Update(Task);
     end;
    end;
   end;
@@ -2264,7 +2265,6 @@ begin
      end;
     end;
   1:begin
-     Txt:=Task.Name;
      with TableExTasks.Canvas do
       begin
        if Task.Color <> clNone then
@@ -2290,18 +2290,23 @@ begin
        TxtRect.Bottom:=TxtRect.Top + 20;
        TxtRect.Right:=TxtRect.Right - 100;
        Brush.Style:=bsClear;
+       Txt:=Task.Name;
        TextRect(TxtRect, Txt, [tfSingleLine, tfLeft, tfVerticalCenter, tfEndEllipsis]);
 
        if Task.Deadline then
         begin
-         TxtRect:=Rect;
-         TxtRect.Offset(2, 2);
-         TxtRect.Left:=TxtRect.Right - 100;
-         //TxtRect.Bottom:=TxtRect.Top + 20;
-         Brush.Style:=bsClear;
          Txt:=HumanDateTime(Task.DateDeadline, False, True);
-         TextRect(TxtRect, Txt, [tfLeft, tfWordBreak]);
+        end
+       else
+        begin
+         Txt:=HumanDateTime(Task.DateCreate, False, True);
         end;
+       TxtRect:=Rect;
+       TxtRect.Offset(2, 2);
+       TxtRect.Left:=TxtRect.Right - 100;
+       //TxtRect.Bottom:=TxtRect.Top + 20;
+       Brush.Style:=bsClear;
+       TextRect(TxtRect, Txt, [tfLeft, tfWordBreak]);
 
        if Assigned(Task.LabelItems) then
         begin

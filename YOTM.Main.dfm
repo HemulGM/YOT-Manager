@@ -2,7 +2,7 @@ object FormMain: TFormMain
   Left = 0
   Top = 0
   Caption = 'YOT Manager'
-  ClientHeight = 777
+  ClientHeight = 742
   ClientWidth = 1331
   Color = 3684408
   Constraints.MinHeight = 650
@@ -27,7 +27,7 @@ object FormMain: TFormMain
     Left = 879
     Top = 40
     Width = 2
-    Height = 737
+    Height = 702
     Align = alRight
     Brush.Color = 3026478
     Pen.Color = 3026478
@@ -39,18 +39,19 @@ object FormMain: TFormMain
     Left = 250
     Top = 40
     Width = 2
-    Height = 737
+    Height = 702
     Align = alLeft
     Brush.Color = 3026478
     Pen.Color = 3026478
     ExplicitLeft = 256
     ExplicitTop = 32
+    ExplicitHeight = 737
   end
   object PanelTasks: TPanel
     Left = 252
     Top = 40
     Width = 627
-    Height = 737
+    Height = 702
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 0
@@ -69,7 +70,7 @@ object FormMain: TFormMain
       Left = 0
       Top = 82
       Width = 627
-      Height = 358
+      Height = 323
       Align = alClient
       BorderStyle = bsNone
       Color = 3684408
@@ -319,7 +320,7 @@ object FormMain: TFormMain
     end
     object PanelTask: TPanel
       Left = 0
-      Top = 440
+      Top = 405
       Width = 627
       Height = 297
       Align = alBottom
@@ -891,7 +892,7 @@ object FormMain: TFormMain
     Left = 881
     Top = 40
     Width = 450
-    Height = 737
+    Height = 702
     Align = alRight
     BevelOuter = bvNone
     ParentColor = True
@@ -900,18 +901,18 @@ object FormMain: TFormMain
       Left = 0
       Top = 0
       Width = 450
-      Height = 737
+      Height = 702
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 0
       DesignSize = (
         450
-        737)
+        702)
       object PanelNotes: TPanel
         Left = 0
         Top = 0
         Width = 450
-        Height = 737
+        Height = 702
         Anchors = [akLeft, akTop, akBottom]
         BevelOuter = bvNone
         TabOrder = 3
@@ -1080,7 +1081,7 @@ object FormMain: TFormMain
           Left = 0
           Top = 99
           Width = 450
-          Height = 638
+          Height = 603
           Align = alClient
           BorderStyle = bsNone
           Color = 3684408
@@ -1091,7 +1092,7 @@ object FormMain: TFormMain
         Left = 0
         Top = 0
         Width = 450
-        Height = 737
+        Height = 702
         Anchors = [akLeft, akTop, akBottom]
         BevelOuter = bvNone
         TabOrder = 2
@@ -1099,7 +1100,7 @@ object FormMain: TFormMain
           Left = 0
           Top = 0
           Width = 450
-          Height = 737
+          Height = 702
           Align = alClient
           BorderStyle = bsNone
           Color = 3684408
@@ -1153,7 +1154,7 @@ object FormMain: TFormMain
         Left = 0
         Top = 0
         Width = 450
-        Height = 737
+        Height = 702
         Anchors = [akLeft, akTop, akBottom]
         BevelOuter = bvNone
         TabOrder = 1
@@ -1171,7 +1172,7 @@ object FormMain: TFormMain
           Left = 0
           Top = 42
           Width = 450
-          Height = 473
+          Height = 438
           Align = alClient
           BorderStyle = bsNone
           Color = 3684408
@@ -1367,7 +1368,7 @@ object FormMain: TFormMain
         end
         object PanelTimeScale: TPanel
           Left = 0
-          Top = 515
+          Top = 480
           Width = 450
           Height = 222
           Align = alBottom
@@ -1479,13 +1480,13 @@ object FormMain: TFormMain
         Left = 0
         Top = 0
         Width = 450
-        Height = 737
+        Height = 702
         Anchors = [akLeft, akTop, akBottom]
         BevelOuter = bvNone
         TabOrder = 0
         object Shape13: TShape
           Left = 0
-          Top = 561
+          Top = 526
           Width = 450
           Height = 2
           Align = alBottom
@@ -1527,7 +1528,7 @@ object FormMain: TFormMain
         end
         object PanelLog: TPanel
           Left = 0
-          Top = 563
+          Top = 528
           Width = 450
           Height = 174
           Align = alBottom
@@ -2561,7 +2562,7 @@ object FormMain: TFormMain
     Left = 0
     Top = 40
     Width = 250
-    Height = 737
+    Height = 702
     Align = alLeft
     BevelOuter = bvNone
     ParentColor = True
@@ -3395,7 +3396,7 @@ object FormMain: TFormMain
     Left = 44
     Top = 520
     Bitmap = {
-      494C01011D005800980218001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01011D005800040018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000C000000001002000000000000020
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -5906,7 +5907,7 @@ object FormMain: TFormMain
     Left = 128
     Top = 520
     Bitmap = {
-      494C010103000800F40010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010103000800040010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
