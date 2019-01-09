@@ -186,7 +186,7 @@ interface
    end;
 
 implementation
- uses YOTM.DB.Comments, DateUtils, YOTM.DB.TaskRepeats;
+ uses YOTM.DB.Comments, DateUtils, Math, YOTM.DB.TaskRepeats;
 
 { TTaskItem }
 
@@ -473,8 +473,13 @@ end;
 
 function TTaskItems.GetItem(ID: Integer): TTaskItem;
 var Table:TSQLiteTable;
+  i: Integer;
 begin
  Result:=nil;
+ for i:= 0 to Count-1 do
+  begin
+   if Items[i].ID = ID then Exit(Items[i]);
+  end;
  try
   with SQL.Select(tnTable) do
     begin
@@ -534,7 +539,7 @@ begin
      begin
       if Task.TaskRepeat[DayOfTheWeek(Date1)] then
        begin
-        FDate:=Date1;
+        FDate:=DateOf(Date1);
         Exit(True);
        end;
       Date1:=Date1 + 1;
@@ -548,7 +553,7 @@ begin
          (Task.TaskRepeat[MonthOf(Date1)])
       then
        begin
-        FDate:=Date1;
+        FDate:=DateOf(Date1);
         Exit(True);
        end;
       Date1:=Date1 + 1;
@@ -562,7 +567,7 @@ begin
          (MonthOf(Date1) = MonthOf(Task.DateDeadline))
       then
        begin
-        FDate:=Date1;
+        FDate:=DateOf(Date1);
         Exit(True);
        end;
       Date1:=Date1 + 1;
@@ -600,7 +605,7 @@ begin
      begin
       if (not Items[i].IsOftenRepeat) or FCalcOftenRepeat then
        if ThisTaskInThisDate(Items[i], Date, Date, FDate) then
-        if SameDate(FDate, Date) then
+        if SameDate(FDate, Date) and (FDate >= DateOf(Now)) then
          begin
           Inc(Repeated);
           {if Items[i].State then Inc(NotActual) else
@@ -681,7 +686,7 @@ begin
       Item.Notify:=Table.FieldAsBoolean(12);
       Item.Color:=Table.FieldAsInteger(13);
       Item.LabelItems.Reload(Item.ID);
-      if ThisTaskInThisDate(Item, D1, D2, FDate) then
+      if ThisTaskInThisDate(Item, D1, D2, FDate){ and (FDate >= DateOf(Now))} then
        begin
         Item.DateDeadline:=FDate;
         Item.Update;

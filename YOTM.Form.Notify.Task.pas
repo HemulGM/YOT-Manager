@@ -82,6 +82,7 @@ end;
 
 class function TFormNotifyTask.Notify(Task: TTaskItem):TFormNotifyTask;
 begin
+ Result:=nil;
  if not Assigned(Task) then Exit;
  Result:=TFormNotifyTask.Create(nil);
  with Result do
