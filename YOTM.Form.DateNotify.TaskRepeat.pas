@@ -5,8 +5,9 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, YOTM.Form.ModalEdit, Vcl.ExtCtrls,
-  HGM.Button, Vcl.StdCtrls, sPanel, Vcl.ComCtrls, HGM.Controls.PanelExt, YOTM.Main,
-  Vcl.Grids, System.Generics.Collections, HGM.Controls.VirtualTable, YOTM.DB.Tasks;
+  HGM.Button, Vcl.StdCtrls, Vcl.ComCtrls, HGM.Controls.PanelExt, YOTM.Main,
+  Vcl.Grids, System.Generics.Collections, HGM.Controls.VirtualTable, YOTM.DB.Tasks,
+  System.Types, System.UITypes;
 
 type
    TMonthItem = record
@@ -88,10 +89,9 @@ type
     function GetRepeatType: TTaskType;
     function GetWDays(Index: Byte): Boolean;
     procedure SetWDays(Index: Byte; const Value: Boolean);
+  public
     property WorkDays:TWorkDays read FWorkDays write SetWorkDays;
     property WDays[Index:Byte]:Boolean read GetWDays write SetWDays;
-  public
-
     property RepeatString:string read GetRepeatString write SetRepeatString;
     property RepeatType:TTaskType read GetRepeatType write SetRepeatType;
     class function Select(var ARepeatString:string; var ARepeatType:TTaskType):Boolean;

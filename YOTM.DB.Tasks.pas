@@ -3,7 +3,8 @@ unit YOTM.DB.Tasks;
 interface
   uses SQLite3, SQLLang, SQLiteTable3, System.Generics.Collections,
        System.SysUtils, Vcl.Graphics, Vcl.Dialogs,
-       HGM.Controls.VirtualTable, YOTM.DB, YOTM.DB.Labels, HGM.Common.DateUtils;
+       HGM.Controls.VirtualTable, YOTM.DB, YOTM.DB.Labels, HGM.Common.DateUtils,
+       YOTM.DB.TaskRepeats;
 
   type
    TTaskFilter = (tkfAll, tkfDated, tkfDeadlined, tkfNoDate);
@@ -52,7 +53,7 @@ interface
      function GetIsOftenRepeat: Boolean;
     public
      constructor Create(AOwner: TTaskItems);
-     destructor Destroy;
+     destructor Destroy; override;
      procedure Update;
      procedure DropLabels;
      property Owner:TTaskItems read FOwner write SetOwner;
@@ -154,6 +155,7 @@ interface
      FUpcoming: Boolean;
      FUseDatePeriod: Boolean;
      FCalcOftenRepeat: Boolean;
+     FRepeatStates:TRepeatStates;
      procedure SetDataBase(const Value: TDB);
      procedure SetShowEndedTask(const Value: Boolean);
      procedure SetShowDate(const Value: TDate);
@@ -174,6 +176,8 @@ interface
      procedure Update(Task: TTaskItem);
      procedure Delete(Index: Integer); override;
      procedure Save;
+     function RepeatTaskState(Task:Integer; Date:TDate):Boolean;
+     function ThisTaskInThisDate(Task: TTaskItem; Date: TDate; var FDate: TDate):Boolean;
      function ListCount(Date:TDate; var Actual, NotActual, Deadlined, Repeated:Integer):Integer;
      property ShowEndedTask:Boolean read FShowEndedTask write SetShowEndedTask default False;
      property ShowDate:TDate read FShowDate write SetShowDate;
@@ -186,7 +190,7 @@ interface
    end;
 
 implementation
- uses YOTM.DB.Comments, DateUtils, Math, YOTM.DB.TaskRepeats;
+ uses YOTM.DB.Comments, DateUtils, Math;
 
 { TTaskItem }
 
@@ -367,6 +371,7 @@ constructor TTaskItems.Create(ADataBase: TDB; ATableEx: TTableEx);
 begin
  inherited Create(ATableEx);
  FDataBase:=ADataBase;
+ FRepeatStates:=TRepeatStates.Create(ADataBase, nil);
  FShowEndedTask:=False;
  FUpcoming:=False;
  FTaskFilter:=tkfAll;
@@ -423,6 +428,7 @@ destructor TTaskItems.Destroy;
 var i:Integer;
 begin
  for i:= 0 to Count-1 do Items[i].Free;
+ FRepeatStates.Free;
  inherited;
 end;
 
@@ -528,49 +534,41 @@ begin
  end;
 end;
 
-function ThisTaskInThisDate(Task:TTaskItem; Date1, Date2:TDate; var FDate:TDate):Boolean;
+function TTaskItems.ThisTaskInThisDate(Task:TTaskItem; Date:TDate; var FDate:TDate):Boolean;
 begin
  Result:=False;
  case Task.TaskType of
-  ttRepeatInDay: Exit(True);
+  ttRepeatInDay:
+   begin
+    FDate:=Task.DateDeadline;
+    Exit(True);
+   end;
   ttRepeatInWeek:
    begin
-    while Date1 <= Date2 do
+    if Task.TaskRepeat[DayOfTheWeek(Date)] then
      begin
-      if Task.TaskRepeat[DayOfTheWeek(Date1)] then
-       begin
-        FDate:=DateOf(Date1);
-        Exit(True);
-       end;
-      Date1:=Date1 + 1;
+      FDate:=DateOf(Date); //not RepeatTaskState(Task.ID, FDate)
+      Exit(True);
      end;
    end;
   ttRepeatInMonth:
    begin
-    while Date1 <= Date2 do
+    if (DayOf(Date) = DayOf(Task.DateDeadline)) and
+       (Task.TaskRepeat[MonthOf(Date)])
+    then
      begin
-      if (DayOf(Date1) = DayOf(Task.DateDeadline)) and
-         (Task.TaskRepeat[MonthOf(Date1)])
-      then
-       begin
-        FDate:=DateOf(Date1);
-        Exit(True);
-       end;
-      Date1:=Date1 + 1;
+      FDate:=DateOf(Date);
+      Exit(True);
      end;
    end;
   ttRepeatInYear:
    begin
-    while Date1 <= Date2 do
+    if (DayOf(Date) = DayOf(Task.DateDeadline)) and
+       (MonthOf(Date) = MonthOf(Task.DateDeadline))
+    then
      begin
-      if (DayOf(Date1) = DayOf(Task.DateDeadline)) and
-         (MonthOf(Date1) = MonthOf(Task.DateDeadline))
-      then
-       begin
-        FDate:=DateOf(Date1);
-        Exit(True);
-       end;
-      Date1:=Date1 + 1;
+      FDate:=DateOf(Date);
+      Exit(True);
      end;
    end;
  end;
@@ -578,7 +576,6 @@ end;
 
 function TTaskItems.ListCount(Date: TDate; var Actual, NotActual, Deadlined, Repeated:Integer): Integer;
 var i:Integer;
-    FDate:TDate;
 begin
  Result:=0;
  Actual:=0;
@@ -604,24 +601,21 @@ begin
     else
      begin
       if (not Items[i].IsOftenRepeat) or FCalcOftenRepeat then
-       if ThisTaskInThisDate(Items[i], Date, Date, FDate) then
-        if SameDate(FDate, Date) and (FDate >= DateOf(Now)) then
+        if (SameDate(Items[i].DateDeadline, Date))
+        then
+         if Items[i].State then Inc(NotActual) else
          begin
-          Inc(Repeated);
-          {if Items[i].State then Inc(NotActual) else
-           begin
-            Inc(Actual);
-            if DateOf(Date) < DateOf(Now) then Inc(Deadlined)
-           end;    }
+          Inc(Actual);
+          if DateOf(Date) < DateOf(Now) then Inc(Deadlined)
          end;
      end;
    end;
 end;
 
 procedure TTaskItems.GetRepeatedTasks;
-var Table, Labels:TSQLiteTable;
+var Table:TSQLiteTable;
     Item:TTaskItem;
-    D1, D2, FDate:TDate;
+    D1, D2, FDate, ND:TDate;
 begin
  try
   if FUseDatePeriod then
@@ -650,19 +644,8 @@ begin
     AddField(fnState);
     AddField(fnNotify);
     AddField(fnColor);
-    AddField(TRepeatStates.fnState);
-
-    LeftJoin(TRepeatStates.tnTable, fnID, TRepeatStates.fnTask);
 
     WhereNotFieldEqual(fnTaskType, Ord(ttSimple));
-    WhereParenthesesOpen;
-     WhereFieldEqual(TRepeatStates.fnState, False);
-     WhereFieldIsNull(TRepeatStates.fnState, wuOr);
-    WhereParenthesesClose;
-    WhereParenthesesOpen;
-     WhereFieldBetween(TRepeatStates.fnDeadline, D1, D2);
-     WhereFieldIsNull(TRepeatStates.fnDeadline, wuOR);
-    WhereParenthesesClose;
     OrderBy(fnState);
     OrderBy(fnDateCreate, True);
     Table:=FDataBase.DB.GetTable(GetSQL);
@@ -670,29 +653,38 @@ begin
     Table.MoveFirst;
     while not Table.EOF do
      begin
-      Item:=TTaskItem.Create(Self);
-      Item.ID:=Table.FieldAsInteger(0);
-      Item.Parent:=Table.FieldAsInteger(1);
-      Item.Name:=Table.FieldAsString(2);
-      Item.Description:=Table.FieldAsString(3);
-      Item.FDateCreate:=Table.FieldAsDateTime(4);
-      Item.TaskType:=TTaskType(Table.FieldAsInteger(5));
-      Item.FTaskRepeat:=Table.FieldAsString(6);
-      Item.DateDeadline:=Table.FieldAsDateTime(7);
-      Item.TimeNotify:=TimeOf(Table.FieldAsDateTime(8));
-      Item.NotifyComplete:=Table.FieldAsBoolean(9);
-      Item.Deadline:=Table.FieldAsBoolean(10);
-      Item.State:=Table.FieldAsBoolean(11);
-      Item.Notify:=Table.FieldAsBoolean(12);
-      Item.Color:=Table.FieldAsInteger(13);
-      Item.LabelItems.Reload(Item.ID);
-      if ThisTaskInThisDate(Item, D1, D2, FDate){ and (FDate >= DateOf(Now))} then
+      ND:=D1;
+      while ND <= D2 do
        begin
-        Item.DateDeadline:=FDate;
-        Item.Update;
-        Add(Item);
-       end
-      else Item.Free;
+        Item:=TTaskItem.Create(Self);
+        Item.ID:=Table.FieldAsInteger(0);
+        Item.Parent:=Table.FieldAsInteger(1);
+        Item.Name:=Table.FieldAsString(2);
+        Item.Description:=Table.FieldAsString(3);
+        Item.FDateCreate:=Table.FieldAsDateTime(4);
+        Item.TaskType:=TTaskType(Table.FieldAsInteger(5));
+        Item.FTaskRepeat:=Table.FieldAsString(6);
+        Item.DateDeadline:=Table.FieldAsDateTime(7);
+        Item.TimeNotify:=TimeOf(Table.FieldAsDateTime(8));
+        Item.NotifyComplete:=Table.FieldAsBoolean(9);
+        Item.Deadline:=Table.FieldAsBoolean(10);
+        Item.State:=RepeatTaskState(Item.ID, ND);
+        Item.Notify:=Table.FieldAsBoolean(12);
+        Item.Color:=Table.FieldAsInteger(13);
+        Item.LabelItems.Reload(Item.ID);
+
+        if (ShowEndedTask or (not Item.State)) and
+           (ThisTaskInThisDate(Item, ND, FDate)) and
+           (FDate >= DateOf(Now - 14))
+        then
+         begin
+          Item.DateDeadline:=FDate;
+          Item.Update;
+          Add(Item);
+         end
+        else Item.Free;
+        ND:=ND + 1;
+       end;
       Table.Next;
      end;
     Table.Free;
@@ -703,7 +695,7 @@ begin
 end;
 
 procedure TTaskItems.Reload;
-var Table, Labels:TSQLiteTable;
+var Table:TSQLiteTable;
     Item:TTaskItem;
     LoadRepeat:Boolean;
 begin
@@ -802,6 +794,14 @@ begin
  finally
   EndUpdate;
  end;
+end;
+
+function TTaskItems.RepeatTaskState(Task: Integer; Date: TDate): Boolean;
+var State:TRepeatState;
+begin
+ Result:=False;
+ State:=FRepeatStates.GetItem(Task, Date);
+ if Assigned(State) then Result:=State.State;
 end;
 
 procedure TTaskItems.Save;

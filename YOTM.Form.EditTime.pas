@@ -5,13 +5,12 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, YOTM.Form.ModalEdit, Vcl.ComCtrls,
-  Vcl.StdCtrls, Vcl.ExtCtrls, HGM.Button, sPanel, HGM.Controls.PanelExt,
+  Vcl.StdCtrls, Vcl.ExtCtrls, HGM.Button, HGM.Controls.PanelExt, System.Types,
   Vcl.Grids, HGM.Controls.VirtualTable, HGM.Popup;
 
 type
   TFormEditTime = class(TFormModalEdit)
     Label1: TLabel;
-    EditText: TEdit;
     ButtonFlat1: TButtonFlat;
     ButtonFlatTimeFromHH: TButtonFlat;
     ButtonFlat3: TButtonFlat;
@@ -28,6 +27,8 @@ type
     Label3: TLabel;
     ButtonFlatTask: TButtonFlat;
     TableExTasks: TTableEx;
+    Panel1: TPanel;
+    EditText: TEdit;
     procedure ButtonFlatUPDOWNClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ButtonFlatTaskClick(Sender: TObject);
@@ -35,9 +36,9 @@ type
     procedure TableExTasksItemClick(Sender: TObject; MouseButton: TMouseButton;
       const Index: Integer);
   private
-    FromHH, FromMM, ToHH, ToMM:Word;
+    FFromHH, FFromMM, FToHH, FToMM:Word;
     FTaskID: Integer;
-    Popup:TFormPopup;
+    FPopup:TFormPopup;
     FTaskColor: TColor;
     procedure SetTimeFrom(const Value: TTime);
     procedure SetTimeTo(const Value: TTime);
@@ -66,26 +67,25 @@ procedure TFormEditTime.ButtonFlatTaskClick(Sender: TObject);
 var pt:TPoint;
 begin
  pt:=ButtonFlatTask.ClientToScreen(Point(0, 0));
- Popup:=TFormPopup.Create(Self, TableExTasks, pt.X, pt.Y+ButtonFlatTask.Height);
+ FPopup:=TFormPopup.Create(Self, TableExTasks, pt.X, pt.Y+ButtonFlatTask.Height);
 end;
 
 procedure TFormEditTime.ButtonFlatUPDOWNClick(Sender: TObject);
 begin
  case (Sender as TButtonFlat).Tag of
-  10: FromHH:=Min(Max(0, FromHH - 1), 23);
-  11: FromHH:=Min(Max(0, FromHH + 1), 23);
-  20: FromMM:=Min(Max(0, FromMM - 1), 59);
-  21: FromMM:=Min(Max(0, FromMM + 1), 59);
-  30:   ToHH:=Min(Max(0,   ToHH - 1), 23);
-  31:   ToHH:=Min(Max(0,   ToHH + 1), 23);
-  40:   ToMM:=Min(Max(0,   ToMM - 1), 59);
-  41:   ToMM:=Min(Max(0,   ToMM + 1), 59);
+  10: FFromHH:=Min(Max(0, FFromHH - 1), 23);
+  11: FFromHH:=Min(Max(0, FFromHH + 1), 23);
+  20: FFromMM:=Min(Max(0, FFromMM - 1), 59);
+  21: FFromMM:=Min(Max(0, FFromMM + 1), 59);
+  30:   FToHH:=Min(Max(0,   FToHH - 1), 23);
+  31:   FToHH:=Min(Max(0,   FToHH + 1), 23);
+  40:   FToMM:=Min(Max(0,   FToMM - 1), 59);
+  41:   FToMM:=Min(Max(0,   FToMM + 1), 59);
  end;
  UpdateTime;
 end;
 
 procedure TFormEditTime.FormCreate(Sender: TObject);
-var i: Integer;
 begin
  inherited;
  TaskID:=-1;
@@ -93,7 +93,6 @@ begin
 end;
 
 function TFormEditTime.GetTaskID: Integer;
-var i:Integer;
 begin
  if IndexInList(TableExTasks.ItemIndex, FormMain.TaskItems.Count) then
   Result:=FormMain.TaskItems[TableExTasks.ItemIndex].ID
@@ -102,12 +101,12 @@ end;
 
 function TFormEditTime.GetTimeFrom: TTime;
 begin
- Result:=EncodeTime(FromHH, FromMM, 0, 0);
+ Result:=EncodeTime(FFromHH, FFromMM, 0, 0);
 end;
 
 function TFormEditTime.GetTimeTo: TTime;
 begin
- Result:=EncodeTime(ToHH, ToMM, 0, 0);
+ Result:=EncodeTime(FToHH, FToMM, 0, 0);
 end;
 
 procedure TFormEditTime.SetTaskColor(const Value: TColor);
@@ -139,14 +138,14 @@ end;
 procedure TFormEditTime.SetTimeFrom(const Value: TTime);
 var S, M:Word;
 begin
- DecodeTime(Value, FromHH, FromMM, S, M);
+ DecodeTime(Value, FFromHH, FFromMM, S, M);
  UpdateTime;
 end;
 
 procedure TFormEditTime.SetTimeTo(const Value: TTime);
 var S, M:Word;
 begin
- DecodeTime(Value, ToHH, ToMM, S, M);
+ DecodeTime(Value, FToHH, FToMM, S, M);
  UpdateTime;
 end;
 
@@ -161,7 +160,7 @@ end;
 procedure TFormEditTime.TableExTasksItemClick(Sender: TObject;
   MouseButton: TMouseButton; const Index: Integer);
 begin
- Popup.Close;
+ FPopup.Close;
  if IndexInList(Index, FormMain.TaskItems.Count) then
   TaskID:=FormMain.TaskItems[Index].ID;
 end;

@@ -57,6 +57,10 @@ inherited FormTaskRepeat: TFormTaskRepeat
     object TabSheetEmpty: TTabSheet
       Caption = 'TabSheetEmpty'
       TabVisible = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel6: TPanel
         Left = 0
         Top = 0
@@ -71,14 +75,12 @@ inherited FormTaskRepeat: TFormTaskRepeat
         object Label2: TLabel
           Left = 0
           Top = 0
-          Width = 356
-          Height = 233
+          Width = 221
+          Height = 38
           Align = alClient
           Alignment = taCenter
           Caption = #1047#1072#1076#1072#1095#1072' '#1085#1077' '#1073#1091#1076#1077#1090' '#1087#1086#1074#1090#1086#1088#1103#1090#1100#1089#1103'.'#13#10#1044#1072#1090#1072' '#1079#1072#1076#1072#1095#1080' '#1073#1091#1076#1077#1090' '#1089#1073#1088#1086#1096#1077#1085#1072'.'
           Layout = tlCenter
-          ExplicitWidth = 221
-          ExplicitHeight = 38
         end
       end
     end
@@ -197,6 +199,11 @@ inherited FormTaskRepeat: TFormTaskRepeat
         TabOrder = 0
         TabStop = True
         TextFormat = [tfSingleLine, tfVerticalCenter]
+        SubTextFont.Charset = DEFAULT_CHARSET
+        SubTextFont.Color = clWhite
+        SubTextFont.Height = -13
+        SubTextFont.Name = 'Tahoma'
+        SubTextFont.Style = []
       end
       object ButtonFlatWD2: TButtonFlat
         Tag = 2
@@ -235,6 +242,11 @@ inherited FormTaskRepeat: TFormTaskRepeat
         TabOrder = 1
         TabStop = True
         TextFormat = [tfSingleLine, tfVerticalCenter]
+        SubTextFont.Charset = DEFAULT_CHARSET
+        SubTextFont.Color = clWhite
+        SubTextFont.Height = -13
+        SubTextFont.Name = 'Tahoma'
+        SubTextFont.Style = []
       end
       object ButtonFlatWD3: TButtonFlat
         Tag = 3
@@ -273,6 +285,11 @@ inherited FormTaskRepeat: TFormTaskRepeat
         TabOrder = 2
         TabStop = True
         TextFormat = [tfSingleLine, tfVerticalCenter]
+        SubTextFont.Charset = DEFAULT_CHARSET
+        SubTextFont.Color = clWhite
+        SubTextFont.Height = -13
+        SubTextFont.Name = 'Tahoma'
+        SubTextFont.Style = []
       end
       object ButtonFlatWD4: TButtonFlat
         Tag = 4
@@ -311,6 +328,11 @@ inherited FormTaskRepeat: TFormTaskRepeat
         TabOrder = 3
         TabStop = True
         TextFormat = [tfSingleLine, tfVerticalCenter]
+        SubTextFont.Charset = DEFAULT_CHARSET
+        SubTextFont.Color = clWhite
+        SubTextFont.Height = -13
+        SubTextFont.Name = 'Tahoma'
+        SubTextFont.Style = []
       end
       object ButtonFlatWD5: TButtonFlat
         Tag = 5
@@ -349,6 +371,11 @@ inherited FormTaskRepeat: TFormTaskRepeat
         TabOrder = 4
         TabStop = True
         TextFormat = [tfSingleLine, tfVerticalCenter]
+        SubTextFont.Charset = DEFAULT_CHARSET
+        SubTextFont.Color = clWhite
+        SubTextFont.Height = -13
+        SubTextFont.Name = 'Tahoma'
+        SubTextFont.Style = []
       end
       object ButtonFlatWD6: TButtonFlat
         Tag = 6
@@ -387,6 +414,11 @@ inherited FormTaskRepeat: TFormTaskRepeat
         TabOrder = 5
         TabStop = True
         TextFormat = [tfSingleLine, tfVerticalCenter]
+        SubTextFont.Charset = DEFAULT_CHARSET
+        SubTextFont.Color = clWhite
+        SubTextFont.Height = -13
+        SubTextFont.Name = 'Tahoma'
+        SubTextFont.Style = []
       end
       object ButtonFlatWD7: TButtonFlat
         Tag = 7
@@ -425,12 +457,21 @@ inherited FormTaskRepeat: TFormTaskRepeat
         TabOrder = 6
         TabStop = True
         TextFormat = [tfSingleLine, tfVerticalCenter]
+        SubTextFont.Charset = DEFAULT_CHARSET
+        SubTextFont.Color = clWhite
+        SubTextFont.Height = -13
+        SubTextFont.Name = 'Tahoma'
+        SubTextFont.Style = []
       end
     end
     object TabSheetDay: TTabSheet
       Caption = 'TabSheetDay'
       ImageIndex = 1
       TabVisible = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel1: TPanel
         Left = 0
         Top = 0
@@ -445,14 +486,12 @@ inherited FormTaskRepeat: TFormTaskRepeat
         object Label1: TLabel
           Left = 0
           Top = 0
-          Width = 356
-          Height = 233
+          Width = 300
+          Height = 19
           Align = alClient
           Alignment = taCenter
           Caption = #1047#1072#1076#1072#1095#1072' '#1073#1091#1076#1077#1090' '#1087#1086#1074#1090#1086#1088#1103#1090#1100#1089#1103' '#1082#1072#1078#1076#1099#1081' '#1076#1077#1085#1100'.'
           Layout = tlCenter
-          ExplicitWidth = 300
-          ExplicitHeight = 19
         end
       end
     end
@@ -460,6 +499,10 @@ inherited FormTaskRepeat: TFormTaskRepeat
       Caption = 'TabSheetMonth'
       ImageIndex = 3
       TabVisible = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label4: TLabel
         Left = 0
         Top = 0
@@ -515,6 +558,10 @@ inherited FormTaskRepeat: TFormTaskRepeat
       Caption = 'TabSheetYear'
       ImageIndex = 4
       TabVisible = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label5: TLabel
         Left = 0
         Top = 0
@@ -578,6 +625,11 @@ inherited FormTaskRepeat: TFormTaskRepeat
       TabOrder = 0
       TabStop = True
       TextFormat = [tfSingleLine, tfVerticalCenter]
+      SubTextFont.Charset = DEFAULT_CHARSET
+      SubTextFont.Color = clWhite
+      SubTextFont.Height = -13
+      SubTextFont.Name = 'Tahoma'
+      SubTextFont.Style = []
     end
     object ButtonFlatRepDay: TButtonFlat
       Tag = 1
@@ -617,6 +669,11 @@ inherited FormTaskRepeat: TFormTaskRepeat
       TabOrder = 1
       TabStop = True
       TextFormat = [tfSingleLine, tfVerticalCenter]
+      SubTextFont.Charset = DEFAULT_CHARSET
+      SubTextFont.Color = clWhite
+      SubTextFont.Height = -13
+      SubTextFont.Name = 'Tahoma'
+      SubTextFont.Style = []
     end
     object ButtonFlatRepWeek: TButtonFlat
       Tag = 2
@@ -656,6 +713,11 @@ inherited FormTaskRepeat: TFormTaskRepeat
       TabOrder = 2
       TabStop = True
       TextFormat = [tfSingleLine, tfVerticalCenter]
+      SubTextFont.Charset = DEFAULT_CHARSET
+      SubTextFont.Color = clWhite
+      SubTextFont.Height = -13
+      SubTextFont.Name = 'Tahoma'
+      SubTextFont.Style = []
     end
     object ButtonFlatRepMonth: TButtonFlat
       Tag = 3
@@ -695,6 +757,11 @@ inherited FormTaskRepeat: TFormTaskRepeat
       TabOrder = 3
       TabStop = True
       TextFormat = [tfSingleLine, tfVerticalCenter]
+      SubTextFont.Charset = DEFAULT_CHARSET
+      SubTextFont.Color = clWhite
+      SubTextFont.Height = -13
+      SubTextFont.Name = 'Tahoma'
+      SubTextFont.Style = []
     end
     object ButtonFlatRepYear: TButtonFlat
       Tag = 4
@@ -734,6 +801,11 @@ inherited FormTaskRepeat: TFormTaskRepeat
       TabOrder = 4
       TabStop = True
       TextFormat = [tfSingleLine, tfVerticalCenter]
+      SubTextFont.Charset = DEFAULT_CHARSET
+      SubTextFont.Color = clWhite
+      SubTextFont.Height = -13
+      SubTextFont.Name = 'Tahoma'
+      SubTextFont.Style = []
     end
   end
 end

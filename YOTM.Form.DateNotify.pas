@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, YOTM.Form.ModalEdit, HGM.Button,
-  Vcl.StdCtrls, Vcl.ExtCtrls, sPanel, Vcl.WinXCalendars, YOTM.Main, YOTM.DB.Tasks,
+  Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.WinXCalendars, YOTM.Main, YOTM.DB.Tasks,
   Vcl.Menus, HGM.Common.Utils, HGM.Controls.PanelExt;
 
 type

@@ -184,6 +184,11 @@ inherited FormSelectLabels: TFormSelectLabels
       TabOrder = 1
       TabStop = True
       TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+      SubTextFont.Charset = DEFAULT_CHARSET
+      SubTextFont.Color = clWhite
+      SubTextFont.Height = -13
+      SubTextFont.Name = 'Tahoma'
+      SubTextFont.Style = []
     end
     object ButtonFlatLabelColor: TButtonFlat
       AlignWithMargins = True
@@ -221,6 +226,11 @@ inherited FormSelectLabels: TFormSelectLabels
       TabOrder = 2
       TabStop = True
       TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+      SubTextFont.Charset = DEFAULT_CHARSET
+      SubTextFont.Color = clWhite
+      SubTextFont.Height = -13
+      SubTextFont.Name = 'Tahoma'
+      SubTextFont.Style = []
     end
     object ButtonFlatDelete: TButtonFlat
       AlignWithMargins = True
@@ -259,6 +269,11 @@ inherited FormSelectLabels: TFormSelectLabels
       TabOrder = 3
       TabStop = True
       TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+      SubTextFont.Charset = DEFAULT_CHARSET
+      SubTextFont.Color = clWhite
+      SubTextFont.Height = -13
+      SubTextFont.Name = 'Tahoma'
+      SubTextFont.Style = []
     end
   end
   object ColorDialog: TColorDialog

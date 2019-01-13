@@ -24,6 +24,7 @@ inherited FormNotifyTask: TFormNotifyTask
     ExplicitWidth = 396
     inherited LabelCaption: TLabel
       Width = 97
+      Height = 32
       Caption = 'YOT Manager'
       ExplicitWidth = 97
     end

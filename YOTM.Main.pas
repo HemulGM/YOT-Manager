@@ -5,11 +5,11 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Direct2D, D2D1, System.Generics.Collections,
-  HGM.Controls.PanelExt, Vcl.ComCtrls, System.Types, Vcl.StdCtrls,
+  HGM.Controls.PanelExt, Vcl.ComCtrls, System.Types, Vcl.StdCtrls, System.UITypes,
   HGM.Controls.SpinEdit, Vcl.Grids, HGM.Controls.VirtualTable, YOTM.DB,
-  System.ImageList, Vcl.ImgList, HGM.Button, sPanel, Vcl.WinXCalendars, YOTM.Form.Notify.Task,
+  System.ImageList, Vcl.ImgList, HGM.Button, Vcl.WinXCalendars, YOTM.Form.Notify.Task,
   Vcl.AppEvnts, Vcl.Menus, YOTM.DB.Comments, YOTM.DB.Labels, YOTM.DB.Tasks, YOTM.DB.TaskRepeats,
-  YOTM.DB.Times, HGM.Common.Utils, YOTM.DB.LabelTypes, sDialogs, YOTM.DB.Notes, YOTM.Manager;
+  YOTM.DB.Times, HGM.Common.Utils, YOTM.DB.LabelTypes, YOTM.DB.Notes, YOTM.Manager;
 
 type
   TTimeSection = record
@@ -129,7 +129,6 @@ type
     PanelTaskColor: TPanel;
     ButtonFlatTaskColor: TButtonFlat;
     ButtonFlatTaskColorClose: TButtonFlat;
-    ColorDialog: TsColorDialog;
     PopupMenuViewProp: TPopupMenu;
     MenuItemShowEnded: TMenuItem;
     PanelNotes: TPanel;
@@ -219,6 +218,16 @@ type
     Shape17: TShape;
     Panel11: TPanel;
     Panel12: TPanel;
+    Panel13: TPanel;
+    Panel14: TPanel;
+    CheckBoxFlatMoreTasks: TCheckBoxFlat;
+    PopupMenuTray: TPopupMenu;
+    MenuItemTrayQuit: TMenuItem;
+    MenuItemTrayOpen: TMenuItem;
+    MenuItemTrayStartTask: TMenuItem;
+    N6: TMenuItem;
+    N7: TMenuItem;
+    ColorDialog: TColorDialog;
     procedure TimerRepaintTimer(Sender: TObject);
     procedure DrawPanelPaint(Sender: TObject);
     procedure DrawPanelMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
@@ -278,7 +287,6 @@ type
       DrawParams: TDrawViewInfoParams; CalendarViewViewInfo: TCellItemViewInfo);
     procedure TableExTasksItemColClick(Sender: TObject;
       MouseButton: TMouseButton; const Index: Integer);
-    procedure MenuItemTaskDelLabelsClick(Sender: TObject);
     procedure MenuItemTaskLabelAddClick(Sender: TObject);
     procedure PopupMenuTaskPopup(Sender: TObject);
     procedure ButtonFlatDANCloseClick(Sender: TObject);
@@ -322,15 +330,19 @@ type
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ButtonFlatMenuFileClick(Sender: TObject);
     procedure MenuItemQuitClick(Sender: TObject);
+    procedure CheckBoxFlatMoreTasksClick(Sender: TObject);
+    procedure MenuItemTrayQuitClick(Sender: TObject);
+    procedure MenuItemTrayOpenClick(Sender: TObject);
+    procedure MenuItemTrayStartTaskClick(Sender: TObject);
    protected
     procedure WMSysCommand(var Message:TWMSysCommand); message WM_SYSCOMMAND;
    private
-    FromHH, FromMM, ToHH, ToMM:Word;
+    FFromHH, FFromMM, FToHH, FToMM:Word;
     FLastDate:TDate;             //Реальная дата (без времени)
     FPanelMouse:TPoint;          //Позиция мыши на панели
     FWorkTimeMin:Integer;        //Кол-во минут между началом и концом раб. дня
     FNowTimeMin:Integer;         //Кол-во минут текущего времени например, если сейчас 02:05, то здесь будет 125 минут
-    ScaleRect:TRect;             //Реальные размеры шкалы
+    FScaleRect:TRect;             //Реальные размеры шкалы
     FPanelMouseDown:Boolean;     //Мышь нажата на шкале
     FPanelMouseDownPos:TPoint;   //Позиция нажатия мыши на шкалу
     FRangeFrom:TTime;            //Начало ВЫБОРА времени на шкале
@@ -355,84 +367,82 @@ type
     FNewTName:string;
     FTimeItemUnderCursor:Integer;//Элемент отрезка времени под курсором
     FCurrentTime:TTime;          //Текущее время (без даты)
-    SelTime:TTime;               //Выбранное время на шкале
-    CalendarMouseInside:Boolean;
-    CalendarMouseCoord:TPoint;
+    FSelTime:TTime;               //Выбранное время на шкале
+    FCalendarMouseInside:Boolean;
+    FCalendarMouseCoord:TPoint;
     FCalendarArray:TCalendarArray;
-    VisNow:TControl;
-    VisNeed:TControl;
+    FVisNow:TControl;
+    FVisNeed:TControl;
     FMonthOffset:Integer;
     FViewMode: TViewMode;
     FTimeManager: TManager;
     FWorkDays: TWorkDays;
     FNotifyItems:TNotifyItems;
-    procedure SetCurrentDate(const Value: TDate);
-    procedure SlideTo(Slide: TSlide);
-    function StartTask(TimeStart: TTime): Boolean;
+    function AddTask(Name:string = ''; Date:TDateTime = 0): TTaskItem;
     function AddTaskTime(ADate, ADateEnd: TDate; TStart, TEnd:TTime; ATaskID:Integer; AColor:TColor): Boolean;
-    procedure UpdateCalendar;
-    function GetCellInfo(ACol, ARow: Integer; var Info:TCalendarCell): string;
     function DaysThisMonth: Integer;
-    procedure HideTask;
-    procedure ShowTask(TaskID: Integer);
-    procedure UpdateTaskPanel(TaskID: Integer = -1);
-    procedure WMSize(var Message: TWMSize); message WM_SIZE;
-    procedure UpdateCounts;
+    function DeleteComment(ID: Integer):Boolean;
     function DeleteTask(ID: Integer): Boolean;
+    function DeleteTime(ID: Integer): Boolean;
+    function GetCellInfo(ACol, ARow: Integer; var Info:TCalendarCell): string;
+    function GetCurrentTask: TTaskItem;
+    function GetDayCompletePercent: Integer;
+    function GetTaskSelected: Boolean;
+    function GetWorkDayEnd: TTime;
+    function GetWorkDayStart: TTime;
+    function StartTask(TimeStart: TTime): Boolean;
+    function StopTimeSection: Boolean;
+    procedure DoLog(Text: string);
+    procedure FAddTaskTime(const ADate, ADateEnd: TDate; TStart, TEnd: TTime; ATaskID: Integer; AColor: TColor; ADesc: string);
+    procedure HideTask;
+    procedure LoadNote(Date:TDate);
     procedure MenuItemTaskLabelClick(Sender: TObject);
     procedure MenuItemTaskLabelReset(Sender: TObject);
-    procedure SetButtonWCaption(Target, CloseButton:TButtonFlat; Panel:TPanel; ACaption:string; ACloseBotton:Boolean);
-    procedure UpdateTaskNowButton;
-    procedure SetViewMode(const Value: TViewMode);
-    procedure UpdateDay;
-    procedure UpdateViewModeParam;
-    procedure DoLog(Text: string);
-    procedure SaveNote;
-    procedure LoadNote(Date:TDate);
     procedure NoteInfo;
-    procedure UpdateTime;
-    function GetTimeFrom: TTime;
-    function GetTimeTo: TTime;
-    procedure SetTimeFrom(const Value: TTime);
-    procedure SetTimeTo(const Value: TTime);
-    procedure WorkDayStarted(Sender:TObject);
-    procedure TaskNotify(Task:TTaskItem);
-    procedure SetTimeManager(const Value: TManager);
-    procedure SetWorkDays(Days:TWorkDays);
-    function DeleteComment(ID: Integer):Boolean;
-    function DeleteTime(ID: Integer): Boolean;
-    function GetCurrentTask: TTaskItem;
-    function GetTaskSelected: Boolean;
-    procedure OpenTimeOverlay;
-    procedure UpdateTimeOverlayData;
-    procedure TimeOverlayCallBack(Sender:TObject; State:Boolean);
-    function AddTask(Name:string = ''; Date:TDateTime = 0): TTaskItem;
     procedure OnChangeItems;
+    procedure OpenTimeOverlay;
     procedure ReloadCalendarData;
-    function GetDayCompletePercent: Integer;
-    function StopTimeSection: Boolean;
-    procedure FAddTaskTime(ADate, ADateEnd: TDate; TStart, TEnd: TTime; ATaskID: Integer; AColor: TColor; ADesc: string);
     procedure ReloadLabelsTypes;
-    procedure OnCloseNotifyAction(TaskID: Integer);
-    procedure Error(E: Exception; Message: string = '');
+    procedure SaveNote;
+    procedure SetButtonWCaption(Target, CloseButton:TButtonFlat; Panel:TPanel; ACaption:string; ACloseBotton:Boolean);
+    procedure SetCurrentDate(const Value: TDate);
+    procedure SetTimeManager(const Value: TManager);
+    procedure SetViewMode(const Value: TViewMode);
+    procedure SetWorkDayEnd(const Value: TTime);
+    procedure SetWorkDays(Days:TWorkDays);
+    procedure SetWorkDayStart(const Value: TTime);
+    procedure ShowTask(TaskID: Integer);
+    procedure SlideTo(Slide: TSlide);
+    procedure TaskNotify(Task:TTaskItem);
+    procedure TimeOverlayCallBack(Sender:TObject; State:Boolean);
+    procedure UpdateCalendar;
+    procedure UpdateCounts;
+    procedure UpdateDay;
+    procedure UpdateTaskNowButton;
+    procedure UpdateTaskPanel(TaskID: Integer = -1);
+    procedure UpdateTime;
+    procedure UpdateTimeOverlayData;
+    procedure UpdateViewModeParam;
+    procedure WMSize(var Message: TWMSize); message WM_SIZE;
+    procedure WorkDayStarted(Sender:TObject);
    public
-
     AccentColor:TColor;
     BackgroundColor:TColor;
     ForegroundColor:TColor;
+    procedure Error(E: Exception; const Message: string = '');
     procedure Initializate;
-    procedure SetTaskComplete(TaskID:Integer; Deadline:TDate; State:Boolean);
+    procedure OnCloseNotifyAction(TaskID: Integer);
     procedure Quit;
+    procedure SetTaskComplete(TaskID:Integer; Deadline:TDate; State:Boolean);
     property CurrentDate:TDate read FCurrentDate write SetCurrentDate;
-    property ViewMode:TViewMode read FViewMode write SetViewMode;
-    property WorkDayStart:TTime read GetTimeFrom write SetTimeFrom;
-    property WorkDayEnd:TTime read GetTimeTo write SetTimeTo;
-    property TimeManager:TManager read FTimeManager write SetTimeManager;
-    property WorkDays:TWorkDays read FWorkDays write SetWorkDays;
-
     property CurrentTask:TTaskItem read GetCurrentTask;
-    property TaskSelected:Boolean read GetTaskSelected;
     property TaskItems:TTaskItems read FTaskItems;
+    property TaskSelected:Boolean read GetTaskSelected;
+    property TimeManager:TManager read FTimeManager write SetTimeManager;
+    property ViewMode:TViewMode read FViewMode write SetViewMode;
+    property WorkDayEnd:TTime read GetWorkDayEnd write SetWorkDayEnd;
+    property WorkDays:TWorkDays read FWorkDays write SetWorkDays;
+    property WorkDayStart:TTime read GetWorkDayStart write SetWorkDayStart;
   end;
 
 const
@@ -461,7 +471,7 @@ uses Math, YOTM.Form.EditTime, DateUtils, YOTM.Form.Dialog,
 
 {$R *.dfm}
 
-procedure TFormMain.Error(E:Exception; Message:string = '');
+procedure TFormMain.Error(E:Exception; const Message:string = '');
 begin
  DoLog(Message); 
 end;
@@ -592,10 +602,10 @@ begin
 end;
 
 procedure TFormMain.ReloadCalendarData;
-var   Cell:TCalendarCell;
-      i, j: Integer;
-      FirstDate: TDateTime;
-      NotCompleted:Integer;
+var Cell:TCalendarCell;
+    i, j: Integer;
+    FirstDate: TDateTime;
+    NotCompleted:Integer;
 begin
  GetCellInfo(0, 1, Cell);
  FirstDate:=Cell.Date;
@@ -609,7 +619,7 @@ begin
  NotCompleted:=0;
  for i:= 0 to FTasksOfCalendar.Count-1 do
   if (not FTasksOfCalendar[i].State) and (FTasksOfCalendar[i].Deadline)
-      and (DateOf(FTasksOfCalendar[i].DateDeadline) < DateOf(Now))
+      and (DateOf(FTasksOfCalendar[i].DateDeadline) <= DateOf(Now))
   then Inc(NotCompleted);
 
  for i:= 1 to DrawGridCalendar.RowCount-1 do
@@ -732,7 +742,7 @@ begin
     begin
      Brush.Color:=ForegroundColor;
     end;
-   if Cell.IsDate and CalendarMouseInside and (Point(ACol, ARow) = CalendarMouseCoord) then
+   if Cell.IsDate and FCalendarMouseInside and (Point(ACol, ARow) = FCalendarMouseCoord) then
     Brush.Color:=ColorDarker(Brush.Color, 40);
 
    if SameDate(Cell.Date, CurrentDate) then
@@ -797,12 +807,12 @@ end;
 
 procedure TFormMain.DrawGridCalendarMouseEnter(Sender: TObject);
 begin
- CalendarMouseInside:=True;
+ FCalendarMouseInside:=True;
 end;
 
 procedure TFormMain.DrawGridCalendarMouseLeave(Sender: TObject);
 begin
- CalendarMouseInside:=False;
+ FCalendarMouseInside:=False;
 end;
 
 procedure TFormMain.DrawGridCalendarMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
@@ -810,9 +820,9 @@ var Cell:TCalendarCell;
     C, R:Integer;
 begin
  DrawGridCalendar.MouseToCell(X, Y, C, R);
- if CalendarMouseInside then
+ if FCalendarMouseInside then
   begin
-   CalendarMouseCoord:=Point(C, R);
+   FCalendarMouseCoord:=Point(C, R);
    DrawGridCalendar.Repaint;
   end;
  GetCellInfo(C, R, Cell);
@@ -854,7 +864,7 @@ begin
  case Button of
   TMouseButton.mbLeft:
    begin
-    FPanelMouseDown:=ScaleRect.Contains(FPanelMouse);
+    FPanelMouseDown:=FScaleRect.Contains(FPanelMouse);
    end;
  end;
 end;
@@ -862,7 +872,7 @@ end;
 procedure TFormMain.DrawPanelMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
 begin
  FPanelMouse:=Point(X, Y);
- if ScaleRect.Contains(FPanelMouse) then DrawPanel.Cursor:=crHandPoint
+ if FScaleRect.Contains(FPanelMouse) then DrawPanel.Cursor:=crHandPoint
  else DrawPanel.Cursor:=crDefault;
  TimerRepaintTimer(nil);
 end;
@@ -910,22 +920,22 @@ begin
     FillRect(CRect);
     Font.Color:=$00F2F2F2;
     //--------------------------------------
-    ScaleRect.Left:=20;
-    ScaleRect.Right:=CRect.Right - 20;
-    ScaleRect.Bottom:=CRect.Bottom - 50;
-    ScaleRect.Top:=ScaleRect.Bottom - 20;
+    FScaleRect.Left:=20;
+    FScaleRect.Right:=CRect.Right - 20;
+    FScaleRect.Bottom:=CRect.Bottom - 50;
+    FScaleRect.Top:=FScaleRect.Bottom - 20;
     //if ScaleRect.Contains(FPanelMouse) then Brush.Color:=$0019A0E3 else
     Brush.Color:=$0016597D;
     Pen.Color:=Brush.Color;
-    RoundRect(ScaleRect, ScaleRect.Height, ScaleRect.Height);
+    RoundRect(FScaleRect, FScaleRect.Height, FScaleRect.Height);
 
     Brush.Style:=bsClear;
-    TextOut(ScaleRect.Left - 15, ScaleRect.Top - 20, FormatDateTime('HH:mm', WorkDayStart));
-    TextOut(ScaleRect.Right - 15, ScaleRect.Top - 20, FormatDateTime('HH:mm', WorkDayEnd));
+    TextOut(FScaleRect.Left - 15, FScaleRect.Top - 20, FormatDateTime('HH:mm', WorkDayStart));
+    TextOut(FScaleRect.Right - 15, FScaleRect.Top - 20, FormatDateTime('HH:mm', WorkDayEnd));
 
-    tmpRect:=ScaleRect;
-    tmpRect.Right:=tmpRect.Left +  Round(ScaleRect.Width / 100 * GetDayCompletePercent);
-    tmpRect.Right:=Min(tmpRect.Right, ScaleRect.Right);
+    tmpRect:=FScaleRect;
+    tmpRect.Right:=tmpRect.Left +  Round(FScaleRect.Width / 100 * GetDayCompletePercent);
+    tmpRect.Right:=Min(tmpRect.Right, FScaleRect.Right);
     Brush.Style:=bsSolid;
     Brush.Color:=$003C86AB;
     tmpRect.Width:=Max(tmpRect.Width, tmpRect.Height);
@@ -941,23 +951,23 @@ begin
       if i <> TableExTimes.ItemIndex then
        Brush.Color:=$0019A0E3
       else Brush.Color:=$0046E3CC;
-      tmpRect:=ScaleRect;
-      tmpRect.Left:=ScaleRect.Left + Round(ScaleRect.Width / 100 * ((GetMins(FTimeItems[i].TimeFrom) - GetMins(WorkDayStart)) /  (FWorkTimeMin / 100)));
-      tmpRect.Right:=ScaleRect.Left + Round(ScaleRect.Width / 100 * ((GetMins(FTimeItems[i].TimeTo) - GetMins(WorkDayStart)) /  (FWorkTimeMin / 100)));
+      tmpRect:=FScaleRect;
+      tmpRect.Left:=FScaleRect.Left + Round(FScaleRect.Width / 100 * ((GetMins(FTimeItems[i].TimeFrom) - GetMins(WorkDayStart)) /  (FWorkTimeMin / 100)));
+      tmpRect.Right:=FScaleRect.Left + Round(FScaleRect.Width / 100 * ((GetMins(FTimeItems[i].TimeTo) - GetMins(WorkDayStart)) /  (FWorkTimeMin / 100)));
       tmpRect.Inflate(0, -3);
-      if tmpRect.Left <= ScaleRect.Left+3 then tmpRect.Left:=ScaleRect.Left+3;
-      if tmpRect.Right >= ScaleRect.Right-3 then tmpRect.Right:=ScaleRect.Right-3;
-      tmpRect.Left:=Max(Min(tmpRect.Left, ScaleRect.Right), ScaleRect.Left);
-      tmpRect.Right:=Max(Min(tmpRect.Right, ScaleRect.Right), ScaleRect.Left);
+      if tmpRect.Left <= FScaleRect.Left+3 then tmpRect.Left:=FScaleRect.Left+3;
+      if tmpRect.Right >= FScaleRect.Right-3 then tmpRect.Right:=FScaleRect.Right-3;
+      tmpRect.Left:=Max(Min(tmpRect.Left, FScaleRect.Right), FScaleRect.Left);
+      tmpRect.Right:=Max(Min(tmpRect.Right, FScaleRect.Right), FScaleRect.Left);
       Brush.Style:=bsSolid;
       RoundRect(tmpRect, tmpRect.Height, tmpRect.Height);
       if tmpRect.Contains(FPanelMouse) then
        begin
         FTimeItemUnderCursor:=i;
+        LastTextWidth:=TextWidth(FTimeItems[i].Description) + 10;
         if LastLeft = -1 then LastLeft:=5
         else LastLeft:=LastLeft + LastTextWidth;
-        LastTextWidth:=TextWidth(FTimeItems[i].Description) + 10;
-        txtRect:=Rect(LastLeft, ScaleRect.Bottom + 20, LastLeft + LastTextWidth, ScaleRect.Bottom + 20 + 20);
+        txtRect:=Rect(LastLeft, FScaleRect.Bottom + 20, LastLeft + LastTextWidth, FScaleRect.Bottom + 20 + 20);
         RoundRect(txtRect, txtRect.Height, txtRect.Height);
         Brush.Style:=bsClear;
         TextOut(LastLeft+5, tmpRect.Bottom + 5 + 21, FTimeItems[i].Description);
@@ -967,27 +977,27 @@ begin
     if FDoTimeSection then
      begin
       Brush.Color:=$0055E5FE;
-      tmpRect:=ScaleRect;
-      tmpRect.Left:=ScaleRect.Left + Round(ScaleRect.Width / 100 * ((GetMins(FNewTStart) - GetMins(WorkDayStart)) /  (FWorkTimeMin / 100)));
-      tmpRect.Right:=ScaleRect.Left + Round(ScaleRect.Width / 100 * ((GetMins(FNewTEnd) - GetMins(WorkDayStart)) /  (FWorkTimeMin / 100)));
+      tmpRect:=FScaleRect;
+      tmpRect.Left:=FScaleRect.Left + Round(FScaleRect.Width / 100 * ((GetMins(FNewTStart) - GetMins(WorkDayStart)) /  (FWorkTimeMin / 100)));
+      tmpRect.Right:=FScaleRect.Left + Round(FScaleRect.Width / 100 * ((GetMins(FNewTEnd) - GetMins(WorkDayStart)) /  (FWorkTimeMin / 100)));
       tmpRect.Inflate(0, -3);
-      if tmpRect.Left <= ScaleRect.Left+3 then tmpRect.Left:=ScaleRect.Left+3;
-      if tmpRect.Right >= ScaleRect.Right-3 then tmpRect.Right:=ScaleRect.Right-3;
+      if tmpRect.Left <= FScaleRect.Left+3 then tmpRect.Left:=FScaleRect.Left+3;
+      if tmpRect.Right >= FScaleRect.Right-3 then tmpRect.Right:=FScaleRect.Right-3;
 
       Brush.Style:=bsSolid;
       RoundRect(tmpRect, tmpRect.Height, tmpRect.Height);
      end;
     //Текущий выбор
-    tmpRect:=ScaleRect;
+    tmpRect:=FScaleRect;
     tmpRect.Inflate(5, 5);
     if tmpRect.Contains(FPanelMouse) or FPanelMouseDown then
      begin
-      MPos:=Min(Max(FPanelMouse.X, ScaleRect.Left), ScaleRect.Right);
-      MoveTo(MPos, ScaleRect.Top);
-      LineTo(MPos, ScaleRect.Top - 20);
+      MPos:=Min(Max(FPanelMouse.X, FScaleRect.Left), FScaleRect.Right);
+      MoveTo(MPos, FScaleRect.Top);
+      LineTo(MPos, FScaleRect.Top - 20);
 
       Brush.Color:=$0019A0E3;
-      tmpRect:=ScaleRect;
+      tmpRect:=FScaleRect;
       if not FPanelMouseDown then
        begin
         tmpRect.Left:=Min(Max(tmpRect.Left, MPos - tmpRect.Height div 2), tmpRect.Right - tmpRect.Height);
@@ -998,51 +1008,51 @@ begin
       else
        begin
         tmpRect.Left:=FPanelMouseDownPos.X;
-        tmpRect.Left:=Min(Max(ScaleRect.Left, tmpRect.Left), ScaleRect.Right - tmpRect.Height);
+        tmpRect.Left:=Min(Max(FScaleRect.Left, tmpRect.Left), FScaleRect.Right - tmpRect.Height);
         tmpRect.Right:={Max(}Min(tmpRect.Right, MPos);//, tmpRect.Left);
         tmpRect.NormalizeRect;
-        tmpRect.Height:=Max(1, Min(tmpRect.Width, ScaleRect.Height));
-        tmpRect.Offset(0, ScaleRect.Height div 2 - tmpRect.Height div 2);
+        tmpRect.Height:=Max(1, Min(tmpRect.Width, FScaleRect.Height));
+        tmpRect.Offset(0, FScaleRect.Height div 2 - tmpRect.Height div 2);
         Brush.Style:=bsSolid;
         RoundRect(tmpRect, tmpRect.Height, tmpRect.Height);
        end;
 
 
-      MProc:=MPos - ScaleRect.Left;
-      MProc:=MProc / (ScaleRect.Width / 100);
+      MProc:=MPos - FScaleRect.Left;
+      MProc:=MProc / (FScaleRect.Width / 100);
       MProc:=MProc * (FWorkTimeMin / 100); //Минуты
 
       H:=Ceil(MProc) div 60;
       M:=Trunc(Ceil(MProc) mod 60 / 5) * 5;
       Brush.Style:=bsClear;
-      SelTime:=GetTime(GetMins(WorkDayStart) + (H * 60 + M));
+      FSelTime:=GetTime(GetMins(WorkDayStart) + (H * 60 + M));
       Font.Color:=$00F2F2F2;
-      MinSelTextLeft:=Min(Max(MPos - 160 div 2, ScaleRect.Left - 15), CRect.Right - 160);
-      TextOut(MinSelTextLeft, ScaleRect.Top - 40, FormatDateTime('HH:mm - от начала дня', GetTime(H * 60 + M)));
-      TextOut(MinSelTextLeft, ScaleRect.Top - 60, FormatDateTime('HH:mm - указано', SelTime));
-      TextOut(MinSelTextLeft, ScaleRect.Top - 80, FormatDateTime('HH:mm - разница с текущим', GetTime(Abs(GetMins(FCurrentTime) - (H * 60 + M) - GetMins(WorkDayStart)))));
+      MinSelTextLeft:=Min(Max(MPos - 160 div 2, FScaleRect.Left - 15), CRect.Right - 160);
+      TextOut(MinSelTextLeft, FScaleRect.Top - 40, FormatDateTime('HH:mm - от начала дня', GetTime(H * 60 + M)));
+      TextOut(MinSelTextLeft, FScaleRect.Top - 60, FormatDateTime('HH:mm - указано', FSelTime));
+      TextOut(MinSelTextLeft, FScaleRect.Top - 80, FormatDateTime('HH:mm - разница с текущим', GetTime(Abs(GetMins(FCurrentTime) - (H * 60 + M) - GetMins(WorkDayStart)))));
       //Диапазон выбора
       if FPanelMouseDown then
        begin
-        MProc:=FPanelMouseDownPos.X - ScaleRect.Left;
-        MProc:=MProc / (ScaleRect.Width / 100);
+        MProc:=FPanelMouseDownPos.X - FScaleRect.Left;
+        MProc:=MProc / (FScaleRect.Width / 100);
         MProc:=MProc * (FWorkTimeMin / 100); //Минуты
 
         H:=Ceil(MProc) div 60;
         M:=Trunc(Ceil(MProc) mod 60 / 5) * 5;
         KeepTime:=GetTime(GetMins(WorkDayStart) + (H * 60 + M));
         FRangeFrom:=KeepTime;
-        FRangeTo:=SelTime;
-        if GetMins(KeepTime) > GetMins(SelTime) then
+        FRangeTo:=FSelTime;
+        if GetMins(KeepTime) > GetMins(FSelTime) then
          begin
-          KeepTime:=SelTime;
-          SelTime:=FRangeFrom;
+          KeepTime:=FSelTime;
+          FSelTime:=FRangeFrom;
 
           FRangeFrom:=KeepTime;
-          FRangeTo:=SelTime;
+          FRangeTo:=FSelTime;
          end;
         SelAmount:=GetTime(Abs(GetMins(FRangeTo)-GetMins(FRangeFrom)));
-        TextOut(MinSelTextLeft, ScaleRect.Top - 100, FormatDateTime('HH:mm - ', FRangeFrom)+FormatDateTime('HH:mm - выбрано ', FRangeTo)+FormatDateTime('(HH:mm)', SelAmount));
+        TextOut(MinSelTextLeft, FScaleRect.Top - 100, FormatDateTime('HH:mm - ', FRangeFrom)+FormatDateTime('HH:mm - выбрано ', FRangeTo)+FormatDateTime('(HH:mm)', SelAmount));
        end;
      end;
     //TextOut(10, 0, Format('%d:%d', [FPanelMouse.X, FPanelMouse.Y]));
@@ -1073,7 +1083,7 @@ begin
  Close;
 end;
 
-procedure TFormMain.FAddTaskTime(ADate, ADateEnd:TDate; TStart, TEnd:TTime; ATaskID:Integer; AColor:TColor; ADesc:string);
+procedure TFormMain.FAddTaskTime(const ADate, ADateEnd:TDate; TStart, TEnd:TTime; ATaskID:Integer; AColor:TColor; ADesc:string);
 var Item:TTimeItem;
 begin
  Item:=TTimeItem.Create(FTimeItems);
@@ -1116,8 +1126,7 @@ begin
 end;
 
 procedure TFormMain.ButtonFlatTaskColorClick(Sender: TObject);
-var Data:TDateNotifyData;
-    Task:TTaskItem;
+var Task:TTaskItem;
 begin
  if not IndexInList(FTaskID, FTaskItems.Count) then Exit;
  Task:=FTaskItems[FTaskID];
@@ -1276,14 +1285,14 @@ end;
 procedure TFormMain.ButtonFlat11Click(Sender: TObject);
 begin
  case (Sender as TButtonFlat).Tag of
-  10: FromHH:=Min(Max(0, FromHH - 1), 23);
-  11: FromHH:=Min(Max(0, FromHH + 1), 23);
-  20: FromMM:=Min(Max(0, FromMM - 1), 59);
-  21: FromMM:=Min(Max(0, FromMM + 1), 59);
-  30:   ToHH:=Min(Max(0,   ToHH - 1), 23);
-  31:   ToHH:=Min(Max(0,   ToHH + 1), 23);
-  40:   ToMM:=Min(Max(0,   ToMM - 1), 59);
-  41:   ToMM:=Min(Max(0,   ToMM + 1), 59);
+  10: FFromHH:=Min(Max(0, FFromHH - 1), 23);
+  11: FFromHH:=Min(Max(0, FFromHH + 1), 23);
+  20: FFromMM:=Min(Max(0, FFromMM - 1), 59);
+  21: FFromMM:=Min(Max(0, FFromMM + 1), 59);
+  30:   FToHH:=Min(Max(0,   FToHH - 1), 23);
+  31:   FToHH:=Min(Max(0,   FToHH + 1), 23);
+  40:   FToMM:=Min(Max(0,   FToMM - 1), 59);
+  41:   FToMM:=Min(Max(0,   FToMM + 1), 59);
  end;
  UpdateTime;
 end;
@@ -1300,14 +1309,14 @@ begin
  Result:=Assigned(CurrentTask) and (CurrentTask.ID >= 0);
 end;
 
-function TFormMain.GetTimeFrom: TTime;
+function TFormMain.GetWorkDayStart: TTime;
 begin
- Result:=EncodeTime(FromHH, FromMM, 0, 0);
+ Result:=EncodeTime(FFromHH, FFromMM, 0, 0);
 end;
 
-function TFormMain.GetTimeTo: TTime;
+function TFormMain.GetWorkDayEnd: TTime;
 begin
- Result:=EncodeTime(ToHH, ToMM, 0, 0);
+ Result:=EncodeTime(FToHH, FToMM, 0, 0);
 end;
 
 procedure TFormMain.SetTaskComplete(TaskID: Integer; Deadline:TDate; State:Boolean);
@@ -1332,10 +1341,10 @@ begin
   end;
 end;
 
-procedure TFormMain.SetTimeFrom(const Value: TTime);
+procedure TFormMain.SetWorkDayStart(const Value: TTime);
 var S, M:Word;
 begin
- DecodeTime(Value, FromHH, FromMM, S, M);
+ DecodeTime(Value, FFromHH, FFromMM, S, M);
  UpdateTime;
 end;
 
@@ -1344,10 +1353,10 @@ begin
  FTimeManager := Value;
 end;
 
-procedure TFormMain.SetTimeTo(const Value: TTime);
+procedure TFormMain.SetWorkDayEnd(const Value: TTime);
 var S, M:Word;
 begin
- DecodeTime(Value, ToHH, ToMM, S, M);
+ DecodeTime(Value, FToHH, FToMM, S, M);
  UpdateTime;
 end;
 
@@ -1402,30 +1411,29 @@ begin
 end;
 
 function TFormMain.AddTask(Name:string = ''; Date:TDateTime = 0):TTaskItem;
-var Item:TTaskItem;
 begin
- Item:=TTaskItem.Create(FTaskItems);
- Item.Name:=Name;
+ Result:=TTaskItem.Create(FTaskItems);
+ Result.Name:=Name;
  if Date = 0 then
   case ViewMode of
    vmToday, vmSelectedDate:
     begin
-     Item.Deadline:=True;
-     Item.DateDeadline:=CurrentDate;
+     Result.Deadline:=True;
+     Result.DateDeadline:=CurrentDate;
     end;
   end
  else
   begin
-   Item.Deadline:=True;
-   Item.DateDeadline:=Date;
+   Result.Deadline:=True;
+   Result.DateDeadline:=Date;
   end;
  //Сразу запишем в БД, если есть название
  if Name <> '' then
   begin
-   FTaskItems.Update(Item);
+   FTaskItems.Update(Result);
    OnChangeItems;
   end;
- FTaskItems.Insert(0, Item);
+ FTaskItems.Insert(0, Result);
 end;
 
 procedure TFormMain.ButtonFlat6Click(Sender: TObject);
@@ -1535,32 +1543,32 @@ begin
  case Slide of
   slTimes:
    begin
-    VisNeed:=PanelTimes;
+    FVisNeed:=PanelTimes;
     ButtonFlatTimes.ColorNormal:=ForegroundColor;
    end;
   slSettings:
    begin
-    VisNeed:=PanelSettings;
+    FVisNeed:=PanelSettings;
     ButtonFlatSettings.ColorNormal:=ForegroundColor;
    end;
   slCalendar:
    begin
-    VisNeed:=PanelCalendar;
+    FVisNeed:=PanelCalendar;
     ButtonFlatCalendar.ColorNormal:=ForegroundColor;
    end;
   slNotes:
    begin
-    VisNeed:=PanelNotes;
+    FVisNeed:=PanelNotes;
     ButtonFlatNotes.ColorNormal:=ForegroundColor;
    end;
  end;
- if VisNeed <> VisNow then
+ if FVisNeed <> FVisNow then
   begin
-   VisNeed.Left:=VisNow.Width;
-   VisNeed.Top:=0;
-   AnimateControlLeft(VisNow, 25, -450);
-   AnimateControlLeft(VisNeed, 25, 0);
-   VisNow:=VisNeed;
+   FVisNeed.Left:=FVisNow.Width;
+   FVisNeed.Top:=0;
+   AnimateControlLeft(FVisNow, 25, -450);
+   AnimateControlLeft(FVisNeed, 25, 0);
+   FVisNow:=FVisNeed;
   end;
  Enabled:=True;
 end;
@@ -1605,6 +1613,11 @@ procedure TFormMain.CalendarCloseUp(Sender: TObject);
 begin
  if Calendar.IsEmpty then Calendar.Date:=Now;
  ViewMode:=vmSelectedDate;
+end;
+
+procedure TFormMain.CheckBoxFlatMoreTasksClick(Sender: TObject);
+begin
+ ViewMode:=ViewMode;
 end;
 
 procedure TFormMain.ShowTask(TaskID:Integer);
@@ -1681,7 +1694,7 @@ begin
  FormTimeOverlay.Callback:=TimeOverlayCallBack;
 
  FDoTimeSection:=False;
- VisNow:=PanelTimes;
+ FVisNow:=PanelTimes;
  HideTask;
  WD[1]:=True;
  WD[2]:=True;
@@ -1884,23 +1897,10 @@ begin
  DeleteTask(TableExTasks.ItemIndex);
 end;
 
-procedure TFormMain.MenuItemTaskDelLabelsClick(Sender: TObject);
-begin
- //
-end;
-
 procedure TFormMain.MenuItemTaskLabelAddClick(Sender: TObject);
-var LItem:TLabelItem;
-    LType:TLabelType;
 begin
  if not TaskSelected then Exit;
- if TFormSelectLabels.Select(CurrentTask.LabelItems, CurrentTask.ID) then
-  begin
-   // LItem:=TLabelItem.Create(LType);
-   // LItem.Task:=FTaskItems[TableExTasks.ItemIndex].ID;
-   // FTaskItems[TableExTasks.ItemIndex].LabelItems.New(LItem);
-   TableExTasks.Repaint;
-  end;
+ if TFormSelectLabels.Select(CurrentTask.LabelItems, CurrentTask.ID) then TableExTasks.Repaint;
 end;
 
 procedure TFormMain.MenuItemTaskStartFromClick(Sender: TObject);
@@ -1918,6 +1918,21 @@ procedure TFormMain.MenuItemTimeStartFromClick(Sender: TObject);
 begin
  if not IndexInList(TableExTimes.ItemIndex, FTimeItems.Count) then Exit;
  StartTask(FTimeItems[TableExTimes.ItemIndex].TimeFrom);
+end;
+
+procedure TFormMain.MenuItemTrayOpenClick(Sender: TObject);
+begin
+ TrayIconClick(nil);
+end;
+
+procedure TFormMain.MenuItemTrayQuitClick(Sender: TObject);
+begin
+ Quit;
+end;
+
+procedure TFormMain.MenuItemTrayStartTaskClick(Sender: TObject);
+begin
+ StartTask(Now);
 end;
 
 procedure TFormMain.MenuItemTaskLabelClick(Sender: TObject);
@@ -2020,12 +2035,19 @@ end;
 procedure TFormMain.SetViewMode(const Value: TViewMode);
 begin
  FViewMode := Value;
+
+ FTaskItems.UseDatePeriod:=False;
  case FViewMode of
   vmToday:
    begin
     Calendar.Date:=Now;
     CurrentDate:=Now;
     FTaskItems.ShowDate:=CurrentDate;
+    if CheckBoxFlatMoreTasks.Checked then
+     begin
+      FTaskItems.UseDatePeriod:=True;
+      FTaskItems.DatePeriod.SetValue(FTaskItems.ShowDate, FTaskItems.ShowDate + 3);
+     end;
     FTaskItems.TaskFilter:=tkfDated;
     FTaskItems.Reload;
     ButtonFlatViewMode.Caption:=HumanDateTime(FTaskItems.ShowDate, False, True);
@@ -2035,6 +2057,11 @@ begin
   //Calendar.Date:=Calendar.Date;
     CurrentDate:=Calendar.Date;
     FTaskItems.ShowDate:=Calendar.Date;
+    if CheckBoxFlatMoreTasks.Checked then
+     begin
+      FTaskItems.UseDatePeriod:=True;
+      FTaskItems.DatePeriod.SetValue(FTaskItems.ShowDate, FTaskItems.ShowDate + 3);
+     end;
     FTaskItems.TaskFilter:=tkfDated;
     FTaskItems.Reload;
     ButtonFlatViewMode.Caption:=HumanDateTime(FTaskItems.ShowDate, False, True);
@@ -2058,7 +2085,7 @@ begin
     ButtonFlatViewMode.Caption:='Входящие';
    end;
  end;
- ButtonFlatViewMode.Width:=ButtonFlatViewMode.GetTextWidth + 20;
+ ButtonFlatViewMode.Width:=Max(90, ButtonFlatViewMode.GetTextWidth + 20);
  ButtonFlatViewMode.Left:=PanelTaskEdit.Width div 2 - ButtonFlatViewMode.Width div 2;
  UpdateTaskPanel;
  UpdateViewModeParam;

@@ -1,6 +1,6 @@
 ﻿[]
 Visible=True
-Coordinates=1689,331,91,36
+Coordinates=1291,386,82,36
 
 [Shape8]
 Coordinates=216,534,59,36
@@ -187,9 +187,6 @@ Coordinates=841,534,80,36
 
 [MemoTaskDesc]
 Coordinates=543,214,107,58
-
-[ColorDialog]
-Coordinates=1291,386,82,36
 
 [Shape16]
 Coordinates=100,580,66,36

@@ -30,7 +30,7 @@ interface
      procedure SetDataBase(const Value: TDB);
     public
      constructor Create(ADataBase:TDB);
-     destructor Destroy;
+     destructor Destroy; override;
      procedure Load(ADate:TDate);
      procedure Save;
      property ID:Integer read FID write SetID;

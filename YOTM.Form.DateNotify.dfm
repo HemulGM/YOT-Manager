@@ -122,6 +122,11 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 1
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+        SubTextFont.Charset = DEFAULT_CHARSET
+        SubTextFont.Color = clWhite
+        SubTextFont.Height = -13
+        SubTextFont.Name = 'Tahoma'
+        SubTextFont.Style = []
       end
     end
     object ButtonFlatRepeat: TButtonFlat
@@ -165,6 +170,11 @@ inherited FormDateAndNotify: TFormDateAndNotify
       TabOrder = 1
       TabStop = True
       TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+      SubTextFont.Charset = DEFAULT_CHARSET
+      SubTextFont.Color = clWhite
+      SubTextFont.Height = -13
+      SubTextFont.Name = 'Tahoma'
+      SubTextFont.Style = []
     end
   end
   object PanelSelectTime: TPanel
@@ -223,6 +233,11 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 0
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+        SubTextFont.Charset = DEFAULT_CHARSET
+        SubTextFont.Color = clWhite
+        SubTextFont.Height = -13
+        SubTextFont.Name = 'Tahoma'
+        SubTextFont.Style = []
       end
       object ButtonFlat2: TButtonFlat
         Tag = 10
@@ -257,6 +272,11 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 1
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+        SubTextFont.Charset = DEFAULT_CHARSET
+        SubTextFont.Color = clWhite
+        SubTextFont.Height = -13
+        SubTextFont.Name = 'Tahoma'
+        SubTextFont.Style = []
       end
       object ButtonFlat3: TButtonFlat
         Tag = 9
@@ -291,6 +311,11 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 2
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+        SubTextFont.Charset = DEFAULT_CHARSET
+        SubTextFont.Color = clWhite
+        SubTextFont.Height = -13
+        SubTextFont.Name = 'Tahoma'
+        SubTextFont.Style = []
       end
       object ButtonFlat4: TButtonFlat
         Tag = 8
@@ -325,6 +350,11 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 3
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+        SubTextFont.Charset = DEFAULT_CHARSET
+        SubTextFont.Color = clWhite
+        SubTextFont.Height = -13
+        SubTextFont.Name = 'Tahoma'
+        SubTextFont.Style = []
       end
       object ButtonFlat5: TButtonFlat
         Tag = 7
@@ -359,6 +389,11 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 4
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+        SubTextFont.Charset = DEFAULT_CHARSET
+        SubTextFont.Color = clWhite
+        SubTextFont.Height = -13
+        SubTextFont.Name = 'Tahoma'
+        SubTextFont.Style = []
       end
       object ButtonFlat6: TButtonFlat
         Tag = 6
@@ -393,6 +428,11 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 5
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+        SubTextFont.Charset = DEFAULT_CHARSET
+        SubTextFont.Color = clWhite
+        SubTextFont.Height = -13
+        SubTextFont.Name = 'Tahoma'
+        SubTextFont.Style = []
       end
       object ButtonFlat7: TButtonFlat
         Tag = 5
@@ -427,6 +467,11 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 6
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+        SubTextFont.Charset = DEFAULT_CHARSET
+        SubTextFont.Color = clWhite
+        SubTextFont.Height = -13
+        SubTextFont.Name = 'Tahoma'
+        SubTextFont.Style = []
       end
       object ButtonFlat8: TButtonFlat
         Tag = 4
@@ -461,6 +506,11 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 7
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+        SubTextFont.Charset = DEFAULT_CHARSET
+        SubTextFont.Color = clWhite
+        SubTextFont.Height = -13
+        SubTextFont.Name = 'Tahoma'
+        SubTextFont.Style = []
       end
       object ButtonFlat9: TButtonFlat
         Tag = 3
@@ -495,6 +545,11 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 8
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+        SubTextFont.Charset = DEFAULT_CHARSET
+        SubTextFont.Color = clWhite
+        SubTextFont.Height = -13
+        SubTextFont.Name = 'Tahoma'
+        SubTextFont.Style = []
       end
       object ButtonFlat10: TButtonFlat
         Tag = 2
@@ -529,6 +584,11 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 9
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+        SubTextFont.Charset = DEFAULT_CHARSET
+        SubTextFont.Color = clWhite
+        SubTextFont.Height = -13
+        SubTextFont.Name = 'Tahoma'
+        SubTextFont.Style = []
       end
       object ButtonFlat11: TButtonFlat
         Tag = 1
@@ -563,6 +623,11 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 10
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+        SubTextFont.Charset = DEFAULT_CHARSET
+        SubTextFont.Color = clWhite
+        SubTextFont.Height = -13
+        SubTextFont.Name = 'Tahoma'
+        SubTextFont.Style = []
       end
       object ButtonFlat13: TButtonFlat
         Tag = 1
@@ -597,6 +662,11 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 11
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+        SubTextFont.Charset = DEFAULT_CHARSET
+        SubTextFont.Color = clWhite
+        SubTextFont.Height = -13
+        SubTextFont.Name = 'Tahoma'
+        SubTextFont.Style = []
       end
     end
     object Panel4: TPanel
@@ -640,6 +710,11 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 0
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+        SubTextFont.Charset = DEFAULT_CHARSET
+        SubTextFont.Color = clWhite
+        SubTextFont.Height = -13
+        SubTextFont.Name = 'Tahoma'
+        SubTextFont.Style = []
       end
       object ButtonFlat21: TButtonFlat
         Tag = 10
@@ -674,6 +749,11 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 1
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+        SubTextFont.Charset = DEFAULT_CHARSET
+        SubTextFont.Color = clWhite
+        SubTextFont.Height = -13
+        SubTextFont.Name = 'Tahoma'
+        SubTextFont.Style = []
       end
       object ButtonFlat20: TButtonFlat
         Tag = 9
@@ -708,6 +788,11 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 2
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+        SubTextFont.Charset = DEFAULT_CHARSET
+        SubTextFont.Color = clWhite
+        SubTextFont.Height = -13
+        SubTextFont.Name = 'Tahoma'
+        SubTextFont.Style = []
       end
       object ButtonFlat19: TButtonFlat
         Tag = 8
@@ -742,6 +827,11 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 3
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+        SubTextFont.Charset = DEFAULT_CHARSET
+        SubTextFont.Color = clWhite
+        SubTextFont.Height = -13
+        SubTextFont.Name = 'Tahoma'
+        SubTextFont.Style = []
       end
       object ButtonFlat18: TButtonFlat
         Tag = 7
@@ -776,6 +866,11 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 4
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+        SubTextFont.Charset = DEFAULT_CHARSET
+        SubTextFont.Color = clWhite
+        SubTextFont.Height = -13
+        SubTextFont.Name = 'Tahoma'
+        SubTextFont.Style = []
       end
       object ButtonFlat17: TButtonFlat
         Tag = 6
@@ -810,6 +905,11 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 5
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+        SubTextFont.Charset = DEFAULT_CHARSET
+        SubTextFont.Color = clWhite
+        SubTextFont.Height = -13
+        SubTextFont.Name = 'Tahoma'
+        SubTextFont.Style = []
       end
       object ButtonFlat16: TButtonFlat
         Tag = 5
@@ -844,6 +944,11 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 6
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+        SubTextFont.Charset = DEFAULT_CHARSET
+        SubTextFont.Color = clWhite
+        SubTextFont.Height = -13
+        SubTextFont.Name = 'Tahoma'
+        SubTextFont.Style = []
       end
       object ButtonFlat15: TButtonFlat
         Tag = 4
@@ -878,6 +983,11 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 7
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+        SubTextFont.Charset = DEFAULT_CHARSET
+        SubTextFont.Color = clWhite
+        SubTextFont.Height = -13
+        SubTextFont.Name = 'Tahoma'
+        SubTextFont.Style = []
       end
       object ButtonFlat14: TButtonFlat
         Tag = 2
@@ -912,6 +1022,11 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 8
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+        SubTextFont.Charset = DEFAULT_CHARSET
+        SubTextFont.Color = clWhite
+        SubTextFont.Height = -13
+        SubTextFont.Name = 'Tahoma'
+        SubTextFont.Style = []
       end
       object ButtonFlat12: TButtonFlat
         Tag = 3
@@ -946,6 +1061,11 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 9
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+        SubTextFont.Charset = DEFAULT_CHARSET
+        SubTextFont.Color = clWhite
+        SubTextFont.Height = -13
+        SubTextFont.Name = 'Tahoma'
+        SubTextFont.Style = []
       end
       object ButtonFlat23: TButtonFlat
         Tag = 11
@@ -980,6 +1100,11 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 10
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+        SubTextFont.Charset = DEFAULT_CHARSET
+        SubTextFont.Color = clWhite
+        SubTextFont.Height = -13
+        SubTextFont.Name = 'Tahoma'
+        SubTextFont.Style = []
       end
       object ButtonFlat24: TButtonFlat
         Tag = 11
@@ -1014,6 +1139,11 @@ inherited FormDateAndNotify: TFormDateAndNotify
         TabOrder = 11
         TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+        SubTextFont.Charset = DEFAULT_CHARSET
+        SubTextFont.Color = clWhite
+        SubTextFont.Height = -13
+        SubTextFont.Name = 'Tahoma'
+        SubTextFont.Style = []
       end
     end
   end

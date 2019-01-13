@@ -63,26 +63,6 @@ inherited FormEditTime: TFormEditTime
       ExplicitLeft = 363
     end
   end
-  object EditText: TEdit
-    Left = 214
-    Top = 78
-    Width = 347
-    Height = 28
-    BevelInner = bvNone
-    BevelKind = bkSoft
-    BevelOuter = bvSpace
-    BevelWidth = 4
-    BorderStyle = bsNone
-    Color = 3026478
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = 15724527
-    Font.Height = -16
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    ParentFont = False
-    TabOrder = 2
-    TextHint = #1058#1077#1082#1089#1090' '#1088#1072#1073#1086#1090#1099
-  end
   object ButtonFlat1: TButtonFlat
     Tag = 11
     Left = 8
@@ -115,9 +95,14 @@ inherited FormEditTime: TFormEditTime
     OnClick = ButtonFlatUPDOWNClick
     RoundRectParam = 0
     ShowFocusRect = False
-    TabOrder = 3
+    TabOrder = 2
     TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+    SubTextFont.Charset = DEFAULT_CHARSET
+    SubTextFont.Color = clWhite
+    SubTextFont.Height = -13
+    SubTextFont.Name = 'Tahoma'
+    SubTextFont.Style = []
     AutoClick = 100
     DblClickTooClick = True
   end
@@ -150,9 +135,14 @@ inherited FormEditTime: TFormEditTime
     ImageIndentLeft = 0
     RoundRectParam = 0
     ShowFocusRect = False
-    TabOrder = 4
+    TabOrder = 3
     TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+    SubTextFont.Charset = DEFAULT_CHARSET
+    SubTextFont.Color = clWhite
+    SubTextFont.Height = -13
+    SubTextFont.Name = 'Tahoma'
+    SubTextFont.Style = []
   end
   object ButtonFlat3: TButtonFlat
     Tag = 10
@@ -186,9 +176,14 @@ inherited FormEditTime: TFormEditTime
     OnClick = ButtonFlatUPDOWNClick
     RoundRectParam = 0
     ShowFocusRect = False
-    TabOrder = 5
+    TabOrder = 4
     TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+    SubTextFont.Charset = DEFAULT_CHARSET
+    SubTextFont.Color = clWhite
+    SubTextFont.Height = -13
+    SubTextFont.Name = 'Tahoma'
+    SubTextFont.Style = []
     AutoClick = 100
     DblClickTooClick = True
   end
@@ -224,9 +219,14 @@ inherited FormEditTime: TFormEditTime
     OnClick = ButtonFlatUPDOWNClick
     RoundRectParam = 0
     ShowFocusRect = False
-    TabOrder = 6
+    TabOrder = 5
     TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+    SubTextFont.Charset = DEFAULT_CHARSET
+    SubTextFont.Color = clWhite
+    SubTextFont.Height = -13
+    SubTextFont.Name = 'Tahoma'
+    SubTextFont.Style = []
     AutoClick = 100
     DblClickTooClick = True
   end
@@ -259,9 +259,14 @@ inherited FormEditTime: TFormEditTime
     ImageIndentLeft = 0
     RoundRectParam = 0
     ShowFocusRect = False
-    TabOrder = 7
+    TabOrder = 6
     TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+    SubTextFont.Charset = DEFAULT_CHARSET
+    SubTextFont.Color = clWhite
+    SubTextFont.Height = -13
+    SubTextFont.Name = 'Tahoma'
+    SubTextFont.Style = []
   end
   object ButtonFlat6: TButtonFlat
     Tag = 20
@@ -295,9 +300,14 @@ inherited FormEditTime: TFormEditTime
     OnClick = ButtonFlatUPDOWNClick
     RoundRectParam = 0
     ShowFocusRect = False
-    TabOrder = 8
+    TabOrder = 7
     TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+    SubTextFont.Charset = DEFAULT_CHARSET
+    SubTextFont.Color = clWhite
+    SubTextFont.Height = -13
+    SubTextFont.Name = 'Tahoma'
+    SubTextFont.Style = []
     AutoClick = 100
     DblClickTooClick = True
   end
@@ -333,9 +343,14 @@ inherited FormEditTime: TFormEditTime
     OnClick = ButtonFlatUPDOWNClick
     RoundRectParam = 0
     ShowFocusRect = False
-    TabOrder = 9
+    TabOrder = 8
     TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+    SubTextFont.Charset = DEFAULT_CHARSET
+    SubTextFont.Color = clWhite
+    SubTextFont.Height = -13
+    SubTextFont.Name = 'Tahoma'
+    SubTextFont.Style = []
     AutoClick = 100
     DblClickTooClick = True
   end
@@ -368,9 +383,14 @@ inherited FormEditTime: TFormEditTime
     ImageIndentLeft = 0
     RoundRectParam = 0
     ShowFocusRect = False
-    TabOrder = 10
+    TabOrder = 9
     TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+    SubTextFont.Charset = DEFAULT_CHARSET
+    SubTextFont.Color = clWhite
+    SubTextFont.Height = -13
+    SubTextFont.Name = 'Tahoma'
+    SubTextFont.Style = []
   end
   object ButtonFlat9: TButtonFlat
     Tag = 30
@@ -404,9 +424,14 @@ inherited FormEditTime: TFormEditTime
     OnClick = ButtonFlatUPDOWNClick
     RoundRectParam = 0
     ShowFocusRect = False
-    TabOrder = 11
+    TabOrder = 10
     TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+    SubTextFont.Charset = DEFAULT_CHARSET
+    SubTextFont.Color = clWhite
+    SubTextFont.Height = -13
+    SubTextFont.Name = 'Tahoma'
+    SubTextFont.Style = []
     AutoClick = 100
     DblClickTooClick = True
   end
@@ -442,9 +467,14 @@ inherited FormEditTime: TFormEditTime
     OnClick = ButtonFlatUPDOWNClick
     RoundRectParam = 0
     ShowFocusRect = False
-    TabOrder = 12
+    TabOrder = 11
     TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+    SubTextFont.Charset = DEFAULT_CHARSET
+    SubTextFont.Color = clWhite
+    SubTextFont.Height = -13
+    SubTextFont.Name = 'Tahoma'
+    SubTextFont.Style = []
     AutoClick = 100
     DblClickTooClick = True
   end
@@ -477,9 +507,14 @@ inherited FormEditTime: TFormEditTime
     ImageIndentLeft = 0
     RoundRectParam = 0
     ShowFocusRect = False
-    TabOrder = 13
+    TabOrder = 12
     TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+    SubTextFont.Charset = DEFAULT_CHARSET
+    SubTextFont.Color = clWhite
+    SubTextFont.Height = -13
+    SubTextFont.Name = 'Tahoma'
+    SubTextFont.Style = []
   end
   object ButtonFlat12: TButtonFlat
     Tag = 40
@@ -513,9 +548,14 @@ inherited FormEditTime: TFormEditTime
     OnClick = ButtonFlatUPDOWNClick
     RoundRectParam = 0
     ShowFocusRect = False
-    TabOrder = 14
+    TabOrder = 13
     TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+    SubTextFont.Charset = DEFAULT_CHARSET
+    SubTextFont.Color = clWhite
+    SubTextFont.Height = -13
+    SubTextFont.Name = 'Tahoma'
+    SubTextFont.Style = []
     AutoClick = 100
     DblClickTooClick = True
   end
@@ -545,12 +585,19 @@ inherited FormEditTime: TFormEditTime
     FontDown.Name = 'Tahoma'
     FontDown.Style = []
     IgnorBounds = True
+    ImageIndex = 9
+    Images = FormMain.ImageList24
     OnClick = ButtonFlatTaskClick
     RoundRectParam = 0
     ShowFocusRect = False
-    TabOrder = 15
+    TabOrder = 14
     TabStop = True
     TextFormat = [tfSingleLine, tfVerticalCenter]
+    SubTextFont.Charset = DEFAULT_CHARSET
+    SubTextFont.Color = clWhite
+    SubTextFont.Height = -13
+    SubTextFont.Name = 'Tahoma'
+    SubTextFont.Style = []
   end
   object TableExTasks: TTableEx
     Left = 600
@@ -566,7 +613,7 @@ inherited FormEditTime: TFormEditTime
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
-    TabOrder = 16
+    TabOrder = 15
     ItemIndex = -1
     OnItemClick = TableExTasksItemClick
     GetData = TableExTasksGetData
@@ -605,5 +652,31 @@ inherited FormEditTime: TFormEditTime
     ColumnsFont.Name = 'Tahoma'
     ColumnsFont.Style = []
     DrawColumnBorded = False
+  end
+  object Panel1: TPanel
+    Left = 214
+    Top = 76
+    Width = 347
+    Height = 33
+    BevelOuter = bvNone
+    Color = 3026478
+    ParentBackground = False
+    TabOrder = 16
+    object EditText: TEdit
+      Left = 5
+      Top = 6
+      Width = 338
+      Height = 24
+      BorderStyle = bsNone
+      Color = 3026478
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = 15724527
+      Font.Height = -16
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 0
+      TextHint = #1058#1077#1082#1089#1090' '#1088#1072#1073#1086#1090#1099
+    end
   end
 end

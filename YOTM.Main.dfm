@@ -1563,7 +1563,7 @@ object FormMain: TFormMain
             Align = alTop
             Alignment = taLeftJustify
             BevelOuter = bvNone
-            Caption = 'Log'
+            Caption = '  Log'
             Color = 3026478
             Font.Charset = DEFAULT_CHARSET
             Font.Color = 15921906
@@ -2121,7 +2121,7 @@ object FormMain: TFormMain
             Align = alTop
             Alignment = taLeftJustify
             BevelOuter = bvNone
-            Caption = #1056#1072#1073#1086#1095#1077#1077' '#1074#1088#1077#1084#1103
+            Caption = '  '#1056#1072#1073#1086#1095#1077#1077' '#1074#1088#1077#1084#1103
             Color = 3026478
             Font.Charset = DEFAULT_CHARSET
             Font.Color = 15921906
@@ -2543,7 +2543,7 @@ object FormMain: TFormMain
             Align = alTop
             Alignment = taLeftJustify
             BevelOuter = bvNone
-            Caption = #1041#1091#1076#1085#1080#1077' '#1076#1085#1080
+            Caption = '  '#1041#1091#1076#1085#1080#1077' '#1076#1085#1080
             Color = 3026478
             Font.Charset = DEFAULT_CHARSET
             Font.Color = 15921906
@@ -2553,6 +2553,80 @@ object FormMain: TFormMain
             ParentBackground = False
             ParentFont = False
             TabOrder = 7
+          end
+        end
+        object Panel13: TPanel
+          Left = 0
+          Top = 259
+          Width = 450
+          Height = 100
+          Align = alTop
+          BevelOuter = bvNone
+          TabOrder = 4
+          object Panel14: TPanel
+            Left = 0
+            Top = 0
+            Width = 450
+            Height = 25
+            Margins.Left = 0
+            Margins.Top = 0
+            Margins.Right = 0
+            Margins.Bottom = 0
+            Align = alTop
+            Alignment = taLeftJustify
+            BevelOuter = bvNone
+            Caption = '  '#1057#1087#1080#1089#1086#1082' '#1079#1072#1076#1072#1095
+            Color = 3026478
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 15921906
+            Font.Height = -16
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            ParentBackground = False
+            ParentFont = False
+            TabOrder = 0
+          end
+          object CheckBoxFlatMoreTasks: TCheckBoxFlat
+            Left = 6
+            Top = 28
+            Width = 267
+            Height = 30
+            Caption = #1054#1090#1086#1073#1088#1072#1078#1072#1090#1100' '#1079#1072#1076#1072#1095#1080' '#1085#1072' '#1085#1077#1089#1082#1086#1083#1100#1082#1086' '#1076#1085#1077#1081
+            ColorNormal = 3684408
+            ColorOver = 6381921
+            ColorPressed = 3815994
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWhite
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            FontOver.Charset = DEFAULT_CHARSET
+            FontOver.Color = clWhite
+            FontOver.Height = -13
+            FontOver.Name = 'Tahoma'
+            FontOver.Style = []
+            FontDown.Charset = DEFAULT_CHARSET
+            FontDown.Color = clWhite
+            FontDown.Height = -13
+            FontDown.Name = 'Tahoma'
+            FontDown.Style = []
+            IgnorBounds = True
+            ImageIndentRight = 3
+            ImageIndex = 19
+            Images = ImageList24
+            OnClick = CheckBoxFlatMoreTasksClick
+            RoundRectParam = 0
+            ShowFocusRect = False
+            TabOrder = 1
+            TabStop = True
+            TextFormat = [tfSingleLine, tfVerticalCenter]
+            SubTextFont.Charset = DEFAULT_CHARSET
+            SubTextFont.Color = clWhite
+            SubTextFont.Height = -13
+            SubTextFont.Name = 'Tahoma'
+            SubTextFont.Style = []
+            ImageCheck = 18
+            ImageUncheck = 19
           end
         end
       end
@@ -3396,7 +3470,7 @@ object FormMain: TFormMain
     Left = 44
     Top = 520
     Bitmap = {
-      494C01011D005800040018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01011D005800340018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000C000000001002000000000000020
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -5825,31 +5899,6 @@ object FormMain: TFormMain
     Left = 136
     Top = 640
   end
-  object ColorDialog: TsColorDialog
-    Ctl3D = False
-    Color = 9013641
-    CustomColors.Strings = (
-      '94DD85'
-      '94DD85'
-      '94DD85'
-      '94DD85'
-      '94DD85'
-      '94DD85'
-      '94DD85'
-      '94DD85'
-      '94DD85'
-      '94DD85'
-      '94DD85'
-      '94DD85'
-      '94DD85'
-      '94DD85'
-      '94DD85'
-      '94DD85'
-      '94DD85'
-      '94DD85')
-    Left = 132
-    Top = 584
-  end
   object PopupMenuViewProp: TPopupMenu
     Left = 596
     Top = 64
@@ -5897,6 +5946,7 @@ object FormMain: TFormMain
     end
   end
   object TrayIcon: TTrayIcon
+    PopupMenu = PopupMenuTray
     Visible = True
     OnClick = TrayIconClick
     Left = 652
@@ -5907,7 +5957,7 @@ object FormMain: TFormMain
     Left = 128
     Top = 520
     Bitmap = {
-      494C010103000800040010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010103000800340010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -6053,5 +6103,53 @@ object FormMain: TFormMain
       Caption = #1042#1099#1093#1086#1076
       OnClick = MenuItemQuitClick
     end
+  end
+  object PopupMenuTray: TPopupMenu
+    Left = 716
+    Top = 336
+    object MenuItemTrayOpen: TMenuItem
+      Caption = #1055#1086#1082#1072#1079#1072#1090#1100' '#1075#1083#1072#1074#1085#1086#1077' '#1086#1082#1085#1086
+      OnClick = MenuItemTrayOpenClick
+    end
+    object N7: TMenuItem
+      Caption = '-'
+    end
+    object MenuItemTrayStartTask: TMenuItem
+      Caption = #1053#1072#1095#1072#1090#1100' '#1079#1072#1076#1072#1095#1091
+      OnClick = MenuItemTrayStartTaskClick
+    end
+    object N6: TMenuItem
+      Caption = '-'
+    end
+    object MenuItemTrayQuit: TMenuItem
+      Caption = #1042#1099#1093#1086#1076
+      OnClick = MenuItemTrayQuitClick
+    end
+  end
+  object ColorDialog: TColorDialog
+    Ctl3D = False
+    Color = 9013641
+    CustomColors.Strings = (
+      '94DD85'
+      '94DD85'
+      '94DD85'
+      '94DD85'
+      '94DD85'
+      '94DD85'
+      '94DD85'
+      '94DD85'
+      '94DD85'
+      '94DD85'
+      '94DD85'
+      '94DD85'
+      '94DD85'
+      '94DD85'
+      '94DD85'
+      '94DD85'
+      '94DD85'
+      '94DD85')
+    Options = [cdFullOpen]
+    Left = 132
+    Top = 584
   end
 end

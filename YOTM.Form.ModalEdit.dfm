@@ -13,8 +13,6 @@ inherited FormModalEdit: TFormModalEdit
     Padding.Top = 2
     ParentBackground = False
     TabOrder = 1
-    ExplicitTop = 160
-    ExplicitWidth = 413
     object ButtonFlatCancel: TButtonFlat
       Left = 512
       Top = 2
@@ -50,7 +48,11 @@ inherited FormModalEdit: TFormModalEdit
       TabOrder = 1
       TabStop = True
       TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-      ExplicitLeft = 313
+      SubTextFont.Charset = DEFAULT_CHARSET
+      SubTextFont.Color = clWhite
+      SubTextFont.Height = -13
+      SubTextFont.Name = 'Tahoma'
+      SubTextFont.Style = []
     end
     object ButtonFlatOK: TButtonFlat
       AlignWithMargins = True
@@ -92,7 +94,11 @@ inherited FormModalEdit: TFormModalEdit
       TabOrder = 0
       TabStop = True
       TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-      ExplicitLeft = 211
+      SubTextFont.Charset = DEFAULT_CHARSET
+      SubTextFont.Color = clWhite
+      SubTextFont.Height = -13
+      SubTextFont.Name = 'Tahoma'
+      SubTextFont.Style = []
     end
   end
 end

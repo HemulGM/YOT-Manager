@@ -5,8 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, YOTM.Form.Notify, HGM.Button,
-  Vcl.StdCtrls, Vcl.ExtCtrls, sPanel, YOTM.DB.Tasks, Vcl.Menus,
-  HGM.Controls.PanelExt;
+  Vcl.StdCtrls, Vcl.ExtCtrls, YOTM.DB.Tasks, Vcl.Menus, HGM.Controls.PanelExt;
 
 type
   TOnCloseAction = procedure(Task:Integer) of object;

@@ -34,13 +34,9 @@ implementation
 constructor TDB.Create(FileName: string);
 begin
  FCreated:=False;
- try
-  FDataBase:=TSQLiteDatabase.Create(FileName);
-  FDataBase.OnQuery:=OnQuery;
-  FCreated:=True;
- finally
-
- end;
+ FDataBase:=TSQLiteDatabase.Create(FileName);
+ FDataBase.OnQuery:=OnQuery;
+ FCreated:=True;
 end;
 
 destructor TDB.Destroy;

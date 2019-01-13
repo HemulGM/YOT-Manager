@@ -30,7 +30,7 @@ interface
     procedure WorkDayStarted;
    public
     constructor Create(ADataBase: TDB);
-    destructor Destroy;
+    destructor Destroy; override;
     property DataBase:TDB read FDataBase write SetDataBase;
     property Activate:Boolean read FActivate write SetActivate;
     property OnWorkDayStarted:TNotifyEvent read FOnWorkDayStarted write SetOnWorkDayStarted;

@@ -153,31 +153,31 @@ begin
     OrderBy(fnTypeID);
     Table:=FDataBase.DB.GetTable(GetSQL);
     EndCreate;
-    Table.MoveFirst;
-    while not Table.EOF do
-     begin
-      Item:=TLabelItem.Create(nil);
-      Item.Task:=Table.FieldAsInteger(0);
-      Item.TypeID:=Table.FieldAsInteger(1);
-      with SQL.Select(TLabelTypes.tnTable) do
-       begin
-        AddField(TLabelTypes.fnName);
-        AddField(TLabelTypes.fnColor);
-        WhereFieldEqual(TLabelTypes.fnID, Item.TypeID);
-        TableTypes:=FDataBase.DB.GetTable(GetSQL);
-        if TableTypes.RowCount > 0 then
-         begin
-          Item.Name:=TableTypes.FieldAsString(0);
-          Item.Color:=TableTypes.FieldAsInteger(1);
-         end;
-        TableTypes.Free;
-        EndCreate;
-       end;
-      Add(Item);
-      Table.Next;
-     end;
-    Table.Free;
    end;
+  Table.MoveFirst;
+  while not Table.EOF do
+   begin
+    Item:=TLabelItem.Create(nil);
+    Item.Task:=Table.FieldAsInteger(0);
+    Item.TypeID:=Table.FieldAsInteger(1);
+    with SQL.Select(TLabelTypes.tnTable) do
+     begin
+      AddField(TLabelTypes.fnName);
+      AddField(TLabelTypes.fnColor);
+      WhereFieldEqual(TLabelTypes.fnID, Item.TypeID);
+      TableTypes:=FDataBase.DB.GetTable(GetSQL);
+      if TableTypes.RowCount > 0 then
+       begin
+        Item.Name:=TableTypes.FieldAsString(0);
+        Item.Color:=TableTypes.FieldAsInteger(1);
+       end;
+      TableTypes.Free;
+      EndCreate;
+     end;
+    Add(Item);
+    Table.Next;
+   end;
+  Table.Free;
  finally
   EndUpdate;
  end;

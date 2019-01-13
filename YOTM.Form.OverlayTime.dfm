@@ -27,10 +27,8 @@ inherited FormTimeOverlay: TFormTimeOverlay
       Margins.Left = 3
       Align = alClient
       Caption = #1053#1086#1074#1072#1103' '#1079#1072#1076#1072#1095#1072
-      FocusControl = DragBarTop
-      OnMouseDown = LabelCaptionMouseDown
       ExplicitLeft = 58
-      ExplicitWidth = 98
+      ExplicitWidth = 167
     end
     object LabelTime: TLabel [1]
       AlignWithMargins = True
@@ -101,6 +99,11 @@ inherited FormTimeOverlay: TFormTimeOverlay
       TabOrder = 1
       TabStop = True
       TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+      SubTextFont.Charset = DEFAULT_CHARSET
+      SubTextFont.Color = clWhite
+      SubTextFont.Height = -13
+      SubTextFont.Name = 'Tahoma'
+      SubTextFont.Style = []
     end
   end
 end

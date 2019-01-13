@@ -42,15 +42,15 @@ interface
      fnID = 'rsID';
      fnTask = 'rsTask';
      fnDeadline = 'rsDeadline';
-     fnDate = 'rsDate';
+     fnDateChange = 'rsDate';
      fnNotifyComplete = 'rsNotifyComplete';
      fnState = 'rsState';
     private
      FDataBase: TDB;
      procedure SetDataBase(const Value: TDB);
-    function GetItem(Task: Integer; Date:TDate): TRepeatState;
     public
      constructor Create(ADataBase:TDB; ATableEx:TTableEx);
+     function GetItem(Task: Integer; Date:TDate): TRepeatState;
      procedure Reload(TaskID:Integer);
      /// <summary>
      /// Обновить запись (добавить или изменить)
@@ -70,7 +70,7 @@ interface
    end;
 
 implementation
- uses System.SysUtils;
+ uses System.SysUtils, DateUtils;
 
 { TRepeatState }
 
@@ -151,7 +151,7 @@ begin
     AddField(fnID, ftInteger, True, True);
     AddField(fnTask, ftInteger);
     AddField(fnDeadline, ftDateTime);
-    AddField(fnDate, ftDateTime);
+    AddField(fnDateChange, ftDateTime);
     AddField(fnNotifyComplete, ftBoolean);
     AddField(fnState, ftBoolean);
     FDataBase.DB.ExecSQL(GetSQL);
@@ -180,11 +180,11 @@ begin
     AddField(fnID);
     AddField(fnTask);
     AddField(fnDeadline);
-    AddField(fnDate);
+    AddField(fnDateChange);
     AddField(fnNotifyComplete);
     AddField(fnState);
-    WhereFieldEqual(fnID, Task);
-    WhereFieldEqual(fnDate, Date);
+    WhereFieldEqual(fnTask, Task);
+    WhereFieldEqual(fnDeadline, DateOf(Date));
     Table:=FDataBase.DB.GetTable(GetSQL);
     EndCreate;
     Table.MoveFirst;
@@ -237,7 +237,7 @@ begin
     AddField(fnID);
     AddField(fnTask);
     AddField(fnDeadline);
-    AddField(fnDate);
+    AddField(fnDateChange);
     AddField(fnNotifyComplete);
     AddField(fnState);
     WhereFieldEqual(fnTask, TaskID);
@@ -269,8 +269,8 @@ begin
   with SQL.InsertInto(tnTable) do
    begin
     AddValue(fnTask, Item.Task);
-    AddValue(fnDeadline, Item.DateDeadline);
-    AddValue(fnDate, Item.DateChange);
+    AddValue(fnDeadline, DateOf(Item.DateDeadline));
+    AddValue(fnDateChange, Item.DateChange);
     AddValue(fnNotifyComplete, Item.NotifyComplete);
     AddValue(fnState, Item.State);
     DataBase.DB.ExecSQL(GetSQL);
@@ -281,8 +281,8 @@ begin
   with SQL.Update(tnTable) do
    begin
     AddValue(fnTask, Item.Task);
-    AddValue(fnDeadline, Item.DateDeadline);
-    AddValue(fnDate, Item.DateChange);
+    AddValue(fnDeadline, DateOf(Item.DateDeadline));
+    AddValue(fnDateChange, Item.DateChange);
     AddValue(fnNotifyComplete, Item.NotifyComplete);
     AddValue(fnState, Item.State);
     WhereFieldEqual(fnID, Item.ID);
