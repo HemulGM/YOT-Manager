@@ -75,14 +75,11 @@ type
     MenuItemTaskStartFrom: TMenuItem;
     ButtonFlatAddTime: TButtonFlat;
     DrawGridCalendar: TDrawGrid;
-    PanelTaskAdd: TPanel;
-    EditNewTaskName: TEdit;
     ButtonFlat9: TButtonFlat;
     PanelTask: TPanel;
     Shape4: TShape;
     TableExComments: TTableEx;
     Panel2: TPanel;
-    EditNewComment: TEdit;
     ButtonFlatNewComment: TButtonFlat;
     PanelTaskTop: TPanel;
     ButtonFlatTaskClose: TButtonFlat;
@@ -109,8 +106,6 @@ type
     ButtonFlat6: TButtonFlat;
     Label3: TLabel;
     Shape8: TShape;
-    EditTaskName: TEdit;
-    MemoTaskDesc: TMemo;
     TimerAutoSaveTask: TTimer;
     PanelTaskLabels: TPanel;
     Shape9: TShape;
@@ -136,8 +131,8 @@ type
     MemoLog: TMemo;
     Shape13: TShape;
     Panel5: TPanel;
-    ButtonFlat8: TButtonFlat;
-    ButtonFlat10: TButtonFlat;
+    ButtonFlatSaveNote: TButtonFlat;
+    ButtonFlatLoadback: TButtonFlat;
     Panel6: TPanel;
     Shape14: TShape;
     Shape15: TShape;
@@ -146,7 +141,6 @@ type
     LabelNoteModify: TLabel;
     Label8: TLabel;
     Shape16: TShape;
-    MemoNote: TMemo;
     PopupMenuComment: TPopupMenu;
     MenuItemCommentDel: TMenuItem;
     PopupMenuTimes: TPopupMenu;
@@ -228,6 +222,13 @@ type
     N6: TMenuItem;
     N7: TMenuItem;
     ColorDialog: TColorDialog;
+    CheckBoxFlatShowCompleted: TCheckBoxFlat;
+    CheckBoxFlatHideOftenTasks: TCheckBoxFlat;
+    ButtonFlatTaskLabels: TButtonFlat;
+    EditNewComment: TRichEdit;
+    MemoNote: TRichEdit;
+    EditTaskName: TRichEdit;
+    MemoTaskDesc: TRichEdit;
     procedure TimerRepaintTimer(Sender: TObject);
     procedure DrawPanelPaint(Sender: TObject);
     procedure DrawPanelMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
@@ -298,8 +299,8 @@ type
     procedure MenuItemShowEndedClick(Sender: TObject);
     procedure ButtonFlatViewModeClick(Sender: TObject);
     procedure ButtonFlatNotesClick(Sender: TObject);
-    procedure ButtonFlat8Click(Sender: TObject);
-    procedure ButtonFlat10Click(Sender: TObject);
+    procedure ButtonFlatSaveNoteClick(Sender: TObject);
+    procedure ButtonFlatLoadbackClick(Sender: TObject);
     procedure ButtonFlat11Click(Sender: TObject);
     procedure MemoTaskDescExit(Sender: TObject);
     procedure ButtonFlatWD1Click(Sender: TObject);
@@ -334,8 +335,21 @@ type
     procedure MenuItemTrayQuitClick(Sender: TObject);
     procedure MenuItemTrayOpenClick(Sender: TObject);
     procedure MenuItemTrayStartTaskClick(Sender: TObject);
+    procedure CheckBoxFlatHideOftenTasksClick(Sender: TObject);
+    procedure CheckBoxFlatShowCompletedClick(Sender: TObject);
+    procedure ButtonFlatTaskLabelsClick(Sender: TObject);
+    procedure EditNewCommentContextPopup(Sender: TObject; MousePos: TPoint;
+      var Handled: Boolean);
+    procedure EditTaskNameContextPopup(Sender: TObject; MousePos: TPoint;
+      var Handled: Boolean);
+    procedure EditNewTaskNameContextPopup(Sender: TObject; MousePos: TPoint;
+      var Handled: Boolean);
+    procedure MemoNoteContextPopup(Sender: TObject; MousePos: TPoint;
+      var Handled: Boolean);
    protected
     procedure WMSysCommand(var Message:TWMSysCommand); message WM_SYSCOMMAND;
+    procedure WMQueryEndSession(var Msg: TWMQueryEndSession); message WM_QUERYENDSESSION;
+    procedure WMSize(var Message: TWMSize); message WM_SIZE;
    private
     FFromHH, FFromMM, FToHH, FToMM:Word;
     FLastDate:TDate;             //Реальная дата (без времени)
@@ -378,6 +392,7 @@ type
     FTimeManager: TManager;
     FWorkDays: TWorkDays;
     FNotifyItems:TNotifyItems;
+    FWindowsShutdown:Boolean;
     function AddTask(Name:string = ''; Date:TDateTime = 0): TTaskItem;
     function AddTaskTime(ADate, ADateEnd: TDate; TStart, TEnd:TTime; ATaskID:Integer; AColor:TColor): Boolean;
     function DaysThisMonth: Integer;
@@ -423,11 +438,13 @@ type
     procedure UpdateTime;
     procedure UpdateTimeOverlayData;
     procedure UpdateViewModeParam;
-    procedure WMSize(var Message: TWMSize); message WM_SIZE;
     procedure WorkDayStarted(Sender:TObject);
+    procedure UpdateViewMode;
    public
     AccentColor:TColor;
     BackgroundColor:TColor;
+    SelectionColor:TColor;
+    HotOverColor:TColor;
     ForegroundColor:TColor;
     procedure Error(E: Exception; const Message: string = '');
     procedure Initializate;
@@ -1064,6 +1081,20 @@ begin
   end;
 end;
 
+procedure TFormMain.EditNewCommentContextPopup(Sender: TObject;
+  MousePos: TPoint; var Handled: Boolean);
+begin
+ RichEditPopupMenu(Sender as TRichEdit);
+ Handled:=True;
+end;
+
+procedure TFormMain.EditNewTaskNameContextPopup(Sender: TObject;
+  MousePos: TPoint; var Handled: Boolean);
+begin
+ RichEditPopupMenu(Sender as TRichEdit);
+ Handled:=True;
+end;
+
 procedure TFormMain.EditNewTaskNameKeyPress(Sender: TObject; var Key: Char);
 begin
  if Key = #13 then
@@ -1071,6 +1102,13 @@ begin
    Key:=#0;
    ButtonFlatAddTaskClick(nil);
   end;
+end;
+
+procedure TFormMain.EditTaskNameContextPopup(Sender: TObject; MousePos: TPoint;
+  var Handled: Boolean);
+begin
+ RichEditPopupMenu(Sender as TRichEdit);
+ Handled:=True;
 end;
 
 procedure TFormMain.ButtonFlatCalendarClick(Sender: TObject);
@@ -1169,7 +1207,7 @@ begin
    Task.TaskType:=Data.SelectRepeatType;
    FTaskItems.Update(FTaskItems[FTaskID]);
    UpdateTaskPanel(FTaskID);
-   ViewMode:=ViewMode;
+   UpdateViewMode;
   end;
 end;
 
@@ -1269,6 +1307,11 @@ begin
  ViewMode:=vmInbox;
 end;
 
+procedure TFormMain.ButtonFlatTaskLabelsClick(Sender: TObject);
+begin
+ MenuItemTaskLabelAddClick(nil);
+end;
+
 procedure TFormMain.ButtonFlatTaskStateClick(Sender: TObject);
 begin
  if not IndexInList(FTaskID, FTaskItems.Count) then Exit;
@@ -1277,9 +1320,9 @@ begin
  UpdateTaskPanel(FTaskID);
 end;
 
-procedure TFormMain.ButtonFlat10Click(Sender: TObject);
+procedure TFormMain.ButtonFlatLoadbackClick(Sender: TObject);
 begin
- LoadNote(CurrentDate);
+ if GetAnswer('Вы действительно хотите отменить изменения?') then LoadNote(CurrentDate);
 end;
 
 procedure TFormMain.ButtonFlat11Click(Sender: TObject);
@@ -1396,18 +1439,8 @@ end;
 
 procedure TFormMain.ButtonFlatAddTaskClick(Sender: TObject);
 begin
- if EditNewTaskName.Text = '' then
-  begin
-   AddTask;
-   TableExTasks.Edit(0, 1);
-  end
- else
-  begin
-   AddTask(EditNewTaskName.Text);
-
-   EditNewTaskName.Clear;
-   TableExTasks.ItemIndex:=0;
-  end;
+ AddTask;
+ TableExTasks.Edit(0, 1);
 end;
 
 function TFormMain.AddTask(Name:string = ''; Date:TDateTime = 0):TTaskItem;
@@ -1448,7 +1481,7 @@ begin
  ViewMode:=vmSelectedDate;
 end;
 
-procedure TFormMain.ButtonFlat8Click(Sender: TObject);
+procedure TFormMain.ButtonFlatSaveNoteClick(Sender: TObject);
 begin
  SaveNote;
 end;
@@ -1615,9 +1648,74 @@ begin
  ViewMode:=vmSelectedDate;
 end;
 
+procedure TFormMain.UpdateViewMode;
+begin
+ FTaskItems.UseDatePeriod:=False;
+ case FViewMode of
+  vmToday:
+   begin
+    Calendar.Date:=Now;
+    CurrentDate:=Now;
+    FTaskItems.ShowDate:=CurrentDate;
+    if CheckBoxFlatMoreTasks.Checked then
+     begin
+      FTaskItems.UseDatePeriod:=True;
+      FTaskItems.DatePeriod.SetValue(FTaskItems.ShowDate, FTaskItems.ShowDate + 3);
+     end;
+    FTaskItems.TaskFilter:=tkfDated;
+    FTaskItems.Reload;
+    ButtonFlatViewMode.Caption:=HumanDateTime(FTaskItems.ShowDate, False, True);
+   end;
+  vmSelectedDate:
+   begin
+  //Calendar.Date:=Calendar.Date;
+    CurrentDate:=Calendar.Date;
+    FTaskItems.ShowDate:=Calendar.Date;
+    FTaskItems.TaskFilter:=tkfDated;
+    FTaskItems.Reload;
+    ButtonFlatViewMode.Caption:=HumanDateTime(FTaskItems.ShowDate, False, True);
+   end;
+  vmDeadlined:
+   begin
+    Calendar.Date:=Now;
+    CurrentDate:=Now;
+    FTaskItems.ShowDate:=Now;
+    FTaskItems.TaskFilter:=tkfDeadlined;
+    FTaskItems.Reload;
+    ButtonFlatViewMode.Caption:='Просроченные задачи';
+   end;
+  vmInbox:
+   begin
+    Calendar.Date:=Now;
+    CurrentDate:=Now;
+    FTaskItems.ShowDate:=Now;
+    FTaskItems.TaskFilter:=tkfNoDate;
+    FTaskItems.Reload;
+    ButtonFlatViewMode.Caption:='Входящие';
+   end;
+ end;
+ ButtonFlatViewMode.Width:=Max(90, ButtonFlatViewMode.GetTextWidth + 20);
+ ButtonFlatViewMode.Left:=PanelTaskEdit.Width div 2 - ButtonFlatViewMode.Width div 2;
+ UpdateTaskPanel;
+ UpdateViewModeParam;
+ OnChangeItems;
+end;
+
+procedure TFormMain.CheckBoxFlatHideOftenTasksClick(Sender: TObject);
+begin
+ FTaskItems.CalcOftenRepeat:=not CheckBoxFlatHideOftenTasks.Checked;
+ UpdateViewMode;
+end;
+
 procedure TFormMain.CheckBoxFlatMoreTasksClick(Sender: TObject);
 begin
- ViewMode:=ViewMode;
+ UpdateViewMode;
+end;
+
+procedure TFormMain.CheckBoxFlatShowCompletedClick(Sender: TObject);
+begin
+ FTaskItems.ShowEndedTask:=CheckBoxFlatShowCompleted.Checked;
+ UpdateViewMode;
 end;
 
 procedure TFormMain.ShowTask(TaskID:Integer);
@@ -1686,6 +1784,11 @@ end;
 procedure TFormMain.Initializate;
 var WD:TWorkDays;
 begin
+ AccentColor:=$00B86B00;
+ BackgroundColor:=$002E2E2E;
+ ForegroundColor:=$00383838;
+ SelectionColor:=$002A2A2A;
+ HotOverColor:=$004D4D4D;
  //TFormNotifyTask.OnCloseAction:=OnCloseNotifyAction;
  FTimeManager:=TManager.Create(FDB);
  FTimeManager.OnWorkDayStarted:=WorkDayStarted;
@@ -1721,6 +1824,8 @@ begin
  {$ENDIF}
 
  ReloadLabelsTypes;
+
+ WindowState:=wsMaximized;
 end;
 
 procedure TFormMain.DoLog(Text:string);
@@ -1780,12 +1885,9 @@ end;
 
 procedure TFormMain.FormCreate(Sender: TObject);
 begin
- AccentColor:= $00B86B00;
- BackgroundColor:= $002E2E2E;
- ForegroundColor:= $00383838;
-
- ClientWidth:=1500;
- ClientHeight:=800;
+ //Низкоуровневые параметры и инициализация
+ //Далее Initializate
+ FWindowsShutdown:=False;
  FTaskID:=-1;
 
  PanelCalendar.Left:=PanelRight.Width+10;
@@ -1812,6 +1914,13 @@ begin
  Canvas.Pen.Color:=$00ADADAD;
  Canvas.Pen.Width:=3;
  Canvas.Rectangle(ClientRect);
+end;
+
+procedure TFormMain.MemoNoteContextPopup(Sender: TObject; MousePos: TPoint;
+  var Handled: Boolean);
+begin
+ RichEditPopupMenu(Sender as TRichEdit);
+ Handled:=True;
 end;
 
 procedure TFormMain.MemoTaskDescExit(Sender: TObject);
@@ -1868,6 +1977,10 @@ end;
 
 procedure TFormMain.Quit;
 begin
+ if not FWindowsShutdown then
+  begin
+   if not GetAnswer('Завершить работу с программой?') then Exit;
+  end;
  if StopTimeSection then
   begin
    FAddTaskTime(FNewTStartDate, FNewTEndDate, FNewTStart, FNewTEnd, FNewTTask, FNewTColor, '<Автосохранение>');
@@ -1883,13 +1996,15 @@ end;
 procedure TFormMain.MenuItemShowEndedClick(Sender: TObject);
 begin
  FTaskItems.ShowEndedTask:=not FTaskItems.ShowEndedTask;
- ViewMode:=ViewMode;
+ UpdateViewMode;
  OnChangeItems;
 end;
 
 procedure TFormMain.UpdateViewModeParam;
 begin
  MenuItemShowEnded.Checked:=FTaskItems.ShowEndedTask;
+ CheckBoxFlatShowCompleted.Checked:=FTaskItems.ShowEndedTask;
+ CheckBoxFlatHideOftenTasks.Checked:=not FTaskItems.CalcOftenRepeat;
 end;
 
 procedure TFormMain.MenuItemTaskDelClick(Sender: TObject);
@@ -2035,61 +2150,7 @@ end;
 procedure TFormMain.SetViewMode(const Value: TViewMode);
 begin
  FViewMode := Value;
-
- FTaskItems.UseDatePeriod:=False;
- case FViewMode of
-  vmToday:
-   begin
-    Calendar.Date:=Now;
-    CurrentDate:=Now;
-    FTaskItems.ShowDate:=CurrentDate;
-    if CheckBoxFlatMoreTasks.Checked then
-     begin
-      FTaskItems.UseDatePeriod:=True;
-      FTaskItems.DatePeriod.SetValue(FTaskItems.ShowDate, FTaskItems.ShowDate + 3);
-     end;
-    FTaskItems.TaskFilter:=tkfDated;
-    FTaskItems.Reload;
-    ButtonFlatViewMode.Caption:=HumanDateTime(FTaskItems.ShowDate, False, True);
-   end;
-  vmSelectedDate:
-   begin
-  //Calendar.Date:=Calendar.Date;
-    CurrentDate:=Calendar.Date;
-    FTaskItems.ShowDate:=Calendar.Date;
-    if CheckBoxFlatMoreTasks.Checked then
-     begin
-      FTaskItems.UseDatePeriod:=True;
-      FTaskItems.DatePeriod.SetValue(FTaskItems.ShowDate, FTaskItems.ShowDate + 3);
-     end;
-    FTaskItems.TaskFilter:=tkfDated;
-    FTaskItems.Reload;
-    ButtonFlatViewMode.Caption:=HumanDateTime(FTaskItems.ShowDate, False, True);
-   end;
-  vmDeadlined:
-   begin
-    Calendar.Date:=Now;
-    CurrentDate:=Now;
-    FTaskItems.ShowDate:=Now;
-    FTaskItems.TaskFilter:=tkfDeadlined;
-    FTaskItems.Reload;
-    ButtonFlatViewMode.Caption:='Просроченные задачи';
-   end;
-  vmInbox:
-   begin
-    Calendar.Date:=Now;
-    CurrentDate:=Now;
-    FTaskItems.ShowDate:=Now;
-    FTaskItems.TaskFilter:=tkfNoDate;
-    FTaskItems.Reload;
-    ButtonFlatViewMode.Caption:='Входящие';
-   end;
- end;
- ButtonFlatViewMode.Width:=Max(90, ButtonFlatViewMode.GetTextWidth + 20);
- ButtonFlatViewMode.Left:=PanelTaskEdit.Width div 2 - ButtonFlatViewMode.Width div 2;
- UpdateTaskPanel;
- UpdateViewModeParam;
- OnChangeItems;
+ UpdateViewMode;
 end;
 
 procedure TFormMain.SetWorkDays(Days: TWorkDays);
@@ -2166,6 +2227,11 @@ begin
    HideTask;
   end
  else if PanelTask.Visible then ShowTask(TaskID);
+end;
+
+procedure TFormMain.WMQueryEndSession(var Msg: TWMQueryEndSession);
+begin
+ FWindowsShutdown:=True;
 end;
 
 procedure TFormMain.WMSize(var Message: TWMSize);
@@ -2315,7 +2381,7 @@ begin
        TxtRect:=Rect;
        TxtRect.Offset(2, 2);
        TxtRect.Bottom:=TxtRect.Top + 20;
-       TxtRect.Right:=TxtRect.Right - 100;
+       TxtRect.Right:=TxtRect.Right - 130;
        Brush.Style:=bsClear;
        Txt:=Task.Name;
        TextRect(TxtRect, Txt, [tfSingleLine, tfLeft, tfVerticalCenter, tfEndEllipsis]);
@@ -2330,19 +2396,24 @@ begin
         end;
        TxtRect:=Rect;
        TxtRect.Offset(2, 2);
-       TxtRect.Left:=TxtRect.Right - 100;
+       TxtRect.Left:=TxtRect.Right - 130;
        //TxtRect.Bottom:=TxtRect.Top + 20;
        Brush.Style:=bsClear;
        TextRect(TxtRect, Txt, [tfLeft, tfWordBreak]);
+
+       if Task.TaskType <> ttSimple then
+        begin
+         ImageList24.Draw(TableExTasks.Canvas, TxtRect.Left-5, TxtRect.Bottom - 30, 29, True);
+        end;
 
        if Assigned(Task.LabelItems) then
         begin
          LP:=Rect.Left+5;
          for i:= 0 to Task.LabelItems.Count-1 do
           begin
-           Font.Size:=9;
+           Font.Size:=10;
            Brush.Color:=Task.LabelItems[i].Color;
-           Pen.Color:=ColorDarker(Brush.Color);
+           Pen.Color:=Brush.Color;
            Txt:=Task.LabelItems[i].Name;
            TxtRect:=Rect;
            TxtRect.Left:=LP;
@@ -2350,7 +2421,7 @@ begin
            TxtRect.Top:=TxtRect.Top + 20 + 4;
            TxtRect.Bottom:=TxtRect.Bottom - 6;
            LP:=TxtRect.Right+5;
-           Rectangle(TxtRect);
+           RoundRect(TxtRect, 2, 2);
            TxtRect.Inflate(-6, 0);
            Font.Color:=GetNormColor(Task.LabelItems[i].Color);
            Brush.Style:=bsClear;
@@ -2564,7 +2635,7 @@ begin
  FLastDate:=DateOf(Now);
  Calendar.Date:=FLastDate;
  CurrentDate:=FLastDate;
- ViewMode:=ViewMode;
+ UpdateViewMode;
  UpdateTaskNowButton;
 end;
 

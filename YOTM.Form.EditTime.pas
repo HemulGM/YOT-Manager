@@ -28,7 +28,7 @@ type
     ButtonFlatTask: TButtonFlat;
     TableExTasks: TTableEx;
     Panel1: TPanel;
-    EditText: TEdit;
+    EditText: TRichEdit;
     procedure ButtonFlatUPDOWNClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ButtonFlatTaskClick(Sender: TObject);

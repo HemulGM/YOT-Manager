@@ -662,7 +662,7 @@ inherited FormEditTime: TFormEditTime
     Color = 3026478
     ParentBackground = False
     TabOrder = 16
-    object EditText: TEdit
+    object EditText: TRichEdit
       Left = 5
       Top = 6
       Width = 338
@@ -676,7 +676,8 @@ inherited FormEditTime: TFormEditTime
       Font.Style = []
       ParentFont = False
       TabOrder = 0
-      TextHint = #1058#1077#1082#1089#1090' '#1088#1072#1073#1086#1090#1099
+      WantReturns = False
+      Zoom = 100
     end
   end
 end

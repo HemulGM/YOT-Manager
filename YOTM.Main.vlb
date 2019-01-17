@@ -1,6 +1,6 @@
 ﻿[]
 Visible=True
-Coordinates=1291,386,82,36
+Coordinates=543,214,107,58
 
 [Shape8]
 Coordinates=216,534,59,36
@@ -80,9 +80,6 @@ Coordinates=433,214,100,58
 [Shape7]
 Coordinates=879,626,59,36
 
-[EditNewComment]
-Coordinates=127,10,118,58
-
 [ButtonFlatTaskEnd]
 Coordinates=907,488,124,36
 
@@ -149,17 +146,11 @@ Coordinates=10,672,133,36
 [PopupMenuTask]
 Coordinates=959,654,111,36
 
-[ButtonFlat10]
-Coordinates=286,672,88,36
-
 [Shape6]
 Coordinates=619,672,59,36
 
 [PanelRight]
 Coordinates=285,146,78,58
-
-[EditTaskName]
-Coordinates=967,146,99,58
 
 [ButtonFlatTaskColorClose]
 Coordinates=732,488,165,36
@@ -176,17 +167,11 @@ Coordinates=796,78,94,58
 [Shape14]
 Coordinates=586,626,66,36
 
-[PanelTaskAdd]
-Coordinates=900,78,98,58
-
 [ButtonFlatTaskState]
 Coordinates=738,626,131,36
 
 [ButtonFlat6]
 Coordinates=841,534,80,36
-
-[MemoTaskDesc]
-Coordinates=543,214,107,58
 
 [Shape16]
 Coordinates=100,580,66,36
@@ -202,9 +187,6 @@ Coordinates=438,146,55,58
 
 [LabelNoteModify]
 Coordinates=246,78,111,58
-
-[ButtonFlat8]
-Coordinates=608,534,80,36
 
 [ButtonFlat9]
 Coordinates=10,580,80,36
@@ -242,9 +224,6 @@ Coordinates=78,728,131,36
 [Panel6]
 Coordinates=877,214,55,58
 
-[EditNewTaskName]
-Coordinates=500,10,124,58
-
 [Shape5]
 Coordinates=550,672,59,36
 
@@ -262,9 +241,6 @@ Coordinates=210,626,67,36
 
 [ImageListCalendar]
 Coordinates=1494,441,123,36
-
-[MemoNote]
-Coordinates=790,214,77,58
 
 [ButtonFlatTaskStart]
 Coordinates=948,626,128,36
@@ -495,4 +471,10 @@ Coordinates=998,282,107,36
 
 [ButtonFlatTimeToHH]
 Coordinates=853,282,135,36
+
+[ButtonFlatLoadback]
+Coordinates=286,672,88,36
+
+[ButtonFlatSaveNote]
+Coordinates=608,534,80,36
 
