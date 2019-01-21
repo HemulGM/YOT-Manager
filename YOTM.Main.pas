@@ -9,9 +9,15 @@ uses
   HGM.Controls.SpinEdit, Vcl.Grids, HGM.Controls.VirtualTable, YOTM.DB,
   System.ImageList, Vcl.ImgList, HGM.Button, Vcl.WinXCalendars, YOTM.Form.Notify.Task,
   Vcl.AppEvnts, Vcl.Menus, YOTM.DB.Comments, YOTM.DB.Labels, YOTM.DB.Tasks, YOTM.DB.TaskRepeats,
-  YOTM.DB.Times, HGM.Common.Utils, YOTM.DB.LabelTypes, YOTM.DB.Notes, YOTM.Manager;
+  YOTM.DB.Times, HGM.Common.Utils, YOTM.DB.LabelTypes, YOTM.DB.Notes, YOTM.Manager, HGM.Popup;
 
 type
+  TFontItem = record
+   FontName:string;
+   class function Create(const FontName:string):TFontItem; static;
+  end;
+  TFontItems = TTableData<TFontItem>;
+
   TTimeSection = record
    TimeS, TimeE:TTime;
   end;
@@ -47,7 +53,7 @@ type
 
   TWorkDays = array[1..7] of Boolean;
 
-  TViewMode = (vmToday, vmSelectedDate, vmDeadlined, vmInbox);
+  TViewMode = (vmToday, vmSelectedDate, vmDeadlined, vmInbox, vmLabel);
 
   TSlide = (slTimes, slSettings, slCalendar, slNotes);
 
@@ -229,6 +235,25 @@ type
     MemoNote: TRichEdit;
     EditTaskName: TRichEdit;
     MemoTaskDesc: TRichEdit;
+    Panel17: TPanel;
+    Panel18: TPanel;
+    Panel15: TPanel;
+    Panel16: TPanel;
+    Shape21: TShape;
+    ButtonFlat25: TButtonFlat;
+    ButtonFlat26: TButtonFlat;
+    ButtonFlat27: TButtonFlat;
+    ButtonFlat28: TButtonFlat;
+    Panel19: TPanel;
+    Panel20: TPanel;
+    Panel21: TPanel;
+    Shape20: TShape;
+    Shape22: TShape;
+    ImageListNotes: TImageList;
+    ButtonFlatDropDownFonts: TButtonFlat;
+    ButtonFlatFonts: TButtonFlat;
+    TableExFonts: TTableEx;
+    ButtonFlatFontSize: TButtonFlat;
     procedure TimerRepaintTimer(Sender: TObject);
     procedure DrawPanelPaint(Sender: TObject);
     procedure DrawPanelMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
@@ -346,6 +371,18 @@ type
       var Handled: Boolean);
     procedure MemoNoteContextPopup(Sender: TObject; MousePos: TPoint;
       var Handled: Boolean);
+    procedure ButtonFlatDropDownFontsClick(Sender: TObject);
+    procedure TableExFontsItemClick(Sender: TObject; MouseButton: TMouseButton;
+      const Index: Integer);
+    procedure TableExFontsDrawCellData(Sender: TObject; ACol, ARow: Integer;
+      Rect: TRect; State: TGridDrawState);
+    procedure MemoNoteSelectionChange(Sender: TObject);
+    procedure ButtonFlatFontSizeMouseWheelDown(Sender: TObject;
+      Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
+    procedure ButtonFlatFontSizeMouseWheelUp(Sender: TObject;
+      Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
+    procedure ButtonFlatFontSizeMouseEnter(Sender: TObject);
+    procedure EditNewCommentKeyPress(Sender: TObject; var Key: Char);
    protected
     procedure WMSysCommand(var Message:TWMSysCommand); message WM_SYSCOMMAND;
     procedure WMQueryEndSession(var Msg: TWMQueryEndSession); message WM_QUERYENDSESSION;
@@ -393,6 +430,10 @@ type
     FWorkDays: TWorkDays;
     FNotifyItems:TNotifyItems;
     FWindowsShutdown:Boolean;
+    FLastLabel:Integer;
+    FLastLabelCaption:string;
+    FPopupFonts:TFormPopup;
+    FFontItems:TFontItems;
     function AddTask(Name:string = ''; Date:TDateTime = 0): TTaskItem;
     function AddTaskTime(ADate, ADateEnd: TDate; TStart, TEnd:TTime; ATaskID:Integer; AColor:TColor): Boolean;
     function DaysThisMonth: Integer;
@@ -440,6 +481,7 @@ type
     procedure UpdateViewModeParam;
     procedure WorkDayStarted(Sender:TObject);
     procedure UpdateViewMode;
+    procedure ProcLabelButton(Sender: TObject);
    public
     AccentColor:TColor;
     BackgroundColor:TColor;
@@ -738,7 +780,7 @@ end;
 
 function TFormMain.GetDayCompletePercent:Integer;
 begin
- Result:=Round((FNowTimeMin - GetMins(WorkDayStart)) /  (FWorkTimeMin / 100));
+ Result:=Max(0, Round((FNowTimeMin - GetMins(WorkDayStart)) /  (FWorkTimeMin / 100)));
 end;
 
 procedure TFormMain.DrawGridCalendarDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
@@ -1086,6 +1128,15 @@ procedure TFormMain.EditNewCommentContextPopup(Sender: TObject;
 begin
  RichEditPopupMenu(Sender as TRichEdit);
  Handled:=True;
+end;
+
+procedure TFormMain.EditNewCommentKeyPress(Sender: TObject; var Key: Char);
+begin
+ if Key = #13 then
+  begin
+   Key:=#0;
+   ButtonFlatNewCommentClick(nil);
+  end;
 end;
 
 procedure TFormMain.EditNewTaskNameContextPopup(Sender: TObject;
@@ -1510,11 +1561,16 @@ begin
 end;
 
 procedure TFormMain.SetButtonWCaption(Target, CloseButton:TButtonFlat; Panel:TPanel; ACaption:string; ACloseBotton:Boolean);
+function WidthPlus:Integer;
+begin
+ //if (Target.ImageIndex >= 0) and Assigned(Target.Images) then Exit(Target.Images.Width + Target.ImageIndentLeft+Target.ImageIndentRight) else
+ Exit(0);
+end;
 begin
  Target.Caption:=ACaption;
  if ACloseBotton then
-  Panel.Width := Target.GetTextWidth + 10 + CloseButton.Width + 10
- else Panel.Width := Target.GetTextWidth + 15;
+  Panel.Width := Target.GetTextWidth + WidthPlus + 10 + CloseButton.Width + 10
+ else Panel.Width := Target.GetTextWidth + WidthPlus + 15;
  CloseButton.Visible:=ACloseBotton;
 end;
 
@@ -1530,6 +1586,39 @@ end;
 procedure TFormMain.ButtonFlatDeadlinedClick(Sender: TObject);
 begin
  ViewMode:=vmDeadlined;
+end;
+
+procedure TFormMain.ButtonFlatDropDownFontsClick(Sender: TObject);
+var pt:TPoint;
+begin
+ pt:=ButtonFlatFonts.ClientToScreen(Point(0, 0));
+ TableExFonts.Height:=Min(400, TableExFonts.ItemCount*TableExFonts.DefaultRowHeight+2);
+ FPopupFonts:=TFormPopup.Create(Self, TableExFonts, pt.X, pt.Y+ButtonFlatFonts.Height);
+end;
+
+procedure SetButtonFontSize(Button:TButtonFlat; Size:Integer);
+begin
+ Button.Tag:=Max(8, Min(72, Size));
+ Button.Caption:=Button.Tag.ToString;
+end;
+
+procedure TFormMain.ButtonFlatFontSizeMouseEnter(Sender: TObject);
+begin
+ ActiveControl:=ButtonFlatFontSize;
+end;
+
+procedure TFormMain.ButtonFlatFontSizeMouseWheelDown(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
+begin
+ Handled:=True;
+ SetButtonFontSize(ButtonFlatFontSize, ButtonFlatFontSize.Tag - 1);
+ MemoNote.SelAttributes.Size:=ButtonFlatFontSize.Tag;
+end;
+
+procedure TFormMain.ButtonFlatFontSizeMouseWheelUp(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
+begin
+ Handled:=True;
+ SetButtonFontSize(ButtonFlatFontSize, ButtonFlatFontSize.Tag + 1);
+ MemoNote.SelAttributes.Size:=ButtonFlatFontSize.Tag;
 end;
 
 procedure TFormMain.ButtonFlatMenuViewClick(Sender: TObject);
@@ -1693,6 +1782,16 @@ begin
     FTaskItems.Reload;
     ButtonFlatViewMode.Caption:='Входящие';
    end;
+  vmLabel:
+   begin
+    Calendar.Date:=Now;
+    CurrentDate:=Now;
+    FTaskItems.ShowDate:=Now;
+    FTaskItems.FilterLabelTypeID:=FLastLabel;
+    FTaskItems.TaskFilter:=tkLabel;
+    FTaskItems.Reload;
+    ButtonFlatViewMode.Caption:=FLastLabelCaption;
+   end;
  end;
  ButtonFlatViewMode.Width:=Max(90, ButtonFlatViewMode.GetTextWidth + 20);
  ButtonFlatViewMode.Left:=PanelTaskEdit.Width div 2 - ButtonFlatViewMode.Width div 2;
@@ -1789,6 +1888,21 @@ begin
  ForegroundColor:=$00383838;
  SelectionColor:=$002A2A2A;
  HotOverColor:=$004D4D4D;
+
+ FFontItems.Add(TFontItem.Create('Arial'));
+ FFontItems.Add(TFontItem.Create('Segoe UI'));
+ FFontItems.Add(TFontItem.Create('Segoe UI Light'));
+ FFontItems.Add(TFontItem.Create('Segoe UI Script'));
+ FFontItems.Add(TFontItem.Create('Comic Sans MS'));
+ FFontItems.Add(TFontItem.Create('Courier New'));
+ FFontItems.Add(TFontItem.Create('Gerogia'));
+ FFontItems.Add(TFontItem.Create('Impact'));
+ FFontItems.Add(TFontItem.Create('Roboto'));
+ FFontItems.Add(TFontItem.Create('Times New Roman'));
+ FFontItems.Add(TFontItem.Create('Trebuchet MS'));
+ FFontItems.Add(TFontItem.Create('Verdana'));
+ FFontItems.UpdateTable;
+
  //TFormNotifyTask.OnCloseAction:=OnCloseNotifyAction;
  FTimeManager:=TManager.Create(FDB);
  FTimeManager.OnWorkDayStarted:=WorkDayStarted;
@@ -1813,6 +1927,7 @@ begin
  UpdateTime;
 
  FLastDate:=DateOf(Now);
+ ReloadLabelsTypes;
  UpdateCounts;
  UpdateTaskNowButton;
 
@@ -1823,7 +1938,6 @@ begin
    Caption:=Caption + ' (Debug)';
  {$ENDIF}
 
- ReloadLabelsTypes;
 
  WindowState:=wsMaximized;
 end;
@@ -1851,18 +1965,32 @@ begin
  Quit;
 end;
 
+procedure TFormMain.ProcLabelButton(Sender:TObject);
+begin
+ with (Sender as TButtonFlat) do
+  begin
+   FLastLabel:=Tag;
+   FLastLabelCaption:=Caption;
+   ViewMode:=vmLabel;
+  end;
+end;
+
 procedure TFormMain.ReloadLabelsTypes;
 var i: Integer;
     Button:TButtonFlat;
 begin
- for i:= 0 to ScrollBoxLabels.ComponentCount-1 do
+ FLabelTypes.Reload;
+ ScrollBoxLabels.Visible:=False;
+ while ScrollBoxLabels.ComponentCount > 0 do
   begin
-   ScrollBoxLabels.Components[i].Free;
+   ScrollBoxLabels.Components[0].Free;
   end;
+ ScrollBoxLabels.Height:=200;
  for i:= 0 to FLabelTypes.Count-1 do
   begin
    Button:=TButtonFlat.Create(ScrollBoxLabels);
    Button.Name:='';
+   Button.Top:=ScrollBoxLabels.Height + 1;
    Button.Parent:=ScrollBoxLabels;
    Button.Align:=alTop;
    Button.AlignWithMargins:=True;
@@ -1879,21 +2007,28 @@ begin
    Button.FontDown.Color:=clWhite;
    Button.TextFormat:=[tfSingleLine, tfVerticalCenter];
    Button.Tag:=FLabelTypes[i].ID;
+   Button.OnClick:=ProcLabelButton;
   end;
  ScrollBoxLabels.Height:=Min(400, ScrollBoxLabels.ComponentCount * (34 + 6));
+ ScrollBoxLabels.Visible:=True;
 end;
 
 procedure TFormMain.FormCreate(Sender: TObject);
+var i:Integer;
 begin
  //Низкоуровневые параметры и инициализация
  //Далее Initializate
  FWindowsShutdown:=False;
  FTaskID:=-1;
 
+ for i:=0 to ImageListNotes.Count-1 do
+  ColorImages(ImageListNotes, i, $00F0F0F0);
+
  PanelCalendar.Left:=PanelRight.Width+10;
  PanelTimes.Left:=0;
  PanelSettings.Left:=PanelRight.Width+10;
  PanelNotes.Left:=PanelRight.Width+10;
+ TableExFonts.Left:=0-(TableExFonts.Width + 100);
 
  FDB:=TDB.Create(ExtractFilePath(ParamStr(0))+'\data.db');
  FDB.OnLog:=DoLog;
@@ -1902,11 +2037,11 @@ begin
  FTaskItems:=TTaskItems.Create(FDB, TableExTasks);
  FComments:=TCommentItems.Create(FDB, TableExComments);
  FLabelTypes:=TLabelTypes.Create(FDB, nil);
- FLabelTypes.Reload;
  FLabelItems:=TLabelItems.Create(FDB, nil);
  FNote:=TNoteItem.Create(FDB);
  FTasksOfCalendar:=TTaskItems.Create(FDB, nil);
  FNotifyItems:=TNotifyItems.Create;
+ FFontItems:=TFontItems.Create(TableExFonts);
 end;
 
 procedure TFormMain.FormPaint(Sender: TObject);
@@ -1921,6 +2056,16 @@ procedure TFormMain.MemoNoteContextPopup(Sender: TObject; MousePos: TPoint;
 begin
  RichEditPopupMenu(Sender as TRichEdit);
  Handled:=True;
+end;
+
+procedure TFormMain.MemoNoteSelectionChange(Sender: TObject);
+begin
+ ButtonFlatFonts.Font.Name:=MemoNote.SelAttributes.Name;
+ ButtonFlatFonts.FontOver.Name:=MemoNote.SelAttributes.Name;
+ ButtonFlatFonts.FontDown.Name:=MemoNote.SelAttributes.Name;
+ ButtonFlatFonts.Caption:=MemoNote.SelAttributes.Name;
+
+ SetButtonFontSize(ButtonFlatFontSize, MemoNote.SelAttributes.Size);
 end;
 
 procedure TFormMain.MemoTaskDescExit(Sender: TObject);
@@ -1973,6 +2118,7 @@ end;
 procedure TFormMain.MenuItemOpenLabelsClick(Sender: TObject);
 begin
  TFormSelectLabels.OpenForEdit;
+ ReloadLabelsTypes;
 end;
 
 procedure TFormMain.Quit;
@@ -2076,7 +2222,7 @@ begin
  MenuItemTaskLabels.Clear;
 
  MI:=PopupMenuTask.CreateMenuItem;
- MI.Caption:='Добавить метку...';
+ MI.Caption:='Редактировать...';
  MI.OnClick:=MenuItemTaskLabelAddClick;
  MenuItemTaskLabels.Add(MI);
 
@@ -2107,13 +2253,15 @@ procedure TFormMain.NoteInfo;
 begin
  if FNote.Loaded then
   begin
-   MemoNote.Text:=FNote.Text;
+   MemoNote.PlainText:=False;
+   FNote.Text.Position:=0;
+   MemoNote.Lines.LoadFromStream(FNote.Text);
    LabelNoteDate.Caption:=HumanDateTime(FNote.Date, False);
    LabelNoteModify.Caption:=HumanDateTime(FNote.DateModify, True);
   end
  else
   begin
-   MemoNote.Text:='';
+   MemoNote.Lines.Text:='';
    LabelNoteDate.Caption:='';
    LabelNoteModify.Caption:='';
   end;
@@ -2122,9 +2270,11 @@ end;
 
 procedure TFormMain.SaveNote;
 begin
- if FNote.Text <> MemoNote.Text then
+ FNote.Text.Position:=0;
+ if FNote.Text.DataString <> MemoNote.Text then
   begin
-   FNote.Text:=MemoNote.Text;
+   FNote.Text.Clear;
+   MemoNote.Lines.SaveToStream(FNote.Text);
    FNote.Save;
    NoteInfo;
   end;
@@ -2216,6 +2366,29 @@ begin
   begin
    if not IndexInList(TableExComments.ItemUnderMouse, FComments.Count) then Exit;
    ShowPopupMenu(PopupMenuComment);
+  end;
+end;
+
+procedure TFormMain.TableExFontsDrawCellData(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
+var Str:string;
+begin
+ if not IndexInList(ARow, FFontItems.Count) then Exit;
+ with TableExFonts.Canvas do
+  begin
+   Str:=FFontItems[ARow].FontName;
+   Font.Name:=Str;
+   Rect.Inflate(-2, 0);
+   TextRect(Rect, Str, [tfLeft, tfSingleLine, tfVerticalCenter]);
+  end;
+end;
+
+procedure TFormMain.TableExFontsItemClick(Sender: TObject; MouseButton: TMouseButton; const Index: Integer);
+begin
+ FPopupFonts.Close;
+ if IndexInList(Index, FFontItems.Count) then
+  begin
+   MemoNote.SelAttributes.Name:=FFontItems[Index].FontName;
+   MemoNoteSelectionChange(nil);
   end;
 end;
 
@@ -2683,6 +2856,13 @@ begin
  Result:=-1;
  for i:= 0 to Count-1 do
   if Items[i].TaskID = TaskID then Exit(i);
+end;
+
+{ TFontItem }
+
+class function TFontItem.Create(const FontName: string): TFontItem;
+begin
+ Result.FontName:=FontName;
 end;
 
 end.

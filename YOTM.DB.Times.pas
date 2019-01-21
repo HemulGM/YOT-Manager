@@ -50,7 +50,7 @@ interface
      fnDesc = 'tiDesc';
      fnTimeFrom = 'tiTimeFrom';
      fnTimeTo = 'tiTimeTo';
-     fnDate = 'tiDate';
+     fnDateStart = 'tiDate';
      fnDateEnd = 'tiDateEnd';
     private
      FDataBase: TDB;
@@ -136,7 +136,7 @@ begin
     AddField(fnDesc, ftString);
     AddField(fnTimeFrom, ftDateTime);
     AddField(fnTimeTo, ftDateTime);
-    AddField(fnDate, ftDateTime);
+    AddField(fnDateStart, ftDateTime);
     AddField(fnDateEnd, ftDateTime);
     AddField(fnTask, ftInteger);
     FDataBase.DB.ExecSQL(GetSQL);
@@ -169,12 +169,12 @@ begin
     AddField(fnDesc);
     AddField(fnTimeFrom);
     AddField(fnTimeTo);
-    AddField(fnDate);
-    AddField('IFNULL('+TTaskItems.fnColor+', 536870911)');
+    AddField(fnDateStart);
+    AddField(TTaskItems.fnColor, '536870911');
     AddField(fnDateEnd);
     if Date <> 0 then
      begin
-      WhereField(fnDate, ' >= ', Trunc(Date));
+      WhereField(fnDateStart, ' >= ', Trunc(Date));
       WhereField(fnDateEnd, '<=', Trunc(Date));
      end;
     OrderBy(fnTimeFrom, True);
@@ -212,7 +212,7 @@ begin
     AddValue(fnDesc, Items[Index].Description);
     AddValue(fnTimeFrom, Items[Index].TimeFrom);
     AddValue(fnTimeTo, Items[Index].TimeTo);
-    AddValue(fnDate, Items[Index].Date);
+    AddValue(fnDateStart, Items[Index].Date);
     AddValue(fnDateEnd, Items[Index].DateEnd);
     DataBase.DB.ExecSQL(GetSQL);
     Items[Index].ID:=DataBase.DB.GetLastInsertRowID;
@@ -225,7 +225,7 @@ begin
     AddValue(fnDesc, Items[Index].Description);
     AddValue(fnTimeFrom, Items[Index].TimeFrom);
     AddValue(fnTimeTo, Items[Index].TimeTo);
-    AddValue(fnDate, Items[Index].Date);
+    AddValue(fnDateStart, Items[Index].Date);
     AddValue(fnDateEnd, Items[Index].DateEnd);
     WhereFieldEqual(fnID, Items[Index].ID);
     DataBase.DB.ExecSQL(GetSQL);

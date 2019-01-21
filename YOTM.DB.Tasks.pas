@@ -7,7 +7,7 @@ interface
        YOTM.DB.TaskRepeats;
 
   type
-   TTaskFilter = (tkfAll, tkfDated, tkfDeadlined, tkfNoDate);
+   TTaskFilter = (tkfAll, tkfDated, tkfDeadlined, tkfNoDate, tkLabel);
    //Задачи
    TTaskItems = class;
 
@@ -156,6 +156,7 @@ interface
      FUseDatePeriod: Boolean;
      FCalcOftenRepeat: Boolean;
      FRepeatStates:TRepeatStates;
+     FFilterLabelTypeID: Integer;
      procedure SetDataBase(const Value: TDB);
      procedure SetShowEndedTask(const Value: Boolean);
      procedure SetShowDate(const Value: TDate);
@@ -165,6 +166,7 @@ interface
      procedure SetDatePeriod(const Value: TDatePeriod);
      procedure GetRepeatedTasks;
      procedure SetCalcOftenRepeat(const Value: Boolean);
+     procedure SetFilterLabelTypeID(const Value: Integer);
     public
      constructor Create(ADataBase:TDB; ATableEx:TTableEx);
      destructor Destroy; override;
@@ -187,6 +189,7 @@ interface
      property UseDatePeriod:Boolean read FUseDatePeriod write SetUseDatePeriod default False;
      property DatePeriod:TDatePeriod read FDatePeriod write SetDatePeriod;
      property CalcOftenRepeat:Boolean read FCalcOftenRepeat write SetCalcOftenRepeat default False;
+     property FilterLabelTypeID:Integer read FFilterLabelTypeID write SetFilterLabelTypeID;
    end;
 
 implementation
@@ -644,7 +647,8 @@ begin
     AddField(fnState);
     AddField(fnNotify);
     AddField(fnColor);
-
+    if TaskFilter = tkLabel then
+     WhereExists('select null from labelitems where labelitems.liTask = taskitems.tkID and labelitems.liID = '+IntToStr(Ord(FFilterLabelTypeID))+'');
     WhereNotFieldEqual(fnTaskType, Ord(ttSimple));
     OrderBy(fnState);
     OrderBy(fnDateCreate, True);
@@ -673,12 +677,13 @@ begin
         Item.Color:=Table.FieldAsInteger(13);
         Item.LabelItems.Reload(Item.ID);
 
-        if (ShowEndedTask or (not Item.State)) and
+        if ((ShowEndedTask or (not Item.State)) and
            (ThisTaskInThisDate(Item, ND, FDate)) and
-           (FDate >= DateOf(Now - 14))
+           (FDate >= DateOf(Now - 14))) or (TaskFilter = tkLabel)
         then
          begin
-          Item.DateDeadline:=FDate;
+          if TaskFilter <> tkLabel then
+           Item.DateDeadline:=FDate;
           Item.Update;
           Add(Item);
          end
@@ -754,6 +759,12 @@ begin
        WhereFieldEqual(fnDeadline, False);
        if not ShowEndedTask then WhereFieldEqual(fnState, False);
       end;
+     tkLabel:
+      begin
+       LoadRepeat:=True;
+       WhereExists('select null from labelitems where labelitems.liTask = taskitems.tkID and labelitems.liID = '+IntToStr(Ord(FFilterLabelTypeID))+'');
+       if not ShowEndedTask then WhereFieldEqual(fnState, False);
+      end;
     end;
     if Upcoming then
      begin
@@ -823,6 +834,11 @@ end;
 procedure TTaskItems.SetDatePeriod(const Value: TDatePeriod);
 begin
  FDatePeriod := Value;
+end;
+
+procedure TTaskItems.SetFilterLabelTypeID(const Value: Integer);
+begin
+ FFilterLabelTypeID := Value;
 end;
 
 procedure TTaskItems.SetUpcoming(const Value: Boolean);

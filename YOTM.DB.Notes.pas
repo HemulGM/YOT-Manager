@@ -19,11 +19,11 @@ interface
     private
      FID:Integer;
      FLoaded:Boolean;
-     FText: string;
+     FText: TStringStream;
      FDateModify: TDateTime;
      FDate: TDate;
      FDataBase: TDB;
-     procedure SetText(const Value: string);
+     procedure SetText(const Value: TStringStream);
      procedure SetID(const Value: Integer);
      procedure SetDateModify(const Value: TDateTime);
      procedure SetDate(const Value: TDate);
@@ -34,7 +34,7 @@ interface
      procedure Load(ADate:TDate);
      procedure Save;
      property ID:Integer read FID write SetID;
-     property Text:string read FText write SetText;
+     property Text:TStringStream read FText write SetText;
      property Date:TDate read FDate write SetDate;
      property DateModify:TDateTime read FDateModify write SetDateModify;
      property DataBase:TDB read FDataBase write SetDataBase;
@@ -55,14 +55,14 @@ begin
   with SQL.CreateTable(tnTable) do
    begin
     AddField(fnID, ftInteger, True, True);
-    AddField(fnText, ftString);
+    AddField(fnText, ftBlob);
     AddField(fnDate, ftDateTime);
     AddField(fnModify, ftDateTime);
     FDataBase.DB.ExecSQL(GetSQL);
     EndCreate;
    end;
  FID:=-1;
- FText:='';
+ FText:=TStringStream.Create;
  FDateModify:=Now;
  FDate:=DateOf(Now);
 end;
@@ -84,10 +84,12 @@ begin
    WhereFieldEqual(fnDate, DateOf(ADate));
    Table:=FDataBase.DB.GetTable(GetSQL);
    EndCreate;
+   Text.Clear;
    if Table.RowCount > 0 then
     begin
      ID:=Table.FieldAsInteger(0);
-     Text:=Table.FieldAsString(1);
+     if Assigned(Table.FieldAsBlob(1)) then
+      Text.LoadFromStream(Table.FieldAsBlob(1));
      Date:=Table.FieldAsDateTime(2);
      DateModify:=Table.FieldAsDateTime(3);
      FLoaded:=True;
@@ -96,12 +98,11 @@ begin
     begin
      with SQL.InsertInto(tnTable) do
       begin
-       Text:='';
        Date:=DateOf(ADate);
        DateModify:=Now;
        AddValue(fnDate, Date);
        AddValue(fnModify, DateModify);
-       AddValue(fnText, Text);
+       AddValue(fnText, '');
        FDataBase.DB.ExecSQL(GetSQL);
        ID:=FDataBase.DB.GetLastInsertRowID;
        FLoaded:=True;
@@ -119,9 +120,16 @@ begin
     begin
      DateModify:=Now;
      AddValue(fnModify, DateModify);
-     AddValue(fnText, Text);
      WhereFieldEqual(fnID, ID);
      FDataBase.DB.ExecSQL(GetSQL);
+     EndCreate;
+    end;
+   Text.Position:=0;
+   with SQL.UpdateBlob(tnTable) do
+    begin
+     BlobField:=fnText;
+     WhereFieldEqual(fnID, ID);
+     FDataBase.DB.UpdateBlob(GetSQL, Text);
      EndCreate;
     end;
   end;
@@ -142,7 +150,7 @@ begin
  FDateModify := Value;
 end;
 
-procedure TNoteItem.SetText(const Value: string);
+procedure TNoteItem.SetText(const Value: TStringStream);
 begin
  FText := Value;
 end;
