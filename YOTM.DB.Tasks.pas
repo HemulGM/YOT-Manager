@@ -543,7 +543,7 @@ begin
  case Task.TaskType of
   ttRepeatInDay:
    begin
-    FDate:=Task.DateDeadline;
+    FDate:=DateOf(Date);
     Exit(True);
    end;
   ttRepeatInWeek:

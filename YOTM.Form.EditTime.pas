@@ -26,15 +26,18 @@ type
     Label2: TLabel;
     Label3: TLabel;
     ButtonFlatTask: TButtonFlat;
-    TableExTasks: TTableEx;
     Panel1: TPanel;
     EditText: TRichEdit;
+    PanelTasks: TPanel;
+    TableExTasks: TTableEx;
+    ButtonFlatWithoutTask: TButtonFlat;
     procedure ButtonFlatUPDOWNClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ButtonFlatTaskClick(Sender: TObject);
     procedure TableExTasksGetData(FCol, FRow: Integer; var Value: string);
     procedure TableExTasksItemClick(Sender: TObject; MouseButton: TMouseButton;
       const Index: Integer);
+    procedure ButtonFlatWithoutTaskClick(Sender: TObject);
   private
     FFromHH, FFromMM, FToHH, FToMM:Word;
     FTaskID: Integer;
@@ -67,7 +70,8 @@ procedure TFormEditTime.ButtonFlatTaskClick(Sender: TObject);
 var pt:TPoint;
 begin
  pt:=ButtonFlatTask.ClientToScreen(Point(0, 0));
- FPopup:=TFormPopup.Create(Self, TableExTasks, pt.X, pt.Y+ButtonFlatTask.Height);
+ PanelTasks.Height:=Min(Max(3, TableExTasks.ItemCount), 15) * TableExTasks.DefaultRowHeight + ButtonFlatWithoutTask.Height;
+ FPopup:=TFormPopup.Create(Self, PanelTasks, pt.X, pt.Y+ButtonFlatTask.Height);
 end;
 
 procedure TFormEditTime.ButtonFlatUPDOWNClick(Sender: TObject);
@@ -83,6 +87,12 @@ begin
   41:   FToMM:=Min(Max(0,   FToMM + 1), 59);
  end;
  UpdateTime;
+end;
+
+procedure TFormEditTime.ButtonFlatWithoutTaskClick(Sender: TObject);
+begin
+ FPopup.Close;
+ TaskID:=-1;
 end;
 
 procedure TFormEditTime.FormCreate(Sender: TObject);
@@ -151,7 +161,11 @@ end;
 
 procedure TFormEditTime.TableExTasksGetData(FCol, FRow: Integer; var Value: string);
 begin
- if not IndexInList(FRow, FormMain.TaskItems.Count) then Exit;
+ if not IndexInList(FRow, FormMain.TaskItems.Count) then
+  begin
+   Value:='Нет задач. Измените фильтр';
+   Exit;
+  end;
  case FCol of
   0:Value:=FormMain.TaskItems[FRow].Name;
  end;

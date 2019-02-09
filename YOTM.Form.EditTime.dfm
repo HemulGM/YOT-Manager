@@ -96,7 +96,6 @@ inherited FormEditTime: TFormEditTime
     RoundRectParam = 0
     ShowFocusRect = False
     TabOrder = 2
-    TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
     SubTextFont.Charset = DEFAULT_CHARSET
     SubTextFont.Color = clWhite
@@ -136,7 +135,6 @@ inherited FormEditTime: TFormEditTime
     RoundRectParam = 0
     ShowFocusRect = False
     TabOrder = 3
-    TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
     SubTextFont.Charset = DEFAULT_CHARSET
     SubTextFont.Color = clWhite
@@ -177,7 +175,6 @@ inherited FormEditTime: TFormEditTime
     RoundRectParam = 0
     ShowFocusRect = False
     TabOrder = 4
-    TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
     SubTextFont.Charset = DEFAULT_CHARSET
     SubTextFont.Color = clWhite
@@ -220,7 +217,6 @@ inherited FormEditTime: TFormEditTime
     RoundRectParam = 0
     ShowFocusRect = False
     TabOrder = 5
-    TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
     SubTextFont.Charset = DEFAULT_CHARSET
     SubTextFont.Color = clWhite
@@ -260,7 +256,6 @@ inherited FormEditTime: TFormEditTime
     RoundRectParam = 0
     ShowFocusRect = False
     TabOrder = 6
-    TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
     SubTextFont.Charset = DEFAULT_CHARSET
     SubTextFont.Color = clWhite
@@ -301,7 +296,6 @@ inherited FormEditTime: TFormEditTime
     RoundRectParam = 0
     ShowFocusRect = False
     TabOrder = 7
-    TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
     SubTextFont.Charset = DEFAULT_CHARSET
     SubTextFont.Color = clWhite
@@ -344,7 +338,6 @@ inherited FormEditTime: TFormEditTime
     RoundRectParam = 0
     ShowFocusRect = False
     TabOrder = 8
-    TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
     SubTextFont.Charset = DEFAULT_CHARSET
     SubTextFont.Color = clWhite
@@ -384,7 +377,6 @@ inherited FormEditTime: TFormEditTime
     RoundRectParam = 0
     ShowFocusRect = False
     TabOrder = 9
-    TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
     SubTextFont.Charset = DEFAULT_CHARSET
     SubTextFont.Color = clWhite
@@ -425,7 +417,6 @@ inherited FormEditTime: TFormEditTime
     RoundRectParam = 0
     ShowFocusRect = False
     TabOrder = 10
-    TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
     SubTextFont.Charset = DEFAULT_CHARSET
     SubTextFont.Color = clWhite
@@ -468,7 +459,6 @@ inherited FormEditTime: TFormEditTime
     RoundRectParam = 0
     ShowFocusRect = False
     TabOrder = 11
-    TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
     SubTextFont.Charset = DEFAULT_CHARSET
     SubTextFont.Color = clWhite
@@ -508,7 +498,6 @@ inherited FormEditTime: TFormEditTime
     RoundRectParam = 0
     ShowFocusRect = False
     TabOrder = 12
-    TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
     SubTextFont.Charset = DEFAULT_CHARSET
     SubTextFont.Color = clWhite
@@ -549,7 +538,6 @@ inherited FormEditTime: TFormEditTime
     RoundRectParam = 0
     ShowFocusRect = False
     TabOrder = 13
-    TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
     SubTextFont.Charset = DEFAULT_CHARSET
     SubTextFont.Color = clWhite
@@ -591,67 +579,12 @@ inherited FormEditTime: TFormEditTime
     RoundRectParam = 0
     ShowFocusRect = False
     TabOrder = 14
-    TabStop = True
     TextFormat = [tfSingleLine, tfVerticalCenter]
     SubTextFont.Charset = DEFAULT_CHARSET
     SubTextFont.Color = clWhite
     SubTextFont.Height = -13
     SubTextFont.Name = 'Tahoma'
     SubTextFont.Style = []
-  end
-  object TableExTasks: TTableEx
-    Left = 600
-    Top = 42
-    Width = 347
-    Height = 300
-    BorderStyle = bsNone
-    Color = 3684408
-    DefaultRowHeight = 25
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = 15921906
-    Font.Height = -15
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    ParentFont = False
-    TabOrder = 15
-    ItemIndex = -1
-    OnItemClick = TableExTasksItemClick
-    GetData = TableExTasksGetData
-    Columns = <
-      item
-        Caption = #1050#1088#1072#1090#1082#1086#1077' '#1086#1087#1080#1089#1072#1085#1080#1077' '#1079#1072#1076#1072#1095#1080
-        Width = 347
-        MinWidth = 200
-      end>
-    VisibleEdit = False
-    ItemCount = 1
-    LineColor = 3684408
-    LineColorXor = 4079166
-    LineHotColor = 2763306
-    LineSelColor = 4934475
-    ColumnsColor = 3684408
-    FontHotLine.Charset = DEFAULT_CHARSET
-    FontHotLine.Color = 15921906
-    FontHotLine.Height = -15
-    FontHotLine.Name = 'Tahoma'
-    FontHotLine.Style = []
-    FontLine.Charset = DEFAULT_CHARSET
-    FontLine.Color = 15921906
-    FontLine.Height = -15
-    FontLine.Name = 'Tahoma'
-    FontLine.Style = []
-    FontSelLine.Charset = DEFAULT_CHARSET
-    FontSelLine.Color = 15921906
-    FontSelLine.Height = -15
-    FontSelLine.Name = 'Tahoma'
-    FontSelLine.Style = []
-    ShowColumns = False
-    ColumnsFont.Charset = DEFAULT_CHARSET
-    ColumnsFont.Color = clWhite
-    ColumnsFont.Height = -15
-    ColumnsFont.Name = 'Tahoma'
-    ColumnsFont.Style = []
-    DrawColumnBorded = False
   end
   object Panel1: TPanel
     Left = 214
@@ -661,7 +594,7 @@ inherited FormEditTime: TFormEditTime
     BevelOuter = bvNone
     Color = 3026478
     ParentBackground = False
-    TabOrder = 16
+    TabOrder = 15
     object EditText: TRichEdit
       Left = 5
       Top = 6
@@ -669,7 +602,7 @@ inherited FormEditTime: TFormEditTime
       Height = 24
       BorderStyle = bsNone
       Color = 3026478
-      Font.Charset = DEFAULT_CHARSET
+      Font.Charset = RUSSIAN_CHARSET
       Font.Color = 15724527
       Font.Height = -16
       Font.Name = 'Tahoma'
@@ -678,6 +611,111 @@ inherited FormEditTime: TFormEditTime
       TabOrder = 0
       WantReturns = False
       Zoom = 100
+    end
+  end
+  object PanelTasks: TPanel
+    Left = 215
+    Top = 70
+    Width = 345
+    Height = 400
+    BevelOuter = bvNone
+    TabOrder = 16
+    Visible = False
+    object TableExTasks: TTableEx
+      Left = 0
+      Top = 25
+      Width = 345
+      Height = 375
+      Align = alClient
+      BorderStyle = bsNone
+      Color = 3684408
+      DefaultRowHeight = 25
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = 15921906
+      Font.Height = -15
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 0
+      ItemIndex = -1
+      OnItemClick = TableExTasksItemClick
+      GetData = TableExTasksGetData
+      ProcEmpty = True
+      Columns = <
+        item
+          Caption = #1050#1088#1072#1090#1082#1086#1077' '#1086#1087#1080#1089#1072#1085#1080#1077' '#1079#1072#1076#1072#1095#1080
+          Width = 345
+          MinWidth = 200
+        end>
+      CanNoSelect = False
+      VisibleEdit = False
+      ItemCount = 1
+      LineColor = 3684408
+      LineColorXor = 4079166
+      LineHotColor = 2763306
+      LineSelColor = 4934475
+      ColumnsColor = 3684408
+      FontHotLine.Charset = DEFAULT_CHARSET
+      FontHotLine.Color = 15921906
+      FontHotLine.Height = -15
+      FontHotLine.Name = 'Tahoma'
+      FontHotLine.Style = []
+      FontLine.Charset = DEFAULT_CHARSET
+      FontLine.Color = 15921906
+      FontLine.Height = -15
+      FontLine.Name = 'Tahoma'
+      FontLine.Style = []
+      FontSelLine.Charset = DEFAULT_CHARSET
+      FontSelLine.Color = 15921906
+      FontSelLine.Height = -15
+      FontSelLine.Name = 'Tahoma'
+      FontSelLine.Style = []
+      ShowColumns = False
+      ColumnsFont.Charset = DEFAULT_CHARSET
+      ColumnsFont.Color = clWhite
+      ColumnsFont.Height = -15
+      ColumnsFont.Name = 'Tahoma'
+      ColumnsFont.Style = []
+      DrawColumnBorded = False
+    end
+    object ButtonFlatWithoutTask: TButtonFlat
+      Left = 0
+      Top = 0
+      Width = 345
+      Height = 25
+      Align = alTop
+      Caption = #1047#1072#1076#1072#1095#1072' '#1085#1077' '#1074#1099#1073#1088#1072#1085#1072
+      ColorNormal = 3684408
+      ColorOver = 6381921
+      ColorPressed = 3815994
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      FontOver.Charset = DEFAULT_CHARSET
+      FontOver.Color = clWhite
+      FontOver.Height = -13
+      FontOver.Name = 'Tahoma'
+      FontOver.Style = []
+      FontDown.Charset = DEFAULT_CHARSET
+      FontDown.Color = clWhite
+      FontDown.Height = -13
+      FontDown.Name = 'Tahoma'
+      FontDown.Style = []
+      IgnorBounds = True
+      ImageIndex = 0
+      Images = FormMain.ImageList24
+      OnClick = ButtonFlatWithoutTaskClick
+      RoundRectParam = 0
+      ShowFocusRect = False
+      TabOrder = 1
+      TextFormat = [tfSingleLine, tfVerticalCenter]
+      SubTextFont.Charset = DEFAULT_CHARSET
+      SubTextFont.Color = clWhite
+      SubTextFont.Height = -13
+      SubTextFont.Name = 'Tahoma'
+      SubTextFont.Style = []
     end
   end
 end

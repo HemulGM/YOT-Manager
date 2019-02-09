@@ -44,7 +44,7 @@ interface
 implementation
  uses DateUtils;
 
-{ TTimeItem }
+{ TNoteItem }
 
 constructor TNoteItem.Create;
 begin

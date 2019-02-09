@@ -9,7 +9,8 @@ uses
   HGM.Controls.SpinEdit, Vcl.Grids, HGM.Controls.VirtualTable, YOTM.DB,
   System.ImageList, Vcl.ImgList, HGM.Button, Vcl.WinXCalendars, YOTM.Form.Notify.Task,
   Vcl.AppEvnts, Vcl.Menus, YOTM.DB.Comments, YOTM.DB.Labels, YOTM.DB.Tasks, YOTM.DB.TaskRepeats,
-  YOTM.DB.Times, HGM.Common.Utils, YOTM.DB.LabelTypes, YOTM.DB.Notes, YOTM.Manager, HGM.Popup;
+  YOTM.DB.Times, HGM.Common.Utils, YOTM.DB.LabelTypes, YOTM.DB.Notes, YOTM.Manager, HGM.Popup,
+  Vcl.ColorGrd, HGM.Controls.ColorGrid;
 
 type
   TFontItem = record
@@ -239,21 +240,43 @@ type
     Panel18: TPanel;
     Panel15: TPanel;
     Panel16: TPanel;
-    Shape21: TShape;
-    ButtonFlat25: TButtonFlat;
-    ButtonFlat26: TButtonFlat;
-    ButtonFlat27: TButtonFlat;
-    ButtonFlat28: TButtonFlat;
     Panel19: TPanel;
     Panel20: TPanel;
     Panel21: TPanel;
-    Shape20: TShape;
     Shape22: TShape;
     ImageListNotes: TImageList;
     ButtonFlatDropDownFonts: TButtonFlat;
     ButtonFlatFonts: TButtonFlat;
     TableExFonts: TTableEx;
     ButtonFlatFontSize: TButtonFlat;
+    ButtonFlatNoteSO: TButtonFlat;
+    ButtonFlatNoteUL: TButtonFlat;
+    ButtonFlatNoteItalic: TButtonFlat;
+    ButtonFlatNoteBold: TButtonFlat;
+    Panel22: TPanel;
+    ButtonFlatNoteSizeDown: TButtonFlat;
+    ButtonFlatNoteSizeUp: TButtonFlat;
+    ButtonFlatNoteSubText: TButtonFlat;
+    ButtonFlatNoteSuperText: TButtonFlat;
+    ButtonFlatNoteFG: TButtonFlat;
+    ButtonFlatNoteFGDrop: TButtonFlat;
+    ButtonFlatNoteBG: TButtonFlat;
+    ButtonFlatNoteBGDrop: TButtonFlat;
+    PanelNoteFGColor: TPanel;
+    ColorGridNoteFG: ThColorGrid;
+    Shape20: TShape;
+    ButtonFlatNoteFGColorAuto: TButtonFlat;
+    ButtonFlat2: TButtonFlat;
+    PanelNoteBGColor: TPanel;
+    Shape23: TShape;
+    ColorGridNoteBG: ThColorGrid;
+    ButtonFlatNoteBGNoColor: TButtonFlat;
+    ButtonFlatNoteAlLeft: TButtonFlat;
+    ButtonFlatNoteAlCenter: TButtonFlat;
+    ButtonFlatNoteAlRight: TButtonFlat;
+    ButtonFlatNoteAlWidth: TButtonFlat;
+    ButtonFlatNoteParLeft: TButtonFlat;
+    ButtonFlatNoteParRight: TButtonFlat;
     procedure TimerRepaintTimer(Sender: TObject);
     procedure DrawPanelPaint(Sender: TObject);
     procedure DrawPanelMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
@@ -383,6 +406,22 @@ type
       Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
     procedure ButtonFlatFontSizeMouseEnter(Sender: TObject);
     procedure EditNewCommentKeyPress(Sender: TObject; var Key: Char);
+    procedure ButtonFlatNoteTextAttrClick(Sender: TObject);
+    procedure ButtonFlatNoteSizeDownClick(Sender: TObject);
+    procedure ButtonFlatNoteSubTextClick(Sender: TObject);
+    procedure ButtonFlatFontsClick(Sender: TObject);
+    procedure ButtonFlatNoteFGDropClick(Sender: TObject);
+    procedure ColorGridNoteFGSelect(Sender: TObject);
+    procedure ButtonFlatNoteBGDropClick(Sender: TObject);
+    procedure SetNoteAligment(Sender: TObject);
+    procedure ButtonFlatNoteParLeftClick(Sender: TObject);
+    procedure ButtonFlatNoteParRightClick(Sender: TObject);
+    procedure ColorGridNoteBGSelect(Sender: TObject);
+    procedure ButtonFlatNoteFGClick(Sender: TObject);
+    procedure ButtonFlatNoteBGClick(Sender: TObject);
+    procedure MenuItemTimeEditClick(Sender: TObject);
+    procedure ButtonFlatNoteBGNoColorClick(Sender: TObject);
+    procedure ButtonFlatNoteFGColorAutoClick(Sender: TObject);
    protected
     procedure WMSysCommand(var Message:TWMSysCommand); message WM_SYSCOMMAND;
     procedure WMQueryEndSession(var Msg: TWMQueryEndSession); message WM_QUERYENDSESSION;
@@ -433,6 +472,7 @@ type
     FLastLabel:Integer;
     FLastLabelCaption:string;
     FPopupFonts:TFormPopup;
+    FPopupColor:TFormPopup;
     FFontItems:TFontItems;
     function AddTask(Name:string = ''; Date:TDateTime = 0): TTaskItem;
     function AddTaskTime(ADate, ADateEnd: TDate; TStart, TEnd:TTime; ATaskID:Integer; AColor:TColor): Boolean;
@@ -482,12 +522,20 @@ type
     procedure WorkDayStarted(Sender:TObject);
     procedure UpdateViewMode;
     procedure ProcLabelButton(Sender: TObject);
+    procedure BeforeChangeDay;
+    /// <summary>
+    /// Процедура для полного сохранения всех изменения
+    /// </summary>
+    procedure SaveAll;
+    procedure SaveTaskDescription;
+    procedure SetButtonCheckColor(Button: TButtonFlat; Value: Boolean);
    public
     AccentColor:TColor;
     BackgroundColor:TColor;
     SelectionColor:TColor;
     HotOverColor:TColor;
     ForegroundColor:TColor;
+    ButtonIconColor:TColor;
     procedure Error(E: Exception; const Message: string = '');
     procedure Initializate;
     procedure OnCloseNotifyAction(TaskID: Integer);
@@ -539,6 +587,12 @@ procedure SetButtonCheck(Button:TButtonFlat; Value:Boolean);
 begin
  if Value then Button.ImageIndex:=18
  else Button.ImageIndex:=19;
+end;
+
+procedure TFormMain.SetButtonCheckColor(Button:TButtonFlat; Value:Boolean);
+begin
+ if Value then Button.ColorNormal:=HotOverColor
+ else Button.ColorNormal:=ForegroundColor;
 end;
 
 procedure TFormMain.WMSysCommand(var Message: TWMSysCommand);
@@ -1186,7 +1240,7 @@ begin
    TimeFrom:=TimeOf(TStart);
    TimeTo:=TimeOf(TEnd);
    FTimeItems.Insert(0, Item);
-   FTimeItems.Update(0);
+   FTimeItems.Update(Item);
   end;
 end;
 
@@ -1206,7 +1260,7 @@ begin
    begin
     ATaskID:=EditTime.TaskID;
     AColor:=EditTime.TaskColor;
-    FAddTaskTime(DateOf(ADate), DateOf(ADateEnd), TStart, TEnd, ATaskID, AColor, EditTime.EditText.Text);
+    FAddTaskTime(DateOf(ADate), DateOf(ADateEnd), EditTime.TimeFrom, EditTime.TimeTo, ATaskID, AColor, EditTime.EditText.Text);
     Result:=True;
    end;
  finally
@@ -1391,6 +1445,45 @@ begin
  UpdateTime;
 end;
 
+procedure TFormMain.ButtonFlatNoteFGColorAutoClick(Sender: TObject);
+begin
+ if Assigned(FPopupColor) then FPopupColor.Close;
+ MemoNote.SelAttributes.Color:=MemoNote.DefAttributes.Color;
+
+ ButtonFlatNoteFG.Tag:=MemoNote.SelAttributes.Color;
+ DrawIconColorLine(ButtonFlatNoteFG.Images, ButtonFlatNoteFG.ImageIndex, MemoNote.SelAttributes.Color);
+ ButtonFlatNoteFG.Repaint;
+ ButtonFlatNoteFGClick(nil);
+
+ MemoNoteSelectionChange(nil);
+end;
+
+procedure TFormMain.SetNoteAligment(Sender: TObject);
+begin
+ case (Sender as TButtonFlat).Tag of
+  1: MemoNote.Paragraph.Alignment:=taLeftJustify;
+  2: MemoNote.Paragraph.Alignment:=taCenter;
+  3: MemoNote.Paragraph.Alignment:=taRightJustify;
+  4: MemoNote.Paragraph.Alignment:=TAlignment(3);
+ end;
+ MemoNoteSelectionChange(nil);
+end;
+
+procedure TFormMain.ButtonFlatNoteSizeDownClick(Sender: TObject);
+begin
+ MemoNote.SelAttributes.Size:=MemoNote.SelAttributes.Size+(Sender as TButtonFlat).Tag;
+ MemoNoteSelectionChange(nil);
+end;
+
+procedure TFormMain.ButtonFlatNoteSubTextClick(Sender: TObject);
+begin
+ case (Sender as TButtonFlat).Tag of
+  1:if RichEditGetBottomLineText(MemoNote) then RichEditSetResetText(MemoNote) else RichEditSetBottomLineText(MemoNote);
+  2:if RichEditGetTopLineText(MemoNote) then RichEditSetResetText(MemoNote) else RichEditSetTopLineText(MemoNote);
+ end;
+ MemoNoteSelectionChange(nil);
+end;
+
 procedure TFormMain.ButtonFlatMenuFileClick(Sender: TObject);
 var Pt:TPoint;
 begin
@@ -1432,6 +1525,7 @@ begin
      FTaskItems.Update(Task);
     end;
    end;
+   OnChangeItems;
   end;
 end;
 
@@ -1602,9 +1696,15 @@ begin
  Button.Caption:=Button.Tag.ToString;
 end;
 
+procedure TFormMain.ButtonFlatFontsClick(Sender: TObject);
+begin
+ MemoNote.SelAttributes.Name:=ButtonFlatFonts.Caption;
+ MemoNoteSelectionChange(nil);
+end;
+
 procedure TFormMain.ButtonFlatFontSizeMouseEnter(Sender: TObject);
 begin
- ActiveControl:=ButtonFlatFontSize;
+ ButtonFlatFontSize.SetFocus;
 end;
 
 procedure TFormMain.ButtonFlatFontSizeMouseWheelDown(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
@@ -1612,6 +1712,7 @@ begin
  Handled:=True;
  SetButtonFontSize(ButtonFlatFontSize, ButtonFlatFontSize.Tag - 1);
  MemoNote.SelAttributes.Size:=ButtonFlatFontSize.Tag;
+ ButtonFlatFontSize.SetFocus;
 end;
 
 procedure TFormMain.ButtonFlatFontSizeMouseWheelUp(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
@@ -1619,6 +1720,7 @@ begin
  Handled:=True;
  SetButtonFontSize(ButtonFlatFontSize, ButtonFlatFontSize.Tag + 1);
  MemoNote.SelAttributes.Size:=ButtonFlatFontSize.Tag;
+ ButtonFlatFontSize.SetFocus;
 end;
 
 procedure TFormMain.ButtonFlatMenuViewClick(Sender: TObject);
@@ -1626,6 +1728,12 @@ var Pt:TPoint;
 begin
  Pt:=ButtonFlatMenuView.ClientToScreen(Point(0, 0));
  PopupMenuView.Popup(Pt.X, Pt.Y+ButtonFlatMenuView.Height);
+end;
+
+procedure TFormMain.BeforeChangeDay;
+begin
+ SaveNote;
+ UpdateCalendar;
 end;
 
 procedure TFormMain.OnChangeItems;
@@ -1715,9 +1823,71 @@ begin
  EditNewComment.Text:='';
 end;
 
+procedure TFormMain.ButtonFlatNoteBGClick(Sender: TObject);
+begin
+ RichEditSetBGCOlor(MemoNote, ButtonFlatNoteBG.Tag);
+ MemoNoteSelectionChange(nil);
+end;
+
+procedure TFormMain.ButtonFlatNoteBGDropClick(Sender: TObject);
+var pt:TPoint;
+begin
+ pt:=ButtonFlatNoteBG.ClientToScreen(Point(0, 0));
+ ColorGridNoteBG.SelectedColor:=RichEditGetBGCOlor(MemoNote, clNone);
+ FPopupColor:=TFormPopup.Create(Self, PanelNoteBGColor, pt.X, pt.Y+ButtonFlatNoteBG.Height);
+end;
+
+procedure TFormMain.ButtonFlatNoteBGNoColorClick(Sender: TObject);
+begin
+ if Assigned(FPopupColor) then FPopupColor.Close;
+ RichEditSetBGCOlor(MemoNote, clNone);
+ ButtonFlatNoteBG.Tag:=clNone;
+ DrawIconColorLine(ButtonFlatNoteBG.Images, ButtonFlatNoteBG.ImageIndex, ButtonIconColor);
+ ButtonFlatNoteBG.Repaint;
+ ButtonFlatNoteBGClick(nil);
+end;
+
+procedure TFormMain.ButtonFlatNoteFGClick(Sender: TObject);
+begin
+ MemoNote.SelAttributes.Color:=ButtonFlatNoteFG.Tag;
+ MemoNoteSelectionChange(nil);
+end;
+
+procedure TFormMain.ButtonFlatNoteFGDropClick(Sender: TObject);
+var pt:TPoint;
+begin
+ pt:=ButtonFlatNoteFG.ClientToScreen(Point(0, 0));
+ ColorGridNoteFG.SelectedColor:=MemoNote.SelAttributes.Color;
+ FPopupColor:=TFormPopup.Create(Self, PanelNoteFGColor, pt.X, pt.Y+ButtonFlatNoteFG.Height);
+end;
+
+procedure TFormMain.ButtonFlatNoteParLeftClick(Sender: TObject);
+begin
+ MemoNote.Paragraph.LeftIndent:=MemoNote.Paragraph.LeftIndent - 15;
+ MemoNote.Paragraph.FirstIndent:=MemoNote.Paragraph.FirstIndent - 15;
+ MemoNoteSelectionChange(nil);
+end;
+
+procedure TFormMain.ButtonFlatNoteParRightClick(Sender: TObject);
+begin
+ MemoNote.Paragraph.LeftIndent:=MemoNote.Paragraph.LeftIndent + 15;
+ MemoNote.Paragraph.FirstIndent:=MemoNote.Paragraph.FirstIndent + 15;
+ MemoNoteSelectionChange(nil);
+end;
+
 procedure TFormMain.ButtonFlatNotesClick(Sender: TObject);
 begin
  SlideTo(slNotes);
+end;
+
+procedure TFormMain.ButtonFlatNoteTextAttrClick(Sender: TObject);
+var Style:TFontStyle;
+begin
+ Style:=TFontStyle((Sender as TButtonFlat).Tag);
+ if Style in MemoNote.SelAttributes.Style
+ then MemoNote.SelAttributes.Style:=MemoNote.SelAttributes.Style - [Style]
+ else MemoNote.SelAttributes.Style:=MemoNote.SelAttributes.Style + [Style];
+ MemoNoteSelectionChange(nil);
 end;
 
 procedure TFormMain.CalendarCalendarDrawDayItem(Sender: TObject;
@@ -1817,6 +1987,33 @@ begin
  UpdateViewMode;
 end;
 
+procedure TFormMain.ColorGridNoteBGSelect(Sender: TObject);
+begin
+ if Assigned(FPopupColor) then FPopupColor.Close;
+ if ColorGridNoteBG.IsSelected then
+  begin
+   ButtonFlatNoteBG.Tag:=ColorGridNoteBG.SelectedColor;
+   if ButtonFlatNoteBG.Tag = clNone then
+    DrawIconColorLine(ButtonFlatNoteBG.Images, ButtonFlatNoteBG.ImageIndex, ButtonIconColor)
+   else
+    DrawIconColorLine(ButtonFlatNoteBG.Images, ButtonFlatNoteBG.ImageIndex, ColorGridNoteBG.SelectedColor);
+   ButtonFlatNoteBG.Repaint;
+   ButtonFlatNoteBGClick(nil);
+  end;
+end;
+
+procedure TFormMain.ColorGridNoteFGSelect(Sender: TObject);
+begin
+ if Assigned(FPopupColor) then FPopupColor.Close;
+ if ColorGridNoteFG.IsSelected then
+  begin
+   ButtonFlatNoteFG.Tag:=ColorGridNoteFG.SelectedColor;
+   DrawIconColorLine(ButtonFlatNoteFG.Images, ButtonFlatNoteFG.ImageIndex, ColorGridNoteFG.SelectedColor);
+   ButtonFlatNoteFG.Repaint;
+   ButtonFlatNoteFGClick(nil);
+  end;
+end;
+
 procedure TFormMain.ShowTask(TaskID:Integer);
 var Task:TTaskItem;
     txt:string;
@@ -1882,17 +2079,52 @@ end;
 
 procedure TFormMain.Initializate;
 var WD:TWorkDays;
+    Column:TColorColumn;
+    i:Integer;
 begin
  AccentColor:=$00B86B00;
  BackgroundColor:=$002E2E2E;
  ForegroundColor:=$00383838;
  SelectionColor:=$002A2A2A;
  HotOverColor:=$004D4D4D;
+ ButtonIconColor:=$00F0F0F0;
+
+ ColorGridNoteBG.ColorColumns.Clear;
+ Column:=TColorColumn.Create;
+ Column.Add(TColorItem.Create(clYellow));
+ Column.Add(TColorItem.Create(clRed));
+ Column.Add(TColorItem.Create(clMaroon));
+ ColorGridNoteBG.ColorColumns.Add(Column);
+
+ Column:=TColorColumn.Create;
+ Column.Add(TColorItem.Create(clLime));
+ Column.Add(TColorItem.Create(clNavy));
+ Column.Add(TColorItem.Create(clOlive));
+ ColorGridNoteBG.ColorColumns.Add(Column);
+
+ Column:=TColorColumn.Create;
+ Column.Add(TColorItem.Create(clAqua));
+ Column.Add(TColorItem.Create(clTeal));
+ Column.Add(TColorItem.Create(clGray));
+ ColorGridNoteBG.ColorColumns.Add(Column);
+
+ Column:=TColorColumn.Create;
+ Column.Add(TColorItem.Create(clFuchsia));
+ Column.Add(TColorItem.Create(clGreen));
+ Column.Add(TColorItem.Create(clSilver));
+ ColorGridNoteBG.ColorColumns.Add(Column);
+
+ Column:=TColorColumn.Create;
+ Column.Add(TColorItem.Create(clBlue));
+ Column.Add(TColorItem.Create(clPurple));
+ Column.Add(TColorItem.Create(clBlack));
+ ColorGridNoteBG.ColorColumns.Add(Column);
+ ColorGridNoteBG.Update;
 
  FFontItems.Add(TFontItem.Create('Arial'));
  FFontItems.Add(TFontItem.Create('Segoe UI'));
  FFontItems.Add(TFontItem.Create('Segoe UI Light'));
- FFontItems.Add(TFontItem.Create('Segoe UI Script'));
+ FFontItems.Add(TFontItem.Create('Segoe Script'));
  FFontItems.Add(TFontItem.Create('Comic Sans MS'));
  FFontItems.Add(TFontItem.Create('Courier New'));
  FFontItems.Add(TFontItem.Create('Gerogia'));
@@ -1921,6 +2153,9 @@ begin
  WD[6]:=False;
  WD[7]:=False;
  WorkDays:=WD;
+
+ for i:=0 to ImageListNotes.Count-1 do
+  ColorImages(ImageListNotes, i, ButtonIconColor);
 
  WorkDayEnd:=1/24*18;
  WorkDayStart:=1/24*9;
@@ -2014,15 +2249,11 @@ begin
 end;
 
 procedure TFormMain.FormCreate(Sender: TObject);
-var i:Integer;
 begin
  //Низкоуровневые параметры и инициализация
  //Далее Initializate
  FWindowsShutdown:=False;
  FTaskID:=-1;
-
- for i:=0 to ImageListNotes.Count-1 do
-  ColorImages(ImageListNotes, i, $00F0F0F0);
 
  PanelCalendar.Left:=PanelRight.Width+10;
  PanelTimes.Left:=0;
@@ -2051,8 +2282,7 @@ begin
  Canvas.Rectangle(ClientRect);
 end;
 
-procedure TFormMain.MemoNoteContextPopup(Sender: TObject; MousePos: TPoint;
-  var Handled: Boolean);
+procedure TFormMain.MemoNoteContextPopup(Sender: TObject; MousePos: TPoint; var Handled: Boolean);
 begin
  RichEditPopupMenu(Sender as TRichEdit);
  Handled:=True;
@@ -2060,17 +2290,38 @@ end;
 
 procedure TFormMain.MemoNoteSelectionChange(Sender: TObject);
 begin
+ if MemoNote.Showing then MemoNote.SetFocus;
+
  ButtonFlatFonts.Font.Name:=MemoNote.SelAttributes.Name;
  ButtonFlatFonts.FontOver.Name:=MemoNote.SelAttributes.Name;
  ButtonFlatFonts.FontDown.Name:=MemoNote.SelAttributes.Name;
  ButtonFlatFonts.Caption:=MemoNote.SelAttributes.Name;
 
  SetButtonFontSize(ButtonFlatFontSize, MemoNote.SelAttributes.Size);
+
+ SetButtonCheckColor(ButtonFlatNoteBold, fsBold in MemoNote.SelAttributes.Style);
+ SetButtonCheckColor(ButtonFlatNoteItalic, fsItalic in MemoNote.SelAttributes.Style);
+ SetButtonCheckColor(ButtonFlatNoteUL, fsUnderline in MemoNote.SelAttributes.Style);
+ SetButtonCheckColor(ButtonFlatNoteSO, fsStrikeOut in MemoNote.SelAttributes.Style);
+
+ SetButtonCheckColor(ButtonFlatNoteSubText, RichEditGetBottomLineText(MemoNote));
+ SetButtonCheckColor(ButtonFlatNoteSuperText, RichEditGetTopLineText(MemoNote));
+
+
+ SetButtonCheckColor(ButtonFlatNoteAlLeft, MemoNote.Paragraph.Alignment = taLeftJustify);
+ SetButtonCheckColor(ButtonFlatNoteAlCenter, MemoNote.Paragraph.Alignment = taCenter);
+ SetButtonCheckColor(ButtonFlatNoteAlRight, MemoNote.Paragraph.Alignment = taRightJustify);
+ SetButtonCheckColor(ButtonFlatNoteAlWidth, MemoNote.Paragraph.Alignment = TAlignment(3));
 end;
 
 procedure TFormMain.MemoTaskDescExit(Sender: TObject);
 begin
- if not IndexInList(FTaskID, FTaskItems.Count) then Exit;
+ SaveTaskDescription;
+end;
+
+procedure TFormMain.SaveTaskDescription;
+begin
+if not IndexInList(FTaskID, FTaskItems.Count) then Exit;
  if MemoTaskDesc.Modified then
   begin
    FTaskItems[FTaskID].Description:=MemoTaskDesc.Text;
@@ -2097,7 +2348,7 @@ begin
  if not IndexInList(TableExTimes.ItemIndex, FTimeItems.Count) then Exit;
  FTimeItems[TableExTimes.ItemIndex].Task:=-1;
  FTimeItems[TableExTimes.ItemIndex].Color:=clNone;
- FTimeItems.Update(TableExTimes.ItemIndex);
+ FTimeItems.Update(FTimeItems[TableExTimes.ItemIndex]);
  FTimeItems.UpdateTable;
 end;
 
@@ -2111,7 +2362,7 @@ begin
   end;
  FTimeItems[TableExTimes.ItemIndex].Task:=FTaskItems[TableExTasks.ItemIndex].ID;
  FTimeItems[TableExTimes.ItemIndex].Color:=FTaskItems[TableExTasks.ItemIndex].Color;
- FTimeItems.Update(TableExTimes.ItemIndex);
+ FTimeItems.Update(FTimeItems[TableExTimes.ItemIndex]);
  FTimeItems.UpdateTable;
 end;
 
@@ -2121,12 +2372,19 @@ begin
  ReloadLabelsTypes;
 end;
 
+procedure TFormMain.SaveAll;
+begin
+ SaveNote;
+ SaveTaskDescription;
+end;
+
 procedure TFormMain.Quit;
 begin
  if not FWindowsShutdown then
   begin
    if not GetAnswer('Завершить работу с программой?') then Exit;
   end;
+ SaveAll;
  if StopTimeSection then
   begin
    FAddTaskTime(FNewTStartDate, FNewTEndDate, FNewTStart, FNewTEnd, FNewTTask, FNewTColor, '<Автосохранение>');
@@ -2173,6 +2431,37 @@ procedure TFormMain.MenuItemTimeDeleteClick(Sender: TObject);
 begin
  if not IndexInList(TableExTimes.ItemIndex, FTimeItems.Count) then Exit;
  DeleteTime(TableExTimes.ItemIndex);
+end;
+
+procedure TFormMain.MenuItemTimeEditClick(Sender: TObject);
+var Item:TTimeItem;
+    EditTime:TFormEditTime;
+begin
+ if not IndexInList(TableExTimes.ItemIndex, FTimeItems.Count) then Exit;
+ Item:=FTimeItems[TableExTimes.ItemIndex];
+
+ EditTime:=TFormEditTime.Create(nil);
+ try
+  EditTime.EditText.Text:=Item.Description;
+  EditTime.TimeFrom:=Item.TimeFrom;
+  EditTime.TimeTo:=Item.TimeTo;
+  EditTime.TaskID:=Item.Task;
+  EditTime.TaskColor:=Item.Color;
+
+  EditTime.Position:=poMainFormCenter;
+  if EditTime.ShowModal = mrOK then
+   begin
+    Item.Description:=EditTime.EditText.Text;
+    Item.TimeFrom:=EditTime.TimeFrom;
+    Item.TimeTo:=EditTime.TimeTo;
+    Item.Task:=EditTime.TaskID;
+    Item.Color:=EditTime.TaskColor;
+    FTimeItems.Update(Item);
+    TableExTimes.Update;
+   end;
+ finally
+  EditTime.Free;
+ end;
 end;
 
 procedure TFormMain.MenuItemTimeStartFromClick(Sender: TObject);
@@ -2265,6 +2554,7 @@ begin
    LabelNoteDate.Caption:='';
    LabelNoteModify.Caption:='';
   end;
+ MemoNoteSelectionChange(nil);
  MemoNote.Modified:=False;
 end;
 
@@ -2290,16 +2580,16 @@ end;
 procedure TFormMain.SetCurrentDate(const Value: TDate);
 begin
  if Value = FCurrentDate then Exit;
+ BeforeChangeDay;
  FCurrentDate:=Value;
  FTimeItems.Reload(FCurrentDate);
- SaveNote;
  LoadNote(FCurrentDate);
- UpdateCalendar;
 end;
 
 procedure TFormMain.SetViewMode(const Value: TViewMode);
 begin
  FViewMode := Value;
+ if (FViewMode = vmSelectedDate) and SameDate(Calendar.Date, Now) then FViewMode:=vmToday;
  UpdateViewMode;
 end;
 
@@ -2384,7 +2674,7 @@ end;
 
 procedure TFormMain.TableExFontsItemClick(Sender: TObject; MouseButton: TMouseButton; const Index: Integer);
 begin
- FPopupFonts.Close;
+ if Assigned(FPopupFonts) then FPopupFonts.Close;
  if IndexInList(Index, FFontItems.Count) then
   begin
    MemoNote.SelAttributes.Name:=FFontItems[Index].FontName;
@@ -2542,7 +2832,7 @@ begin
          else TxtRect.Right:=TxtRect.Left + 10;
          //TxtRect.Inflate(0, -1);
 
-         Gradient(Handle, TxtRect, Task.Color, Brush.Color, False);
+         //Gradient(Handle, TxtRect, Task.Color, Brush.Color, False);
 
          TxtRect:=Rect;
          TxtRect.Right:=TxtRect.Left + Round(((TxtRect.Width div 3) / 100 * Abs(100-FAnimate)));

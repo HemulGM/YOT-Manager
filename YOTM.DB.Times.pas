@@ -58,7 +58,7 @@ interface
     public
      constructor Create(ADataBase:TDB; ATableEx:TTableEx);
      procedure Reload(Date:TDate);
-     procedure Update(Index: Integer);
+     procedure Update(Item: TTimeItem);
      procedure Delete(Index: Integer); override;
      procedure Save;
      property DataBase:TDB read FDataBase write SetDataBase;
@@ -203,31 +203,31 @@ begin
  end;
 end;
 
-procedure TTimeItems.Update(Index:Integer);
+procedure TTimeItems.Update(Item: TTimeItem);
 begin
- if Items[Index].ID < 0 then
+ if Item.ID < 0 then
   with SQL.InsertInto(tnTable) do
    begin
-    AddValue(fnTask, Items[Index].Task);
-    AddValue(fnDesc, Items[Index].Description);
-    AddValue(fnTimeFrom, Items[Index].TimeFrom);
-    AddValue(fnTimeTo, Items[Index].TimeTo);
-    AddValue(fnDateStart, Items[Index].Date);
-    AddValue(fnDateEnd, Items[Index].DateEnd);
+    AddValue(fnTask, Item.Task);
+    AddValue(fnDesc, Item.Description);
+    AddValue(fnTimeFrom, Item.TimeFrom);
+    AddValue(fnTimeTo, Item.TimeTo);
+    AddValue(fnDateStart, Item.Date);
+    AddValue(fnDateEnd, Item.DateEnd);
     DataBase.DB.ExecSQL(GetSQL);
-    Items[Index].ID:=DataBase.DB.GetLastInsertRowID;
+    Item.ID:=DataBase.DB.GetLastInsertRowID;
     EndCreate;
    end
  else
   with SQL.Update(tnTable) do
    begin
-    AddValue(fnTask, Items[Index].Task);
-    AddValue(fnDesc, Items[Index].Description);
-    AddValue(fnTimeFrom, Items[Index].TimeFrom);
-    AddValue(fnTimeTo, Items[Index].TimeTo);
-    AddValue(fnDateStart, Items[Index].Date);
-    AddValue(fnDateEnd, Items[Index].DateEnd);
-    WhereFieldEqual(fnID, Items[Index].ID);
+    AddValue(fnTask, Item.Task);
+    AddValue(fnDesc, Item.Description);
+    AddValue(fnTimeFrom, Item.TimeFrom);
+    AddValue(fnTimeTo, Item.TimeTo);
+    AddValue(fnDateStart, Item.Date);
+    AddValue(fnDateEnd, Item.DateEnd);
+    WhereFieldEqual(fnID, Item.ID);
     DataBase.DB.ExecSQL(GetSQL);
     EndCreate;
    end;
@@ -236,7 +236,7 @@ end;
 procedure TTimeItems.Save;
 var i:Integer;
 begin
- for i := 0 to Count-1 do Update(i);
+ for i := 0 to Count-1 do Update(Items[i]);
 end;
 
 procedure TTimeItems.SetDataBase(const Value: TDB);
