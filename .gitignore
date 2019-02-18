@@ -63,3 +63,6 @@ __recovery/
 *.stat
 Yotm.skincfg
 ProjectGroup1.groupproj
+*.db
+Win32/Debug/data.db
+*.db
