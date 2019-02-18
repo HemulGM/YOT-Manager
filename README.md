@@ -18,7 +18,8 @@ Your Own Time Manager - Твой собственный тайм-менедже�
 - Отметка времени работы над задачей или без задачи (шкала времени)
 - Ведение заметок дня
 
-![YOTM](https://hemulgm.ru/images/yotm.png)
+![YOTM](https://hemulgm.ru/images/preview/yotm.png)
+![YOTM](https://hemulgm.ru/images/preview/yotm_w7.png)
 
 Ссылки:
 - https://trello.com/b/de9LoNm9
