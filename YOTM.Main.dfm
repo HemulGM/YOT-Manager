@@ -20,6 +20,7 @@ object FormMain: TFormMain
   StyleElements = []
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   OnPaint = FormPaint
   PixelsPerInch = 96
   TextHeight = 16
@@ -152,7 +153,7 @@ object FormMain: TFormMain
         40)
       object ButtonFlat9: TButtonFlat
         AlignWithMargins = True
-        Left = 103
+        Left = 129
         Top = 3
         Width = 34
         Height = 34
@@ -185,12 +186,14 @@ object FormMain: TFormMain
         RoundRectParam = 0
         ShowFocusRect = False
         TabOrder = 0
+        TabStop = True
         TextFormat = [tfSingleLine, tfVerticalCenter]
         SubTextFont.Charset = DEFAULT_CHARSET
         SubTextFont.Color = clWhite
         SubTextFont.Height = -13
         SubTextFont.Name = 'Tahoma'
         SubTextFont.Style = []
+        ExplicitLeft = 103
       end
       object ButtonFlatViewMode: TButtonFlat
         AlignWithMargins = True
@@ -227,6 +230,7 @@ object FormMain: TFormMain
         Shape = stRoundRect
         ShowFocusRect = False
         TabOrder = 1
+        TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
         SubTextFont.Charset = DEFAULT_CHARSET
         SubTextFont.Color = clWhite
@@ -239,10 +243,10 @@ object FormMain: TFormMain
         AlignWithMargins = True
         Left = 3
         Top = 3
-        Width = 94
+        Width = 120
         Height = 34
         Align = alLeft
-        Caption = #1047#1072#1076#1072#1095#1072
+        Caption = #1053#1086#1074#1072#1103' '#1079#1072#1076#1072#1095#1072
         ColorNormal = 3684408
         ColorOver = 6381921
         ColorPressed = 3815994
@@ -270,6 +274,7 @@ object FormMain: TFormMain
         RoundRectParam = 0
         ShowFocusRect = False
         TabOrder = 2
+        TabStop = True
         TextFormat = [tfSingleLine, tfVerticalCenter]
         SubTextFont.Charset = DEFAULT_CHARSET
         SubTextFont.Color = clWhite
@@ -480,12 +485,13 @@ object FormMain: TFormMain
             FontDown.Style = []
             IgnorBounds = True
             ImageIndentLeft = 4
-            ImageIndex = 11
+            ImageIndex = 32
             Images = ImageList24
             OnClick = ButtonFlatNewCommentClick
             RoundRectParam = 0
             ShowFocusRect = False
             TabOrder = 1
+            TabStop = True
             TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
             SubTextFont.Charset = DEFAULT_CHARSET
             SubTextFont.Color = clWhite
@@ -505,7 +511,7 @@ object FormMain: TFormMain
             BevelKind = bkTile
             BevelWidth = 6
             BorderStyle = bsNone
-            Color = 3223857
+            Color = 3684408
             Font.Charset = RUSSIAN_CHARSET
             Font.Color = 15921906
             Font.Height = -16
@@ -560,12 +566,13 @@ object FormMain: TFormMain
           FontDown.Style = []
           IgnorBounds = True
           ImageIndentLeft = 5
-          ImageIndex = 0
+          ImageIndex = 10
           Images = ImageList24
           OnClick = ButtonFlatTaskCloseClick
           RoundRectParam = 0
           ShowFocusRect = False
           TabOrder = 0
+          TabStop = True
           TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
           SubTextFont.Charset = DEFAULT_CHARSET
           SubTextFont.Color = clWhite
@@ -608,6 +615,7 @@ object FormMain: TFormMain
           RoundRectParam = 0
           ShowFocusRect = False
           TabOrder = 1
+          TabStop = True
           TextFormat = [tfSingleLine, tfVerticalCenter]
           SubTextFont.Charset = DEFAULT_CHARSET
           SubTextFont.Color = clWhite
@@ -698,6 +706,7 @@ object FormMain: TFormMain
             RoundRectParam = 0
             ShowFocusRect = False
             TabOrder = 0
+            TabStop = True
             TextFormat = [tfSingleLine, tfVerticalCenter]
             SubTextFont.Charset = DEFAULT_CHARSET
             SubTextFont.Color = clWhite
@@ -742,6 +751,7 @@ object FormMain: TFormMain
             RoundRectParam = 0
             ShowFocusRect = False
             TabOrder = 1
+            TabStop = True
             TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
             SubTextFont.Charset = DEFAULT_CHARSET
             SubTextFont.Color = clWhite
@@ -795,6 +805,7 @@ object FormMain: TFormMain
             RoundRectParam = 0
             ShowFocusRect = False
             TabOrder = 0
+            TabStop = True
             TextFormat = [tfSingleLine, tfVerticalCenter]
             SubTextFont.Charset = DEFAULT_CHARSET
             SubTextFont.Color = clWhite
@@ -839,6 +850,7 @@ object FormMain: TFormMain
             RoundRectParam = 0
             ShowFocusRect = False
             TabOrder = 1
+            TabStop = True
             TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
             SubTextFont.Charset = DEFAULT_CHARSET
             SubTextFont.Color = clWhite
@@ -882,6 +894,7 @@ object FormMain: TFormMain
           RoundRectParam = 0
           ShowFocusRect = False
           TabOrder = 2
+          TabStop = True
           TextFormat = [tfSingleLine, tfVerticalCenter]
           SubTextFont.Charset = DEFAULT_CHARSET
           SubTextFont.Color = clWhite
@@ -909,22 +922,19 @@ object FormMain: TFormMain
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 0
-      DesignSize = (
-        450
-        702)
       object PanelCalendar: TPanel
         Left = 0
         Top = 0
         Width = 450
-        Height = 724
-        Anchors = [akLeft, akTop, akBottom]
+        Height = 702
+        Align = alClient
         BevelOuter = bvNone
         TabOrder = 2
         object DrawGridCalendar: TDrawGrid
           Left = 0
           Top = 0
           Width = 450
-          Height = 724
+          Height = 702
           Align = alClient
           BorderStyle = bsNone
           Color = 3684408
@@ -947,13 +957,13 @@ object FormMain: TFormMain
           ScrollBars = ssNone
           TabOrder = 0
           StyleElements = [seBorder]
+          OnClick = DrawGridCalendarClick
           OnDrawCell = DrawGridCalendarDrawCell
           OnMouseEnter = DrawGridCalendarMouseEnter
           OnMouseLeave = DrawGridCalendarMouseLeave
           OnMouseMove = DrawGridCalendarMouseMove
           OnMouseWheelDown = DrawGridCalendarMouseWheelDown
           OnMouseWheelUp = DrawGridCalendarMouseWheelUp
-          OnSelectCell = DrawGridCalendarSelectCell
           ColWidths = (
             63
             63
@@ -978,8 +988,8 @@ object FormMain: TFormMain
         Left = 0
         Top = 0
         Width = 450
-        Height = 724
-        Anchors = [akLeft, akTop, akBottom]
+        Height = 702
+        Align = alClient
         BevelOuter = bvNone
         TabOrder = 1
         object Shape12: TShape
@@ -1101,6 +1111,7 @@ object FormMain: TFormMain
             RoundRectParam = 0
             ShowFocusRect = False
             TabOrder = 0
+            TabStop = True
             TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
             SubTextFont.Charset = DEFAULT_CHARSET
             SubTextFont.Color = clWhite
@@ -1139,6 +1150,7 @@ object FormMain: TFormMain
             RoundRectParam = 0
             ShowFocusRect = False
             TabOrder = 1
+            TabStop = True
             TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
             SubTextFont.Charset = DEFAULT_CHARSET
             SubTextFont.Color = clWhite
@@ -1180,6 +1192,7 @@ object FormMain: TFormMain
             RoundRectParam = 0
             ShowFocusRect = False
             TabOrder = 2
+            TabStop = True
             TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
             SubTextFont.Charset = DEFAULT_CHARSET
             SubTextFont.Color = clWhite
@@ -1192,7 +1205,7 @@ object FormMain: TFormMain
           Left = 0
           Top = 502
           Width = 450
-          Height = 222
+          Height = 200
           Align = alBottom
           BevelOuter = bvNone
           TabOrder = 2
@@ -1209,19 +1222,19 @@ object FormMain: TFormMain
           end
           object DrawPanel: TDrawPanel
             Left = 0
-            Top = 42
+            Top = 20
             Width = 450
             Height = 180
-            Caption = 'DrawPanel'
             DefaultPaint = False
+            OnMouseDown = DrawPanelMouseDown
+            OnMouseMove = DrawPanelMouseMove
+            OnMouseUp = DrawPanelMouseUp
             OnPaint = DrawPanelPaint
             Align = alBottom
             Color = 3684408
             ParentBackground = False
             TabOrder = 0
-            OnMouseDown = DrawPanelMouseDown
-            OnMouseMove = DrawPanelMouseMove
-            OnMouseUp = DrawPanelMouseUp
+            ExplicitTop = 42
           end
           object Panel4: TPanel
             Left = 0
@@ -1287,6 +1300,7 @@ object FormMain: TFormMain
               RoundRectParam = 0
               ShowFocusRect = False
               TabOrder = 0
+              TabStop = True
               TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
               SubTextFont.Charset = DEFAULT_CHARSET
               SubTextFont.Color = clWhite
@@ -1301,13 +1315,13 @@ object FormMain: TFormMain
         Left = 0
         Top = 0
         Width = 450
-        Height = 724
-        Anchors = [akLeft, akTop, akBottom]
+        Height = 702
+        Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
         object Shape13: TShape
           Left = 0
-          Top = 548
+          Top = 526
           Width = 450
           Height = 2
           Align = alBottom
@@ -1349,7 +1363,7 @@ object FormMain: TFormMain
         end
         object PanelLog: TPanel
           Left = 0
-          Top = 550
+          Top = 528
           Width = 450
           Height = 174
           Align = alBottom
@@ -1467,6 +1481,7 @@ object FormMain: TFormMain
             RoundRectParam = 0
             ShowFocusRect = False
             TabOrder = 0
+            TabStop = True
             TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
             SubTextFont.Charset = DEFAULT_CHARSET
             SubTextFont.Color = clWhite
@@ -1506,6 +1521,7 @@ object FormMain: TFormMain
             RoundRectParam = 0
             ShowFocusRect = False
             TabOrder = 1
+            TabStop = True
             TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
             SubTextFont.Charset = DEFAULT_CHARSET
             SubTextFont.Color = clWhite
@@ -1546,6 +1562,7 @@ object FormMain: TFormMain
             RoundRectParam = 0
             ShowFocusRect = False
             TabOrder = 2
+            TabStop = True
             TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
             SubTextFont.Charset = DEFAULT_CHARSET
             SubTextFont.Color = clWhite
@@ -1588,6 +1605,7 @@ object FormMain: TFormMain
             RoundRectParam = 0
             ShowFocusRect = False
             TabOrder = 3
+            TabStop = True
             TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
             SubTextFont.Charset = DEFAULT_CHARSET
             SubTextFont.Color = clWhite
@@ -1627,6 +1645,7 @@ object FormMain: TFormMain
             RoundRectParam = 0
             ShowFocusRect = False
             TabOrder = 4
+            TabStop = True
             TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
             SubTextFont.Charset = DEFAULT_CHARSET
             SubTextFont.Color = clWhite
@@ -1667,6 +1686,7 @@ object FormMain: TFormMain
             RoundRectParam = 0
             ShowFocusRect = False
             TabOrder = 5
+            TabStop = True
             TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
             SubTextFont.Charset = DEFAULT_CHARSET
             SubTextFont.Color = clWhite
@@ -1709,6 +1729,7 @@ object FormMain: TFormMain
             RoundRectParam = 0
             ShowFocusRect = False
             TabOrder = 6
+            TabStop = True
             TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
             SubTextFont.Charset = DEFAULT_CHARSET
             SubTextFont.Color = clWhite
@@ -1748,6 +1769,7 @@ object FormMain: TFormMain
             RoundRectParam = 0
             ShowFocusRect = False
             TabOrder = 7
+            TabStop = True
             TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
             SubTextFont.Charset = DEFAULT_CHARSET
             SubTextFont.Color = clWhite
@@ -1788,6 +1810,7 @@ object FormMain: TFormMain
             RoundRectParam = 0
             ShowFocusRect = False
             TabOrder = 8
+            TabStop = True
             TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
             SubTextFont.Charset = DEFAULT_CHARSET
             SubTextFont.Color = clWhite
@@ -1830,6 +1853,7 @@ object FormMain: TFormMain
             RoundRectParam = 0
             ShowFocusRect = False
             TabOrder = 9
+            TabStop = True
             TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
             SubTextFont.Charset = DEFAULT_CHARSET
             SubTextFont.Color = clWhite
@@ -1869,6 +1893,7 @@ object FormMain: TFormMain
             RoundRectParam = 0
             ShowFocusRect = False
             TabOrder = 10
+            TabStop = True
             TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
             SubTextFont.Charset = DEFAULT_CHARSET
             SubTextFont.Color = clWhite
@@ -1909,6 +1934,7 @@ object FormMain: TFormMain
             RoundRectParam = 0
             ShowFocusRect = False
             TabOrder = 11
+            TabStop = True
             TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
             SubTextFont.Charset = DEFAULT_CHARSET
             SubTextFont.Color = clWhite
@@ -2074,6 +2100,7 @@ object FormMain: TFormMain
             RoundRectParam = 0
             ShowFocusRect = False
             TabOrder = 0
+            TabStop = True
             TextFormat = [tfSingleLine, tfVerticalCenter]
             SubTextFont.Charset = DEFAULT_CHARSET
             SubTextFont.Color = clWhite
@@ -2116,6 +2143,7 @@ object FormMain: TFormMain
             RoundRectParam = 0
             ShowFocusRect = False
             TabOrder = 1
+            TabStop = True
             TextFormat = [tfSingleLine, tfVerticalCenter]
             SubTextFont.Charset = DEFAULT_CHARSET
             SubTextFont.Color = clWhite
@@ -2158,6 +2186,7 @@ object FormMain: TFormMain
             RoundRectParam = 0
             ShowFocusRect = False
             TabOrder = 2
+            TabStop = True
             TextFormat = [tfSingleLine, tfVerticalCenter]
             SubTextFont.Charset = DEFAULT_CHARSET
             SubTextFont.Color = clWhite
@@ -2200,6 +2229,7 @@ object FormMain: TFormMain
             RoundRectParam = 0
             ShowFocusRect = False
             TabOrder = 3
+            TabStop = True
             TextFormat = [tfSingleLine, tfVerticalCenter]
             SubTextFont.Charset = DEFAULT_CHARSET
             SubTextFont.Color = clWhite
@@ -2242,6 +2272,7 @@ object FormMain: TFormMain
             RoundRectParam = 0
             ShowFocusRect = False
             TabOrder = 4
+            TabStop = True
             TextFormat = [tfSingleLine, tfVerticalCenter]
             SubTextFont.Charset = DEFAULT_CHARSET
             SubTextFont.Color = clWhite
@@ -2284,6 +2315,7 @@ object FormMain: TFormMain
             RoundRectParam = 0
             ShowFocusRect = False
             TabOrder = 5
+            TabStop = True
             TextFormat = [tfSingleLine, tfVerticalCenter]
             SubTextFont.Charset = DEFAULT_CHARSET
             SubTextFont.Color = clWhite
@@ -2326,6 +2358,7 @@ object FormMain: TFormMain
             RoundRectParam = 0
             ShowFocusRect = False
             TabOrder = 6
+            TabStop = True
             TextFormat = [tfSingleLine, tfVerticalCenter]
             SubTextFont.Charset = DEFAULT_CHARSET
             SubTextFont.Color = clWhite
@@ -2422,6 +2455,7 @@ object FormMain: TFormMain
             RoundRectParam = 0
             ShowFocusRect = False
             TabOrder = 1
+            TabStop = True
             TextFormat = [tfSingleLine, tfVerticalCenter]
             SubTextFont.Charset = DEFAULT_CHARSET
             SubTextFont.Color = clWhite
@@ -2465,6 +2499,7 @@ object FormMain: TFormMain
             RoundRectParam = 0
             ShowFocusRect = False
             TabOrder = 2
+            TabStop = True
             TextFormat = [tfSingleLine, tfVerticalCenter]
             SubTextFont.Charset = DEFAULT_CHARSET
             SubTextFont.Color = clWhite
@@ -2508,6 +2543,7 @@ object FormMain: TFormMain
             RoundRectParam = 0
             ShowFocusRect = False
             TabOrder = 3
+            TabStop = True
             TextFormat = [tfSingleLine, tfVerticalCenter]
             SubTextFont.Charset = DEFAULT_CHARSET
             SubTextFont.Color = clWhite
@@ -2523,13 +2559,13 @@ object FormMain: TFormMain
         Left = 0
         Top = 0
         Width = 450
-        Height = 724
-        Anchors = [akLeft, akTop, akBottom]
+        Height = 702
+        Align = alClient
         BevelOuter = bvNone
         TabOrder = 3
         object Shape14: TShape
           Left = 0
-          Top = 667
+          Top = 664
           Width = 450
           Height = 2
           Align = alBottom
@@ -2561,12 +2597,12 @@ object FormMain: TFormMain
           StyleElements = []
           object ButtonFlatSaveNote: TButtonFlat
             AlignWithMargins = True
-            Left = 3
+            Left = 321
             Top = 3
             Width = 34
             Height = 34
             Hint = #1057#1086#1093#1088#1072#1085#1080#1090#1100
-            Align = alLeft
+            Align = alRight
             Caption = ''
             ColorNormal = 3684408
             ColorOver = 6381921
@@ -2595,12 +2631,14 @@ object FormMain: TFormMain
             RoundRectParam = 0
             ShowFocusRect = False
             TabOrder = 0
+            TabStop = True
             TextFormat = [tfSingleLine, tfVerticalCenter]
             SubTextFont.Charset = DEFAULT_CHARSET
             SubTextFont.Color = clWhite
             SubTextFont.Height = -13
             SubTextFont.Name = 'Tahoma'
             SubTextFont.Style = []
+            ExplicitLeft = 3
           end
           object ButtonFlatLoadback: TButtonFlat
             AlignWithMargins = True
@@ -2638,6 +2676,7 @@ object FormMain: TFormMain
             RoundRectParam = 0
             ShowFocusRect = False
             TabOrder = 1
+            TabStop = True
             TextFormat = [tfSingleLine, tfVerticalCenter]
             SubTextFont.Charset = DEFAULT_CHARSET
             SubTextFont.Color = clWhite
@@ -2648,51 +2687,60 @@ object FormMain: TFormMain
         end
         object Panel6: TPanel
           Left = 0
-          Top = 669
+          Top = 666
           Width = 450
-          Height = 55
+          Height = 36
           Align = alBottom
           BevelOuter = bvNone
           Color = 3684408
           ParentBackground = False
           TabOrder = 1
           StyleElements = []
-          object Label5: TLabel
-            Left = 6
-            Top = 6
-            Width = 76
-            Height = 16
-            AutoSize = False
-            Caption = #1044#1072#1090#1072':'
-          end
-          object LabelNoteDate: TLabel
-            Left = 88
-            Top = 6
-            Width = 233
-            Height = 16
-            AutoSize = False
-          end
           object LabelNoteModify: TLabel
-            Left = 88
-            Top = 28
+            AlignWithMargins = True
+            Left = 85
+            Top = 3
             Width = 233
-            Height = 16
+            Height = 30
+            Align = alLeft
             AutoSize = False
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 15921906
+            Font.Height = -15
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            ParentFont = False
+            Layout = tlCenter
+            ExplicitLeft = 88
+            ExplicitTop = 28
+            ExplicitHeight = 16
           end
           object Label8: TLabel
-            Left = 6
-            Top = 28
+            AlignWithMargins = True
+            Left = 3
+            Top = 3
             Width = 76
-            Height = 16
+            Height = 30
+            Align = alLeft
             AutoSize = False
             Caption = #1048#1079#1084#1077#1085#1105#1085':'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 15921906
+            Font.Height = -15
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            ParentFont = False
+            Layout = tlCenter
+            ExplicitLeft = 6
+            ExplicitTop = 28
+            ExplicitHeight = 16
           end
         end
         object MemoNote: TRichEdit
           Left = 0
           Top = 98
           Width = 450
-          Height = 569
+          Height = 566
           Align = alClient
           BorderStyle = bsNone
           Color = 3223857
@@ -2709,6 +2757,7 @@ object FormMain: TFormMain
           Zoom = 100
           OnContextPopup = MemoNoteContextPopup
           OnSelectionChange = MemoNoteSelectionChange
+          ExplicitHeight = 547
         end
         object Panel17: TPanel
           Left = 0
@@ -2795,6 +2844,7 @@ object FormMain: TFormMain
                 Shape = stRoundRect
                 ShowFocusRect = False
                 TabOrder = 0
+                TabStop = True
                 TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
                 SubTextFont.Charset = DEFAULT_CHARSET
                 SubTextFont.Color = clWhite
@@ -2843,6 +2893,7 @@ object FormMain: TFormMain
                 Shape = stRoundRect
                 ShowFocusRect = False
                 TabOrder = 1
+                TabStop = True
                 TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
                 SubTextFont.Charset = DEFAULT_CHARSET
                 SubTextFont.Color = clWhite
@@ -2891,6 +2942,7 @@ object FormMain: TFormMain
                 Shape = stRoundRect
                 ShowFocusRect = False
                 TabOrder = 2
+                TabStop = True
                 TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
                 SubTextFont.Charset = DEFAULT_CHARSET
                 SubTextFont.Color = clWhite
@@ -2938,6 +2990,7 @@ object FormMain: TFormMain
                 Shape = stRoundRect
                 ShowFocusRect = False
                 TabOrder = 3
+                TabStop = True
                 TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
                 SubTextFont.Charset = DEFAULT_CHARSET
                 SubTextFont.Color = clWhite
@@ -2997,13 +3050,13 @@ object FormMain: TFormMain
                 Shape = stRoundRect
                 ShowFocusRect = False
                 TabOrder = 0
+                TabStop = True
                 TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
                 SubTextFont.Charset = DEFAULT_CHARSET
                 SubTextFont.Color = clWhite
                 SubTextFont.Height = -13
                 SubTextFont.Name = 'Tahoma'
                 SubTextFont.Style = []
-                ExplicitTop = 4
               end
               object ButtonFlatNoteParRight: TButtonFlat
                 Tag = 4
@@ -3045,6 +3098,7 @@ object FormMain: TFormMain
                 Shape = stRoundRect
                 ShowFocusRect = False
                 TabOrder = 1
+                TabStop = True
                 TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
                 SubTextFont.Charset = DEFAULT_CHARSET
                 SubTextFont.Color = clWhite
@@ -3117,6 +3171,7 @@ object FormMain: TFormMain
                 Shape = stRoundRect
                 ShowFocusRect = False
                 TabOrder = 0
+                TabStop = True
                 TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
                 SubTextFont.Charset = DEFAULT_CHARSET
                 SubTextFont.Color = clWhite
@@ -3165,6 +3220,7 @@ object FormMain: TFormMain
                 Shape = stRoundRect
                 ShowFocusRect = False
                 TabOrder = 1
+                TabStop = True
                 TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
                 SubTextFont.Charset = DEFAULT_CHARSET
                 SubTextFont.Color = clWhite
@@ -3213,6 +3269,7 @@ object FormMain: TFormMain
                 Shape = stRoundRect
                 ShowFocusRect = False
                 TabOrder = 2
+                TabStop = True
                 TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
                 SubTextFont.Charset = DEFAULT_CHARSET
                 SubTextFont.Color = clWhite
@@ -3259,6 +3316,7 @@ object FormMain: TFormMain
                 Shape = stRoundRect
                 ShowFocusRect = False
                 TabOrder = 3
+                TabStop = True
                 TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
                 SubTextFont.Charset = DEFAULT_CHARSET
                 SubTextFont.Color = clWhite
@@ -3307,6 +3365,7 @@ object FormMain: TFormMain
                 Shape = stRoundRect
                 ShowFocusRect = False
                 TabOrder = 4
+                TabStop = True
                 TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
                 SubTextFont.Charset = DEFAULT_CHARSET
                 SubTextFont.Color = clWhite
@@ -3354,6 +3413,7 @@ object FormMain: TFormMain
                 Shape = stRoundRect
                 ShowFocusRect = False
                 TabOrder = 5
+                TabStop = True
                 TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
                 SubTextFont.Charset = DEFAULT_CHARSET
                 SubTextFont.Color = clWhite
@@ -3401,6 +3461,7 @@ object FormMain: TFormMain
                 Shape = stRoundRect
                 ShowFocusRect = False
                 TabOrder = 6
+                TabStop = True
                 TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
                 SubTextFont.Charset = DEFAULT_CHARSET
                 SubTextFont.Color = clWhite
@@ -3447,6 +3508,7 @@ object FormMain: TFormMain
                 Shape = stRoundRect
                 ShowFocusRect = False
                 TabOrder = 7
+                TabStop = True
                 TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
                 SubTextFont.Charset = DEFAULT_CHARSET
                 SubTextFont.Color = clWhite
@@ -3493,6 +3555,7 @@ object FormMain: TFormMain
                 Shape = stRoundRect
                 ShowFocusRect = False
                 TabOrder = 8
+                TabStop = True
                 TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
                 SubTextFont.Charset = DEFAULT_CHARSET
                 SubTextFont.Color = clWhite
@@ -3540,6 +3603,7 @@ object FormMain: TFormMain
                 Shape = stRoundRect
                 ShowFocusRect = False
                 TabOrder = 9
+                TabStop = True
                 TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
                 SubTextFont.Charset = DEFAULT_CHARSET
                 SubTextFont.Color = clWhite
@@ -3598,6 +3662,7 @@ object FormMain: TFormMain
                 Shape = stRoundRect
                 ShowFocusRect = False
                 TabOrder = 0
+                TabStop = True
                 TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
                 SubTextFont.Charset = DEFAULT_CHARSET
                 SubTextFont.Color = clWhite
@@ -3642,6 +3707,7 @@ object FormMain: TFormMain
                 Shape = stRoundRect
                 ShowFocusRect = False
                 TabOrder = 1
+                TabStop = True
                 TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
                 SubTextFont.Charset = DEFAULT_CHARSET
                 SubTextFont.Color = clWhite
@@ -3688,6 +3754,7 @@ object FormMain: TFormMain
                 Shape = stRoundRect
                 ShowFocusRect = False
                 TabOrder = 2
+                TabStop = True
                 TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
                 SubTextFont.Charset = DEFAULT_CHARSET
                 SubTextFont.Color = clWhite
@@ -3743,6 +3810,7 @@ object FormMain: TFormMain
                   Shape = stRoundRect
                   ShowFocusRect = False
                   TabOrder = 0
+                  TabStop = True
                   TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
                   SubTextFont.Charset = DEFAULT_CHARSET
                   SubTextFont.Color = clWhite
@@ -3787,6 +3855,7 @@ object FormMain: TFormMain
                   Shape = stRoundRect
                   ShowFocusRect = False
                   TabOrder = 1
+                  TabStop = True
                   TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
                   SubTextFont.Charset = DEFAULT_CHARSET
                   SubTextFont.Color = clWhite
@@ -3929,6 +3998,7 @@ object FormMain: TFormMain
             Shape = stRoundRect
             ShowFocusRect = False
             TabOrder = 1
+            TabStop = True
             TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
             SubTextFont.Charset = DEFAULT_CHARSET
             SubTextFont.Color = clWhite
@@ -3936,7 +4006,7 @@ object FormMain: TFormMain
             SubTextFont.Name = 'Tahoma'
             SubTextFont.Style = []
           end
-          object ButtonFlat2: TButtonFlat
+          object ButtonFlatFGColorDialog: TButtonFlat
             AlignWithMargins = True
             Left = 3
             Top = 135
@@ -3966,11 +4036,12 @@ object FormMain: TFormMain
             FontDown.Style = []
             IgnorBounds = True
             Images = ImageListNotes
-            OnClick = ButtonFlatFontsClick
+            OnClick = ButtonFlatFGColorDialogClick
             RoundRectParam = 5
             Shape = stRoundRect
             ShowFocusRect = False
             TabOrder = 2
+            TabStop = True
             TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
             SubTextFont.Charset = DEFAULT_CHARSET
             SubTextFont.Color = clWhite
@@ -3982,7 +4053,7 @@ object FormMain: TFormMain
         object PanelNoteBGColor: TPanel
           Left = 290
           Top = 166
-          Width = 136
+          Width = 151
           Height = 132
           BevelOuter = bvNone
           Color = 3684408
@@ -3993,7 +4064,7 @@ object FormMain: TFormMain
             AlignWithMargins = True
             Left = 0
             Top = 99
-            Width = 136
+            Width = 151
             Height = 2
             Margins.Left = 0
             Margins.Right = 0
@@ -4007,7 +4078,7 @@ object FormMain: TFormMain
           object ColorGridNoteBG: ThColorGrid
             Left = 0
             Top = 0
-            Width = 136
+            Width = 151
             Height = 96
             OnSelect = ColorGridNoteBGSelect
             BorderItemsColor = 3026478
@@ -4023,7 +4094,7 @@ object FormMain: TFormMain
             AlignWithMargins = True
             Left = 3
             Top = 104
-            Width = 130
+            Width = 145
             Height = 25
             Align = alTop
             Caption = #1053#1077#1090' '#1094#1074#1077#1090#1072
@@ -4054,13 +4125,14 @@ object FormMain: TFormMain
             Shape = stRoundRect
             ShowFocusRect = False
             TabOrder = 1
+            TabStop = True
             TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
             SubTextFont.Charset = DEFAULT_CHARSET
             SubTextFont.Color = clWhite
             SubTextFont.Height = -13
             SubTextFont.Name = 'Tahoma'
             SubTextFont.Style = []
-            ExplicitTop = 93
+            ExplicitWidth = 130
           end
         end
       end
@@ -4131,6 +4203,7 @@ object FormMain: TFormMain
       RoundRectParam = 5
       ShowFocusRect = False
       TabOrder = 0
+      TabStop = True
       TextFormat = [tfSingleLine, tfVerticalCenter]
       SubText = '0'
       SubTextFont.Charset = DEFAULT_CHARSET
@@ -4175,6 +4248,7 @@ object FormMain: TFormMain
       RoundRectParam = 5
       ShowFocusRect = False
       TabOrder = 1
+      TabStop = True
       TextFormat = [tfSingleLine, tfVerticalCenter]
       SubText = '0'
       SubTextFont.Charset = DEFAULT_CHARSET
@@ -4219,6 +4293,7 @@ object FormMain: TFormMain
       RoundRectParam = 5
       ShowFocusRect = False
       TabOrder = 2
+      TabStop = True
       TextFormat = [tfSingleLine, tfVerticalCenter]
       SubText = '0'
       SubTextFont.Charset = DEFAULT_CHARSET
@@ -4236,7 +4311,7 @@ object FormMain: TFormMain
       Align = alTop
       BevelOuter = bvNone
       TabOrder = 3
-      object Calendar: TCalendarPicker
+      object Calendar1: TCalendarPicker
         Left = 7
         Top = 6
         Width = 18
@@ -4251,7 +4326,7 @@ object FormMain: TFormMain
         CalendarHeaderInfo.DaysOfWeekFont.Style = []
         CalendarHeaderInfo.Font.Charset = DEFAULT_CHARSET
         CalendarHeaderInfo.Font.Color = clWhite
-        CalendarHeaderInfo.Font.Height = -20
+        CalendarHeaderInfo.Font.Height = -16
         CalendarHeaderInfo.Font.Name = 'Segoe UI'
         CalendarHeaderInfo.Font.Style = []
         CalendarHeaderInfo.FontColor = 15658734
@@ -4261,13 +4336,13 @@ object FormMain: TFormMain
         FirstDayOfWeek = dwMonday
         Font.Charset = DEFAULT_CHARSET
         Font.Color = 13948116
-        Font.Height = -16
+        Font.Height = -15
         Font.Name = 'Segoe UI'
         Font.Style = []
         HighlightColor = 4605510
-        OnCalendarDrawDayItem = CalendarCalendarDrawDayItem
-        OnChange = CalendarChange
-        OnCloseUp = CalendarCloseUp
+        OnCalendarDrawDayItem = Calendar1CalendarDrawDayItem
+        OnChange = Calendar1Change
+        OnCloseUp = Calendar1CloseUp
         ParentFont = False
         SelectionColor = 3966635
         ShowFirstOfGroupLabel = True
@@ -4309,6 +4384,7 @@ object FormMain: TFormMain
         RoundRectParam = 0
         ShowFocusRect = False
         TabOrder = 0
+        TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
         SubTextFont.Charset = DEFAULT_CHARSET
         SubTextFont.Color = clWhite
@@ -4350,6 +4426,7 @@ object FormMain: TFormMain
         RoundRectParam = 0
         ShowFocusRect = False
         TabOrder = 2
+        TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
         SubTextFont.Charset = DEFAULT_CHARSET
         SubTextFont.Color = clWhite
@@ -4391,6 +4468,7 @@ object FormMain: TFormMain
         RoundRectParam = 0
         ShowFocusRect = False
         TabOrder = 3
+        TabStop = True
         TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
         SubTextFont.Charset = DEFAULT_CHARSET
         SubTextFont.Color = clWhite
@@ -4443,26 +4521,6 @@ object FormMain: TFormMain
     ParentBackground = False
     TabOrder = 2
     StyleElements = [seBorder]
-    object Shape2: TShape
-      Left = 1329
-      Top = 0
-      Width = 2
-      Height = 40
-      Align = alRight
-      Brush.Color = 3684408
-      Pen.Color = 3684408
-      ExplicitLeft = 1091
-    end
-    object Shape3: TShape
-      Left = 1251
-      Top = 0
-      Width = 2
-      Height = 40
-      Align = alRight
-      Brush.Color = 3684408
-      Pen.Color = 3684408
-      ExplicitLeft = 1253
-    end
     object ButtonFlatMenuFile: TButtonFlat
       AlignWithMargins = True
       Left = 41
@@ -4497,6 +4555,7 @@ object FormMain: TFormMain
       RoundRectParam = 0
       ShowFocusRect = False
       TabOrder = 0
+      TabStop = True
       TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
       SubTextFont.Charset = DEFAULT_CHARSET
       SubTextFont.Color = clWhite
@@ -4537,6 +4596,7 @@ object FormMain: TFormMain
       RoundRectParam = 0
       ShowFocusRect = False
       TabOrder = 1
+      TabStop = True
       TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
       SubTextFont.Charset = DEFAULT_CHARSET
       SubTextFont.Color = clWhite
@@ -4577,6 +4637,7 @@ object FormMain: TFormMain
       RoundRectParam = 0
       ShowFocusRect = False
       TabOrder = 2
+      TabStop = True
       TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
       SubTextFont.Charset = DEFAULT_CHARSET
       SubTextFont.Color = clWhite
@@ -4618,6 +4679,7 @@ object FormMain: TFormMain
       RoundRectParam = 0
       ShowFocusRect = False
       TabOrder = 3
+      TabStop = True
       TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
       SubTextFont.Charset = DEFAULT_CHARSET
       SubTextFont.Color = clWhite
@@ -4625,252 +4687,330 @@ object FormMain: TFormMain
       SubTextFont.Name = 'Tahoma'
       SubTextFont.Style = []
     end
-    object ButtonFlatCalendar: TButtonFlat
-      Left = 1131
+    object FlowPanel1: TFlowPanel
+      Left = 887
       Top = 0
-      Width = 40
+      Width = 444
       Height = 40
       Align = alRight
-      Caption = #1050#1072#1083#1077#1085#1076#1072#1088#1100
-      ColorNormal = 3026478
-      ColorOver = 14196229
-      ColorPressed = 12027396
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWhite
-      Font.Height = -13
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      FontOver.Charset = DEFAULT_CHARSET
-      FontOver.Color = clWhite
-      FontOver.Height = -13
-      FontOver.Name = 'Tahoma'
-      FontOver.Style = []
-      FontDown.Charset = DEFAULT_CHARSET
-      FontDown.Color = clWhite
-      FontDown.Height = -13
-      FontDown.Name = 'Tahoma'
-      FontDown.Style = []
-      IgnorBounds = True
-      ImageIndentLeft = 7
-      ImageIndentRight = 10
-      ImageIndex = 6
-      Images = ImageList24
-      NotifyVisible = True
-      OnClick = ButtonFlatCalendarClick
-      RoundRectParam = 0
-      ShowFocusRect = False
+      BevelOuter = bvNone
+      FlowStyle = fsRightLeftTopBottom
+      ShowCaption = False
       TabOrder = 4
-      TextFormat = [tfSingleLine, tfVerticalCenter]
-      SubTextFont.Charset = DEFAULT_CHARSET
-      SubTextFont.Color = clWhite
-      SubTextFont.Height = -13
-      SubTextFont.Name = 'Tahoma'
-      SubTextFont.Style = []
+      ExplicitLeft = 885
+      object ButtonFlatClose: TButtonFlat
+        AlignWithMargins = True
+        Left = 409
+        Top = 3
+        Width = 32
+        Height = 34
+        Align = alRight
+        Caption = ''
+        ColorNormal = 3026478
+        ColorOver = 3026601
+        ColorPressed = 2237053
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        FontOver.Charset = DEFAULT_CHARSET
+        FontOver.Color = clWhite
+        FontOver.Height = -13
+        FontOver.Name = 'Tahoma'
+        FontOver.Style = []
+        FontDown.Charset = DEFAULT_CHARSET
+        FontDown.Color = clWhite
+        FontDown.Height = -13
+        FontDown.Name = 'Tahoma'
+        FontDown.Style = []
+        IgnorBounds = True
+        ImageIndex = 0
+        Images = ImageList24
+        OnClick = ButtonFlatCloseClick
+        RoundRectParam = 0
+        ShowFocusRect = False
+        TabOrder = 4
+        TabStop = True
+        TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+        SubTextFont.Charset = DEFAULT_CHARSET
+        SubTextFont.Color = clWhite
+        SubTextFont.Height = -13
+        SubTextFont.Name = 'Tahoma'
+        SubTextFont.Style = []
+        Visible = False
+      end
+      object ButtonFlatMinimize: TButtonFlat
+        AlignWithMargins = True
+        Left = 371
+        Top = 3
+        Width = 32
+        Height = 34
+        Align = alRight
+        Caption = ''
+        ColorNormal = 3026478
+        ColorOver = clGray
+        ColorPressed = 7303023
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        FontOver.Charset = DEFAULT_CHARSET
+        FontOver.Color = clWhite
+        FontOver.Height = -13
+        FontOver.Name = 'Tahoma'
+        FontOver.Style = []
+        FontDown.Charset = DEFAULT_CHARSET
+        FontDown.Color = clWhite
+        FontDown.Height = -13
+        FontDown.Name = 'Tahoma'
+        FontDown.Style = []
+        IgnorBounds = True
+        ImageIndex = 7
+        Images = ImageList24
+        OnClick = ButtonFlatMinimizeClick
+        RoundRectParam = 0
+        ShowFocusRect = False
+        TabOrder = 3
+        TabStop = True
+        TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
+        SubTextFont.Charset = DEFAULT_CHARSET
+        SubTextFont.Color = clWhite
+        SubTextFont.Height = -13
+        SubTextFont.Name = 'Tahoma'
+        SubTextFont.Style = []
+        Visible = False
+      end
+      object Shape3: TShape
+        Left = 366
+        Top = 0
+        Width = 2
+        Height = 40
+        Align = alRight
+        Brush.Color = 3684408
+        Pen.Color = 3684408
+        Visible = False
+      end
+      object ButtonFlatSettings: TButtonFlat
+        Left = 326
+        Top = 0
+        Width = 40
+        Height = 40
+        Align = alRight
+        Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080
+        ColorNormal = 3026478
+        ColorOver = 14196229
+        ColorPressed = 12027396
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        FontOver.Charset = DEFAULT_CHARSET
+        FontOver.Color = clWhite
+        FontOver.Height = -15
+        FontOver.Name = 'Tahoma'
+        FontOver.Style = []
+        FontDown.Charset = DEFAULT_CHARSET
+        FontDown.Color = clWhite
+        FontDown.Height = -15
+        FontDown.Name = 'Tahoma'
+        FontDown.Style = []
+        IgnorBounds = True
+        ImageIndentLeft = 7
+        ImageIndentRight = 10
+        ImageIndex = 3
+        Images = ImageList24
+        OnClick = ButtonFlatSettingsClick
+        RoundRectParam = 0
+        ShowFocusRect = False
+        TabOrder = 2
+        TabStop = True
+        TextFormat = [tfSingleLine, tfVerticalCenter]
+        SubTextFont.Charset = DEFAULT_CHARSET
+        SubTextFont.Color = clWhite
+        SubTextFont.Height = -13
+        SubTextFont.Name = 'Tahoma'
+        SubTextFont.Style = []
+      end
+      object ButtonFlatNotes: TButtonFlat
+        Left = 286
+        Top = 0
+        Width = 40
+        Height = 40
+        Align = alRight
+        Caption = #1047#1072#1087#1080#1089#1080
+        ColorNormal = 3026478
+        ColorOver = 14196229
+        ColorPressed = 12027396
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        FontOver.Charset = DEFAULT_CHARSET
+        FontOver.Color = clWhite
+        FontOver.Height = -15
+        FontOver.Name = 'Tahoma'
+        FontOver.Style = []
+        FontDown.Charset = DEFAULT_CHARSET
+        FontDown.Color = clWhite
+        FontDown.Height = -15
+        FontDown.Name = 'Tahoma'
+        FontDown.Style = []
+        IgnorBounds = True
+        ImageIndentLeft = 7
+        ImageIndentRight = 10
+        ImageIndex = 21
+        Images = ImageList24
+        OnClick = ButtonFlatNotesClick
+        RoundRectParam = 0
+        ShowFocusRect = False
+        TabOrder = 1
+        TabStop = True
+        TextFormat = [tfSingleLine, tfVerticalCenter]
+        SubTextFont.Charset = DEFAULT_CHARSET
+        SubTextFont.Color = clWhite
+        SubTextFont.Height = -13
+        SubTextFont.Name = 'Tahoma'
+        SubTextFont.Style = []
+      end
+      object ButtonFlatCalendar: TButtonFlat
+        Left = 246
+        Top = 0
+        Width = 40
+        Height = 40
+        Align = alRight
+        Caption = #1050#1072#1083#1077#1085#1076#1072#1088#1100
+        ColorNormal = 3026478
+        ColorOver = 14196229
+        ColorPressed = 12027396
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        FontOver.Charset = DEFAULT_CHARSET
+        FontOver.Color = clWhite
+        FontOver.Height = -15
+        FontOver.Name = 'Tahoma'
+        FontOver.Style = []
+        FontDown.Charset = DEFAULT_CHARSET
+        FontDown.Color = clWhite
+        FontDown.Height = -15
+        FontDown.Name = 'Tahoma'
+        FontDown.Style = []
+        IgnorBounds = True
+        ImageIndentLeft = 7
+        ImageIndentRight = 10
+        ImageIndex = 6
+        Images = ImageList24
+        OnClick = ButtonFlatCalendarClick
+        RoundRectParam = 0
+        ShowFocusRect = False
+        TabOrder = 0
+        TabStop = True
+        TextFormat = [tfSingleLine, tfVerticalCenter]
+        SubTextFont.Charset = DEFAULT_CHARSET
+        SubTextFont.Color = clWhite
+        SubTextFont.Height = -13
+        SubTextFont.Name = 'Tahoma'
+        SubTextFont.Style = []
+      end
+      object ButtonFlatTimes: TButtonFlat
+        Left = 116
+        Top = 0
+        Width = 130
+        Height = 40
+        Caption = #1042#1088#1077#1084#1103
+        ColorNormal = 3684408
+        ColorOver = 14196229
+        ColorPressed = 12027396
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        FontOver.Charset = DEFAULT_CHARSET
+        FontOver.Color = clWhite
+        FontOver.Height = -15
+        FontOver.Name = 'Tahoma'
+        FontOver.Style = []
+        FontDown.Charset = DEFAULT_CHARSET
+        FontDown.Color = clWhite
+        FontDown.Height = -15
+        FontDown.Name = 'Tahoma'
+        FontDown.Style = []
+        IgnorBounds = True
+        ImageIndentLeft = 7
+        ImageIndentRight = 10
+        ImageIndex = 8
+        Images = ImageList24
+        OnClick = ButtonFlatTimesClick
+        RoundRectParam = 0
+        ShowFocusRect = False
+        TabOrder = 5
+        TabStop = True
+        TextFormat = [tfSingleLine, tfVerticalCenter]
+        SubTextFont.Charset = DEFAULT_CHARSET
+        SubTextFont.Color = clWhite
+        SubTextFont.Height = -13
+        SubTextFont.Name = 'Tahoma'
+        SubTextFont.Style = []
+      end
     end
-    object ButtonFlatClose: TButtonFlat
-      AlignWithMargins = True
-      Left = 1294
-      Top = 3
-      Width = 32
-      Height = 34
-      Align = alRight
-      Caption = ''
-      ColorNormal = 3026478
-      ColorOver = 3026601
-      ColorPressed = 2237053
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWhite
-      Font.Height = -13
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      FontOver.Charset = DEFAULT_CHARSET
-      FontOver.Color = clWhite
-      FontOver.Height = -13
-      FontOver.Name = 'Tahoma'
-      FontOver.Style = []
-      FontDown.Charset = DEFAULT_CHARSET
-      FontDown.Color = clWhite
-      FontDown.Height = -13
-      FontDown.Name = 'Tahoma'
-      FontDown.Style = []
-      IgnorBounds = True
-      ImageIndex = 0
-      Images = ImageList24
-      OnClick = ButtonFlatCloseClick
-      RoundRectParam = 0
-      ShowFocusRect = False
-      TabOrder = 5
-      TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-      SubTextFont.Charset = DEFAULT_CHARSET
-      SubTextFont.Color = clWhite
-      SubTextFont.Height = -13
-      SubTextFont.Name = 'Tahoma'
-      SubTextFont.Style = []
-      Visible = False
-    end
-    object ButtonFlatMinimize: TButtonFlat
-      AlignWithMargins = True
-      Left = 1256
-      Top = 3
-      Width = 32
-      Height = 34
-      Align = alRight
-      Caption = ''
-      ColorNormal = 3026478
-      ColorOver = clGray
-      ColorPressed = 7303023
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWhite
-      Font.Height = -13
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      FontOver.Charset = DEFAULT_CHARSET
-      FontOver.Color = clWhite
-      FontOver.Height = -13
-      FontOver.Name = 'Tahoma'
-      FontOver.Style = []
-      FontDown.Charset = DEFAULT_CHARSET
-      FontDown.Color = clWhite
-      FontDown.Height = -13
-      FontDown.Name = 'Tahoma'
-      FontDown.Style = []
-      IgnorBounds = True
-      ImageIndex = 7
-      Images = ImageList24
-      OnClick = ButtonFlatMinimizeClick
-      RoundRectParam = 0
-      ShowFocusRect = False
-      TabOrder = 6
-      TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
-      SubTextFont.Charset = DEFAULT_CHARSET
-      SubTextFont.Color = clWhite
-      SubTextFont.Height = -13
-      SubTextFont.Name = 'Tahoma'
-      SubTextFont.Style = []
-      Visible = False
-    end
-    object ButtonFlatSettings: TButtonFlat
-      Left = 1211
+  end
+  object PanelSelectCurDate: TPanel
+    Left = 0
+    Top = 409
+    Width = 250
+    Height = 319
+    BevelOuter = bvNone
+    TabOrder = 4
+    Visible = False
+    object Calendar: TCalendarView
+      Left = 0
       Top = 0
-      Width = 40
-      Height = 40
-      Align = alRight
-      Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080
-      ColorNormal = 3026478
-      ColorOver = 14196229
-      ColorPressed = 12027396
+      Width = 250
+      Height = 319
+      Align = alClient
+      BorderColor = 3684408
+      BorderStyle = bsNone
+      Color = 3684408
+      Date = 43611.000000000000000000
+      DisabledColor = 6974058
+      FirstDayOfWeek = dwMonday
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWhite
-      Font.Height = -13
-      Font.Name = 'Tahoma'
+      Font.Color = 13948116
+      Font.Height = -20
+      Font.Name = 'Segoe UI'
       Font.Style = []
-      FontOver.Charset = DEFAULT_CHARSET
-      FontOver.Color = clWhite
-      FontOver.Height = -13
-      FontOver.Name = 'Tahoma'
-      FontOver.Style = []
-      FontDown.Charset = DEFAULT_CHARSET
-      FontDown.Color = clWhite
-      FontDown.Height = -13
-      FontDown.Name = 'Tahoma'
-      FontDown.Style = []
-      IgnorBounds = True
-      ImageIndentLeft = 7
-      ImageIndentRight = 10
-      ImageIndex = 3
-      Images = ImageList24
-      OnClick = ButtonFlatSettingsClick
-      RoundRectParam = 0
-      ShowFocusRect = False
-      TabOrder = 7
-      TextFormat = [tfSingleLine, tfVerticalCenter]
-      SubTextFont.Charset = DEFAULT_CHARSET
-      SubTextFont.Color = clWhite
-      SubTextFont.Height = -13
-      SubTextFont.Name = 'Tahoma'
-      SubTextFont.Style = []
-    end
-    object ButtonFlatTimes: TButtonFlat
-      Left = 1091
-      Top = 0
-      Width = 40
-      Height = 40
-      Align = alRight
-      Caption = #1042#1088#1077#1084#1077#1085#1085#1072#1103' '#1096#1082#1072#1083#1072
-      ColorNormal = 3684408
-      ColorOver = 14196229
-      ColorPressed = 12027396
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWhite
-      Font.Height = -13
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      FontOver.Charset = DEFAULT_CHARSET
-      FontOver.Color = clWhite
-      FontOver.Height = -13
-      FontOver.Name = 'Tahoma'
-      FontOver.Style = []
-      FontDown.Charset = DEFAULT_CHARSET
-      FontDown.Color = clWhite
-      FontDown.Height = -13
-      FontDown.Name = 'Tahoma'
-      FontDown.Style = []
-      IgnorBounds = True
-      ImageIndentLeft = 7
-      ImageIndentRight = 10
-      ImageIndex = 8
-      Images = ImageList24
-      OnClick = ButtonFlatTimesClick
-      RoundRectParam = 0
-      ShowFocusRect = False
-      TabOrder = 8
-      TextFormat = [tfSingleLine, tfVerticalCenter]
-      SubTextFont.Charset = DEFAULT_CHARSET
-      SubTextFont.Color = clWhite
-      SubTextFont.Height = -13
-      SubTextFont.Name = 'Tahoma'
-      SubTextFont.Style = []
-    end
-    object ButtonFlatNotes: TButtonFlat
-      Left = 1171
-      Top = 0
-      Width = 40
-      Height = 40
-      Align = alRight
-      Caption = #1047#1072#1087#1080#1089#1080
-      ColorNormal = 3026478
-      ColorOver = 14196229
-      ColorPressed = 12027396
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWhite
-      Font.Height = -13
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      FontOver.Charset = DEFAULT_CHARSET
-      FontOver.Color = clWhite
-      FontOver.Height = -13
-      FontOver.Name = 'Tahoma'
-      FontOver.Style = []
-      FontDown.Charset = DEFAULT_CHARSET
-      FontDown.Color = clWhite
-      FontDown.Height = -13
-      FontDown.Name = 'Tahoma'
-      FontDown.Style = []
-      IgnorBounds = True
-      ImageIndentLeft = 7
-      ImageIndentRight = 10
-      ImageIndex = 21
-      Images = ImageList24
-      OnClick = ButtonFlatNotesClick
-      RoundRectParam = 0
-      ShowFocusRect = False
-      TabOrder = 9
-      TextFormat = [tfSingleLine, tfVerticalCenter]
-      SubTextFont.Charset = DEFAULT_CHARSET
-      SubTextFont.Color = clWhite
-      SubTextFont.Height = -13
-      SubTextFont.Name = 'Tahoma'
-      SubTextFont.Style = []
+      HeaderInfo.DaysOfWeekFont.Charset = DEFAULT_CHARSET
+      HeaderInfo.DaysOfWeekFont.Color = clWindowText
+      HeaderInfo.DaysOfWeekFont.Height = -13
+      HeaderInfo.DaysOfWeekFont.Name = 'Segoe UI'
+      HeaderInfo.DaysOfWeekFont.Style = []
+      HeaderInfo.Font.Charset = DEFAULT_CHARSET
+      HeaderInfo.Font.Color = clWindowText
+      HeaderInfo.Font.Height = -20
+      HeaderInfo.Font.Name = 'Segoe UI'
+      HeaderInfo.Font.Style = []
+      HeaderInfo.FontColor = 15658734
+      HeaderInfo.HighlightFontColor = 3966635
+      HighlightColor = 4605510
+      OnChange = CalendarChange
+      OnClick = CalendarClick
+      OnDrawDayItem = CalendarDrawDayItem
+      ParentFont = False
+      SelectionColor = 3966635
+      ShowFirstOfGroupLabel = True
+      TabOrder = 0
+      TodayColor = 3966635
+      ExplicitLeft = 24
+      ExplicitTop = 68
+      ExplicitWidth = 217
+      ExplicitHeight = 219
     end
   end
   object TimerRepaint: TTimer
@@ -4891,7 +5031,7 @@ object FormMain: TFormMain
     Left = 44
     Top = 520
     Bitmap = {
-      494C0101200058007C0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010121005800980018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000D800000001002000000000000044
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -4954,6 +5094,7 @@ object FormMain: TFormMain
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000030707071800000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -4965,6 +5106,7 @@ object FormMain: TFormMain
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000050505088888889DC2C9D0F02020203D000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -4976,6 +5118,7 @@ object FormMain: TFormMain
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      000000000000040404068888889DEDEDEDFDE7E7E7FB55555CA3000000030000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -4987,6 +5130,7 @@ object FormMain: TFormMain
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      00000404040682828298EFEFEFFEE7E7E7FB6C6C6CBD05050512000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -4997,6 +5141,8 @@ object FormMain: TFormMain
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000505
+      05088888889DF0F0F0FFE4E4E4FB676767B50505051200000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -5007,6 +5153,10 @@ object FormMain: TFormMain
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000040404068888
+      889DEDEDEDFDF0F0F0FFC4C4C4F1808080957878787F7878787F7878787F7878
+      787F7878787F7878787F7878787F7878787F7878787F7878787F7878787F7878
+      787F626467790303030C00000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -5015,6 +5165,10 @@ object FormMain: TFormMain
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000736C638BEFEF
+      EFFEF0F0F0FFF0F0F0FFF0F0F0FFF0F0F0FFF0F0F0FFF0F0F0FFF0F0F0FFF0F0
+      F0FFF0F0F0FFF0F0F0FFF0F0F0FFF0F0F0FFF0F0F0FFF0F0F0FFF0F0F0FFF0F0
+      F0FFC4C9CDF21111113300000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -5023,6 +5177,10 @@ object FormMain: TFormMain
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000000000000000000000000000001A1A1A3DC2C2
+      C2EFF0F0F0FFF0F0F0FFD1D6DBFAC3C3C3EBC3C3C3EBC3C3C3EBC3C3C3EBC3C3
+      C3EBC3C3C3EBC3C3C3EBC3C3C3EBC3C3C3EBC3C3C3EBC3C3C3EBCFCFCCF0F0F0
+      EEFFC7C7C7EE1111113300000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -5031,6 +5189,10 @@ object FormMain: TFormMain
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000002121
+      2145BEBEBEEBF0F0F0FFD0D3D5F6363636600606061606060615060606150606
+      061506060615060606150606061506060615060606150606061541414053EEEE
+      EDFEC7C7C7EE1111113300000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -5040,6 +5202,9 @@ object FormMain: TFormMain
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      000021212145C2C2C2EFEFEFEFFED0D0D0ED2A2A2A4700000000000000000000
+      00000000000000000000000000000000000000000000000000003B3B3B43EDED
+      EDFEC7C7C7EE1111113300000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -5049,6 +5214,9 @@ object FormMain: TFormMain
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      0000000000001A1A1A3DC2C2C2EFF0F0F0FFD7D7D7F52A2A2A47000000000000
+      00000000000000000000000000000000000000000000000000003B3B3B43EDED
+      EDFEC7C7C7EE1111113300000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -5058,6 +5226,9 @@ object FormMain: TFormMain
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000021212145BEBEBEEBDDDDDDF34C4C4C9B000000030000
+      00000000000000000000000000000000000000000000000000002828233A9A9A
+      98E4888888DD0D0D0D2900000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -5067,40 +5238,9 @@ object FormMain: TFormMain
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000001F1F1F444C4C4CA30404040F000000000000
+      0000000000000000000000000000000000000000000000000000000000010303
+      030A0303030A0000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -7487,16 +7627,16 @@ object FormMain: TFormMain
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000424D3E000000000000003E000000
       2800000060000000D80000000100010000000000200A00000000000000000000
-      000000000000000000000000FFFFFF0000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      00000000000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+      000000000000000000000000FFFFFF00FFFFFF000000000000000000FFFFFF00
+      0000000000000000FFFFFF000000000000000000FFFFFF000000000000000000
+      FFFFFF000000000000000000FE7FFF000000000000000000FC3FFF0000000000
+      00000000F81FFF000000000000000000F03FFF000000000000000000E07FFF00
+      0000000000000000C00003000000000000000000C00003000000000000000000
+      C00003000000000000000000E00003000000000000000000F07FC30000000000
+      00000000F83FC3000000000000000000FC1FC3000000000000000000FE3FC700
+      0000000000000000FFFFFF000000000000000000FFFFFF000000000000000000
+      FFFFFF000000000000000000FFFFFF000000000000000000FFFFFF0000000000
+      00000000FFFFFF000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFC7FFFFFFFFFEFFFFFFF3FFFE03FFFFFFFFFC7FFFFFC0FFFC01FF
       FFFFFFF87FFFFF807FF001FFFFFFFFF0001FFF803FF003FFFC003FF0001FFE00
       1FE003FFFC003FF0001FFC000FE0000FFC003FF87E1FFC0007C00007FC003FFC
@@ -7572,8 +7712,8 @@ object FormMain: TFormMain
       000000000000}
   end
   object PopupMenuTaskStart: TPopupMenu
-    Left = 976
-    Top = 712
+    Left = 960
+    Top = 568
     object MenuItemTaskStartFrom: TMenuItem
       Caption = #1053#1072#1095#1072#1090#1100' '#1079#1072#1076#1072#1095#1091' '#1089'...'
       OnClick = MenuItemTaskStartFromClick
@@ -7676,7 +7816,7 @@ object FormMain: TFormMain
     Left = 128
     Top = 520
     Bitmap = {
-      494C0101030008006C0010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010103000800780010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -7873,10 +8013,10 @@ object FormMain: TFormMain
   end
   object ImageListNotes: TImageList
     ColorDepth = cd32Bit
-    Left = 897
-    Top = 264
+    Left = 1081
+    Top = 568
     Bitmap = {
-      494C010128008800580010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010128008800640010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000B0000000010020000000000000B0
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

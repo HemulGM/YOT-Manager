@@ -31,6 +31,7 @@ uses
 
 begin
   Application.Initialize;
+  ReportMemoryLeaksOnShutdown := True;
   Application.MainFormOnTaskbar := True;
   Application.Title := 'YOT Manager';
   Application.CreateForm(TFormMain, FormMain);

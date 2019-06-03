@@ -9,11 +9,11 @@ inherited FormNotify: TFormNotify
   inherited DragBarTop: TDragPanel
     Width = 373
     Height = 40
-    ExplicitTop = 58
     ExplicitWidth = 373
     ExplicitHeight = 40
     inherited LabelCaption: TLabel
       Width = 42
+      Height = 32
       Caption = 'Noitfy'
       ExplicitWidth = 42
     end

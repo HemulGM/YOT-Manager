@@ -3,6 +3,7 @@ inherited FormSelectLabels: TFormSelectLabels
   ClientHeight = 437
   ClientWidth = 283
   StyleElements = []
+  OnDestroy = FormDestroy
   ExplicitWidth = 283
   ExplicitHeight = 437
   PixelsPerInch = 96

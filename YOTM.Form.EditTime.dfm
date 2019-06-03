@@ -96,6 +96,7 @@ inherited FormEditTime: TFormEditTime
     RoundRectParam = 0
     ShowFocusRect = False
     TabOrder = 2
+    TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
     SubTextFont.Charset = DEFAULT_CHARSET
     SubTextFont.Color = clWhite
@@ -135,6 +136,7 @@ inherited FormEditTime: TFormEditTime
     RoundRectParam = 0
     ShowFocusRect = False
     TabOrder = 3
+    TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
     SubTextFont.Charset = DEFAULT_CHARSET
     SubTextFont.Color = clWhite
@@ -175,6 +177,7 @@ inherited FormEditTime: TFormEditTime
     RoundRectParam = 0
     ShowFocusRect = False
     TabOrder = 4
+    TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
     SubTextFont.Charset = DEFAULT_CHARSET
     SubTextFont.Color = clWhite
@@ -217,6 +220,7 @@ inherited FormEditTime: TFormEditTime
     RoundRectParam = 0
     ShowFocusRect = False
     TabOrder = 5
+    TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
     SubTextFont.Charset = DEFAULT_CHARSET
     SubTextFont.Color = clWhite
@@ -256,6 +260,7 @@ inherited FormEditTime: TFormEditTime
     RoundRectParam = 0
     ShowFocusRect = False
     TabOrder = 6
+    TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
     SubTextFont.Charset = DEFAULT_CHARSET
     SubTextFont.Color = clWhite
@@ -296,6 +301,7 @@ inherited FormEditTime: TFormEditTime
     RoundRectParam = 0
     ShowFocusRect = False
     TabOrder = 7
+    TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
     SubTextFont.Charset = DEFAULT_CHARSET
     SubTextFont.Color = clWhite
@@ -338,6 +344,7 @@ inherited FormEditTime: TFormEditTime
     RoundRectParam = 0
     ShowFocusRect = False
     TabOrder = 8
+    TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
     SubTextFont.Charset = DEFAULT_CHARSET
     SubTextFont.Color = clWhite
@@ -377,6 +384,7 @@ inherited FormEditTime: TFormEditTime
     RoundRectParam = 0
     ShowFocusRect = False
     TabOrder = 9
+    TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
     SubTextFont.Charset = DEFAULT_CHARSET
     SubTextFont.Color = clWhite
@@ -417,6 +425,7 @@ inherited FormEditTime: TFormEditTime
     RoundRectParam = 0
     ShowFocusRect = False
     TabOrder = 10
+    TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
     SubTextFont.Charset = DEFAULT_CHARSET
     SubTextFont.Color = clWhite
@@ -459,6 +468,7 @@ inherited FormEditTime: TFormEditTime
     RoundRectParam = 0
     ShowFocusRect = False
     TabOrder = 11
+    TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
     SubTextFont.Charset = DEFAULT_CHARSET
     SubTextFont.Color = clWhite
@@ -498,6 +508,7 @@ inherited FormEditTime: TFormEditTime
     RoundRectParam = 0
     ShowFocusRect = False
     TabOrder = 12
+    TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
     SubTextFont.Charset = DEFAULT_CHARSET
     SubTextFont.Color = clWhite
@@ -538,6 +549,7 @@ inherited FormEditTime: TFormEditTime
     RoundRectParam = 0
     ShowFocusRect = False
     TabOrder = 13
+    TabStop = True
     TextFormat = [tfCenter, tfSingleLine, tfVerticalCenter]
     SubTextFont.Charset = DEFAULT_CHARSET
     SubTextFont.Color = clWhite
@@ -579,6 +591,7 @@ inherited FormEditTime: TFormEditTime
     RoundRectParam = 0
     ShowFocusRect = False
     TabOrder = 14
+    TabStop = True
     TextFormat = [tfSingleLine, tfVerticalCenter]
     SubTextFont.Charset = DEFAULT_CHARSET
     SubTextFont.Color = clWhite
@@ -607,15 +620,17 @@ inherited FormEditTime: TFormEditTime
       Font.Height = -16
       Font.Name = 'Tahoma'
       Font.Style = []
+      HideSelection = False
       ParentFont = False
+      PlainText = True
       TabOrder = 0
       WantReturns = False
       Zoom = 100
     end
   end
   object PanelTasks: TPanel
-    Left = 215
-    Top = 70
+    Left = 15
+    Top = 118
     Width = 345
     Height = 400
     BevelOuter = bvNone
@@ -632,7 +647,7 @@ inherited FormEditTime: TFormEditTime
       DefaultRowHeight = 25
       Font.Charset = DEFAULT_CHARSET
       Font.Color = 15921906
-      Font.Height = -15
+      Font.Height = -13
       Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
@@ -657,17 +672,17 @@ inherited FormEditTime: TFormEditTime
       ColumnsColor = 3684408
       FontHotLine.Charset = DEFAULT_CHARSET
       FontHotLine.Color = 15921906
-      FontHotLine.Height = -15
+      FontHotLine.Height = -13
       FontHotLine.Name = 'Tahoma'
       FontHotLine.Style = []
       FontLine.Charset = DEFAULT_CHARSET
       FontLine.Color = 15921906
-      FontLine.Height = -15
+      FontLine.Height = -13
       FontLine.Name = 'Tahoma'
       FontLine.Style = []
       FontSelLine.Charset = DEFAULT_CHARSET
       FontSelLine.Color = 15921906
-      FontSelLine.Height = -15
+      FontSelLine.Height = -13
       FontSelLine.Name = 'Tahoma'
       FontSelLine.Style = []
       ShowColumns = False
@@ -710,6 +725,7 @@ inherited FormEditTime: TFormEditTime
       RoundRectParam = 0
       ShowFocusRect = False
       TabOrder = 1
+      TabStop = True
       TextFormat = [tfSingleLine, tfVerticalCenter]
       SubTextFont.Charset = DEFAULT_CHARSET
       SubTextFont.Color = clWhite

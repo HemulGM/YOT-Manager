@@ -3,9 +3,9 @@ unit YOTM.Form.ModalEdit;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, YOTM.Form, Vcl.ExtCtrls, HGM.Button,
-  Vcl.StdCtrls, HGM.Controls.PanelExt;
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, YOTM.Form,
+  Vcl.ExtCtrls, HGM.Button, Vcl.StdCtrls, HGM.Controls.PanelExt;
 
 type
   TFormModalEdit = class(TFormCustom)
@@ -29,12 +29,13 @@ implementation
 
 procedure TFormModalEdit.ButtonFlatCancelClick(Sender: TObject);
 begin
- ModalResult:=mrCancel;
+  ModalResult := mrCancel;
 end;
 
 procedure TFormModalEdit.ButtonFlatOKClick(Sender: TObject);
 begin
- ModalResult:=mrOk;
+  ModalResult := mrOk;
 end;
 
 end.
+

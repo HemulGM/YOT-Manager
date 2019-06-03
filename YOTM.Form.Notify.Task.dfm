@@ -2,7 +2,6 @@ inherited FormNotifyTask: TFormNotifyTask
   Caption = 'FormNotifyTask'
   ClientHeight = 160
   ClientWidth = 400
-  OnClose = FormClose
   ExplicitWidth = 400
   ExplicitHeight = 160
   PixelsPerInch = 96
@@ -137,7 +136,7 @@ inherited FormNotifyTask: TFormNotifyTask
   end
   object ButtonFlatTaskState: TButtonFlat
     AlignWithMargins = True
-    Left = 5
+    Left = 20
     Top = 64
     Width = 34
     Height = 34
@@ -179,9 +178,9 @@ inherited FormNotifyTask: TFormNotifyTask
   end
   object EditTaskName: TEdit
     AlignWithMargins = True
-    Left = 45
+    Left = 60
     Top = 64
-    Width = 340
+    Width = 325
     Height = 34
     BevelInner = bvNone
     BevelKind = bkSoft

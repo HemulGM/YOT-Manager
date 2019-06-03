@@ -1,6 +1,6 @@
 ﻿[]
 Visible=True
-Coordinates=543,214,107,58
+Coordinates=871,350,59,36
 
 [Shape8]
 Coordinates=216,534,59,36
@@ -89,9 +89,6 @@ Coordinates=1097,166,138,36
 [TimerRepaint]
 Coordinates=825,559,92,36
 
-[Label5]
-Coordinates=222,146,53,58
-
 [MenuItemTaskDel]
 Coordinates=1097,221,119,36
 
@@ -121,9 +118,6 @@ Coordinates=285,534,131,36
 
 [N4]
 Coordinates=905,654,40,36
-
-[LabelNoteDate]
-Coordinates=255,10,100,58
 
 [PanelTaskLabels]
 Coordinates=485,78,113,58
@@ -236,9 +230,6 @@ Coordinates=1494,386,111,36
 [PanelClient]
 Coordinates=590,146,81,58
 
-[Calendar]
-Coordinates=210,626,67,36
-
 [ImageListCalendar]
 Coordinates=1494,441,123,36
 
@@ -332,9 +323,6 @@ Coordinates=858,442,102,36
 [ButtonFlatWD1]
 Coordinates=746,442,102,36
 
-[ButtonFlatTimes]
-Coordinates=628,442,108,36
-
 [Label1]
 Coordinates=678,282,53,58
 
@@ -344,9 +332,6 @@ Coordinates=552,442,66,36
 [Shape19]
 Coordinates=476,442,66,36
 
-[Shape3]
-Coordinates=407,442,59,36
-
 [ButtonFlat18]
 Coordinates=309,442,88,36
 
@@ -355,12 +340,6 @@ Coordinates=986,10,84,58
 
 [ButtonFlatTimeFromMM]
 Coordinates=146,442,153,36
-
-[ButtonFlatCalendar]
-Coordinates=10,442,126,36
-
-[ButtonFlatSettings]
-Coordinates=926,396,120,36
 
 [Shape17]
 Coordinates=850,396,66,36
@@ -372,9 +351,6 @@ ExplicitSubNodes=Color
 
 [ButtonFlat13]
 Coordinates=752,396,88,36
-
-[ButtonFlatMinimize]
-Coordinates=618,396,124,36
 
 [MenuItemQuit]
 Coordinates=653,728,95,36
@@ -421,9 +397,6 @@ Coordinates=940,350,102,36
 [Panel8]
 Coordinates=171,282,55,58
 
-[Shape2]
-Coordinates=871,350,59,36
-
 [ButtonFlatAddTask]
 Coordinates=737,350,124,36
 
@@ -435,9 +408,6 @@ Coordinates=373,146,55,58
 
 [ButtonFlatMenuFile]
 Coordinates=448,350,126,36
-
-[ButtonFlatClose]
-Coordinates=332,350,106,36
 
 [ButtonFlat12]
 Coordinates=234,350,88,36
@@ -466,9 +436,6 @@ Coordinates=102,78,53,58
 [Label7]
 Coordinates=507,282,53,58
 
-[ButtonFlatNotes]
-Coordinates=998,282,107,36
-
 [ButtonFlatTimeToHH]
 Coordinates=853,282,135,36
 
@@ -477,4 +444,7 @@ Coordinates=286,672,88,36
 
 [ButtonFlatSaveNote]
 Coordinates=608,534,80,36
+
+[Calendar1]
+Coordinates=210,626,67,36
 

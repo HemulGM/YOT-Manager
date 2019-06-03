@@ -1,31 +1,35 @@
 unit YOTM.DB;
 
 interface
-  uses SQLite3, SQLLang, SQLiteTable3, System.Generics.Collections, HGM.Controls.VirtualTable;
 
-  type
-   TOnLogEvent = procedure(Text:string) of object;
-   TDB = class
-    private
-     FDataBase:TSQLiteDatabase;
-     FDataBaseName:string;
-     FCreated:Boolean;
-     FOnLog: TOnLogEvent;
-     procedure DoLog(Text:string);
-     procedure SetOnLog(const Value: TOnLogEvent);
-     procedure OnQuery(Sender:TObject; SQL:String);
-    public
-     constructor Create(FileName:string);
-     destructor Destroy; override;
-     procedure Log(Text:string);
-     property DataBaseName:string read FDataBaseName;
-     property DB:TSQLiteDatabase read FDataBase;
-     property Created:Boolean read FCreated;
-     property OnLog:TOnLogEvent read FOnLog write SetOnLog;
-   end;
+uses
+  SQLite3, SQLLang, SQLiteTable3, System.Generics.Collections,
+  HGM.Controls.VirtualTable;
 
- var
-   FDB:TDB;                                                                     //База
+type
+  TOnLogEvent = procedure(Text: string) of object;
+
+  TDB = class
+  private
+    FDataBase: TSQLiteDatabase;
+    FDataBaseName: string;
+    FCreated: Boolean;
+    FOnLog: TOnLogEvent;
+    procedure DoLog(Text: string);
+    procedure SetOnLog(const Value: TOnLogEvent);
+    procedure OnQuery(Sender: TObject; SQL: string);
+  public
+    constructor Create(FileName: string);
+    destructor Destroy; override;
+    procedure Log(Text: string);
+    property DataBaseName: string read FDataBaseName;
+    property DB: TSQLiteDatabase read FDataBase;
+    property Created: Boolean read FCreated;
+    property OnLog: TOnLogEvent read FOnLog write SetOnLog;
+  end;
+
+var
+  FDB: TDB;                                                                     //База
 
 implementation
 
@@ -33,36 +37,38 @@ implementation
 
 constructor TDB.Create(FileName: string);
 begin
- FCreated:=False;
- FDataBase:=TSQLiteDatabase.Create(FileName);
- FDataBase.OnQuery:=OnQuery;
- FCreated:=True;
+  FCreated := False;
+  FDataBase := TSQLiteDatabase.Create(FileName);
+  FDataBase.OnQuery := OnQuery;
+  FCreated := True;
 end;
 
 destructor TDB.Destroy;
 begin
- FDataBase.Free;
- inherited;
+  FDataBase.Free;
+  inherited;
 end;
 
 procedure TDB.DoLog(Text: string);
 begin
- if Assigned(FOnLog) then FOnLog(Text);
+  if Assigned(FOnLog) then
+    FOnLog(Text);
 end;
 
 procedure TDB.Log(Text: string);
 begin
- DoLog(Text);
+  DoLog(Text);
 end;
 
-procedure TDB.OnQuery(Sender: TObject; SQL: String);
+procedure TDB.OnQuery(Sender: TObject; SQL: string);
 begin
- DoLog(SQL);
+  DoLog(SQL);
 end;
 
 procedure TDB.SetOnLog(const Value: TOnLogEvent);
 begin
- FOnLog:=Value;
+  FOnLog := Value;
 end;
 
 end.
+
