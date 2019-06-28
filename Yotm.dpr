@@ -25,7 +25,8 @@ uses
   YOTM.Manager in 'YOTM.Manager.pas',
   YOTM.Form.DateNotify.TaskRepeat in 'YOTM.Form.DateNotify.TaskRepeat.pas' {FormTaskRepeat},
   YOTM.Form.OverlayTime in 'YOTM.Form.OverlayTime.pas' {FormTimeOverlay},
-  YOTM.DB.TaskRepeats in 'YOTM.DB.TaskRepeats.pas';
+  YOTM.DB.TaskRepeats in 'YOTM.DB.TaskRepeats.pas',
+  YOTM.Form.DateEdit in 'YOTM.Form.DateEdit.pas' {FormDateEdit};
 
 {$R *.res}
 
@@ -35,6 +36,7 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.Title := 'YOT Manager';
   Application.CreateForm(TFormMain, FormMain);
+  Application.CreateForm(TFormDateEdit, FormDateEdit);
   FormMain.Initializate;
   Application.Run;
 end.

@@ -68,9 +68,6 @@ Coordinates=10,626,121,36
 [TableExTasks]
 Coordinates=502,534,96,36
 
-[Panel5]
-Coordinates=725,214,55,58
-
 [MenuItemDropTaskLink]
 Coordinates=1090,56,151,36
 
@@ -214,9 +211,6 @@ Coordinates=10,534,127,36
 
 [TimerAutoSaveTask]
 Coordinates=78,728,131,36
-
-[Panel6]
-Coordinates=877,214,55,58
 
 [Shape5]
 Coordinates=550,672,59,36
@@ -447,4 +441,10 @@ Coordinates=608,534,80,36
 
 [Calendar1]
 Coordinates=210,626,67,36
+
+[PanelNoteInfo]
+Coordinates=877,214,55,58
+
+[PanelNoteTools]
+Coordinates=725,214,55,58
 

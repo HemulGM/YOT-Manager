@@ -11,6 +11,7 @@ object FormCustom: TFormCustom
   Font.Height = -16
   Font.Name = 'Tahoma'
   Font.Style = []
+  KeyPreview = True
   Padding.Left = 2
   Padding.Top = 2
   Padding.Right = 2
@@ -20,6 +21,7 @@ object FormCustom: TFormCustom
   OnActivate = FormActivate
   OnCreate = FormCreate
   OnHide = FormHide
+  OnKeyUp = FormKeyUp
   OnPaint = FormPaint
   OnShow = FormShow
   PixelsPerInch = 96

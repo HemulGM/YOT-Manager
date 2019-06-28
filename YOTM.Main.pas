@@ -12,7 +12,7 @@ uses
   YOTM.Form.Notify.Task, Vcl.AppEvnts, Vcl.Menus, YOTM.DB.Comments,
   YOTM.DB.Labels, YOTM.DB.Tasks, YOTM.DB.TaskRepeats, YOTM.DB.Times,
   HGM.Common.Utils, YOTM.DB.LabelTypes, YOTM.DB.Notes, YOTM.Manager, HGM.Popup,
-  Vcl.ColorGrd, HGM.Controls.ColorGrid;
+  HGM.Controls.ColorGrid;
 
 type
   TFontItem = record
@@ -142,10 +142,10 @@ type
     PanelLog: TPanel;
     MemoLog: TMemo;
     Shape13: TShape;
-    Panel5: TPanel;
+    PanelNoteTools: TPanel;
     ButtonFlatSaveNote: TButtonFlat;
     ButtonFlatLoadback: TButtonFlat;
-    Panel6: TPanel;
+    PanelNoteInfo: TPanel;
     Shape14: TShape;
     Shape15: TShape;
     LabelNoteModify: TLabel;
@@ -231,7 +231,7 @@ type
     MemoNote: TRichEdit;
     EditTaskName: TRichEdit;
     MemoTaskDesc: TRichEdit;
-    Panel17: TPanel;
+    PanelTextFormat: TPanel;
     Panel18: TPanel;
     Panel15: TPanel;
     Panel16: TPanel;
@@ -282,6 +282,13 @@ type
     ButtonFlatClose: TButtonFlat;
     PanelSelectCurDate: TPanel;
     Calendar: TCalendarView;
+    MenuItemMoveTask: TMenuItem;
+    Shape2: TShape;
+    PanelNoteList: TPanel;
+    PanelNoteListCaption: TPanel;
+    Label2: TLabel;
+    ButtonFlatCollapseNoteList: TButtonFlat;
+    TableExNotes: TTableEx;
     procedure TimerRepaintTimer(Sender: TObject);
     procedure DrawPanelPaint(Sender: TObject);
     procedure DrawPanelMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
@@ -299,7 +306,6 @@ type
     procedure ButtonFlatSettingsClick(Sender: TObject);
     procedure ButtonFlat7Click(Sender: TObject);
     procedure ButtonFlat6Click(Sender: TObject);
-    procedure Calendar1CloseUp(Sender: TObject);
     procedure ButtonFlatMinimizeClick(Sender: TObject);
     procedure ButtonFlatTimesClick(Sender: TObject);
     procedure ButtonFlatCalendarClick(Sender: TObject);
@@ -355,7 +361,6 @@ type
     procedure DrawGridCalendarMouseEnter(Sender: TObject);
     procedure DrawGridCalendarMouseLeave(Sender: TObject);
     procedure EditNewTaskNameKeyPress(Sender: TObject; var Key: Char);
-    procedure Calendar1Change(Sender: TObject);
     procedure ButtonFlatCurrentDateClick(Sender: TObject);
     procedure TableExTasksHotOver(Sender: TObject);
     procedure MenuItemLinkWithTaskClick(Sender: TObject);
@@ -405,7 +410,10 @@ type
     procedure CalendarDrawDayItem(Sender: TObject;
       DrawParams: TDrawViewInfoParams; CalendarViewViewInfo: TCellItemViewInfo);
     procedure CalendarChange(Sender: TObject);
-    procedure CalendarClick(Sender: TObject);
+    procedure MenuItemMoveTaskClick(Sender: TObject);
+    procedure TableExNotesGetData(FCol, FRow: Integer; var Value: string);
+    procedure ButtonFlatCollapseNoteListClick(Sender: TObject);
+    procedure TableExNotesDblClick(Sender: TObject);
   protected
     procedure WMSysCommand(var Message: TWMSysCommand); message WM_SYSCOMMAND;
     procedure WMQueryEndSession(var Msg: TWMQueryEndSession); message WM_QUERYENDSESSION;
@@ -460,6 +468,7 @@ type
     FPopupColor: TFormPopup;
     FPopupCal: TFormPopup;
     FFontItems: TFontItems;
+    FActualNotes: TActualNotes;
     FDateChanging: Boolean;
     function AddTask(Name: string = ''; Date: TDateTime = 0): TTaskItem;
     function AddTaskTime(ADate, ADateEnd: TDate; TStart, TEnd: TTime; ATaskID: Integer; AColor: TColor): Boolean;
@@ -517,6 +526,7 @@ type
     procedure SaveTaskDescription;
     procedure SetButtonCheckColor(Button: TButtonFlat; Value: Boolean);
     procedure SetCalendarDate(Value: TDateTime);
+    procedure ShowForm;
   public
     AccentColor: TColor;
     BackgroundColor: TColor;
@@ -565,7 +575,7 @@ implementation
 uses
   Math, YOTM.Form.EditTime, DateUtils, YOTM.Form.Dialog, YOTM.Form.SelectLabels,
   Winapi.CommCtrl, YOTM.Form.DateNotify, YOTM.Form.OverlayTime,
-  HGM.Common.DateUtils;
+  HGM.Common.DateUtils, YOTM.Form.DateEdit;
 
 {$R *.dfm}
 
@@ -1447,8 +1457,14 @@ begin
 end;
 
 procedure TFormMain.ButtonFlatTaskLabelsClick(Sender: TObject);
+var
+  Task: TTaskItem;
 begin
-  MenuItemTaskLabelAddClick(nil);
+  if not IndexInList(FTaskID, FTaskItems.Count) then
+    Exit;
+  Task := FTaskItems[FTaskID];
+  if TFormSelectLabels.Select(Task.LabelItems, Task.ID) then
+    TableExTasks.Repaint;
 end;
 
 procedure TFormMain.ButtonFlatTaskStateClick(Sender: TObject);
@@ -1487,6 +1503,20 @@ begin
       FToMM := Min(Max(0, FToMM + 1), 59);
   end;
   UpdateTime;
+end;
+
+procedure TFormMain.ButtonFlatCollapseNoteListClick(Sender: TObject);
+begin
+  if PanelNoteList.Height >= 220 then
+  begin
+    PanelNoteList.Height := 40;
+    ButtonFlatCollapseNoteList.ImageIndex := 14;
+  end
+  else
+  begin
+    PanelNoteList.Height := 220; // 10 - | 14 +
+    ButtonFlatCollapseNoteList.ImageIndex := 10;
+  end;
 end;
 
 procedure TFormMain.ButtonFlatFGColorDialogClick(Sender: TObject);
@@ -1710,7 +1740,7 @@ end;
 
 procedure TFormMain.ButtonFlatCollapseScaleClick(Sender: TObject);
 begin
-  if PanelTimeScale.Height >= 200 then
+  if PanelTimeScale.Height >= 220 then
   begin
     PanelTimeScale.Height := 42;
     DrawPanel.Visible := False;
@@ -1719,7 +1749,7 @@ begin
   else
   begin
     DrawPanel.Visible := True;
-    PanelTimeScale.Height := 200; // 10 - | 14 +
+    PanelTimeScale.Height := 220; // 10 - | 14 +
     ButtonFlatCollapseScale.ImageIndex := 10;
   end;
 end;
@@ -1735,20 +1765,13 @@ begin
     FPopupCal := nil;
   end;
   FPopupCal := TFormPopup.Create(Self, PanelSelectCurDate, pt.X, pt.Y);
-
-{
-  SendMessage(Calendar.Handle, WM_NCACTIVATE, Integer(True), 0);
-  FocusControl(Calendar);
-  PostMessage(Calendar.Handle, WM_KEYDOWN, VK_SPACE, 0);   }
-
 end;
 
 procedure TFormMain.SetButtonWCaption(Target, CloseButton: TButtonFlat; Panel: TPanel; ACaption: string; ACloseBotton: Boolean);
 
   function WidthPlus: Integer;
   begin
- //if (Target.ImageIndex >= 0) and Assigned(Target.Images) then Exit(Target.Images.Width + Target.ImageIndentLeft+Target.ImageIndentRight) else
-    Exit(0);
+    Result := 0;
   end;
 
 begin
@@ -1889,8 +1912,8 @@ begin
         FVisNeed := PanelNotes;
         ButtonFlatNotes.ColorNormal := ForegroundColor;
       end;
-  end;  {
-  if FVisNeed <> FVisNow then
+  end;
+  {if FVisNeed <> FVisNow then
   begin
     FVisNeed.Left := FVisNow.Width;
     FVisNeed.Top := 0;
@@ -2011,35 +2034,15 @@ begin
   DrawParams.ForegroundColor := clWhite;
 end;
 
-procedure TFormMain.Calendar1Change(Sender: TObject);
-begin
-  ButtonFlatCurrentDate.Caption := FormatDateTime('DD MMM YYYY', Calendar.Date);
-end;
-
-procedure TFormMain.Calendar1CloseUp(Sender: TObject);
-begin      {
-  if Calendar.IsEmpty then
-    Calendar.Date := Now;
-  ViewMode := vmSelectedDate;  }
-end;
-
 procedure TFormMain.CalendarChange(Sender: TObject);
 begin
   if FDateChanging then Exit;
-  ButtonFlatCurrentDate.Caption := FormatDateTime('DD MMM YYYY', Calendar.Date);
   if Assigned(FPopupCal) then
   begin
     FPopupCal.Close;
     FPopupCal := nil;
   end;
   ViewMode := vmSelectedDate;
-end;
-
-procedure TFormMain.CalendarClick(Sender: TObject);
-begin     {
-  if Calendar.IsEmpty then
-    Calendar.Date := Now;   }
-  
 end;
 
 procedure TFormMain.CalendarDrawDayItem(Sender: TObject;
@@ -2111,8 +2114,10 @@ begin
         ButtonFlatViewMode.Caption := FLastLabelCaption;
       end;
   end;
+  ButtonFlatCurrentDate.Caption := FormatDateTime('DD MMM YYYY', Calendar.Date);
   ButtonFlatViewMode.Width := Max(90, ButtonFlatViewMode.GetTextWidth + 20);
   ButtonFlatViewMode.Left := PanelTaskEdit.Width div 2 - ButtonFlatViewMode.Width div 2;
+  FActualNotes.Reload(Now);
   UpdateTaskPanel;
   UpdateViewModeParam;
   OnChangeItems;
@@ -2298,6 +2303,7 @@ begin
   FTimeManager := TManager.Create(FDB);
   FTimeManager.OnWorkDayStarted := WorkDayStarted;
   FTimeManager.OnTaskNotify := TaskNotify;
+  Manager := FTimeManager;
   FormTimeOverlay := TFormTimeOverlay.Create(nil);
   FormTimeOverlay.Callback := TimeOverlayCallBack;
 
@@ -2435,6 +2441,7 @@ begin
   FTasksOfCalendar := TTaskItems.Create(FDB, nil);
   FNotifyItems := TNotifyItems.Create;
   FFontItems := TFontItems.Create(TableExFonts);
+  FActualNotes := TActualNotes.Create(FDB, TableExNotes);
   //
   FEmptyTask := TTaskItem.Create(FTaskItems);
   FEmptyTask.ID := -1;
@@ -2467,6 +2474,8 @@ begin
   FTimeManager.Free;
   FormTimeOverlay.Free;
   FEmptyTask.Free;
+  FActualNotes.Clear;
+  FActualNotes.Free;
 end;
 
 procedure TFormMain.FormPaint(Sender: TObject);
@@ -2474,6 +2483,13 @@ begin
   Canvas.Pen.Color := $00ADADAD;
   Canvas.Pen.Width := 3;
   Canvas.Rectangle(ClientRect);
+end;
+
+procedure TFormMain.ShowForm;
+begin
+  Show;
+  ShowWindow(Handle, SW_SHOW);
+  BringToFront;
 end;
 
 procedure TFormMain.MemoNoteContextPopup(Sender: TObject; MousePos: TPoint; var Handled: Boolean);
@@ -2563,6 +2579,21 @@ begin
   FTimeItems[TableExTimes.ItemIndex].Color := FTaskItems[TableExTasks.ItemIndex].Color;
   FTimeItems.Update(FTimeItems[TableExTimes.ItemIndex]);
   FTimeItems.UpdateTable;
+end;
+
+procedure TFormMain.MenuItemMoveTaskClick(Sender: TObject);
+var Date: TDate;
+    Task: TTaskItem;
+begin
+  if not TaskSelected then Exit;
+  Task := CurrentTask;
+  Date := Task.DateDeadline;
+  if TFormDateEdit.Select(Date) then
+  begin
+    Task.DateDeadline := Date;
+    FTaskItems.Update(Task);
+    FTaskItems.Reload;
+  end;
 end;
 
 procedure TFormMain.MenuItemOpenLabelsClick(Sender: TObject);
@@ -2747,6 +2778,9 @@ begin
   MI.Caption := 'Сбросить';
   MI.OnClick := MenuItemTaskLabelReset;
   MenuItemTaskLabels.Add(MI);
+
+
+  MenuItemMoveTask.Enabled := (CurrentTask.TaskType = ttSimple) and TaskSelected;
 end;
 
 procedure TFormMain.NoteInfo;
@@ -2856,7 +2890,7 @@ procedure TFormMain.TableExCommentsGetData(FCol, FRow: Integer; var Value: strin
 begin
   if not IndexInList(FRow, FComments.Count) then
   begin
-    Value := 'Пусто';
+    Value := 'Нет комментариев';
     Exit;
   end;
   Value := '';
@@ -2899,6 +2933,26 @@ begin
   begin
     MemoNote.SelAttributes.Name := FFontItems[Index].FontName;
     MemoNoteSelectionChange(nil);
+  end;
+end;
+
+procedure TFormMain.TableExNotesDblClick(Sender: TObject);
+begin
+  if not IndexInList(TableExNotes.ItemIndex, FActualNotes.Count) then
+    Exit;
+  SetCalendarDate(FActualNotes[TableExNotes.ItemIndex].Date);
+  ViewMode := vmSelectedDate;
+end;
+
+procedure TFormMain.TableExNotesGetData(FCol, FRow: Integer; var Value: string);
+begin
+  if not IndexInList(FRow, FActualNotes.Count) then
+    Exit;
+  case FCol of
+    0:
+    begin
+      Value := DateTimeToStr(FActualNotes[FRow].Date);
+    end;
   end;
 end;
 
@@ -3069,7 +3123,7 @@ begin
               TxtRect.Right := TxtRect.Left + 10;
          //TxtRect.Inflate(0, -1);
 
-         //Gradient(Handle, TxtRect, Task.Color, Brush.Color, False);
+            Gradient(Handle, TxtRect, Task.Color, Brush.Color, False);
 
             TxtRect := Rect;
             TxtRect.Right := TxtRect.Left + Round(((TxtRect.Width div 3) / 100 * Abs(100 - FAnimate)));
@@ -3081,14 +3135,17 @@ begin
           TxtRect := Rect;
           TxtRect.Offset(2, 2);
           TxtRect.Bottom := TxtRect.Top + 20;
-          TxtRect.Right := TxtRect.Right - 130;
+          TxtRect.Right := TxtRect.Right - 180;
           Brush.Style := bsClear;
           Txt := Task.Name;
           TextRect(TxtRect, Txt, [tfSingleLine, tfLeft, tfVerticalCenter, tfEndEllipsis]);
 
           if Task.Deadline then
           begin
-            Txt := HumanDateTime(Task.DateDeadline, False, True);
+            if not Task.Notify then
+              Txt := HumanDateTime(Task.DateDeadline, False, True)
+            else
+              Txt := HumanDateTime(Task.DateDeadline + Task.TimeNotify, True, True);
           end
           else
           begin
@@ -3097,7 +3154,7 @@ begin
           end;
           TxtRect := Rect;
           TxtRect.Offset(2, 2);
-          TxtRect.Left := TxtRect.Right - 130;
+          TxtRect.Left := TxtRect.Right - 180;
        //TxtRect.Bottom:=TxtRect.Top + 20;
           Brush.Style := bsClear;
           TextRect(TxtRect, Txt, [tfLeft, tfWordBreak]);
@@ -3376,8 +3433,7 @@ end;
 
 procedure TFormMain.TrayIconClick(Sender: TObject);
 begin
-  Show;
-  ShowWindow(Handle, SW_SHOW);
+  ShowForm;
 end;
 
 { TNotifyItems }

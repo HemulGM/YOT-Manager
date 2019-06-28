@@ -9,10 +9,18 @@ uses
   HGM.Controls.PanelExt, Vcl.ComCtrls, System.Types, Vcl.StdCtrls,
   HGM.Controls.SpinEdit, Vcl.Grids, HGM.Controls.VirtualTable, YOTM.DB,
   Vcl.AppEvnts, Vcl.Menus, YOTM.DB.Comments, YOTM.DB.Labels, YOTM.DB.Tasks,
-  YOTM.DB.Times, HGM.Common.Utils, YOTM.DB.LabelTypes, sDialogs, YOTM.DB.Notes;
+  YOTM.DB.Times, HGM.Common.Utils, YOTM.DB.LabelTypes, YOTM.DB.Notes;
 
 type
   TTaskNotify = procedure(Task: TTaskItem) of object;
+
+  TNotifyWait = record
+    TaskID: Integer;
+    Time: TDateTime;
+  end;
+  TNotifyWaitList = class(TList<TNotifyWait>)
+
+  end;
 
   TManager = class(TObject)
   private
@@ -23,6 +31,7 @@ type
     FTimeNow: Integer;
     FOnWorkDayStarted: TNotifyEvent;
     FOnTaskNotify: TTaskNotify;
+    FNotifyWaitList: TNotifyWaitList;
     procedure SetDataBase(const Value: TDB);
     procedure OnTimerCheck(Sender: TObject);
     procedure SetActivate(const Value: Boolean);
@@ -34,6 +43,8 @@ type
   public
     constructor Create(ADataBase: TDB);
     destructor Destroy; override;
+    procedure AddNotifyWait(TaskID: Integer; Time: TTime);
+    function MoveTask(TaskID: Integer; NewDate: TDate): Boolean;
     property DataBase: TDB read FDataBase write SetDataBase;
     property Activate: Boolean read FActivate write SetActivate;
     property OnWorkDayStarted: TNotifyEvent read FOnWorkDayStarted write SetOnWorkDayStarted;
@@ -50,6 +61,14 @@ uses
 
 { TManager }
 
+procedure TManager.AddNotifyWait(TaskID: Integer; Time: TTime);
+var Item: TNotifyWait;
+begin
+  Item.TaskID := TaskID;
+  Item.Time := Time;
+  FNotifyWaitList.Add(Item);
+end;
+
 constructor TManager.Create(ADataBase: TDB);
 begin
   FDataBase := ADataBase;
@@ -59,13 +78,25 @@ begin
   FTimerCheck.OnTimer := OnTimerCheck;
   FTimeNow := GetMins(Now);
   FTasks := TTaskItems.Create(FDataBase, nil);
+  FNotifyWaitList := TNotifyWaitList.Create;
 end;
 
 destructor TManager.Destroy;
 begin
   FTasks.Free;
   FTimerCheck.Free;
+  FNotifyWaitList.Free;
   inherited;
+end;
+
+function TManager.MoveTask(TaskID: Integer; NewDate: TDate): Boolean;
+var Task: TTaskItem;
+begin
+  Task := FTasks.GetItem(TaskID);
+  Task.DateDeadline := NewDate;
+  Task.SaveIt;
+  FTasks.Update(Task);
+  Task.Free;
 end;
 
 procedure TManager.Notify(Task: TTaskItem);
@@ -79,6 +110,7 @@ var
   i: Integer;
   TkTime: Integer;
   DT: TDateTime;
+  Item: TTaskItem;
 begin
   DT := Now;
   TkTime := GetMins(DT);
@@ -92,6 +124,27 @@ begin
     TkTime := GetMins(FTasks[i].TimeNotify);
     if TkTime <= FTimeNow then
       Notify(FTasks[i]);
+  end;
+  //Если есть ожидающие уведомления
+  FTasks.Reload;
+  if FNotifyWaitList.Count > 0 then
+  begin
+    i := 0;
+    while i < FNotifyWaitList.Count do
+    begin
+      Item := FTasks.GetItem(FNotifyWaitList[i].TaskID);
+      if Assigned(Item) then
+      begin
+        TkTime := GetMins(FNotifyWaitList[i].Time);
+        if TkTime <= FTimeNow then
+        begin
+          Notify(Item);
+          FNotifyWaitList.Delete(i);
+        end
+        else Inc(i);
+      end
+      else FNotifyWaitList.Delete(i);
+    end;
   end;
 end;
 

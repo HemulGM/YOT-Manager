@@ -42,6 +42,21 @@ type
     property Loaded: Boolean read FLoaded;
   end;
 
+  TNoteRecord = record
+    ID: Integer;
+    Date: TDate;
+    DateModify: TDateTime;
+  end;
+
+  TActualNotes = class(TTableData<TNoteRecord>)
+  private
+    FDataBase: TDB;
+  public
+    procedure Reload(ADate: TDate);
+    constructor Create(ADataBase: TDB; ATableEx: TTableEx);
+    destructor Destroy; override;
+  end;
+
 implementation
 
 uses
@@ -113,7 +128,7 @@ begin
         FLoaded := True;
         EndCreate;
       end;
-    end; 
+    end;
     Table.Free;
   end;
 end;
@@ -164,6 +179,56 @@ end;
 procedure TNoteItem.SetID(const Value: Integer);
 begin
   FID := Value;
+end;
+
+{ TActualNotes }
+
+constructor TActualNotes.Create(ADataBase: TDB; ATableEx: TTableEx);
+begin
+  inherited Create(ATableEx);
+  FDataBase := ADataBase;
+end;
+
+destructor TActualNotes.Destroy;
+begin
+  Clear;
+  inherited;
+end;
+
+procedure TActualNotes.Reload(ADate: TDate);
+var
+  Table: TSQLiteTable;
+  Item: TNoteRecord;
+  Mem: TMemoryStream;
+begin
+  BeginUpdate;
+  Clear;
+  with SQL.Select(TNoteItem.tnTable) do
+  begin
+    AddField(TNoteItem.fnID);
+    AddField(TNoteItem.fnDate);
+    AddField(TNoteItem.fnModify);
+    AddField(TNoteItem.fnText);
+    WhereFieldBetween(TNoteItem.fnDate, ADate - 30, ADate + 30);
+    WhereFieldIsNotNull(TNoteItem.fnText);
+    Table := FDataBase.DB.GetTable(GetSQL);
+    EndCreate;
+    while not Table.EOF do
+    begin
+      Item.ID := Table.FieldAsInteger(0);
+      Item.Date := Table.FieldAsDateTime(1);
+      Item.DateModify := Table.FieldAsDateTime(2);
+      Mem := Table.FieldAsBlob(3);
+      if Assigned(Mem) then
+      begin
+        if Mem.Size > 0 then
+          Add(Item);
+      end;
+      Table.Next;
+    end;
+    Table.Free;
+  end;
+  EndUpdate;
 end;
 
 end.

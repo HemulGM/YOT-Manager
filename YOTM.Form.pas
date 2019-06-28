@@ -20,6 +20,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure LabelCaptionMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure FormKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     function GetCaption: string;
     procedure SetCaption(const Value: string);
@@ -48,8 +49,6 @@ begin
 end;
 
 procedure TFormCustom.FormCreate(Sender: TObject);
-const
-  CS_DROPSHADOW = $00020000;
 begin
   SetClassLong(Handle, GCL_STYLE, GetWindowLong(Handle, GCL_STYLE) or CS_DROPSHADOW);
  //Position:=poMainFormCenter;
@@ -62,11 +61,24 @@ begin
   AnimateWindow(Handle, 100, AW_BLEND or AW_HIDE);
 end;
 
+procedure TFormCustom.FormKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  case Key of
+    VK_ESCAPE:
+      if ButtonFlatClose.Enabled and ButtonFlatClose.Visible then
+        Close;
+  end;
+end;
+
 procedure TFormCustom.FormPaint(Sender: TObject);
 begin
   Canvas.Pen.Color := $002E2E2E;
   Canvas.Pen.Width := 3;
   Canvas.Rectangle(ClientRect);
+  {Canvas.Brush.Style := bsClear;
+  Canvas.Pen.Color := clBlack;
+  Canvas.Pen.Width := 1;
+  Canvas.Rectangle(ClientRect);}
 end;
 
 procedure TFormCustom.FormShow(Sender: TObject);

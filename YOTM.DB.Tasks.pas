@@ -177,7 +177,8 @@ type
     function GetCount(Date: TDate = 0): Integer;
     function GetDeadlined(Date: TDate): Integer;
     function GetItem(ID: Integer): TTaskItem;
-    procedure Update(Task: TTaskItem);
+    procedure Update(Task: TTaskItem); overload;
+    procedure Update(Index: Integer); overload;
     procedure Delete(Index: Integer); override;
     procedure Save;
     function RepeatTaskState(Task: Integer; Date: TDate): Boolean;
@@ -496,20 +497,20 @@ begin
     AddField('Count(*)');
 
     WhereParenthesesOpen;
-    WhereParenthesesOpen;
-    WhereParenthesesOpen;
-    WhereFieldEqual(fnNotify, True);
-    WhereField(fnTimeNotify, ' < ', TimeOf(Date));
-    WhereParenthesesClose;
-    WhereField(fnDateDeadline, ' = ', DateOf(Date));
-    WhereParenthesesClose;
-    WhereField(fnDateDeadline, '<', DateOf(Date), wuOR);
+      WhereParenthesesOpen;
+        WhereParenthesesOpen;
+          WhereFieldEqual(fnNotify, True);
+          WhereField(fnTimeNotify, ' < ', TimeOf(Date));
+        WhereParenthesesClose;
+        WhereField(fnDateDeadline, ' = ', DateOf(Date));
+      WhereParenthesesClose;
+      WhereField(fnDateDeadline, '<', DateOf(Date), wuOR);
     WhereParenthesesClose;
 
     WhereNotFieldEqual(fnNotifyComplete, True);
     WhereFieldEqual(fnDeadline, True);
     WhereFieldEqual(fnState, False);
-    WhereFieldEqual(fnTaskType, Ord(ttSimple));
+    //WhereFieldEqual(fnTaskType, Ord(ttSimple));
     Result := FDataBase.DB.GetTableValue(GetSQL);
     EndCreate;
   end;
@@ -608,6 +609,11 @@ begin
         end;
       end;
   end;
+end;
+
+procedure TTaskItems.Update(Index: Integer);
+begin
+  Update(Items[Index]);
 end;
 
 function TTaskItems.ListCount(Date: TDate; var Actual, NotActual, Deadlined, Repeated: Integer): Integer;

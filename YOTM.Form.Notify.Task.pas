@@ -24,11 +24,17 @@ type
     MenuItemHO15: TMenuItem;
     MenuItemHO20: TMenuItem;
     MenuItemHO25: TMenuItem;
+    LabelTime: TLabel;
     procedure ButtonFlatHoldOverMoreClick(Sender: TObject);
     procedure ButtonFlatCloseClick(Sender: TObject);
     procedure ButtonFlatTaskStateClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormHide(Sender: TObject);
+    procedure MenuItemHO5Click(Sender: TObject);
+    procedure MenuItemHO10Click(Sender: TObject);
+    procedure MenuItemHO15Click(Sender: TObject);
+    procedure MenuItemHO20Click(Sender: TObject);
+    procedure MenuItemHO25Click(Sender: TObject);
   private
     TaskID: Integer;
     Deadline: TDate;
@@ -43,7 +49,7 @@ var
 implementation
 
 uses
-  YOTM.Main;
+  YOTM.Main, HGM.Common.Utils, YOTM.Manager;
 
 {$R *.dfm}
 
@@ -75,6 +81,36 @@ begin
   AnimateWindow(Handle, 500, AW_BLEND or AW_SLIDE);
 end;
 
+procedure TFormNotifyTask.MenuItemHO5Click(Sender: TObject);
+begin
+  Manager.AddNotifyWait(TaskID, Now + 1/24/60 * 5);
+  Close;
+end;
+
+procedure TFormNotifyTask.MenuItemHO10Click(Sender: TObject);
+begin
+  Manager.AddNotifyWait(TaskID, Now + 1/24/60 * 10);
+  Close;
+end;
+
+procedure TFormNotifyTask.MenuItemHO15Click(Sender: TObject);
+begin
+  Manager.AddNotifyWait(TaskID, Now + 1/24/60 * 15);
+  Close;
+end;
+
+procedure TFormNotifyTask.MenuItemHO20Click(Sender: TObject);
+begin
+  Manager.AddNotifyWait(TaskID, Now + 1/24/60 * 20);
+  Close;
+end;
+
+procedure TFormNotifyTask.MenuItemHO25Click(Sender: TObject);
+begin
+  Manager.AddNotifyWait(TaskID, Now + 1/24/60 * 25);
+  Close;
+end;
+
 class function TFormNotifyTask.Notify(Task: TTaskItem): TFormNotifyTask;
 begin
   Result := nil;
@@ -86,10 +122,12 @@ begin
     TaskID := Task.ID;
     Deadline := Task.DateDeadline;
     EditTaskName.Text := Task.Name;
+    LabelTime.Caption := HumanDateTime(Task.DateDeadline + Task.TimeNotify, True, True);
     SetButtonCheck(ButtonFlatTaskState, Task.State);
     Left := Screen.WorkAreaRect.Right - (Width + 20);
     Top := Screen.WorkAreaRect.Top + 20;
     Show;
+    BringToFront;
   except
     Free;
   end;

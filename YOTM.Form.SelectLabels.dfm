@@ -68,7 +68,7 @@ inherited FormSelectLabels: TFormSelectLabels
       end
       item
         Caption = #1062#1074#1077#1090
-        Width = 64
+        Width = 38
         MinWidth = 38
       end
       item
@@ -83,8 +83,8 @@ inherited FormSelectLabels: TFormSelectLabels
     ItemCount = 1
     LineColor = 3684408
     LineColorXor = 4079166
-    LineHotColor = 2763306
-    LineSelColor = 4934475
+    LineHotColor = 4934475
+    LineSelColor = 2763306
     ColumnsColor = 3684408
     FontHotLine.Charset = DEFAULT_CHARSET
     FontHotLine.Color = 15921906
