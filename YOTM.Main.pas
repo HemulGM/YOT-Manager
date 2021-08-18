@@ -19,11 +19,13 @@ type
     FontName: string;
     class function Create(const FontName: string): TFontItem; static;
   end;
+
   TFontItems = TTableData<TFontItem>;
 
   TTimeSection = record
     TimeS, TimeE: TTime;
   end;
+
   TTimeSections = TList<TTimeSection>;
 
   TCalendarCell = record
@@ -63,7 +65,6 @@ type
   TViewMode = (vmToday, vmSelectedDate, vmDeadlined, vmInbox, vmLabel);
 
   TSlide = (slTimes, slSettings, slCalendar, slNotes);
-
 
   TFormMain = class(TForm)
     TimerRepaint: TTimer;
@@ -407,8 +408,7 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure DrawGridCalendarClick(Sender: TObject);
     procedure ButtonFlatFGColorDialogClick(Sender: TObject);
-    procedure CalendarDrawDayItem(Sender: TObject;
-      DrawParams: TDrawViewInfoParams; CalendarViewViewInfo: TCellItemViewInfo);
+    procedure CalendarDrawDayItem(Sender: TObject; DrawParams: TDrawViewInfoParams; CalendarViewViewInfo: TCellItemViewInfo);
     procedure CalendarChange(Sender: TObject);
     procedure MenuItemMoveTaskClick(Sender: TObject);
     procedure TableExNotesGetData(FCol, FRow: Integer; var Value: string);
@@ -754,8 +754,8 @@ begin
   NotCompleted := 0;
   for i := 0 to FTasksOfCalendar.Count - 1 do
     if (not FTasksOfCalendar[i].State) and (FTasksOfCalendar[i].Deadline) and (DateOf(FTasksOfCalendar[i].DateDeadline) <= DateOf(Now)) then
-     if (not FTasksOfCalendar[i].IsOftenRepeat) or FTasksOfCalendar.CalcOftenRepeat then
-      Inc(NotCompleted);
+      if (not FTasksOfCalendar[i].IsOftenRepeat) or FTasksOfCalendar.CalcOftenRepeat then
+        Inc(NotCompleted);
 
   for i := 1 to DrawGridCalendar.RowCount - 1 do
     for j := 0 to DrawGridCalendar.ColCount - 1 do
@@ -1099,11 +1099,11 @@ begin
           tmpRect.Left := FScaleRect.Left + 3;
         if tmpRect.Right >= FScaleRect.Right - 3 then
           tmpRect.Right := FScaleRect.Right - 3;
-        if tmpRect.Left >= FScaleRect.Right - 3 then Continue;
+        if tmpRect.Left >= FScaleRect.Right - 3 then
+          Continue;
 
         tmpRect.Left := Max(Min(tmpRect.Left, FScaleRect.Right), FScaleRect.Left);
         tmpRect.Right := Max(Min(tmpRect.Right, FScaleRect.Right), FScaleRect.Left);
-
 
         Brush.Style := bsSolid;
         RoundRect(tmpRect, tmpRect.Height, tmpRect.Height);
@@ -1111,7 +1111,8 @@ begin
         begin
           FTimeItemUnderCursor := i;
           Str := FTimeItems[i].Description;
-          if Str = '' then Str := 'Нет описания';
+          if Str = '' then
+            Str := 'Нет описания';
 
           LastTextWidth := TextWidth(Str) + 10;
           if LastLeft = -1 then
@@ -1764,7 +1765,7 @@ begin
     FPopupCal.Close;
     FPopupCal := nil;
   end;
-  FPopupCal := TFormPopup.Create(Self, PanelSelectCurDate, pt.X, pt.Y);
+  FPopupCal := TFormPopup.CreatePopup(Self, PanelSelectCurDate, nil, pt.X, pt.Y, []);
 end;
 
 procedure TFormMain.SetButtonWCaption(Target, CloseButton: TButtonFlat; Panel: TPanel; ACaption: string; ACloseBotton: Boolean);
@@ -1804,7 +1805,7 @@ var
 begin
   pt := ButtonFlatFonts.ClientToScreen(Point(0, 0));
   TableExFonts.Height := Min(400, TableExFonts.ItemCount * TableExFonts.DefaultRowHeight + 2);
-  FPopupFonts := TFormPopup.Create(Self, TableExFonts, pt.X, pt.Y + ButtonFlatFonts.Height);
+  FPopupFonts := TFormPopup.CreatePopup(Self, TableExFonts, nil, pt.X, pt.Y + ButtonFlatFonts.Height, []);
 end;
 
 procedure SetButtonFontSize(Button: TButtonFlat; Size: Integer);
@@ -1890,7 +1891,6 @@ begin
   ButtonFlatCalendar.ColorNormal := BackgroundColor;
   ButtonFlatNotes.ColorNormal := BackgroundColor;
 
-
   case Slide of
     slTimes:
       begin
@@ -1927,10 +1927,22 @@ begin
   ButtonFlatSettings.ShowCaption := FVisNeed = PanelSettings;
   ButtonFlatCalendar.ShowCaption := FVisNeed = PanelCalendar;
   ButtonFlatNotes.ShowCaption := FVisNeed = PanelNotes;
-  if ButtonFlatTimes.ShowCaption then ButtonFlatTimes.Width := 130 else ButtonFlatTimes.Width := 40;
-  if ButtonFlatSettings.ShowCaption then ButtonFlatSettings.Width := 130 else ButtonFlatSettings.Width := 40;
-  if ButtonFlatCalendar.ShowCaption then ButtonFlatCalendar.Width := 130 else ButtonFlatCalendar.Width := 40;
-  if ButtonFlatNotes.ShowCaption then ButtonFlatNotes.Width := 130 else ButtonFlatNotes.Width := 40;
+  if ButtonFlatTimes.ShowCaption then
+    ButtonFlatTimes.Width := 130
+  else
+    ButtonFlatTimes.Width := 40;
+  if ButtonFlatSettings.ShowCaption then
+    ButtonFlatSettings.Width := 130
+  else
+    ButtonFlatSettings.Width := 40;
+  if ButtonFlatCalendar.ShowCaption then
+    ButtonFlatCalendar.Width := 130
+  else
+    ButtonFlatCalendar.Width := 40;
+  if ButtonFlatNotes.ShowCaption then
+    ButtonFlatNotes.Width := 130
+  else
+    ButtonFlatNotes.Width := 40;
 
   Enabled := True;
 end;
@@ -1969,7 +1981,7 @@ var
 begin
   pt := ButtonFlatNoteBG.ClientToScreen(Point(0, 0));
   ColorGridNoteBG.SelectedColor := RichEditGetBGCOlor(MemoNote, clNone);
-  FPopupColor := TFormPopup.Create(Self, PanelNoteBGColor, pt.X, pt.Y + ButtonFlatNoteBG.Height);
+  FPopupColor := TFormPopup.CreatePopup(Self, PanelNoteBGColor, nil, pt.X, pt.Y + ButtonFlatNoteBG.Height, []);
 end;
 
 procedure TFormMain.ButtonFlatNoteBGNoColorClick(Sender: TObject);
@@ -1995,7 +2007,7 @@ var
 begin
   pt := ButtonFlatNoteFG.ClientToScreen(Point(0, 0));
   ColorGridNoteFG.SelectedColor := MemoNote.SelAttributes.Color;
-  FPopupColor := TFormPopup.Create(Self, PanelNoteFGColor, pt.X, pt.Y + ButtonFlatNoteFG.Height);
+  FPopupColor := TFormPopup.CreatePopup(Self, PanelNoteFGColor, nil, pt.X, pt.Y + ButtonFlatNoteFG.Height, []);
 end;
 
 procedure TFormMain.ButtonFlatNoteParLeftClick(Sender: TObject);
@@ -2036,7 +2048,8 @@ end;
 
 procedure TFormMain.CalendarChange(Sender: TObject);
 begin
-  if FDateChanging then Exit;
+  if FDateChanging then
+    Exit;
   if Assigned(FPopupCal) then
   begin
     FPopupCal.Close;
@@ -2045,8 +2058,7 @@ begin
   ViewMode := vmSelectedDate;
 end;
 
-procedure TFormMain.CalendarDrawDayItem(Sender: TObject;
-  DrawParams: TDrawViewInfoParams; CalendarViewViewInfo: TCellItemViewInfo);
+procedure TFormMain.CalendarDrawDayItem(Sender: TObject; DrawParams: TDrawViewInfoParams; CalendarViewViewInfo: TCellItemViewInfo);
 begin
   DrawParams.ForegroundColor := clWhite;
 end;
@@ -2582,10 +2594,12 @@ begin
 end;
 
 procedure TFormMain.MenuItemMoveTaskClick(Sender: TObject);
-var Date: TDate;
-    Task: TTaskItem;
+var
+  Date: TDate;
+  Task: TTaskItem;
 begin
-  if not TaskSelected then Exit;
+  if not TaskSelected then
+    Exit;
   Task := CurrentTask;
   Date := Task.DateDeadline;
   if TFormDateEdit.Select(Date) then
@@ -2779,7 +2793,6 @@ begin
   MI.OnClick := MenuItemTaskLabelReset;
   MenuItemTaskLabels.Add(MI);
 
-
   MenuItemMoveTask.Enabled := (CurrentTask.TaskType = ttSimple) and TaskSelected;
 end;
 
@@ -2950,9 +2963,9 @@ begin
     Exit;
   case FCol of
     0:
-    begin
-      Value := DateTimeToStr(FActualNotes[FRow].Date);
-    end;
+      begin
+        Value := DateTimeToStr(FActualNotes[FRow].Date);
+      end;
   end;
 end;
 
@@ -3451,14 +3464,16 @@ procedure TNotifyItems.Clear;
 var
   i: Integer;
 begin
-  for i := 0 to Count-1 do
-    if Assigned(Items[i].Form) then Items[i].Form.Free;
+  for i := 0 to Count - 1 do
+    if Assigned(Items[i].Form) then
+      Items[i].Form.Free;
   inherited;
 end;
 
 procedure TNotifyItems.Delete(Index: Integer);
 begin
-  if Assigned(Items[Index].Form) then Items[Index].Form.Free;
+  if Assigned(Items[Index].Form) then
+    Items[Index].Form.Free;
   inherited;
 end;
 

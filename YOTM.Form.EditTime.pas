@@ -74,7 +74,7 @@ var
 begin
   pt := ButtonFlatTask.ClientToScreen(Point(0, 0));
   PanelTasks.Height := Min(Max(3, TableExTasks.ItemCount), 15) * TableExTasks.DefaultRowHeight + ButtonFlatWithoutTask.Height;
-  FPopup := TFormPopup.Create(Self, PanelTasks, pt.X, pt.Y + ButtonFlatTask.Height);
+  FPopup := TFormPopup.CreatePopup(Self, PanelTasks, nil, pt.X, pt.Y + ButtonFlatTask.Height, []);
 end;
 
 procedure TFormEditTime.ButtonFlatUPDOWNClick(Sender: TObject);
