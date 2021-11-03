@@ -109,11 +109,7 @@
             <Form>FormMain</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="..\SQLite\SQLite3.pas"/>
-        <DCCReference Include="..\SQLite\SQLiteTable3.pas"/>
-        <DCCReference Include="..\SQLite\SQLLang.pas"/>
         <DCCReference Include="YOTM.DB.pas"/>
-        <DCCReference Include="..\SQLite\SQLiteHGM.pas"/>
         <DCCReference Include="YOTM.Form.pas">
             <Form>FormCustom</Form>
             <FormType>dfm</FormType>

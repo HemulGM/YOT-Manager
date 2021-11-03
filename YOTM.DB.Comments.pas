@@ -3,8 +3,8 @@ unit YOTM.DB.Comments;
 interface
 
 uses
-  SQLite3, SQLLang, SQLiteTable3, System.Generics.Collections,
-  HGM.Controls.VirtualTable, YOTM.DB;
+  HGM.SQLang, HGM.SQLite, System.Generics.Collections, HGM.Controls.VirtualTable,
+  YOTM.DB;
 
 type
    //Комментарии к задаче
@@ -173,7 +173,7 @@ begin
       AddValue(fnText, Items[Index].Text);
       AddValue(fnDate, Items[Index].Date);
       DataBase.DB.ExecSQL(GetSQL);
-      Items[Index].ID := DataBase.DB.GetLastInsertRowID;
+      Items[Index].ID := DataBase.DB.LastInsertRowID;
       EndCreate;
     end
   else

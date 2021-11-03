@@ -3,7 +3,7 @@ unit YOTM.DB.Labels;
 interface
 
 uses
-  SQLite3, SQLLang, SQLiteTable3, System.Generics.Collections,
+  HGM.SQLang, HGM.SQLite, System.Generics.Collections,
   HGM.Controls.VirtualTable, YOTM.DB, Vcl.Graphics, YOTM.DB.LabelTypes;
 
 type

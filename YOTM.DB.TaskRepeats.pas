@@ -3,8 +3,8 @@ unit YOTM.DB.TaskRepeats;
 interface
 
 uses
-  SQLite3, SQLLang, SQLiteTable3, System.Generics.Collections,
-  HGM.Controls.VirtualTable, YOTM.DB;
+  HGM.SQLite, HGM.SQLang, System.Generics.Collections, HGM.Controls.VirtualTable,
+  YOTM.DB;
 
 type
    //Комментарии к задаче
@@ -129,7 +129,7 @@ procedure TRepeatStates.Clear;
 var
   i: Integer;
 begin
-  for i := 0 to Count-1 do
+  for i := 0 to Count - 1 do
     Items[i].Free;
   inherited;
 end;
@@ -219,7 +219,6 @@ begin
       Table.Free;
     end;
   except
-
   end;
 end;
 
@@ -294,7 +293,7 @@ begin
       AddValue(fnNotifyComplete, Item.NotifyComplete);
       AddValue(fnState, Item.State);
       DataBase.DB.ExecSQL(GetSQL);
-      Item.ID := DataBase.DB.GetLastInsertRowID;
+      Item.ID := DataBase.DB.LastInsertRowID;
       EndCreate;
     end
   else

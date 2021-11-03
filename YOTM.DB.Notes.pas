@@ -3,8 +3,8 @@ unit YOTM.DB.Notes;
 interface
 
 uses
-  SQLite3, SQLLang, SQLiteTable3, System.Generics.Collections, SysUtils,
-  System.Classes, HGM.Controls.VirtualTable, YOTM.DB, Vcl.Graphics;
+  HGM.SQLite, HGM.SQLang, System.Generics.Collections, SysUtils, System.Classes,
+  HGM.Controls.VirtualTable, YOTM.DB, Vcl.Graphics;
 
 type
    //Метки задач
@@ -102,14 +102,13 @@ begin
     AddField(fnDate);
     AddField(fnModify);
     WhereFieldEqual(fnDate, DateOf(ADate));
-    Table := FDataBase.DB.GetTable(GetSQL);
+    Table := FDataBase.DB.Query(GetSQL);
     EndCreate;
     Text.Clear;
     if Table.RowCount > 0 then
     begin
       ID := Table.FieldAsInteger(0);
-      if Assigned(Table.FieldAsBlob(1)) then
-        Text.LoadFromStream(Table.FieldAsBlob(1));
+      Text.WriteString(Table.FieldAsBlobText(1));
       Date := Table.FieldAsDateTime(2);
       DateModify := Table.FieldAsDateTime(3);
       FLoaded := True;
@@ -124,7 +123,7 @@ begin
         AddValue(fnModify, DateModify);
         AddValue(fnText, '');
         FDataBase.DB.ExecSQL(GetSQL);
-        ID := FDataBase.DB.GetLastInsertRowID;
+        ID := FDataBase.DB.LastInsertRowID;
         FLoaded := True;
         EndCreate;
       end;
@@ -199,7 +198,6 @@ procedure TActualNotes.Reload(ADate: TDate);
 var
   Table: TSQLiteTable;
   Item: TNoteRecord;
-  Mem: TMemoryStream;
 begin
   BeginUpdate;
   Clear;
@@ -215,14 +213,12 @@ begin
     EndCreate;
     while not Table.EOF do
     begin
-      Item.ID := Table.FieldAsInteger(0);
-      Item.Date := Table.FieldAsDateTime(1);
-      Item.DateModify := Table.FieldAsDateTime(2);
-      Mem := Table.FieldAsBlob(3);
-      if Assigned(Mem) then
+      if not Table.FieldAsBlobText(3).IsEmpty then
       begin
-        if Mem.Size > 0 then
-          Add(Item);
+        Item.ID := Table.FieldAsInteger(0);
+        Item.Date := Table.FieldAsDateTime(1);
+        Item.DateModify := Table.FieldAsDateTime(2);
+        Add(Item);
       end;
       Table.Next;
     end;

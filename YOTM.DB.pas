@@ -3,7 +3,7 @@ unit YOTM.DB;
 interface
 
 uses
-  SQLite3, SQLLang, SQLiteTable3, System.Generics.Collections,
+  HGM.SQLite, HGM.SQLang, System.Generics.Collections,
   HGM.Controls.VirtualTable;
 
 type

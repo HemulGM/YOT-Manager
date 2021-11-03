@@ -3,11 +3,7 @@ program Yotm;
 uses
   Vcl.Forms,
   YOTM.Main in 'YOTM.Main.pas' {FormMain},
-  SQLite3 in '..\SQLite\SQLite3.pas',
-  SQLiteTable3 in '..\SQLite\SQLiteTable3.pas',
-  SQLLang in '..\SQLite\SQLLang.pas',
   YOTM.DB in 'YOTM.DB.pas',
-  SQLiteHGM in '..\SQLite\SQLiteHGM.pas',
   YOTM.Form in 'YOTM.Form.pas' {FormCustom},
   YOTM.Form.ModalEdit in 'YOTM.Form.ModalEdit.pas' {FormModalEdit},
   YOTM.Form.EditTime in 'YOTM.Form.EditTime.pas' {FormEditTime},

@@ -122,7 +122,7 @@ begin
     TaskID := Task.ID;
     Deadline := Task.DateDeadline;
     EditTaskName.Text := Task.Name;
-    LabelTime.Caption := HumanDateTime(Task.DateDeadline + Task.TimeNotify, True, True);
+    LabelTime.Caption := HumanDateTime(Task.DateDeadline + Task.TimeNotify);//, True, True);
     SetButtonCheck(ButtonFlatTaskState, Task.State);
     Left := Screen.WorkAreaRect.Right - (Width + 20);
     Top := Screen.WorkAreaRect.Top + 20;

@@ -3,8 +3,8 @@ unit YOTM.DB.Times;
 interface
 
 uses
-  SQLite3, SQLLang, SQLiteTable3, System.Generics.Collections,
-  HGM.Controls.VirtualTable, YOTM.DB, Vcl.Graphics;
+  HGM.SQLite, HGM.SQLang, System.Generics.Collections, HGM.Controls.VirtualTable,
+  YOTM.DB, Vcl.Graphics;
 
 type
    //Время работы
@@ -135,7 +135,7 @@ procedure TTimeItems.Clear;
 var
   i: Integer;
 begin
-  for i := 0 to Count-1 do
+  for i := 0 to Count - 1 do
     Items[i].Free;
   inherited;
 end;
@@ -232,7 +232,7 @@ begin
       AddValue(fnDateStart, Item.Date);
       AddValue(fnDateEnd, Item.DateEnd);
       DataBase.DB.ExecSQL(GetSQL);
-      Item.ID := DataBase.DB.GetLastInsertRowID;
+      Item.ID := DataBase.DB.LastInsertRowID;
       EndCreate;
     end
   else

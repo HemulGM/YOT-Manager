@@ -3,7 +3,7 @@ unit YOTM.DB.Tasks;
 interface
 
 uses
-  SQLite3, SQLLang, SQLiteTable3, System.Generics.Collections, System.SysUtils,
+  HGM.SQLite, HGM.SQLang, System.Generics.Collections, System.SysUtils,
   Vcl.Graphics, Vcl.Dialogs, HGM.Controls.VirtualTable, YOTM.DB, YOTM.DB.Labels,
   HGM.Common.DateUtils, YOTM.DB.TaskRepeats;
 
@@ -940,7 +940,7 @@ begin
       AddValue(fnNotify, Task.Notify);
       AddValue(fnColor, Task.Color);
       DataBase.DB.ExecSQL(GetSQL);
-      Task.ID := DataBase.DB.GetLastInsertRowID;
+      Task.ID := DataBase.DB.LastInsertRowID;
       EndCreate;
     end
   else

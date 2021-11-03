@@ -3,7 +3,7 @@ unit YOTM.DB.LabelTypes;
 interface
 
 uses
-  SQLite3, SQLLang, SQLiteTable3, System.Generics.Collections,
+  HGM.SQLang, HGM.SQLite, System.Generics.Collections,
   HGM.Controls.VirtualTable, YOTM.DB, Vcl.Graphics;
 
 type
@@ -168,7 +168,7 @@ begin
       AddValue(fnName, Items[Index].Name);
       AddValue(fnColor, Items[Index].Color);
       DataBase.DB.ExecSQL(GetSQL);
-      Items[Index].ID := DataBase.DB.GetLastInsertRowID;
+      Items[Index].ID := DataBase.DB.LastInsertRowID;
       EndCreate;
     end
   else
